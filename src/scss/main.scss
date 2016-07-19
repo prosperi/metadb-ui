@@ -1,0 +1,40 @@
+// helpers
+@import "bourbon";
+@import "neat";
+
+// dependencies
+// @import 'https://fonts.googleapis.com/css?family=Roboto:300,500|Source+Sans+Pro:400';
+
+// update path to fa font
+// $fa-font-path: 'fonts';
+// @import "font-awesome";
+
+// homegrown mixins + variables
+@import "mixins";
+@import "variables";
+
+// base coat styling
+@import "base";
+@import "typography";
+@import "form-elements";
+@import "tables";
+
+// components
+
+//// buttons
+@import "buttons";
+
+//// navbar
+@import "navbar";
+
+//// tabbed interfaces
+@import "tabs";
+
+//// pagination block
+@import "pagination";
+
+//// galleries
+@import "gallery";
+
+// lastly, page-specific styles
+@import "metadata-edit";

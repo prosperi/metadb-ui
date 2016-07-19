@@ -1,0 +1,36 @@
+// displaying thumbnails in a nice way
+// (ex. flexboxin' it)
+
+.project-gallery {
+	display: inline-flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	text-align: center;
+}
+
+.gallery-item {
+	// @include border($grey);
+	align-self: center;
+
+	a {
+		color: $black;
+		display: inline-block;
+		height: 100%;
+		text-decoration: none;
+		width: 100%;
+
+		&:hover {
+			background-color: #eee;;
+		}
+	}
+
+	img {
+		max-height: 150px;
+		max-width: 225px;
+	}
+
+	figcaption {
+
+	}
+}

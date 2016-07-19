@@ -1,2 +1,4 @@
 node_modules
 whats-going-on-here.markdown
+build/style.css
+build/bundle.js

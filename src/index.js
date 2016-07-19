@@ -11,5 +11,5 @@ render(
 <Provider store={store}>
 	{routes}
 </Provider>
-), 
+, 
 document.querySelector('#app'))

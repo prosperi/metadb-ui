@@ -1,0 +1,33 @@
+// different buttons
+
+button,
+.button {
+	@include dark-border($default-button-base-color, 40%);
+	appearance: none;
+	color: $black;
+	cursor: pointer;
+	font-size: .9em;
+	line-height: 1.5em;
+	margin-bottom: 3px;
+	margin-top: 3px;
+	padding: 3px 4px;
+	text-decoration: none;
+
+	&:active {
+		background-color: darken($default-button-base-color, 40%);
+		border-color: darken($default-button-base-color, 40%);
+		box-shadow: none;
+		outline: none;
+	}
+
+	&:focus {
+		border-color: $default-button-focus-color;
+		outline: none;
+	}
+}
+
+button.light-blue {
+	@extend .button;
+
+	
+}

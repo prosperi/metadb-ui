@@ -1,5 +1,8 @@
 var webpack = require('webpack')
 var path = require('path')
+var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var Bourbon = require('node-bourbon')
+var Neat = require('node-neat')
 
 module.exports = {
 	// entry: [
@@ -8,7 +11,10 @@ module.exports = {
 	// 	'webpack-dev-server/client?http://localhost:8081',
 	// ],
 
-	entry: './src/index.js',
+	entry: [
+		'./src/index.js',
+		'./src/scss/main.scss',
+	],
 
 	output: {
 		// publicPath: 'http://loclahost:8081/assets/',
@@ -25,7 +31,7 @@ module.exports = {
 				query: {
 					presets: ['es2015', 'react']
 				},
-				include: __dirname
+				include: __dirname,
 			},
 			{
 				test: /\.json$/,
@@ -34,9 +40,20 @@ module.exports = {
 			},
 			{
 				test: /\.css$/,
-				loaders: ['style', 'raw'],
-				include: __dirname
+				loader: ExtractTextPlugin.extract('style-loader', 'css-loader'),
+			},
+			{
+				test: /\.scss$/,
+				loader: ExtractTextPlugin.extract('style-loader', 'css-loader!sass-loader')
 			}
 		]
 	},
+	plugins: [
+		new ExtractTextPlugin('style.css', {
+			allChunks: true,
+		})
+	],
+	sassLoader: {
+		includePaths: Bourbon.with(Neat.includePaths)
+	}
 }

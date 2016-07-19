@@ -1,0 +1,4 @@
+// consistant transition times
+@mixin transition($property, $time: $default-transition-length, $timing-function: $default-transition-timing-function) {
+	transition: $property $time $timing-function;
+}

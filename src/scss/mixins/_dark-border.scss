@@ -1,0 +1,4 @@
+@mixin dark-border($bgcolor, $ratio: 40%) {
+	@include border(darken($bgcolor, $ratio));
+	background-color: $bgcolor;
+}

@@ -1,0 +1,44 @@
+// Lafayette palette specs
+// (see: https://communications.lafayette.edu/style-guides/)
+$dark-blue: #1d5f83;
+$light-blue: #4ea8d8;
+
+$dark-red: #65001c;
+$light-red: #910029;
+
+$dark-tan: #a2998b;
+$light-tan: #e8e6e2;
+
+// new takes on old favorites
+$white: #ffffff;
+$black: #1e1e1e;
+$grey: #787878;
+$gray: $grey;
+
+// typography concerns
+
+$base-font-size: 14px;
+$header-font-family: "Roboto", "Verdana", sans-serif;
+$body-font-family: "Open Source Sans", "Helvetica Neue", "Helvetica", sans-serif;
+
+$default-border-width: 2px;
+$body-margin: 10px;
+
+// theming
+
+$theme-primary: $dark-blue;
+
+$navbar-background-color: $light-blue;
+$navbar-text-color: $white;
+$navbar-link-color: darken($navbar-background-color, 30%);
+
+$muted-border-color: lighten($grey, 40%);
+$active-border-color: $light-blue;
+
+$default-button-base-color: lighten($grey, 35%);
+$default-button-border-color: darken($default-button-base-color, 40%);
+$default-button-focus-color: $active-border-color;
+
+// settings used in `transition` mixin
+$default-transition-length: 75ms;
+$default-transition-timing-function: ease-in-out;

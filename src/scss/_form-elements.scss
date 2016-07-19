@@ -1,0 +1,150 @@
+// input elements
+label {
+	// color: lighten($black, 20%);
+	display: block;
+	font-family: $header-font-family;
+	margin: .25rem 0;
+}
+
+input[type="text"],
+input[type="number"],
+textarea {
+	@include border(lighten($grey, 40%));
+	font-size: 1em;
+	width: inherit;
+
+	@include transition(border-color);
+
+	&:focus {
+		border-color: $active-border-color;
+		outline: none;
+	}
+  
+  &:disabled {
+		background-color: $muted-border-color;
+		border-size: 1px;
+		color: $grey;
+		cursor: not-allowed;
+	}
+}
+
+::placeholder {
+	color: lighten($grey, 30%);
+}
+
+input[type="text"],
+input[type="number"] {
+	line-height: 1.75em;
+	padding: .25em;
+}
+
+textarea {
+	min-height: 5em;
+	padding: .5em .25em;
+	resize: vertical;
+}
+
+fieldset {
+	@include border($dark-blue);
+}
+
+@media (min-width: 975px) {
+	.fieldset-group {
+		display: table;
+		width: 100%;
+		table-layout: fixed;
+
+		.fieldset {
+			// @include border($dark-blue);
+			display: table-cell;
+			margin: 0 .5rem;
+
+			ul {
+				padding: 0;
+			}
+
+			li {
+				list-style-type: none;
+			}
+		}
+	}
+}
+
+.form-element {
+	margin: 1rem 0;
+	margin-left: .5rem;
+	width: 100%;
+
+	label {
+		margin-left: -.5rem;
+	}
+
+	input[type="text"],
+	textarea {
+		width: inherit;
+	}
+}
+
+.controlled-vocabulary {
+	position: relative;
+}
+
+.controlled-vocabulary input[type="text"] {
+	margin-bottom: 2px;
+	width: 100%;
+}
+
+.controlled-vocabulary--overlay {
+	cursor: pointer;
+	font-size: 1.125rem;
+	font-weight: bold;
+	position: absolute;
+	right: .5rem;
+	top: 15%;
+
+	span, i {
+		margin: 0 5px;
+	}
+}
+
+.controlled-vocabulary--dropdown {
+	background-color: $white;
+	border: 1px solid $grey;
+	box-shadow: 0 0 1px 1px #ccc;
+	font-size: 1em;
+	height: 20em;
+	margin-top: 5px;
+	overflow-y: scroll;
+	padding: .25em .5em;
+	position: absolute;
+	width: 66%;
+	z-index: 10;
+
+	> div {
+		padding: .5em;
+
+		&.selected {
+			background-color: lighten($light-blue, 25%);
+		}
+
+		&:not(:last-of-type) {
+			border-bottom: 1px solid $grey;
+		}
+
+		&:hover {
+			background-color: lighten($light-blue, 35%);
+		}
+	}
+	// arrow to connect dropdown input to dropdown div
+	
+	&::before {
+		border: 10px solid transparent;
+		border-bottom-color: $grey;
+		content: "";
+		display: block;
+		height: 0;
+		position: absolute;
+		top: -20px;
+		width: 0;
+	}
+}

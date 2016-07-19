@@ -1,0 +1,55 @@
+// header navbar
+.navbar {
+	// columns are floated, so we'll need to clear them
+	@include clearfix;
+  background-color: $navbar-background-color;
+  
+  // box-shadow skipped ftm b/c of weird z-index issues
+  // box-shadow: 0 1px 3px #aaa;
+  color: $navbar-text-color;
+  font-size: 1.25rem;
+  
+  // body has a margin for cleanliness; this allows the nav bar to span
+  // the entire top of the screen
+  margin: -$body-margin;
+  margin-bottom: 15px;
+
+  padding: 15px;
+  vertical-align: middle;
+	z-index: 10;
+
+	a {
+		color: $white;
+	  text-decoration: none;
+	}
+
+}
+.site-title {
+	font-size: inherit;
+	font-family: $header-font-family;
+}
+
+.user-options {
+	float: right;
+}
+
+.site-navigation {
+	font-size: 1.125rem;
+	font-weight: 300;
+	margin: 0;
+	padding: 0;
+
+	li {
+		display: inline-block;
+		padding-left: .5rem;
+		padding-right: .75rem;
+
+		&:not(:last-of-type) {
+			@include border-right(darken($navbar-background-color, 10%));
+		}
+
+		a:hover {
+			@include border-bottom(mix($navbar-background-color, $white));
+		}
+	}
+}

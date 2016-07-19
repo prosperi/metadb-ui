@@ -1,0 +1,92 @@
+// pieces for the item-metadata-edit screens (descriptive, administrative, + technical)
+
+.item-metadata-edit {
+	@include clearfix;
+	@include pad;
+}
+
+// preview block
+.media-preview {
+	margin: auto;
+	text-align: center;
+
+	@include media(1000px) {
+		@include span-columns(3);
+	}
+
+	a {
+		color: $black;
+	}
+
+	header {
+		// @include border-bottom($color: lighten($grey, 20%), $width: 1px);
+		padding: 9px;
+	
+		h2 {
+			font-size: 1em;
+			font-weight: bold;
+			margin: 0;
+			text-transform: none;
+		}
+	}
+
+
+	figure {
+		margin: auto;
+		padding: 10px;
+	}
+
+	img {
+		max-width: 100%;
+	}
+
+}
+
+.item-navigation {
+	font-family: $header-font-family;
+	font-size: 1.25rem;
+	margin: .5em auto;
+
+	input[type="number"] {
+		appearance: none;
+		font-size: 1em;
+		line-height: 1.5em;
+		padding: 4px;
+		text-align: center;
+		vertical-align: middle;
+		width: 3em;
+	}
+
+	a {
+		color: inherit;
+		display: inline-block;
+		font-size: 1.125em;
+		text-decoration: none;
+	}
+
+	.button {
+		display: inline-block;
+		padding: 4px 6px;
+	}
+}
+
+.available-sizes {
+	margin: 0;
+	padding: 0; 
+
+	li {
+		display: inline-block;
+		margin: 5px 10px;
+	}
+
+	span {
+		display: block;
+	}
+}
+
+// the form
+.image-metadata {
+	@include media(1000px) {
+		@include span-columns(9);
+	}
+}

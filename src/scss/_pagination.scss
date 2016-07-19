@@ -1,0 +1,27 @@
+// paginatorrrrrsss
+$pagination-border-color: lighten($grey, 40%);
+
+.pagination {
+	@include clearfix;
+
+	li {
+		@include border($color: $pagination-border-color, $width: 1px)
+		display: inline-block;
+		float: left;
+
+		a {
+			color: $dark-blue;
+			display: inline-block;
+			padding: .5em .75em;
+			text-decoration: none;
+
+			&:hover {
+				background-color: lighten($pagination-border-color, 5%);
+			}
+		}
+
+		&:not(:first-of-type) {
+			border-left: 0;
+		}
+	}
+}
