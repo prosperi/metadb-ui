@@ -1,7 +1,7 @@
 'use strict'
 
 import React from 'react'
-import EditableTableCell from './EditableTableCell'
+import EditableTableCell from './EditableTableCell.jsx'
 
 const T = React.PropTypes
 const inArray = (val, arr) => (!!(arr.length && arr.indexOf(val) > -1))

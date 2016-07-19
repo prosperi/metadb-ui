@@ -1,7 +1,7 @@
 import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 
-import ControlledVocabularyField from '../ControlledVocabularyField'
+import ControlledVocabularyField from '../form-elements/ControlledVocabularyField.jsx'
 
 const vocab = [
 	'100 ORIENTATION',

@@ -1,7 +1,7 @@
 import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 
-import EditableTableCell from '../EditableTableCell'
+import EditableTableCell from '../table-editor/EditableTableCell.jsx'
 
 const BasicTable = React.createClass({
 	render () {

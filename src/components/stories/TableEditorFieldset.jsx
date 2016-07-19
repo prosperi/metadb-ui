@@ -1,6 +1,6 @@
 import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
-import TableEditorFieldset from '../table-editor/TableEditorFieldset'
+import TableEditorFieldset from '../table-editor/Fieldset.jsx'
 
 const fieldsArray = [
 	'title', 'subject', 'description', 'description.note', 'creator.maker',

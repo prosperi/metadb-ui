@@ -1,6 +1,6 @@
 import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
-import TextInputField from '../form-elements/TextInputField'
+import TextInputField from '../form-elements/TextInputField.jsx'
 
 storiesOf('TextInputField', module)
 	.add('plain', () => (
