@@ -9,7 +9,7 @@
     "build": "webpack",
     "proxy": "node proxy",
     "static": "npm run proxy & ecstatic build --port 8080",
-    "test-server": "webpack-dev-server --content-base build/ --hot --inline --progress --colors --devtool eval"
+    "test-server": "webpack-dev-server --content-base build/ --hot --inline --progress --colors --history-api-fallback"
   },
   "keywords": [],
   "author": "",
