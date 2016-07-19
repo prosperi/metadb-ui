@@ -34,11 +34,10 @@ function fetchApi (which, id) {
 		// }
 
 		const parts = [
-			// 'https://sporades0.stage.lafayette.edu',
-			// 'concern'
-			'http://localhost:8888'
+			'https://sporades0.stage.lafayette.edu',
+			'concern'
+			// 'http://localhost:8888'
 		]
-
 
 		switch (which) {
 			case COLLECTION:

@@ -3,7 +3,7 @@ export const SCHEMA = 'SCHEMA'
 export const WORK = 'WORK'
 
 export const SUFIA_COLLECTION_PATH = 'collection'
-export const SUFIA_WORK_ = 'generic_works'
+export const SUFIA_WORK_PATH = 'generic_works'
 
 export const ADD_EMPTY_VALUE = 'ADD_EMPTY_VALUE'
 export const REMOVE_VALUE = 'REMOVE_VALUE'
