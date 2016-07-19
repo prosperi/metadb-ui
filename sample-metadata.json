@@ -1,0 +1,34 @@
+{
+	"Title.English": ["[rm0001] [1904-1905 War Commemoration]"],
+	"Title.Japanese": ["三十七八年戦役紀念"],
+	"Subject.OCM": [
+		"200 COMMUNICATION",
+		"211 MNEMONIC DEVICES",
+		"530 ARTS",
+		"531 DECORATIVE ART",
+		"700 ARMED FORCES",
+		"706 NAVY",
+		"720 WAR"
+	],
+	"Description.Critical": ["Tōgō Heihachirō (1848-1934) and Ōyama Iwao (1842-1916)"],
+	"Description.Indicia": [
+		"CARTE POSTALE",
+		"[undivided back]　郵便はかき",
+		"[printed in olive]",
+		"内国には壱銭五厘切手外国には四銭切手"
+	],
+	"Description.Ethnicity": ["Japanese"],
+	"Relation.IsPartOf": [
+		"East Asia Image Collection",
+		"Richard Mammana Japanese Empire Postcard Collection"
+	],
+	"Format.Medium": ["Picture postcard"],
+	"Date.Artifact.Upper": ["1907-03-27"],
+	"Date.Artifact.Lower": ["1905-01-01"],
+	"Date.Image.Upper": ["1907-03-27"],
+	"Date.Image.Lower": ["1905-01-01"],
+	"Contributor.Donor": ["This item generously donated by Richard Mammana."],
+	"Editor": ["Paul D. Barclay"],
+	"Item URL": ["http://digital.lafayette.edu/collections/eastasia/mammana-postcards/rm0001"],
+	"Relation.isPartOf": ""
+}
