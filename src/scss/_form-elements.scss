@@ -70,28 +70,69 @@ fieldset {
 	}
 }
 
-.form-element {
-	margin: 1rem 0;
-	margin-left: .5rem;
+/*
+<div class="form-element-wrapper">
+	<label>Label Name</label>
+	<div class="form-element">
+		<input type="text"/>
+		<button class="remove-field-button">&ndash;</button>
+	</div>
+</div>
+*/
+
+.form-element-wrapper {
+	$btn-width: 32px;
+	$btn-offset: -($btn-width + 4px);
+
+	@include clearfix;
+
+	padding: 0 2rem 0 1rem;
 	width: 100%;
 
 	label {
-		margin-left: -.5rem;
+		display: block;
+		margin-left: -1rem;
 	}
 
 	input[type="text"],
 	textarea {
-		width: inherit;
+		width: 100%;
+	}
+
+	.form-element {
+		margin-bottom: 4px;
+		position: relative;
+	}
+
+	.add-field-btn,
+	.remove-field-btn {
+		height: 1.75em + 1em;
+
+		margin: 0;
+		width: $btn-width;
+	}
+
+	.add-field-btn {
+		float: right;
+		margin-right: $btn-offset;
+	}
+
+	.remove-field-btn {
+		border: none;
+		position: absolute;
+		right: $btn-offset;
+		top: 0;
 	}
 }
 
+
 .controlled-vocabulary {
 	position: relative;
-}
 
-.controlled-vocabulary input[type="text"] {
-	margin-bottom: 2px;
-	width: 100%;
+	input[type="text"] {
+		margin-bottom: 2px;
+		width: 100%;
+	}
 }
 
 .controlled-vocabulary--overlay {

@@ -1,4 +1,5 @@
 import { configure } from '@kadira/storybook'
+import '../src/scss/main.scss'
 
 configure(() => {
 	// table edit
@@ -9,5 +10,6 @@ configure(() => {
 	// item edit
 	require('../src/components/stories/ControlledVocabularyField.jsx')
 	require('../src/components/stories/TextInputField.jsx')
+	require('../src/components/stories/FormElementWrapper.jsx')
 	// require('../src/components/stories/TableEditorContainer') // TODO: return to this
 }, module)
