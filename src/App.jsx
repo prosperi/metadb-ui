@@ -14,6 +14,8 @@ function mapStateToProps (state, ownProps) {
 
 		fetchingWork: state.work.isFetching,
 		selectedWork: state.work.data,
+
+		error: state.error,
 	}
 }
 

@@ -24,3 +24,5 @@ export const RECEIVE_WORK = `RECEIVE_${WORK}`
 export const WORK_CHANGE = `${WORK}_CHANGE`
 export const ADD_WORK_VALUE_FIELD = `ADD_${WORK}_VALUE_FIELD`
 export const REMOVE_WORK = `REMOVE_${WORK}`
+
+export const REMOVE_ERROR = `REMOVE_ERROR`

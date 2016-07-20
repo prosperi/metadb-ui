@@ -68,24 +68,30 @@ function fetchApi (which, id) {
 
 		parts.push(id + '.json')
 
-		const url = parts.join('/')
+		const opts = {
+			url: parts.join('/'),
+			method: 'GET',
+			timeout: 2500,
+			json: true,
+		}
 
-		xhr.get(url, function (err, resp, body) {
-			if (err) 
-				return fetchError(dispatch, err)
-
-			if (typeof body === 'string')
-				body = JSON.parse(body)
-
+		xhr(opts, function (err, resp, body) {
+			if (err) return fetchError(err, resp)
 			return receiveData(body)
 		})
 
 		// some dispatch helpers, kept in the scope of
 		// `fetchApi` so we can use the dispatch instance
-		function fetchError (err) {
+		function fetchError (err_, resp) {
+			const err = err_ instanceof Error ? err_ : new Error(err_)
+
 			return dispatch({
 				type: FETCH_ERROR,
-				err: err instanceof Error ? err.message : err
+				data: {
+					error: err,
+					message: err.message,
+					status: resp.statusCode,
+				}
 			})
 		}
 

@@ -11,7 +11,7 @@ const WorkEdit = React.createClass({
 	},
 
 	componentWillUnmount: function () {
-		// this.props.removeWork()
+		this.props.removeError()
 	},
 
 	handleAddValueField: function (which) {
@@ -37,6 +37,27 @@ const WorkEdit = React.createClass({
 	},
 
 	render: function () {
+		const error = this.props.error
+		const hasError = !empty(error)
+
+		// we'll make this prettier later
+		if (hasError) {
+			const errorStyle = {
+				backgroundColor: '#cc092f',
+				color: '#fff',
+				padding: '10px',
+			}
+
+			return (
+			<div>
+				<div style={errorStyle}>
+					<p>There was an error!</p>
+					<pre>{error.message}</pre>
+				</div>
+			</div>
+			)
+		}
+
 		const ided = <strong>{this.props.params.workId}</strong>
 		const work = this.props.selectedWork
 		const isFetching = this.props.fetchingWork

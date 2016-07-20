@@ -39,6 +39,8 @@ const initialState = {
 		},
 	},
 
+	error: {},
+
 	work: {
 		isFetching: false,
 		data: {},
