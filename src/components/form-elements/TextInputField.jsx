@@ -8,7 +8,7 @@ const TextInputField = React.createClass({
 		onChange: T.func,
 		placeholder: T.string,
 		style: T.object,
-		value: T.string,
+		value: T.oneOfType([T.string, T.array]),
 	},
 
 	getDefaultProps: function () {

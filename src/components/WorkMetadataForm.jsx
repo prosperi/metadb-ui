@@ -38,20 +38,6 @@ const WorkMetadataForm = React.createClass({
 		this.props.onChange.apply(null, arguments)
 	},
 
-	// mapFormElements: function () {
-	// 	const schema = this.props.schema
-	// 	const schemaKeys = Object.keys(schema)
-
-	// 	return schemaKeys.map((key, idx) => {
-	// 		return (
-	// 		<div>
-	// 			<strong>{key}:</strong>
-	// 			<span>{this.props.data[key] || ''}</span>
-	// 		</div>
-	// 		)
-	// 	})
-	// },
-
 	mapFormElements: function () {
 		const schema = this.props.schema
 		const schemaKeys = Object.keys(schema)
@@ -59,7 +45,7 @@ const WorkMetadataForm = React.createClass({
 		return schemaKeys.map((key, idx) => {
 			const schema = this.props.schema[key]
 			let data = this.props.data[key]
-			const canHaveMultipleValues = Array.isArray(data)
+			const canHaveMultipleValues = Array.isArray(data) && schema.multipleValues
 
 			let Element, elProps
 

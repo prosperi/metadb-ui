@@ -1,6 +1,7 @@
 import React from 'react'
 
 const T = React.PropTypes
+const noop = function () {}
 
 const FormElementWrapper = React.createClass({
 	propTypes: {
@@ -18,7 +19,7 @@ const FormElementWrapper = React.createClass({
 			displayLabel: true,
 			formLabel: '',
 			multipleValues: false,
-			onAddValueField: function () {},
+			onAddValueField: noop,
 		}
 	},
 
@@ -61,7 +62,10 @@ const FormElementWrapper = React.createClass({
 			<div className="form-element">
 				{this.renderLabel()}
 				{this.mapChildren()}
-				{this.props.onAddValueField ? this.renderAddButton() : ''}
+				{this.props.multipleValues && this.props.onAddValueField !== noop 
+					? this.renderAddButton() 
+					: ''
+				}
 			</div>
 		)
 	}
