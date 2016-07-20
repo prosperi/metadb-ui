@@ -1,4 +1,5 @@
 import React from 'react'
+import assign from 'object-assign'
 
 const T = React.PropTypes
 
@@ -21,41 +22,48 @@ const TextInputField = React.createClass({
 		}
 	},
 
+	getSingleValue: function () {
+		const value = this.props.value
+		return Array.isArray(value) ? value[0] : value
+	},
+
 	handleBlur: function (ev) {
-		this.props.onChange.call(null, ev.target.value)
+		const val = ev.target.value
+
+		if (this._initialValue === val) return
+
+		this.props.onChange.call(null, val)
 	},
 
-	renderInput: function () {
-		const value = Array.isArray(this.props.value)
-								? this.props.value[0]
-								: this.props.value
-
-		return (
-			<input
-				onBlur={this.handleBlur}
-				placeholder={this.props.placeholder}
-				type="text" 
-				defaultValue={value}
-			/>
-		)
+	handleFocus: function (ev) {
+		this._initialValue = ev.target.value
 	},
 
-	renderTextbox: function () {
-		const value = Array.isArray(this.props.value)
-								? this.props.value[0]
-								: this.props.value
+	renderInput: function (opts) {
+		const props = assign({}, opts, {
+			type: 'text'
+		})
 
-		return (
-			<textarea 
-				onChange={this.handleChange} 
-				placeholder={this.props.placeholder}
-				defaultValue={this.props.value}
-			/>
-		)
+		return React.createElement('input', props)
+	},
+
+	renderTextbox: function (opts) {
+		const props = assign({}, opts)
+
+		return React.createElement('textarea', props)
 	},
 
 	render: function () {
-		return this.props.largerField ? this.renderTextbox() : this.renderInput()
+		const opts = {
+			defaultValue: this.getSingleValue(),
+			onBlur: this.handleBlur,
+			onFocus: this.handleFocus,
+			placeholder: this.props.placeholder,
+		}
+
+		return (
+			this.props.largerField ? this.renderTextbox(opts) : this.renderInput(opts)
+		)
 	}
 })
 
