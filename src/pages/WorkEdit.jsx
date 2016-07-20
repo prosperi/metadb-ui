@@ -7,8 +7,7 @@ import WorkMetadataForm from '../components/WorkMetadataForm.jsx'
 const WorkEdit = React.createClass({
 	componentDidMount: function () {
 		const id = this.props.params.workId
-		if (empty(this.props.selectedWork))
-			this.props.fetchWork(id)
+		this.props.fetchWork(id)
 	},
 
 	componentWillUnmount: function () {
@@ -27,9 +26,6 @@ const WorkEdit = React.createClass({
 		const schema = this.props.schema
 		const workData = this.props.selectedWork
 
-		// console.log('schema', schema)
-		// console.log('workData', workData)
-
 		return (
 		<WorkMetadataForm
 			onChange={this.handleChange}
@@ -47,8 +43,7 @@ const WorkEdit = React.createClass({
 
 		return (
 		<div>
-			<h1>{isFetching ? `Let's see if editing works!` : `Editing Works! Isn't this fun?`}</h1>
-			<p>Lets see, you wanna edit an item w/ the id of {ided} right?</p>
+			<h1>{work.title || 'loading'}</h1>
 			<strong>status: {isFetching ? 'fetching' : work ? 'fetched!' : ':shrug:'}</strong>
 			{!empty(work) ? this.renderEditForm() : ''}
 		</div>

@@ -11,12 +11,21 @@ import { history } from './store'
 import App from './App.jsx'
 import Home from './pages/Home.jsx'
 import WorkEdit from './pages/WorkEdit.jsx'
+import About from './pages/About.jsx'
+
+import CollectionWrapper from './pages/CollectionWrapper.jsx'
+import CollectionHome from './pages/CollectionHome.jsx'
 
 const routes = (
 	<Router history={history}>
 		<Route path="/" component={App}>
 			<IndexRoute component={Home} />
-			<Route path="works/:workId" component={WorkEdit}/>
+			<Route path="/about" component={About} />
+
+			<Route path="/:collectionId" component={CollectionWrapper}>
+				<IndexRoute component={CollectionHome} />
+			</Route>
+
 		</Route>
 	</Router>
 )

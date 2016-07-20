@@ -1,3 +1,5 @@
+'use strict' 
+
 import {
 	FETCH_COLLECTION,
 	RECEIVE_COLLECTION
@@ -26,9 +28,14 @@ export default function collectionReducer (state, action) {
 		// 	})
 
 		case RECEIVE_COLLECTION:
+			let data = assign({}, action.data)
+			const schema = assign({}, data.schema)
+			delete data.schema
+
 			return assign({}, state, {
 				isFetching: false,
-				data: action.data
+				data: data,
+				schema: schema
 			})
 
 		// case RECEIVE_SCHEMA:

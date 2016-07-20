@@ -13,7 +13,7 @@ const initialState = {
 		// be sure to empty out the top level attributes!!!
 		isFetching: false,
 		data: {
-			name: 'Test Collection',
+			name: 'test-collection',
 			description: 'An archive of non-existing objects'
 		},
 		schema: {
@@ -21,7 +21,8 @@ const initialState = {
 				multipleValues: true,
 			},
 			description: {
-				largerText: true,
+				largerField: true,
+				multipleValues: false,
 			},
 			creator: {
 				multipleValues: true,

@@ -15,28 +15,43 @@ import {
 
 import store from '../store'
 
-// ex: https://sporades0.stage.lafayette.edu/concern/generic_works/2227mp65f.json
-
-// IN THE NEAR FUTURE
-// we'll check for schema requests to make sure we're not
-// doing more api calls than necessary
+// since the approach for fetching collections + works is essentially the same,
+// we'll extract a common fetch function and export wrappers
 function fetchApi (which, id) {
 	return function dispatchWrapper (dispatch, getState) {
 		if (!id) return fetchError(dispatch, 'No ID parameter passed')
 
+		// flip the `isFetching` flag in our `which`
 		dispatch({type: `FETCH_${which}`})
 
 		const currentState = getState()
 
-		// if (id === currentState.work.data.id 
-		// 	|| id === currentState.collection.data.id) {
-		// 	return receiveData(currentState.work.data)
-		// }
+		// before we actually make an xhr call, we should make sure
+		// that what we're fetching isn't already fetched. in the future
+		// we may want to put in something that'll make sure the state
+		// data doesn't get too stale (say the window is left open + another
+		// makes conflicting changes)
+		if (which === WORK) 
+			if (id === currentState.work.data.id) 
+				return receiveData(currentState.work.data)
 
+		if (which === COLLECTION)
+			if (id === currentState.collection.data.name)
+				return receiveData({
+					name: currentState.collection.data.name,
+					description: currentState.collection.data.description,
+					schema: currentState.collection.schema,
+				})
+
+		// if not already in state, let's clear out the previous item so that
+		// we're not in a position where the old one renders before the new one
+		// is fetched
+		dispatch({type: `REMOVE_${which}`})
+
+		// TODO: extract this to a constant?
 		const parts = [
 			'https://sporades0.stage.lafayette.edu',
-			'concern'
-			// 'http://localhost:8888'
+			'concern',
 		]
 
 		switch (which) {
@@ -65,7 +80,8 @@ function fetchApi (which, id) {
 			return receiveData(body)
 		})
 
-		// some dispatch helpers
+		// some dispatch helpers, kept in the scope of
+		// `fetchApi` so we can use the dispatch instance
 		function fetchError (err) {
 			return dispatch({
 				type: FETCH_ERROR,
