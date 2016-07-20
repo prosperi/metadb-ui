@@ -23,11 +23,10 @@ const MetaDB = (
 		<Route path="/" component={App}>
 			<IndexRoute component={Home} />
 			<Route path="/about" component={About} />
-
 			<Route path="/:collectionId" component={CollectionWrapper}>
 				<IndexRoute component={CollectionHome} />
+				<Route path="works/:workId" component={WorkEdit}/>
 			</Route>
-
 		</Route>
 	</Router>
 </Provider>
