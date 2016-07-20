@@ -64,9 +64,9 @@ const FormElementWrapper = React.createClass({
 
 	renderFieldButton: function (idx) {
 		if (!this.props.multipleValues) return
-			
+
 		const len = React.Children.count(this.props.children)
-		return len > 1 ? this.removeFieldButton() : this.addFieldButton()
+		return len > 1 ? this.removeFieldButton(idx) : this.addFieldButton()
 	},
 
 	addFieldButton: function () {
