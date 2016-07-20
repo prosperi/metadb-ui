@@ -3,6 +3,7 @@
 'use strict'
 
 import React from 'react'
+import assign from 'object-assign'
 
 import FormElementWrapper from './form-elements/FormElementWrapper.jsx'
 import ControlledVocabulary from './form-elements/ControlledVocabularyField.jsx'
@@ -34,6 +35,10 @@ const WorkMetadataForm = React.createClass({
 		this.props.onAddValueField.call(null, key)
 	},
 
+	handleRemoveValueField: function (key, idx) {
+		this.props.onRemoveValueField.apply(null, arguments)
+	},
+
 	handleChange: function (key, index, value) {
 		this.props.onChange.apply(null, arguments)
 	},
@@ -47,7 +52,7 @@ const WorkMetadataForm = React.createClass({
 			let data = this.props.data[key]
 			const canHaveMultipleValues = Array.isArray(data) && schema.multipleValues
 
-			let Element, elProps
+			let Element, elProps, wrapperProps
 
 			// if we've gotten an empty array from the server, we need to
 			// put something at the first position so the later call to
@@ -78,7 +83,7 @@ const WorkMetadataForm = React.createClass({
 				}
 			}
 
-			const wrapperProps = {
+			wrapperProps = {
 				formLabel: schema[sk.FORM_LABEL],
 				multipleValues: canHaveMultipleValues,
 				name: key,
@@ -86,8 +91,11 @@ const WorkMetadataForm = React.createClass({
 			}
 
 			if (!this.props.readOnly) {
-				wrapperProps.onAddValueField = this.handleAddValueField.bind(null, key)
-				wrapperProps.onChange = this.handleChange.bind(null, key)
+				wrapperProps = assign(wrapperProps, {
+					onAddValueField: this.handleAddValueField.bind(null, key),
+					onRemoveValueField: this.handleRemoveValueField.bind(null, key),
+					onChange: this.handleChange.bind(null, key),
+				})
 			}
 
 			return (

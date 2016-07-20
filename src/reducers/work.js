@@ -5,6 +5,7 @@ import {
 	FETCH_WORK,
 	RECEIVE_WORK,
 	REMOVE_WORK,
+	REMOVE_WORK_VALUE_FIELD,
 	WORK_CHANGE,
 } from '../actions/constants'
 
@@ -16,8 +17,6 @@ export default function workReducer (state, action) {
 			isFetching: false,
 			data: {},
 		}
-
-	let data
 
 	switch (action.type) {
 		case ADD_WORK_VALUE_FIELD:
@@ -37,8 +36,11 @@ export default function workReducer (state, action) {
 		case REMOVE_WORK:
 			return removeWork(state)
 
+		case REMOVE_WORK_VALUE_FIELD:
+			return removeWorkValueField(state, action)
+
 		case WORK_CHANGE:
-			data = assign({}, state.data)
+			let data = assign({}, state.data)
 			data[action.key][action.index] = action.value
 			return assign({}, state, {data})
 
@@ -58,4 +60,20 @@ function addWorkValueField (state, action) {
 
 function removeWork (state) {
 	return assign({}, state, {data: {}})
+}
+
+function removeWorkValueField (state, action) {
+	console.log(action)
+	console.log('before', state.data[action.key])
+
+	const update = assign({}, state.data)
+	const key = action.key
+	const index = action.index
+
+	const field = update[key]
+	update[key] = [].concat(field.slice(0, index), field.slice(index + 1))
+
+	console.log('after', update[action.key])
+
+	return assign({}, state, {data: update})
 }

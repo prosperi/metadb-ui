@@ -18,6 +18,10 @@ const WorkEdit = React.createClass({
 		this.props.addValueField(which)
 	},
 
+	handleRemoveValueField: function (which, index) {
+		this.props.removeValueField(which, index)
+	},
+
 	handleChange: function (key, idx, value) {
 		this.props.editWorkField.apply(null, arguments)
 	},
@@ -30,6 +34,7 @@ const WorkEdit = React.createClass({
 		<WorkMetadataForm
 			onChange={this.handleChange}
 			onAddValueField={this.handleAddValueField}
+			onRemoveValueField={this.handleRemoveValueField}
 			data={workData}
 			schema={schema}
 		/>
