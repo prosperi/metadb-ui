@@ -63,17 +63,12 @@ function removeWork (state) {
 }
 
 function removeWorkValueField (state, action) {
-	console.log(action)
-	console.log('before', state.data[action.key])
-
 	const update = assign({}, state.data)
 	const key = action.key
 	const index = action.index
 
 	const field = update[key]
 	update[key] = [].concat(field.slice(0, index), field.slice(index + 1))
-
-	console.log('after', update[action.key])
 
 	return assign({}, state, {data: update})
 }
