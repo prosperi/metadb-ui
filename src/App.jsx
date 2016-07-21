@@ -7,15 +7,16 @@ import Main from './layouts/Main.jsx'
 
 function mapStateToProps (state, ownProps) {
 	return {
+		collection: state.collection,
+
+		error: state.error,
+
 		fetchingCollection: state.collection.isFetching,
-		selectedCollection: state.collection.data,
+		fetchingWork: state.work.isFetching,
 		
 		schema: state.collection.schema,
 
-		fetchingWork: state.work.isFetching,
-		selectedWork: state.work.data,
-
-		error: state.error,
+		work: state.work,
 	}
 }
 

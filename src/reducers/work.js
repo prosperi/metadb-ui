@@ -31,6 +31,7 @@ export default function workReducer (state, action) {
 			return assign({}, state, {
 				isFetching: false,
 				data: action.data,
+				updated: false,
 			})
 
 		case REMOVE_WORK:
@@ -42,7 +43,7 @@ export default function workReducer (state, action) {
 		case WORK_CHANGE:
 			let data = assign({}, state.data)
 			data[action.key][action.index] = action.value
-			return assign({}, state, {data})
+			return assign({}, state, {data, updated: true})
 
 		default:
 			return state

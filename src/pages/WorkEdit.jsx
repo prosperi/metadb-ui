@@ -4,14 +4,19 @@ import store from '../store'
 
 import WorkMetadataForm from '../components/WorkMetadataForm.jsx'
 
+import withRouter from 'react-router/lib/withRouter'
+
 const WorkEdit = React.createClass({
 	componentDidMount: function () {
 		const id = this.props.params.workId
 		this.props.fetchWork(id)
+
+		this.props.router.setRouteLeaveHook(this.props.route, this.onExit)
 	},
 
 	componentWillUnmount: function () {
 		this.props.removeError()
+		this.props.removeWork()
 	},
 
 	handleAddValueField: function (which) {
@@ -26,9 +31,14 @@ const WorkEdit = React.createClass({
 		this.props.editWorkField.apply(null, arguments)
 	},
 
+	onExit: function (nextLocation) {
+		if (this.props.work.updated)
+			return 'Any unsaved changes will be lost. Are you sure?'
+	},
+
 	renderEditForm: function () {
 		const schema = this.props.schema
-		const workData = this.props.selectedWork
+		const workData = this.props.work.data
 
 		return (
 		<WorkMetadataForm
@@ -64,17 +74,17 @@ const WorkEdit = React.createClass({
 		}
 
 		const ided = <strong>{this.props.params.workId}</strong>
-		const work = this.props.selectedWork
+		const work = this.props.work.data
 		const isFetching = this.props.fetchingWork
 
 		return (
 		<div>
-			<h1>{work.title || 'loading'}</h1>
-			<strong>status: {isFetching ? 'fetching' : work ? 'fetched!' : ':shrug:'}</strong>
+			<h1>{work.id || 'loading'}</h1>
+			<p><strong>status: {isFetching ? 'fetching' : work ? 'fetched!' : ':shrug:'}</strong></p>
 			{!empty(work) ? this.renderEditForm() : ''}
 		</div>
 		)
 	}
 })
 
-export default WorkEdit
+export default withRouter(WorkEdit)

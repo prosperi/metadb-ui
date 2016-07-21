@@ -1,16 +1,17 @@
 import React from 'react'
+import assign from 'object-assign'
 
 const T = React.PropTypes
 
 const CollectionWrapper = React.createClass({
 	componentDidMount: function () {
-		// console.log('didMount props', this.props)
+
 		const id = this.props.params.collectionId
 		this.props.fetchCollection(id)
 	},
 
 	render: function () {
-		const collection = this.props.selectedCollection
+		const collection = this.props.collection.data
 		const name = collection.name
 		const description = collection.description
 		
@@ -24,7 +25,8 @@ const CollectionWrapper = React.createClass({
 			</header>
 
 			{React.Children.map(this.props.children, c => {
-				return React.cloneElement(c, this.props, c.props.children)
+				const props = assign({}, this.props, c.props)
+				return React.cloneElement(c, props, c.props.children)
 			})}
 		</main>
 		)

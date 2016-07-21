@@ -1,4 +1,5 @@
 import React from 'react'
+import assign from 'object-assign'
 
 import SiteHeader from '../components/SiteHeader.jsx'
 
@@ -8,7 +9,8 @@ const Main = React.createClass({
 		<div>
 			<SiteHeader />
 			{React.Children.map(this.props.children, c => {
-				return React.cloneElement(c, this.props, c.props.children)
+				const props = assign({}, this.props, c.props)
+				return React.cloneElement(c, props, c.props.children)
 			})}
 		</div>
 		)

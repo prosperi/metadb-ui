@@ -43,6 +43,7 @@ const initialState = {
 
 	work: {
 		isFetching: false,
+		updated: false,
 		data: {},
 	},
 
