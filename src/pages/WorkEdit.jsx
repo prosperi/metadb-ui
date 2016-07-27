@@ -3,14 +3,17 @@ import empty from 'is-empty-object'
 import store from '../store'
 
 import WorkMetadataForm from '../components/WorkMetadataForm.jsx'
-
 import withRouter from 'react-router/lib/withRouter'
+import browserHistory from 'react-router/lib/browserHistory'
 
 const WorkEdit = React.createClass({
 	componentDidMount: function () {
 		const id = this.props.params.workId
-		this.props.fetchWork(id)
+		if (!id) {
+			// handle no id
+		}
 
+		this.props.fetchWork(id)
 		this.props.router.setRouteLeaveHook(this.props.route, this.onExit)
 	},
 

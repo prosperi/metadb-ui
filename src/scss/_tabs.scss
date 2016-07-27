@@ -28,7 +28,7 @@ $tab-border-color: $dark-blue;
 }
 
 .tab {
-	&.active {
+	a.active {
 		@include border-bottom($tab-border-color);
 	}
 }
@@ -36,6 +36,7 @@ $tab-border-color: $dark-blue;
 .tab-header a,
 .tab a {
 	color: inherit;
+	cursor: pointer;
 	display: block;
 	height: 100%;
 	padding: 10px;
@@ -43,9 +44,7 @@ $tab-border-color: $dark-blue;
 	width: 100%;
 }
 
-.tab {
-	@include transition(background-color);
-	
+.tab {	
 	&:hover {
 		background-color: #eee;
 		outline: none;
