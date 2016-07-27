@@ -37,6 +37,12 @@ const initialState = {
 				multipleValues: true,
 			}
 		},
+
+		// prestuffed ids
+		works: [
+			{ id: '2227mp65f' },
+			{ id: 'b2773v68h' },
+		],
 	},
 
 	error: {},
