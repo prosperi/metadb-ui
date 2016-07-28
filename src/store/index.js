@@ -53,6 +53,12 @@ const initialState = {
 		data: {},
 	},
 
+	// vocabs consist of
+	// {[vocabName]: [ /* ... terms, moreTerms ... */ ]}
+	vocabulary: {
+
+	},
+
 	// user: {
 
 	// },
