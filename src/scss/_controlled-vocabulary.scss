@@ -1,0 +1,63 @@
+.controlled-vocabulary {
+	position: relative;
+
+	input[type="text"] {
+		margin-bottom: 2px;
+		width: 100%;
+	}
+}
+
+.controlled-vocabulary--overlay {
+	cursor: pointer;
+	font-size: 1.125rem;
+	font-weight: bold;
+	position: absolute;
+	right: .5rem;
+	top: 15%;
+
+	span, i {
+		margin: 0 5px;
+	}
+}
+
+.controlled-vocabulary--dropdown {
+	background-color: $white;
+	border: 1px solid $grey;
+	box-shadow: 0 0 1px 1px #ccc;
+	font-size: 1em;
+	height: 20em;
+	margin-top: 5px;
+	overflow-y: scroll;
+	padding: .25em .5em;
+	position: absolute;
+	width: 66%;
+	z-index: 10;
+
+	> div {
+		padding: .5em;
+
+		&.selected {
+			background-color: lighten($light-blue, 25%);
+		}
+
+		&:not(:last-of-type) {
+			border-bottom: 1px solid $grey;
+		}
+
+		&:hover {
+			background-color: lighten($light-blue, 35%);
+		}
+	}
+	// arrow to connect dropdown input to dropdown div
+	
+	&::before {
+		border: 10px solid transparent;
+		border-bottom-color: $grey;
+		content: "";
+		display: block;
+		height: 0;
+		position: absolute;
+		top: -20px;
+		width: 0;
+	}
+}
