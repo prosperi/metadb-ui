@@ -13,7 +13,6 @@ import store, { history } from './store'
 import App from './App.jsx'
 import Home from './pages/Home.jsx'
 import WorkEdit from './pages/WorkEdit.jsx'
-import About from './pages/About.jsx'
 
 import CollectionWrapper from './pages/CollectionWrapper.jsx'
 import CollectionHome from './pages/collection/Home.jsx'
@@ -27,7 +26,6 @@ const MetaDB = (
 	<Router history={history}>
 		<Route path="/" component={App}>
 			<IndexRoute component={Home} />
-			<Route path="about" component={About} />
 
 			<Route path="collections/:collectionId" component={CollectionWrapper}>
 				<IndexRoute component={CollectionHome} />
