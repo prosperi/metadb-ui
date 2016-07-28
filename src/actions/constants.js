@@ -12,6 +12,11 @@ export const SUFIA_WORK_PATH = 'generic_works'
 export const ADD_EMPTY_VALUE = 'ADD_EMPTY_VALUE'
 export const ADD_WORK_VALUE_FIELD = `ADD_${WORK}_VALUE_FIELD`
 
+// `CLEAR` removes all vocabularies. `CLEAR_VOCABULARIES`
+// is grammatically accurate. 
+export const CLEAR_VOCABULARY = `CLEAR_${VOCABULARY}`
+export const CLEAR_VOCABULARIES = CLEAR_VOCABULARY
+
 export const FETCH_COLLECTION = `FETCH_${COLLECTION}`
 export const FETCH_ERROR = 'FETCH_ERROR'
 export const FETCH_SCHEMA = `FETCH_${SCHEMA}`
@@ -29,6 +34,7 @@ export const RECEIVE_WORK = `RECEIVE_${WORK}`
 
 export const REMOVE_ERROR = `REMOVE_ERROR`
 export const REMOVE_VALUE = 'REMOVE_VALUE'
+export const REMOVE_VOCABULARY = `REMOVE_${VOCABULARY}`
 export const REMOVE_WORK = `REMOVE_${WORK}`
 export const REMOVE_WORK_VALUE_FIELD = `REMOVE_${WORK}_VALUE_FIELD`
 
