@@ -6,12 +6,10 @@ const noop = function () {}
 
 const FormElementWrapper = React.createClass({
 	propTypes: {
-		// required props
-		name: T.string.isRequired,
-		onChange: T.func.isRequired,
+		label: T.string,
+		name: T.string,
+		onChange: T.func,
 
-		displayLabel: T.bool,
-		formLabel: T.string,
 		multipleValues: T.bool,
 		onAddValueField: T.func,
 		placeholder: T.string,
@@ -20,9 +18,8 @@ const FormElementWrapper = React.createClass({
 
 	getDefaultProps: function () {
 		return {
-			displayLabel: true,
-			formLabel: '',
 			multipleValues: false,
+			name: '',
 			onAddValueField: noop,
 			onRemoveValueField: noop,
 			placeholder: '',
@@ -30,21 +27,33 @@ const FormElementWrapper = React.createClass({
 		}
 	},
 
+	addFieldButton: function (idx) {
+		return (
+			<button
+				className="add-field-btn"
+				onClick={this.props.onAddValueField}
+				key={'add-field-'+idx}>
+				{'+'}
+			</button>
+		)
+	},
+
 	hasMultipleValues: function () {
 		return React.Children.count(this.props.children) > 1
 	},
 
-	handleChange: function (idx, val) {
-		this.props.onChange.call(null, idx, val)
+	handleChange: function (index, value) {
+		if (this.props.onChange)
+			this.props.onChange.apply(null, arguments)
 	},
 
 	mapChildren: function () {
 		return React.Children.map(this.props.children, (child, idx) => {
 			const props = {
-				name: this.props.name + '[]',
-				onChange: this.handleChange.bind(null, idx),
 				placeholder: child.props.placeholder || this.props.placeholder,
 				readOnly: child.props.readOnly || this.props.readOnly,
+				key: child.displayName + idx,
+				onChange: this.handleChange.bind(null, idx)
 			}
 
 			return (
@@ -59,7 +68,18 @@ const FormElementWrapper = React.createClass({
 	maybeRenderAddFieldButton: function () {
 		const len = React.Children.count(this.props.children)
 		if (this.props.multipleValues && !this.props.readOnly && len > 1)
-			return this.addFieldButton()
+			return this.addFieldButton(len)
+	},
+
+	removeFieldButton: function (idx) {
+		return (
+			<button 
+				className="remove-field-btn"
+				dangerouslySetInnerHTML={{__html: '&mdash;'}}
+				onClick={this.props.onRemoveValueField.bind(null,idx)}
+				key={'remove-field-'+idx}
+				/>
+		)
 	},
 
 	renderFieldButton: function (idx) {
@@ -69,48 +89,22 @@ const FormElementWrapper = React.createClass({
 		return len > 1 ? this.removeFieldButton(idx) : this.addFieldButton()
 	},
 
-	addFieldButton: function () {
-		return (
-			<button 
-				className="add-field-btn"
-				onClick={this.props.onAddValueField}>
-				{'+'}
-			</button>
-		)
-	},
-
-	removeFieldButton: function (idx) {
-		return (
-			<button 
-				className="remove-field-btn"
-				dangerouslySetInnerHTML={{__html: '&mdash;'}}
-				onClick={this.props.onRemoveValueField.bind(null,idx)}
-				/>
-		)
-	},
 
 	renderLabel: function () {
-		if (!this.props.displayLabel)
-			return ''
-
-		const formLabel = this.props.formLabel
-		const name = this.props.name
-
-		return (
-			<label>
-				{formLabel ? formLabel : name}
-			</label>
-		)
+		if (!this.props.label) return
+		return <label key={'label'+this.props.label}>{this.props.label}</label>
 	},
 
 	render: function () {
-		return (
-			<div className="form-element-wrapper">
-				{this.renderLabel()}
-				{this.mapChildren()}
-				{this.maybeRenderAddFieldButton()}
-			</div>
-		)
+		const wrapperProps = {
+			className: 'form-element-wrapper'
+		}
+
+		return React.createElement('div', wrapperProps, [
+			this.renderLabel(),
+			this.mapChildren(),
+			this.maybeRenderAddFieldButton(),
+		])
 	}
 })
 

@@ -10,6 +10,8 @@ import ControlledVocabulary from './form-elements/ControlledVocabularyField.jsx'
 import TextInput from './form-elements/TextInputField.jsx'
 import ReadOnly from './form-elements/ReadOnly.jsx'
 
+import MediaPreview from './MediaPreview.jsx'
+
 import sk from '../../lib/schema-keys.js'
 
 const T = React.PropTypes
@@ -89,9 +91,8 @@ const WorkMetadataForm = React.createClass({
 			}
 
 			wrapperProps = {
-				formLabel: schema[sk.FORM_LABEL],
+				label: key,
 				multipleValues: canHaveMultipleValues,
-				name: key,
 				key: key + idx,
 			}
 
@@ -107,7 +108,7 @@ const WorkMetadataForm = React.createClass({
 			<FormElementWrapper {...wrapperProps}>
 				{canHaveMultipleValues
 				  ? data.map((d,i) => <Element {...elProps} key={d+i} value={d} />)
-					: <Element {...elProps} value={data} />
+					: <Element {...elProps} key={data+0}value={data} />
 				}
 			</FormElementWrapper>
 			)
@@ -123,10 +124,20 @@ const WorkMetadataForm = React.createClass({
 
 	render: function () {
 		return (
-		<div>
-			{this.mapFormElements()}
-			{this.renderUpdateButton()}
-		</div>
+			<div className="work-metadata-edit">
+				<MediaPreview
+					thumbnailUrl="/assets/lc-spcol-mckelvy-house-0013-300.jpg"
+					availableSizes={[
+						{name: 'Medium', dimensions: '615x800', url: '#'},
+						{name: 'Large', dimensions: '1539x1999', url: '#'},
+						{name: 'Full size', dimensions: '4356x5658', url: '#'},
+					]}
+				/>
+				<div className="work-metadata">
+					{this.mapFormElements()}
+					{this.renderUpdateButton()}
+				</div>
+			</div>
 		)
 	}
 })
