@@ -26,8 +26,7 @@ const CollectionMetadataForm = React.createClass({
 		return (
 			<div>
 				<FormMetadataWrapper
-					name="collection-title"
-					formLabel="Collection Name"
+					label="Collection Name"
 					onChange={this.handleChange.bind(null, 'name')}
 				>
 					<TextInputField 
@@ -37,8 +36,7 @@ const CollectionMetadataForm = React.createClass({
 				</FormMetadataWrapper>
 
 				<FormMetadataWrapper
-					name="collection-description"
-					formLabel="Collection Description"
+					label="Collection Description"
 					onChange={this.handleChange.bind(null, 'description')}
 				>
 					<TextInputField
