@@ -6,7 +6,6 @@ const T = React.PropTypes
 const TextInputField = React.createClass({
 	propTypes: {
 		largerField: T.bool,
-		onChange: T.func,
 		placeholder: T.string,
 		style: T.object,
 		value: T.oneOfType([T.string, T.array]),
@@ -15,7 +14,6 @@ const TextInputField = React.createClass({
 	getDefaultProps: function () {
 		return {
 			largerField: false,
-			onChange: function () {},
 			placeholder: '',
 			style: {},
 			value: '',
