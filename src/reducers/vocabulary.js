@@ -5,7 +5,10 @@ import {
 
 import assign from 'object-assign'
 
-export default vocabularyReducer (state, action) {
+export default function vocabularyReducer (state, action) {
+	if (typeof state === 'undefined') 
+		state = {}
+
 	switch (action.type) {
 		case CLEAR_VOCABULARIES:
 			return {}

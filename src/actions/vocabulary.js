@@ -5,13 +5,13 @@ import {
 	REMOVE_VOCABULARY,
 } from './constants'
 
-export const clearVocabularies () => dispatch => (
+export const clearVocabularies = () => dispatch => (
 	dispatch({
 		type: CLEAR_VOCABULARIES,
 	})
 )
 
-export const fetchVocabulary name => (dispatch, getState) => {
+export const fetchVocabulary = name => (dispatch, getState) => {
 	const state = getState()
 
 	if (state.vocabulary[name])
@@ -20,7 +20,7 @@ export const fetchVocabulary name => (dispatch, getState) => {
 	// otherwise, go get that vocab!
 }
 
-export const removeVocabulary name => dispatch => (
+export const removeVocabulary = name => dispatch => (
 	dispatch({
 		type: REMOVE_VOCABULARY,
 		name,
