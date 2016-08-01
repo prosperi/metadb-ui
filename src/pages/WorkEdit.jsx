@@ -76,13 +76,13 @@ const WorkEdit = React.createClass({
 			)
 		}
 
-		const ided = <strong>{this.props.params.workId}</strong>
-		const work = this.props.work.data
+		const title = this.props.work.displayTitle
 		const isFetching = this.props.fetchingWork
+		const work = this.props.work.data
 
 		return (
 		<div>
-			<h1>{work.id || 'loading'}</h1>
+			<h1>{title || 'loading'}</h1>
 			<p><strong>status: {isFetching ? 'fetching' : work ? 'fetched!' : ':shrug:'}</strong></p>
 			{!empty(work) ? this.renderEditForm() : ''}
 		</div>

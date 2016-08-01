@@ -28,10 +28,17 @@ export default function workReducer (state, action) {
 			})
 
 		case RECEIVE_WORK:
+			let title = action.data.title
+			if (Array.isArray(title))
+				title = title[0]
+
+			const displayTitle = `[${action.data.id}] ${title}`
+
 			return assign({}, state, {
 				isFetching: false,
 				data: action.data,
 				updated: false,
+				displayTitle,
 			})
 
 		case REMOVE_WORK:
