@@ -2,6 +2,7 @@ import {
 	ADD_WORK_VALUE_FIELD,
 	REMOVE_WORK,
 	REMOVE_WORK_VALUE_FIELD,
+	SAVE_WORK_CHANGES,
 	WORK_CHANGE,
 } from './constants'
 
@@ -32,5 +33,12 @@ export const editWorkField = (key, index, value) => dispatch => (
 export const removeWork = () => dispatch => (
 	dispatch({
 		type: REMOVE_WORK,
+	})
+)
+
+export const saveWork = () => dispatch => (
+	// TODO: actually make an API call to store changes
+	dispatch({
+		type: SAVE_WORK_CHANGES,
 	})
 )

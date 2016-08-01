@@ -17,6 +17,7 @@ export default function collectionReducer (state, action) {
 			saved: false,
 			schema: {},
 			updated: false,
+			updates: {},
 		}
 	}
 
@@ -28,8 +29,6 @@ export default function collectionReducer (state, action) {
 		case COLLECTION_CHANGE:
 			updates = assign({}, state.updates)
 			updates[action.key] = action.value
-
-			console.log(updates)
 
 			return assign({}, state, {
 				saved: false,

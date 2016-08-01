@@ -43,6 +43,9 @@ const initialState = {
 			{ id: '2227mp65f' },
 			{ id: 'b2773v68h' },
 		],
+
+		saved: false,
+		updates: null,
 	},
 
 	error: {},
@@ -51,6 +54,8 @@ const initialState = {
 		isFetching: false,
 		updated: false,
 		data: {},
+		updates: null,
+		saved: false,
 	},
 
 	// vocabs consist of

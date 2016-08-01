@@ -19,6 +19,7 @@ const WorkMetadataForm = React.createClass({
 		data: T.object.isRequired,
 		schema: T.object.isRequired,
 		onChange: T.func.isRequired,
+		onSubmit: T.func.isRequired,
 
 		onAddValueField: T.func,
 		readOnly: T.bool,
@@ -33,6 +34,10 @@ const WorkMetadataForm = React.createClass({
 
 	handleAddValueField: function (key) {
 		this.props.onAddValueField.call(null, key)
+	},
+
+	handleFormUpdate: function () {
+		this.props.onSubmit()
 	},
 
 	handleRemoveValueField: function (key, idx) {

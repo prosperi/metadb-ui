@@ -35,9 +35,13 @@ const MetaDB = (
 				<Route path="import" component={ImportMetadata} />
 				<Route path="export" component={ExportMetadata} />
 
-				<Route path="works" onEnter={onEnterWorks}>
+				<Route path="works" onEnter={onEnterCollectionWorks}>
 					<Route path=":workId" component={WorkEdit} />
 				</Route>
+			</Route>
+
+			<Route path="works">
+				<Route path=":workId" component={WorkEdit} />
 			</Route>
 		</Route>
 	</Router>
@@ -46,7 +50,7 @@ const MetaDB = (
 
 render(MetaDB, document.querySelector('#app'))
 
-function onEnterWorks (nextState, replace) {
+function onEnterCollectionWorks (nextState, replace) {
 	const { workId, collectionId } = nextState.params
 	if (!workId)
 		return replace(`/collections/${collectionId}`)

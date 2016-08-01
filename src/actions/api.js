@@ -71,7 +71,7 @@ function fetchApi (which, id) {
 		const opts = {
 			url: parts.join('/'),
 			method: 'GET',
-			timeout: 2500,
+			// timeout: 2500,
 			json: true,
 		}
 

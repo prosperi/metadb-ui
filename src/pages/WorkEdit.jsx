@@ -34,6 +34,10 @@ const WorkEdit = React.createClass({
 		this.props.editWorkField.apply(null, arguments)
 	},
 
+	handleFormSubmit: function () {
+		this.props.saveWork()
+	},
+
 	onExit: function (nextLocation) {
 		if (this.props.work.updated)
 			return 'Any unsaved changes will be lost. Are you sure?'
@@ -48,6 +52,7 @@ const WorkEdit = React.createClass({
 			onChange={this.handleChange}
 			onAddValueField={this.handleAddValueField}
 			onRemoveValueField={this.handleRemoveValueField}
+			onSubmit={this.handleFormSubmit}
 			data={workData}
 			schema={schema}
 		/>
@@ -82,7 +87,7 @@ const WorkEdit = React.createClass({
 
 		return (
 		<div>
-			<h1>{title || 'loading'}</h1>
+			<h1>{work.title || 'loading'}</h1>
 			<p><strong>status: {isFetching ? 'fetching' : work ? 'fetched!' : ':shrug:'}</strong></p>
 			{!empty(work) ? this.renderEditForm() : ''}
 		</div>

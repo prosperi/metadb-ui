@@ -11,7 +11,9 @@ export const editCollectionField = (key, value) => dispatch => (
 	})
 )
 
-export const mergeCollectionUpdates = () => dispatch => (
+export const saveCollection = () => dispatch => (
+	// TODO: make API call to actually store these changes
+
 	dispatch({
 		type: SAVE_COLLECTION_CHANGES,
 	})
