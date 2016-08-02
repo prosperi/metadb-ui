@@ -13,6 +13,7 @@ import store, { history } from './store'
 import App from './App.jsx'
 import Home from './pages/Home.jsx'
 import WorkEdit from './pages/WorkEdit.jsx'
+import Search from './pages/Search.jsx'
 
 import CollectionWrapper from './pages/CollectionWrapper.jsx'
 import CollectionHome from './pages/collection/Home.jsx'
@@ -43,6 +44,8 @@ const MetaDB = (
 			<Route path="works">
 				<Route path=":workId" component={WorkEdit} />
 			</Route>
+
+			<Route path="search" component={Search} />
 		</Route>
 	</Router>
 </Provider>

@@ -8,7 +8,8 @@ label {
 
 input[type="text"],
 input[type="number"],
-textarea {
+textarea,
+select {
 	@include border(lighten($grey, 40%));
 	font-size: 1em;
 	width: inherit;
@@ -33,7 +34,8 @@ textarea {
 }
 
 input[type="text"],
-input[type="number"] {
+input[type="number"],
+select {
 	line-height: 1.75em;
 	padding: .25em;
 }
@@ -122,6 +124,24 @@ fieldset {
 		position: absolute;
 		right: $btn-offset;
 		top: 0;
+	}
+
+	select {
+		background-color: transparent;
+		background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'><path d='M0 0 L10 0 L5 8' fill='#888'/></svg>");
+		background-position: 98% center;
+		background-repeat: no-repeat;
+		border-radius: 0;
+		cursor: pointer;
+		outline: none;
+		min-width: 20em;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+
+		&:focus {
+			background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'><path d='M0 0 L10 0 L5 8' fill='#{$theme-primary}'/></svg>");
+		}
 	}
 }
 
