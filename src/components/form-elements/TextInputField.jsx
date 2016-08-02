@@ -9,6 +9,7 @@ const TextInputField = React.createClass({
 		placeholder: T.string,
 		style: T.object,
 		value: T.oneOfType([T.string, T.array]),
+		inputOpts: T.object
 	},
 
 	getDefaultProps: function () {
@@ -40,13 +41,13 @@ const TextInputField = React.createClass({
 	renderInput: function (opts) {
 		const props = assign({}, opts, {
 			type: 'text'
-		})
+		}, this.props.inputOpts)
 
 		return React.createElement('input', props)
 	},
 
 	renderTextbox: function (opts) {
-		const props = assign({}, opts)
+		const props = assign({}, opts, this.props.inputOpts)
 
 		return React.createElement('textarea', props)
 	},
