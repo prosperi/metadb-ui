@@ -48,6 +48,8 @@ const initialState = {
 		updates: null,
 	},
 
+	collections: [],
+
 	error: {},
 
 	work: {

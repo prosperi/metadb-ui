@@ -8,6 +8,9 @@ export const VOCABULARY = 'VOCABULARY'
 export const SUFIA_COLLECTION_PATH = 'collection'
 export const SUFIA_WORK_PATH = 'generic_works'
 
+// app constants
+export const SEARCH_FIELDS = '__search-fields'
+
 // actions!
 export const ADD_EMPTY_VALUE = 'ADD_EMPTY_VALUE'
 export const ADD_WORK_VALUE_FIELD = `ADD_${WORK}_VALUE_FIELD`
@@ -19,6 +22,8 @@ export const CLEAR_VOCABULARIES = CLEAR_VOCABULARY
 
 export const COLLECTION_CHANGE = `${COLLECTION}_CHANGE`
 
+export const FETCH_ALL_COLLECTIONS = `FETCH_ALL_${COLLECTION}`
+
 export const FETCH_COLLECTION = `FETCH_${COLLECTION}`
 export const FETCH_ERROR = 'FETCH_ERROR'
 export const FETCH_SCHEMA = `FETCH_${SCHEMA}`
@@ -29,6 +34,7 @@ export const FETCHING = 'FETCHING'
 export const HAS_VOCABULARY = `HAS_${VOCABULARY}`
 
 export const RECEIVED = 'RECEIVED'
+export const RECEIVE_ALL_COLLECTIONS = `RECEIVE_ALL_${COLLECTION}`
 export const RECEIVE_COLLECTION = `RECEIVE_${COLLECTION}`
 export const RECEIVE_SCHEMA = `RECEIVE_${SCHEMA}` 
 export const RECEIVE_VOCABULARY = `RECEIVE_${VOCABULARY}`

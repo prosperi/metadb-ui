@@ -1,5 +1,6 @@
 import {
 	COLLECTION_CHANGE,
+	RECEIVE_ALL_COLLECTIONS,
 	SAVE_COLLECTION_CHANGES,
 } from './constants'
 
@@ -18,3 +19,18 @@ export const saveCollection = () => dispatch => (
 		type: SAVE_COLLECTION_CHANGES,
 	})
 )
+
+// fetches all collections
+// (stuffed w/ data for now; to be replaced w/ api call later)
+export const fetchAllCollections = () => dispatch => {
+	const collectionsMetadata =  [
+		{name: 'First Collection', id: 'first-collection'},
+		{name: 'Test Collection', id: 'test-collection'},
+		{name: 'Beyond Steel', id: 'beyond-steel'},
+	]
+
+	dispatch({
+		type: RECEIVE_ALL_COLLECTIONS,
+		data: collectionsMetadata,
+	})
+}

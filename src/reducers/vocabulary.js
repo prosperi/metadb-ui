@@ -15,7 +15,7 @@ export default function vocabularyReducer (state, action) {
 
 		case RECEIVE_VOCABULARY:
 			const merge = {}
-			merge[action.name] = action.values
+			merge[action.name] = action.data
 
 			return assign({}, state, merge)
 		

@@ -8,6 +8,7 @@ import Main from './layouts/Main.jsx'
 function mapStateToProps (state, ownProps) {
 	return {
 		collection: state.collection,
+		collections: state.collections,
 
 		error: state.error,
 
@@ -15,6 +16,8 @@ function mapStateToProps (state, ownProps) {
 		fetchingWork: state.work.isFetching,
 		
 		schema: state.collection.schema,
+
+		vocabulary: state.vocabulary,
 
 		work: state.work,
 	}
