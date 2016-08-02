@@ -1,5 +1,6 @@
 export * from './api'
 export * from './collection'
 export * from './errors'
+export * from './search'
 export * from './vocabulary'
 export * from './work-edit'

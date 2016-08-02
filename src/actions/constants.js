@@ -15,6 +15,8 @@ export const SEARCH_FIELDS = '__search-fields'
 export const ADD_EMPTY_VALUE = 'ADD_EMPTY_VALUE'
 export const ADD_WORK_VALUE_FIELD = `ADD_${WORK}_VALUE_FIELD`
 
+export const CLEAR_SEARCH = `CLEAR_SEARCH`
+
 // `CLEAR` removes all vocabularies. `CLEAR_VOCABULARIES`
 // is grammatically accurate. 
 export const CLEAR_VOCABULARY = `CLEAR_${VOCABULARY}`
@@ -33,10 +35,13 @@ export const FETCHING = 'FETCHING'
 
 export const HAS_VOCABULARY = `HAS_${VOCABULARY}`
 
+export const IS_SEARCHING = `IS_SEARCHING`
+
 export const RECEIVED = 'RECEIVED'
 export const RECEIVE_ALL_COLLECTIONS = `RECEIVE_ALL_${COLLECTION}`
 export const RECEIVE_COLLECTION = `RECEIVE_${COLLECTION}`
-export const RECEIVE_SCHEMA = `RECEIVE_${SCHEMA}` 
+export const RECEIVE_SCHEMA = `RECEIVE_${SCHEMA}`
+export const RECEIVE_SEARCH_RESULTS = `RECEIVE_SEARCH_RESULTS`
 export const RECEIVE_VOCABULARY = `RECEIVE_${VOCABULARY}`
 export const RECEIVE_WORK = `RECEIVE_${WORK}`
 

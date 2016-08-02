@@ -5,7 +5,7 @@ import React from 'react'
 import Wrapper from './form-elements/FormElementWrapper.jsx'
 import TextInputField from './form-elements/TextInputField.jsx'
 
-const SEARCH_KEY = 'query'
+const SEARCH_KEY = 'terms'
 const FIELD_KEY = 'field'
 const COLLECTION_KEY = 'collection'
 
@@ -14,16 +14,19 @@ const T = React.PropTypes
 const SearchForm = React.createClass({
 	propTypes: {
 		onSubmit: T.func.isRequired,
+		
 		collections: T.arrayOf(T.shape({
 			name: T.string,
 			id: T.string,
 		})),
+
 		fields: T.array,
 		autocomplete: T.bool,
 		submitEmpty: T.bool,
 		allCollectionsText: T.string,
 		allFieldsText: T.string,
 		currentCollectionId: T.oneOfType([T.number, T.string]),
+		values: T.object,
 	},
 
 	getDefaultProps: function () {
@@ -33,7 +36,8 @@ const SearchForm = React.createClass({
 			fields: [],
 			submitEmpty: false,
 			allCollectionsText: 'All collections',
-			allFieldsText: 'Search across all fields'
+			allFieldsText: 'Search across all fields',
+			values: {},
 		}
 	},
 
@@ -43,6 +47,8 @@ const SearchForm = React.createClass({
 		const val = this.search.value.trim()
 
 		if (!this.search.value && !this.submitEmpty) return
+
+		const out = {}
 
 		out[SEARCH_KEY] = this.search.value
 
@@ -59,17 +65,19 @@ const SearchForm = React.createClass({
 
 		const selectProps = {
 			ref: e => (this.collection = e),
-			key: 'projects',
+			key: 'collections',
+			defaultValue: this.props.values.collections,
 		}
 
-		if (activeProject) selectProps.value = activeProject
+		if (activeProject && !selectProps.defaultValue)
+			selectProps.defaultValue = activeProject
 
 		const collections = this.props.collections.map((c,i) => (
 			<option key={c.id+i} value={c.id} children={c.name} />
 		))
 
 		collections.unshift(
-			<option key={'allcols'}>{this.props.allCollectionsText}</option>
+			<option key={'allcols'} value="">{this.props.allCollectionsText}</option>
 		)
 
 		const select = React.createElement('select', selectProps, collections)
@@ -90,7 +98,7 @@ const SearchForm = React.createClass({
 
 		// add an 'all' field to the top
 		fields.unshift(
-			<option key={'allfields'}>{this.props.allFieldsText}</option>
+			<option key={'allfields'} value="">{this.props.allFieldsText}</option>
 		)
 
 		return (
@@ -108,11 +116,11 @@ const SearchForm = React.createClass({
 				<Wrapper>
 					<TextInputField
 						inputOpts={{
-							name: SEARCH_KEY,
 							ref: e => (this.search = e),
 							autoComplete: this.props.autocomplete ? 'on' : 'off',
 						}}
 						placeholder="Enter search keywords"
+						value={this.props.values[SEARCH_KEY]}
 					/>
 				</Wrapper>
 

@@ -52,6 +52,14 @@ const initialState = {
 
 	error: {},
 
+	search: {},
+
+	// vocabs consist of
+	// {[vocabName]: [ /* ... terms, moreTerms ... */ ]}
+	vocabulary: {
+
+	},
+	
 	work: {
 		isFetching: false,
 		updated: false,
@@ -60,16 +68,12 @@ const initialState = {
 		saved: false,
 	},
 
-	// vocabs consist of
-	// {[vocabName]: [ /* ... terms, moreTerms ... */ ]}
-	vocabulary: {
-
-	},
 
 	// user: {
 
 	// },
 
+	// kept for React-Router
 	routing: {},
 }
 

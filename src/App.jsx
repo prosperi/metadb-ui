@@ -12,10 +12,9 @@ function mapStateToProps (state, ownProps) {
 
 		error: state.error,
 
-		fetchingCollection: state.collection.isFetching,
-		fetchingWork: state.work.isFetching,
-		
 		schema: state.collection.schema,
+
+		search: state.search,
 
 		vocabulary: state.vocabulary,
 
