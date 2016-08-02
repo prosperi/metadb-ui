@@ -32,15 +32,8 @@ const Search = React.createClass({
 	},
 
 	fetching: function () {
-		const style = {
-			backgroundColor: '#deedee',
-			border: '2px solid #9aa9aa',
-			fontSize: '1em',
-			padding: '.5em',
-		}
-
 		return (
-			<div style={style}>Searching...</div>
+			<div className="alert-searching">Searching...</div>
 		)
 	},
 
@@ -56,25 +49,11 @@ const Search = React.createClass({
 	},
 
 	renderResults: function () {
-		const preStyles = {
-			backgroundColor: '#eee',
-			border: '2px solid #ccc',
-			display: 'inline-block',
-			fontWeight: 'normal',
-			padding: '0 .125em',
-			marginLeft: '.5em',
-		}
-
-		const h2styles = {
-			textAlign: 'center',
-		}
-
 		return (
 			<div>
-				<h2 style={h2styles}>Displaying results for 
-					<pre style={preStyles}>
-						{this.props.search.query.terms}
-					</pre>
+				<h2 className="search-results-header">
+					Displaying results for
+					<pre>{this.props.search.query.terms}</pre>
 				</h2>
 				<SearchResultsTable data={this.props.search.results} />
 			</div>
@@ -82,13 +61,14 @@ const Search = React.createClass({
 	},
 
 	renderSearchForm: function () {
+		const vals = location.search ? this.props.search.query : {}
 		return (
 			<SearchForm
 				collections={this.props.collections}
 				fields={this.props.vocabulary[SEARCH_FIELDS]}
 				onSubmit={this.handleSearch}
 				currentCollectionId={this.props.collection.data.name}
-				values={this.props.search.query}
+				values={vals}
 			/>
 		)
 	},

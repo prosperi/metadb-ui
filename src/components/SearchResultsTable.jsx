@@ -21,23 +21,27 @@ const SearchResultsTable = React.createClass({
 				type: DataType.None,
 				header: 'Thumbnail',
 				renderer: this.renderThumbnail,
+				className: 'search-result--thumbnail',
 			},
 			{
 				id: 'collectionId',
 				type: DataType.String,
 				header: 'Collection',
 				renderer: this.renderCollectionId,
+				className: 'search-result--collection',
 			},
 			{
 				id: 'itemId',
 				type: DataType.Number,
 				header: 'Item ID',
+				className: 'search-result--item',
 			},
 			{
 				id: 'metadata',
 				type: DataType.None,
 				header: 'Metadata',
 				renderer: this.renderMetadata,
+				className: 'search-result--metadata'
 			},
 		]
 	},

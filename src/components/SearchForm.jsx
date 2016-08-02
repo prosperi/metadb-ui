@@ -112,7 +112,7 @@ const SearchForm = React.createClass({
 
 	render: function () {
 		return (
-			<form onSubmit={this.handleSubmit}>
+			<form onSubmit={this.handleSubmit} className="search-form">
 				<Wrapper>
 					<TextInputField
 						inputOpts={{
