@@ -8,7 +8,7 @@ const EditCollection = React.createClass({
 	},
 
 	handleSubmit: function () {
-		this.props.mergeCollectionUpdates()
+		this.props.saveCollection()
 	},
 
 	render: function () {
