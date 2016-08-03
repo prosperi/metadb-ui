@@ -1,0 +1,24 @@
+.label {
+	background-color: #eee;
+	border-radius: 10px;
+	font-size: .90em;
+	font-weight: 400;
+	padding: .35em .6em;
+}
+
+h1 .label,
+h2 .label,
+h3 .label,
+h4 .label,
+h5 .label,
+h6 .label {
+	font-size: .75rem;
+	font-weight: normal;
+	margin-left: 1em;
+	vertical-align: middle;
+}
+
+.label-notice {
+	background-color: #ffaa00;
+	color: #fff;
+}

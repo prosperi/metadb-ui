@@ -38,7 +38,7 @@ const WorkMetadataForm = React.createClass({
 		this.props.onAddValueField.call(null, key)
 	},
 
-	handleFormUpdate: function () {
+	handleFormSave: function () {
 		this.props.onSubmit()
 	},
 
@@ -115,10 +115,10 @@ const WorkMetadataForm = React.createClass({
 		})
 	},
 
-	renderUpdateButton: function () {
+	renderSaveButton: function () {
 		if (this.props.readOnly) return ''
 		return (
-			<button onClick={this.handleFormUpdate}>Update</button>
+			<button onClick={this.handleFormSave}>Save Changes</button>
 		)
 	},
 
@@ -135,7 +135,7 @@ const WorkMetadataForm = React.createClass({
 				/>
 				<div className="work-metadata">
 					{this.mapFormElements()}
-					{this.renderUpdateButton()}
+					{this.renderSaveButton()}
 				</div>
 			</div>
 		)

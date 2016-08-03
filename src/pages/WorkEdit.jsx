@@ -87,8 +87,15 @@ const WorkEdit = React.createClass({
 
 		return (
 		<div>
-			<h1>{work.title || 'loading'}</h1>
-			<p><strong>status: {isFetching ? 'fetching' : work ? 'fetched!' : ':shrug:'}</strong></p>
+			<h1>
+				{work.title || 'loading'}
+				{
+					this.props.work.updated 
+					? <span className="label label-notice">modified</span>
+					: ''
+				}
+			</h1>
+
 			{!empty(work) ? this.renderEditForm() : ''}
 		</div>
 		)
