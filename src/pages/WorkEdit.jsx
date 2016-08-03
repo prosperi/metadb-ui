@@ -1,5 +1,6 @@
 import React from 'react'
 import empty from 'is-empty-object'
+import assign from 'object-assign'
 import store from '../store'
 
 import WorkMetadataForm from '../components/WorkMetadataForm.jsx'
@@ -45,7 +46,10 @@ const WorkEdit = React.createClass({
 
 	renderEditForm: function () {
 		const schema = this.props.schema
-		const workData = this.props.work.data
+		const workData = assign({},
+			this.props.work.data,
+			this.props.work.updates
+		)
 
 		return (
 		<WorkMetadataForm

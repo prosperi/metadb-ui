@@ -49,12 +49,12 @@ export default function workReducer (state, action) {
 }
 
 function addWorkValueField (state, action) {
-	const data = assign({}, state.data)
-	const vals = data[action.key]
+	const updates = assign({}, state.updates)
+	const vals = state.data[action.key]
 
-	data[action.key] = vals.concat('')
+	updates[action.key] = vals.concat('')
 
-	return assign({}, state, { data: data })
+	return assign({}, state, { updates })
 }
 
 function receiveWork (state, action) {
@@ -72,14 +72,16 @@ function removeWork (state) {
 }
 
 function removeWorkValueField (state, action) {
-	const update = assign({}, state.data)
 	const key = action.key
 	const index = action.index
+	const field = state.data[key]
 
-	const field = update[key]
-	update[key] = [].concat(field.slice(0, index), field.slice(index + 1))
+	const update = {}
+	update[key] = [].concat(field.slice(0,index), field.slice(index+1))
 
-	return assign({}, state, {data: update})
+	const updates = assign({}, state.updates, update)
+
+	return assign({}, state, {updates})
 }
 
 function saveWorkChanges (state) {
