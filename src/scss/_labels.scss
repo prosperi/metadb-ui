@@ -1,8 +1,10 @@
 .label {
-	background-color: #eee;
+	background-color: #dedede;
 	border-radius: 10px;
+  color: #222;
 	font-size: .90em;
 	font-weight: 400;
+  margin: 0 2px;
 	padding: .35em .6em;
 }
 
@@ -20,5 +22,20 @@ h6 .label {
 
 .label-notice {
 	background-color: #ffaa00;
-	color: #fff;
+	color: #a80000;
+}
+
+.label-success {
+  background-color: #00dfaa;
+  color: #060;
+}
+
+.label-warning {
+  background-color: #ff1212;
+  color: #feefee;
+}
+
+.label-info {
+  background-color: #8aedee;
+  color: #060;
 }
