@@ -1,26 +1,17 @@
 import React from 'react'
-
-import Link from 'react-router/lib/Link'
+import CollectionGallery from '../../components/CollectionGallery.jsx'
 
 const Home = React.createClass({
 
 	render: function () {
-		console.log(this.props)
+
 		return (
 			<div>
-				<ul>
-				{this.props.collection.works.map((w, i) => {
-					const key = w.id + i
-					const collectionId = this.props.params.collectionId
-
-					const url = `/collections/${collectionId}/works/${w.id}`
-					return (
-						<li key={w.id+i}>
-							<Link to={url}>{w.id}</Link>
-						</li>
-					)
-				})}
-				</ul>
+				<h3>{`Click on a thumbnail to edit an item's metadata`}</h3>
+				<CollectionGallery
+					collectionId={this.props.collection.data.id}
+					works={this.props.collection.works}
+				/>
 			</div>
 
 		)
