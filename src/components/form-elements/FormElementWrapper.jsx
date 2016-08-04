@@ -10,14 +10,17 @@ const FormElementWrapper = React.createClass({
 		name: T.string,
 		onChange: T.func,
 
+		copyFields: T.bool,
 		multipleValues: T.bool,
 		onAddValueField: T.func,
+		onCopyFields: T.func,
 		placeholder: T.string,
 		readOnly: T.bool,
 	},
 
 	getDefaultProps: function () {
 		return {
+			copyFields: false,
 			multipleValues: false,
 			name: '',
 			onAddValueField: noop,
@@ -47,6 +50,10 @@ const FormElementWrapper = React.createClass({
 			this.props.onChange.apply(null, arguments)
 	},
 
+	handleCheckbox: function (childIdx) {
+		this.props.onCopyFields && this.props.onCopyFields.call(null, childIdx)
+	},
+
 	mapChildren: function () {
 		return React.Children.map(this.props.children, (child, idx) => {
 			const props = {
@@ -58,6 +65,7 @@ const FormElementWrapper = React.createClass({
 
 			return (
 				<div className="form-element">
+					{this.maybeRenderCopyFieldCheckbox()}
 					{React.cloneElement(child, props)}
 					{this.renderFieldButton(idx)}
 				</div>
@@ -71,11 +79,23 @@ const FormElementWrapper = React.createClass({
 			return this.addFieldButton(len)
 	},
 
+	maybeRenderCopyFieldCheckbox: function (idx) {
+		if (this.props.copyFields)
+			return (
+				<input
+					type="checkbox"
+					key={idx}
+					className="copy-field"
+					onChange={this.handleCheckbox.bind(null, idx)}
+				/>
+			)
+	},
+
 	removeFieldButton: function (idx) {
 		return (
 			<button 
 				className="remove-field-btn"
-				dangerouslySetInnerHTML={{__html: '&mdash;'}}
+				dangerouslySetInnerHTML={{__html: '&ndash;'}}
 				onClick={this.props.onRemoveValueField.bind(null,idx)}
 				key={'remove-field-'+idx}
 				/>
@@ -91,8 +111,8 @@ const FormElementWrapper = React.createClass({
 
 
 	renderLabel: function () {
-		if (!this.props.label) return
-		return <label key={'label'+this.props.label}>{this.props.label}</label>
+		if (this.props.label)
+			return <label key={'label'+this.props.label}>{this.props.label}</label>
 	},
 
 	render: function () {

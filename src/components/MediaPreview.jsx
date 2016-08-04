@@ -28,7 +28,8 @@ const MediaPreview = React.createClass({
 
 	getDefaultProps: function () {
 		return {
-			availableSizesText: 'Available sizes:'
+			availableSizesText: 'Available sizes:',
+			availableSizes: [],
 		}
 	},
 

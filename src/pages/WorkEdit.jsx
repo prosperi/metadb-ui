@@ -4,6 +4,8 @@ import assign from 'object-assign'
 import store from '../store'
 
 import WorkMetadataForm from '../components/WorkMetadataForm.jsx'
+import MediaPreview from '../components/MediaPreview.jsx'
+
 import withRouter from 'react-router/lib/withRouter'
 import browserHistory from 'react-router/lib/browserHistory'
 
@@ -47,19 +49,28 @@ const WorkEdit = React.createClass({
 	renderEditForm: function () {
 		const schema = this.props.schema
 		const workData = assign({},
-			this.props.work.data,
+			this.props.work.data.metadata,
 			this.props.work.updates
 		)
+		const thumbnailUrl = this.props.work.data.thumbnailUrl
+		const availableSizes = []
 
 		return (
-		<WorkMetadataForm
-			onChange={this.handleChange}
-			onAddValueField={this.handleAddValueField}
-			onRemoveValueField={this.handleRemoveValueField}
-			onSubmit={this.handleFormSubmit}
-			data={workData}
-			schema={schema}
-		/>
+			<div className="work-metadata-edit">
+				<MediaPreview
+					availableSizes={availableSizes}
+					thumbnailUrl={thumbnailUrl}
+				/>
+
+				<WorkMetadataForm
+					onChange={this.handleChange}
+					onAddValueField={this.handleAddValueField}
+					onRemoveValueField={this.handleRemoveValueField}
+					onSubmit={this.handleFormSubmit}
+					data={workData}
+					schema={schema}
+				/>
+			</div>
 		)
 	},
 

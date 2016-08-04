@@ -1,9 +1,17 @@
 .controlled-vocabulary {
 	position: relative;
+	width: 100%;
 
 	input[type="text"] {
+		background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20"><path d="M3 5 L10 15 L17 5" fill="transparent" stroke="#888" stroke-width="2"/></svg>');
+		background-repeat: no-repeat;
+		background-position: right center;
 		margin-bottom: 2px;
 		width: 100%;
+
+		// &:focus {
+		// 	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20"><path d="M3 15 L10 5 L17 15" fill="transparent" stroke="#{$active-border-color}" stroke-width="2"/></svg>');
+		// }
 	}
 }
 

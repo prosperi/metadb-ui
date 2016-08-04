@@ -29,6 +29,29 @@ select {
 	}
 }
 
+input[type="checkbox"] {
+	$base-size: 15px;
+	$selected-color: #00aaff;
+
+	border: 1px solid #aaa;
+	height: $base-size;
+	outline: 0;
+	cursor: pointer;
+	width: $base-size;
+
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	-ms-appearance: none;
+	-o-appearance: none;
+	appearance: none;
+
+	&:checked {
+		background-color: $selected-color;
+		background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15'><path d='M3 6 L5 10 L10 2' fill='transparent' stroke-width='2' stroke='#fff'/></svg>");
+		border-color: $selected-color;
+	}
+}
+
 ::placeholder {
 	color: lighten($grey, 30%);
 }
@@ -41,7 +64,7 @@ select {
 }
 
 textarea {
-	min-height: 5em;
+	min-height: 8em;
 	padding: .5em .25em;
 	resize: vertical;
 }
@@ -83,7 +106,7 @@ fieldset {
 */
 
 .form-element-wrapper {
-	$btn-width: 32px;
+	$btn-width: 35px;
 	$btn-offset: -($btn-width + 4px);
 
 	@include clearfix;
@@ -108,21 +131,45 @@ fieldset {
 
 	.add-field-btn,
 	.remove-field-btn {
-		height: 1.75em + 1em;
-
+		height: $btn-width;
+		font-size: 1.2em;
+		line-height: 0; // weird hack to center symbol
 		margin: 0;
 		width: $btn-width;
+		vertical-align: middle;
 	}
 
 	.add-field-btn {
+		// background-color: #8aedee;
+		// border-color: darken(#8aedee, 20%);
 		float: right;
 		margin-right: $btn-offset;
+
+		&:hover {
+			background-color: darken(#8aedee, 20%);
+			border-color: darken(#8aedee, 20%);
+		}
 	}
 
 	.remove-field-btn {
-		border: none;
+		// background-color: #ffcccc;
+		// border-color: darken(#ffcccc, 10%);
 		position: absolute;
 		right: $btn-offset;
+		top: 0;
+
+		&:hover {
+			background-color: darken(#ffcccc, 10%);
+			border-color: darken(#ffcccc, 10%);
+		}
+	}
+
+	.copy-field {
+		bottom: 0;
+		left: -20px;
+		margin: 0;
+		outline: 0;
+		position: absolute;
 		top: 0;
 	}
 
@@ -144,7 +191,6 @@ fieldset {
 		}
 	}
 }
-
 
 .controlled-vocabulary {
 	position: relative;

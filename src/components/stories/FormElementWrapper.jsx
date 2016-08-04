@@ -76,4 +76,20 @@ storiesOf('FormElementWrapper', module)
 			<TextInputField largerField={true} />
 		</FormElementWrapper>
 	))
+	.add('w/ multiple TextInputFields + copyFields toggled', () => (
+		<FormElementWrapper
+			name="Multiple Text Fields"
+			copyFields={true}
+			multipleValues={true}
+			placeholder="Placeholder passed"
+			onChange={action('change')}
+			onCopyFields={action('copy field')}
+			onRemoveValueField={action('remove value field')}
+			onAddValueField={action('add value field')}
+		>
+			<TextInputField/>
+			<TextInputField/>
+			<TextInputField placeholder="custom placeholder"/>
+		</FormElementWrapper>
+	))
 

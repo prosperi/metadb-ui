@@ -1,5 +1,3 @@
-// 🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉
-// it's not _really_ a form, is it? just a collection of form elements
 'use strict'
 
 import React from 'react'
@@ -9,8 +7,6 @@ import FormElementWrapper from './form-elements/FormElementWrapper.jsx'
 import ControlledVocabulary from './form-elements/ControlledVocabularyField.jsx'
 import TextInput from './form-elements/TextInputField.jsx'
 import ReadOnly from './form-elements/ReadOnly.jsx'
-
-import MediaPreview from './MediaPreview.jsx'
 
 import sk from '../../lib/schema-keys.js'
 
@@ -124,19 +120,9 @@ const WorkMetadataForm = React.createClass({
 
 	render: function () {
 		return (
-			<div className="work-metadata-edit">
-				<MediaPreview
-					thumbnailUrl="/assets/lc-spcol-mckelvy-house-0013-300.jpg"
-					availableSizes={[
-						{name: 'Medium', dimensions: '615x800', url: '#'},
-						{name: 'Large', dimensions: '1539x1999', url: '#'},
-						{name: 'Full size', dimensions: '4356x5658', url: '#'},
-					]}
-				/>
-				<div className="work-metadata">
-					{this.mapFormElements()}
-					{this.renderSaveButton()}
-				</div>
+			<div className="work-metadata">
+				{this.mapFormElements()}
+				{this.renderSaveButton()}
 			</div>
 		)
 	}

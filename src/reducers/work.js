@@ -50,10 +50,14 @@ export default function workReducer (state, action) {
 
 function addWorkValueField (state, action) {
 	const updates = assign({}, state.updates)
-	const vals = state.data[action.key]
+	const vals = state.data.metadata[action.key]
 
-	updates[action.key] = vals.concat('')
+	if (updates[action.key])
+		updates[action.key] = updates[action.key].concat('')
+	else
+		updates[action.key] = vals.concat('')
 
+	// we don't need to trigger `updated` yet bc nothing's been added!
 	return assign({}, state, { updates })
 }
 
@@ -74,20 +78,37 @@ function removeWork (state) {
 function removeWorkValueField (state, action) {
 	const key = action.key
 	const index = action.index
-	const field = state.data[key]
+	let field
+
+	// determine where the updates are coming from
+	// (if this has been previously updated, we want
+	// the `state.updates` copy)
+	if (state.updates[key])
+		field = state.updates[key]
+	else
+		field = state.data.metadata[key]
 
 	const update = {}
 	update[key] = [].concat(field.slice(0,index), field.slice(index+1))
 
 	const updates = assign({}, state.updates, update)
+	const patch = {updates}
 
-	return assign({}, state, {updates})
+	// only tag the update as `modified` if
+	// the value wasn't empty
+	if (field[index] !== '') {
+		patch.updated = true
+	}
+
+	return assign({}, state, patch)
 }
 
 function saveWorkChanges (state) {
-	const original = state.data
+	const original = state.data.metadata
 	const updates = state.updates
 	const merged = assign({}, original, updates)
+
+	const data = assign({}, state, {metadata: merged})
 
 	return assign({}, state, {
 		data: merged,
@@ -98,7 +119,7 @@ function saveWorkChanges (state) {
 }
 
 function workChange (state, action) {
-	const data = state.data
+	const data = state.data.metadata
 	const updates = assign({}, state.updates)
 	const key = action.key
 

@@ -13,6 +13,7 @@ const initialState = {
 		// be sure to empty out the top level attributes!!!
 		isFetching: false,
 		data: {
+			id: 'test-collection',
 			name: 'test-collection',
 			description: 'An archive of non-existing objects'
 		},

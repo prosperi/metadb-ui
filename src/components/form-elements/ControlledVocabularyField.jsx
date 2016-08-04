@@ -83,6 +83,7 @@ const ControlledVocabularyField = React.createClass({
 			inputProps: {
 				placeholder: this.props.placeholder,
 				style: inputStyle,
+				type: 'text',
 			},
 			items: this.props.vocabulary,
 			menuStyle,
@@ -90,6 +91,9 @@ const ControlledVocabularyField = React.createClass({
 			onSelect: this.handleSelect,
 			renderItem,
 			value: this.props.value,
+			wrapperProps: {
+				className: 'controlled-vocabulary',
+			},
 		}
 	},
 

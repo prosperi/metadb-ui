@@ -47,16 +47,8 @@ export default function collectionReducer (state, action) {
 		// 	})
 
 		case RECEIVE_COLLECTION:
-			data = assign({}, action.data)
-			schema = assign({}, data.schema)
-			delete data.schema
-
-			return assign({}, state, {
-				isFetching: false,
-				data: data,
-				schema: schema
-			})
-
+			return receiveCollection(state, action)
+			
 		case SAVE_COLLECTION_CHANGES:
 			original = state.data
 			updates = state.updates
@@ -79,4 +71,20 @@ export default function collectionReducer (state, action) {
 		default:
 			return state
 	}
+}
+
+function receiveCollection (state, action) {
+	const data = assign({}, action.data)
+	const works = [].concat(data.works)
+	const schema = assign({}, data.schema)
+
+	delete data.works
+	delete data.schema
+
+	return assign({}, state, {
+		isFetching: false,
+		data,
+		works,
+		schema,
+	})
 }
