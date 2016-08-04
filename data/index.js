@@ -6,7 +6,9 @@ export const schema = {
 	'title.japanese': {},
  	'title.korean': {},
  	'subject.ocm': {
+ 		controlledVocab: true,
  		multipleValues: true,
+ 		vocabulary: 'subject.ocm',
  	},
  	'description.critical': {
  		largerField: true,

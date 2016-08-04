@@ -46,6 +46,7 @@ const ControlledVocabularyField = React.createClass({
 
 	getAutocompleteProps: function () {
 		const menuStyle = {
+			backgroundColor: '#fff',
 		  borderRadius: '3px',
 		  boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
 		  fontFamily: 'inherit',
@@ -54,6 +55,7 @@ const ControlledVocabularyField = React.createClass({
 		  position: 'fixed',
 		  overflow: 'auto',
 		  maxHeight: '50%',
+		  zIndex: '10',
 		}
 
 		const inputStyle = {

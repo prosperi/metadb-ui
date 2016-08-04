@@ -7,6 +7,8 @@ import thunk from 'redux-thunk'
 
 import rootReducer from '../reducers'
 
+import subjectOcm from '../../data/eaic-subject-ocm-vocabulary'
+
 const initialState = {
 	collection: {
 		// preloading our schema/collection data for testing,
@@ -58,7 +60,7 @@ const initialState = {
 	// vocabs consist of
 	// {[vocabName]: [ /* ... terms, moreTerms ... */ ]}
 	vocabulary: {
-
+		'subject.ocm': subjectOcm
 	},
 	
 	work: {

@@ -73,7 +73,7 @@ const WorkMetadataForm = React.createClass({
 					addTerms: schema[sk.ADD_TERMS],
 					disabled: this.props.readOnly,
 					multipleTerms: schema[sk.MULTIPLE_TERMS],
-					vocabulary: schema[sk.VOCABULARY],
+					vocabulary: this.props.vocabulary[schema[sk.VOCABULARY]],
 				}
 			}
 

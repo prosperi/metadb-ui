@@ -69,6 +69,7 @@ const WorkEdit = React.createClass({
 					onSubmit={this.handleFormSubmit}
 					data={workData}
 					schema={schema}
+					vocabulary={this.props.vocabulary}
 				/>
 			</div>
 		)
