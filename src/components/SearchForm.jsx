@@ -52,8 +52,8 @@ const SearchForm = React.createClass({
 
 		out[SEARCH_KEY] = this.search.value
 
-		if (this.field.value) out[FIELD_KEY] = this.field.value
-		if (this.collection.value) out[COLLECTION_KEY] = this.collection.value
+		if (this.field) out[FIELD_KEY] = this.field.value
+		if (this.collection) out[COLLECTION_KEY] = this.collection.value
 
 		this.props.onSubmit(out)
 	},
