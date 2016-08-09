@@ -10,8 +10,8 @@ import {SEARCH_FIELDS} from '../actions/constants'
 
 const Search = React.createClass({
 	componentWillMount: function () {
-		this.props.fetchAllCollections()
-		this.props.fetchVocabulary(SEARCH_FIELDS)
+		// this.props.fetchAllCollections()
+		// this.props.fetchVocabulary(SEARCH_FIELDS)
 
 		const search = location.search
 

@@ -5,8 +5,12 @@ import assign from 'object-assign'
 
 import FormElementWrapper from './form-elements/FormElementWrapper.jsx'
 import ControlledVocabulary from './form-elements/ControlledVocabularyField.jsx'
-import TextInput from './form-elements/TextInputField.jsx'
 import ReadOnly from './form-elements/ReadOnly.jsx'
+
+// import TextInputField from './form-elements/TextInputField.jsx'
+
+import TextInput from './form-elements/TextInput.jsx'
+import TextArea from './form-elements/TextArea.jsx'
 
 import sk from '../../lib/schema-keys.js'
 
@@ -15,7 +19,9 @@ const T = React.PropTypes
 const WorkMetadataForm = React.createClass({
 	propTypes: {
 		data: T.object.isRequired,
-		schema: T.object.isRequired,
+		fetchVocabulary: T.func.isRequired,
+		vocabulary: T.object.isRequired,
+		schema: T.array.isRequired,
 		onChange: T.func.isRequired,
 		onSubmit: T.func.isRequired,
 
@@ -27,6 +33,20 @@ const WorkMetadataForm = React.createClass({
 		return {
 			onAddValueField: function () {},
 			readOnly: false,
+		}
+	},
+
+	getComponentForElement: function (schema) {
+		const type = schema.type
+
+		if (schema.authorities.length)
+			return ControlledVocabulary
+
+		switch (type) {
+			case 'text':
+				return TextArea
+			default:
+				return TextInput
 		}
 	},
 
@@ -48,65 +68,44 @@ const WorkMetadataForm = React.createClass({
 
 	mapFormElements: function () {
 		const schema = this.props.schema
-		const schemaKeys = Object.keys(schema)
+		return schema.map((scheme, idx) => {
+			const { label, type, name, authorities } = scheme
+			let data = this.props.data[name] || []
 
-		return schemaKeys.map((key, idx) => {
-			const schema = this.props.schema[key]
-			let data = this.props.data[key]
-			const canHaveMultipleValues = Array.isArray(data) && schema.multipleValues
-
-			let Element, elProps, wrapperProps
-
-			// if we've gotten an empty array from the server, we need to
-			// put something at the first position so the later call to
-			// `data.map` will render an element
-			if (canHaveMultipleValues && !data.length) data.push('')			
-
-			if (this.props.readOnly) {
-				Element = ReadOnly
-				elProps = {}
+			// make sure we're dealing with arrays for data
+			if (!Array.isArray(data)) {
+				data = [data]
 			}
 
-			else if (schema[sk.CONTROLLED_VOCABULARY]) {
-				Element = ControlledVocabulary
-				elProps = {
-					addTerms: schema[sk.ADD_TERMS],
-					disabled: this.props.readOnly,
-					multipleTerms: schema[sk.MULTIPLE_TERMS],
-					vocabulary: this.props.vocabulary[schema[sk.VOCABULARY]],
-				}
-			}
+			// if the array is empty, adding an empty string will
+			// render an empty component
+			if (!data.length)
+				data.push('')
 
-			else {
-				Element = TextInput
-				elProps = {
-					displayDate: schema[sk.DISPLAY_DATE],
-					largerField: schema[sk.LARGER_FIELD],
-					searchDate: schema[sk.SEARCH_DATE],
-				}
-			}
+			// skip object fields for now
+			if (Object.prototype.toString.call(data[0]) === '[object Object]')
+				return
 
-			wrapperProps = {
-				label: key,
-				multipleValues: canHaveMultipleValues,
-				key: key + idx,
-			}
+			const Element = this.getComponentForElement(scheme)
+			const elProps = {}
 
-			if (!this.props.readOnly) {
-				wrapperProps = assign(wrapperProps, {
-					onAddValueField: this.handleAddValueField.bind(null, key),
-					onRemoveValueField: this.handleRemoveValueField.bind(null, key),
-					onChange: this.handleChange.bind(null, key),
-				})
+			if (authorities.length) {
+				let uri = authorities.uri
+
+				elProps.fetchVocabulary = this.props.fetchVocabulary.bind(null, authorities)
+				elProps.terms = this.props.vocabulary[uri] || {}
 			}
 
 			return (
-			<FormElementWrapper {...wrapperProps}>
-				{canHaveMultipleValues
-				  ? data.map((d,i) => <Element {...elProps} key={d+i} value={d} />)
-					: <Element {...elProps} key={data+0}value={data} />
-				}
-			</FormElementWrapper>
+				<FormElementWrapper
+					key={idx}
+					label={label}
+					onChange={this.handleChange.bind(null, name)}
+				>
+					{data.map((d, i) => (
+						React.createElement(Element, {...elProps, value: d, key: i})
+					))}
+				</FormElementWrapper>
 			)
 		})
 	},

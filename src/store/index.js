@@ -7,7 +7,8 @@ import thunk from 'redux-thunk'
 
 import rootReducer from '../reducers'
 
-import subjectOcm from '../../data/eaic-subject-ocm-vocabulary'
+// test data
+import { schema } from '../../data/schema'
 
 const initialState = {
 	collection: {
@@ -18,27 +19,6 @@ const initialState = {
 			id: 'test-collection',
 			name: 'test-collection',
 			description: 'An archive of non-existing objects'
-		},
-		schema: {
-			title: {
-				multipleValues: true,
-			},
-			description: {
-				largerField: true,
-				multipleValues: false,
-			},
-			creator: {
-				multipleValues: true,
-			},
-			contributor: {
-				multipleValues: true,
-			},
-			keyword: {
-				multipleValues: true,
-			},
-			subject: {
-				multipleValues: true,
-			}
 		},
 
 		// prestuffed ids
@@ -51,6 +31,7 @@ const initialState = {
 		updates: null,
 	},
 
+
 	collections: [],
 
 	error: {},
@@ -60,7 +41,6 @@ const initialState = {
 	// vocabs consist of
 	// {[vocabName]: [ /* ... terms, moreTerms ... */ ]}
 	vocabulary: {
-		'subject.ocm': subjectOcm
 	},
 	
 	work: {

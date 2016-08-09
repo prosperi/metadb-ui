@@ -1,10 +1,13 @@
 import {
 	CLEAR_VOCABULARIES,
+	FETCH_VOCABULARY,
 	HAS_VOCABULARY,
 	RECEIVE_VOCABULARY,
 	REMOVE_VOCABULARY,
 	SEARCH_FIELDS,
 } from './constants'
+
+import { getVocabulary } from '../../lib/api'
 
 export const clearVocabularies = () => dispatch => (
 	dispatch({
@@ -12,39 +15,29 @@ export const clearVocabularies = () => dispatch => (
 	})
 )
 
-export const fetchVocabulary = name => (dispatch, getState) => {
+export const fetchVocabulary = opts => (dispatch, getState) => {
 	const state = getState()
+	const uri = opts.uri
+	const path = opts.relative_path
+	const vocab = state.vocabulary[uri]
 
-	if (state.vocabulary[name])
-		return dispatch({ type: HAS_VOCABULARY, name })
+	// TODO: check for staleness
+	if (vocab) return
 
-	if (name === SEARCH_FIELDS) {
-		return dispatch({
+	dispatch({
+		type: FETCH_VOCABULARY,
+		uri,
+	})
+
+	getVocabulary(path, function (err, res) {
+		console.log(path, arguments)
+
+		dispatch({
 			type: RECEIVE_VOCABULARY,
-			name: name,
-			data: [
-				'coverage.location.sender',
-				'coverage.location.recipient',
-				'coverage.location.producer',
-				'coverage.location.postmark',
-				'date.period',
-				'title.french',
-				'title.german',
-				'subject.theme',
-				'description.critical',
-				'description.text.french',
-				'description.text.german',
-				'description.inscription.french',
-				'description.inscription.german',
-				'date.image',
-				'subject.ocm',
-				'coverage.location.image',
-				'date.postmark',
-			],
+			uri,
+			data: res.terms.map(t => t.pref_label)
 		})
-	}
-
-	// otherwise, go get that vocab!
+	})
 }
 
 export const removeVocabulary = name => dispatch => (

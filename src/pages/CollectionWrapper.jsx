@@ -13,7 +13,7 @@ const CollectionWrapper = React.createClass({
 
 	componentWillMount: function () {
 		const id = this.props.params.collectionId
-		this.props.fetchCollection(id)
+		// this.props.fetchCollection(id)
 
 		this.rootPath = `/collections/${id}`
 	},

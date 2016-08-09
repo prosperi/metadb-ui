@@ -47,27 +47,22 @@ const WorkEdit = React.createClass({
 	},
 
 	renderEditForm: function () {
-		const schema = this.props.schema
-		const workData = assign({},
-			this.props.work.data.metadata,
-			this.props.work.updates
-		)
-		const thumbnailUrl = this.props.work.data.thumbnailUrl
-		const availableSizes = []
+		const work = this.props.work
+		const workData = work.data
+		const schema = workData.form
 
 		return (
 			<div className="work-metadata-edit">
 				<MediaPreview
-					availableSizes={availableSizes}
-					thumbnailUrl={thumbnailUrl}
+					thumbnailUrl={'https://sporades0.stage.lafayette.edu'+workData.thumbnail_path}
 				/>
-
 				<WorkMetadataForm
-					onChange={this.handleChange}
+					fetchVocabulary={this.props.fetchVocabulary}
+					data={workData}
 					onAddValueField={this.handleAddValueField}
 					onRemoveValueField={this.handleRemoveValueField}
+					onChange={this.handleChange}
 					onSubmit={this.handleFormSubmit}
-					data={workData}
 					schema={schema}
 					vocabulary={this.props.vocabulary}
 				/>

@@ -22,7 +22,6 @@ const FormElementWrapper = React.createClass({
 		return {
 			copyFields: false,
 			multipleValues: false,
-			name: '',
 			onAddValueField: noop,
 			onRemoveValueField: noop,
 			placeholder: '',

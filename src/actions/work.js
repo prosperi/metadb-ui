@@ -3,6 +3,7 @@
 import { 
 	ADD_WORK_VALUE_FIELD,
 	FETCH_ERROR,
+	FETCH_WORK,
 	RECEIVE_WORK,
 	REMOVE_WORK,
 	REMOVE_WORK_VALUE_FIELD,
@@ -10,8 +11,27 @@ import {
 	WORK_CHANGE,
 } from './constants'
 
-// mock data
-import {works} from '../../data'
+import { getWork } from '../../lib/api'
+
+export const fetchWork = id => (dispatch, getState) => {
+	dispatch({type: FETCH_WORK })
+
+	getWork(id, function (err, response) {
+		if (err) {
+			return dispatch({
+				type: FETCH_ERROR,
+				data: err
+			})
+		}
+
+		return dispatch({
+			type: RECEIVE_WORK,
+			data: response,
+		})
+	})
+}
+
+// work edit
 
 export const addValueField = key => dispatch => (
 	dispatch({
@@ -49,20 +69,3 @@ export const saveWork = () => dispatch => (
 		type: SAVE_WORK_CHANGES,
 	})
 )
-
-// mock data fetching
-export const fetchWork = id => dispatch => {
-	for (let i = 0; i < works.length; i++) {
-		if (works[i].id === id) {
-			return dispatch({
-				type: RECEIVE_WORK,
-				data: works[i]
-			})
-		}
-	}
-
-	return dispatch({
-		type: FETCH_ERROR,
-		message: `Work with id ${id} does not exist`
-	})
-}

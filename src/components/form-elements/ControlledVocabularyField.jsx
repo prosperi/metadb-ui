@@ -1,12 +1,5 @@
 'use strict'
 
-// required Autocomplete props
-// - getItemValue
-// - renderItem
-// _needed_ Autocomplete props
-// - onChange
-// - value
-
 import React from 'react'
 import Autocomplete from 'react-autocomplete'
 import assign from 'object-assign'
@@ -20,7 +13,8 @@ const ControlledVocabularyField = React.createClass({
 		value: T.any,
 
 		// unique ControlledVocabulary props
-		vocabulary: T.array,
+		fetchVocabulary: T.func.isRequired,
+		vocabulary: T.object,
 
 		// stylin / profilin
 		className: T.string,
@@ -34,7 +28,6 @@ const ControlledVocabularyField = React.createClass({
 		return {
 			placeholder: '',
 			value: '',
-			vocabulary: [],
 
 			// styles
 			className: '',
@@ -79,22 +72,43 @@ const ControlledVocabularyField = React.createClass({
 				{backgroundColor: bgColor, cursor: 'pointer'}
 			)}>{item}</div>
 		}
+
+		const renderMenu = (items, value, style) => {
+			if (!this.state.terms) {
+				if (!this.state.loading) {
+					this.props.fetchVocabulary()
+				}
+
+				return (
+					<div style={{...style, ...menuStyle}}>
+						Loading...
+					</div>
+				)
+			}
+
+			return (
+				<div style={{...style, ...menuStyle}} children={this.props.terms}/>
+			)
+		}
 		
 		return {
 			getItemValue: (v) => v,
 			inputProps: {
+				onFocus: this.handleFocus,
 				placeholder: this.props.placeholder,
 				style: inputStyle,
 				type: 'text',
 			},
-			items: this.props.vocabulary,
+			items: this.state.terms || [],
 			menuStyle,
 			onChange: this.handleChange,
 			onSelect: this.handleSelect,
 			renderItem,
+			renderMenu,
 			value: this.props.value,
 			wrapperProps: {
 				className: 'controlled-vocabulary',
+				onClick: this.handleClick,
 			},
 		}
 	},
@@ -103,12 +117,24 @@ const ControlledVocabularyField = React.createClass({
 		this.props.onChange.call(null, ev.target.value)
 	},
 
+	handleClick: function (ev) {
+		// this is only for when the input is focused
+		if (ev.target.nodeName !== 'INPUT') return
+
+		this.props.fetchVocabulary()
+	},
+
 	handleSelect: function (value) {
 		this.props.onChange.call(null, value)
 	},
 
 	render: function () {
-		return <Autocomplete {...this.getAutocompleteProps()}/>
+		// return <Autocomplete {...this.getAutocompleteProps()}/>
+		return (
+			<div className="controlled-vocabulary">
+				<input type="text" value={this.props.value} disabled />
+			</div>
+		)
 	}
 })
 

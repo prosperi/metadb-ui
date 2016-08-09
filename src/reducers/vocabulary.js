@@ -1,5 +1,6 @@
 import {
 	CLEAR_VOCABULARIES,
+	FETCH_VOCABULARY,
 	RECEIVE_VOCABULARY,
 } from '../actions/constants'
 
@@ -13,13 +14,35 @@ export default function vocabularyReducer (state, action) {
 		case CLEAR_VOCABULARIES:
 			return {}
 
-		case RECEIVE_VOCABULARY:
-			const merge = {}
-			merge[action.name] = action.data
+		case FETCH_VOCABULARY:
+			return fetchVocabulary(state, action)
 
-			return assign({}, state, merge)
-		
+		case RECEIVE_VOCABULARY:
+			return receiveVocabulary(state, action)
+
 		default:
 			return state
 	}
+}
+
+function fetchVocabulary (state, action) {
+	const merge = {}
+	merge[action.uri] = {
+		isFetching: true,
+		terms: [],
+	}
+
+	return assign({}, state, merge)
+}
+
+
+function receiveVocabulary (state, action) {
+	const merge = {}
+	merge[action.uri] = {
+		fetchedAt: Date.now(),
+		isFetching: false,
+		terms: action.data,
+	}
+
+	return assign({}, state, merge)
 }

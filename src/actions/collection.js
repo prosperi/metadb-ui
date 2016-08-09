@@ -1,5 +1,6 @@
 import {
 	COLLECTION_CHANGE,
+	FETCH_ERROR,
 	RECEIVE_COLLECTION,
 	RECEIVE_ALL_COLLECTIONS,
 	SAVE_COLLECTION_CHANGES,
@@ -34,7 +35,6 @@ export const fetchCollection = id => dispatch => {
 }
 
 // fetches all collections
-// (stuffed w/ data for now; to be replaced w/ api call later)
 export const fetchAllCollections = () => dispatch => {
 	return dispatch({
 		type: RECEIVE_ALL_COLLECTIONS,
