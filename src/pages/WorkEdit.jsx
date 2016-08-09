@@ -34,6 +34,7 @@ const WorkEdit = React.createClass({
 	},
 
 	handleChange: function (key, idx, value) {
+		console.log()
 		this.props.editWorkField.apply(null, arguments)
 	},
 

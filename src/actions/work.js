@@ -7,11 +7,12 @@ import {
 	RECEIVE_WORK,
 	REMOVE_WORK,
 	REMOVE_WORK_VALUE_FIELD,
+	SAVING_WORK_CHANGES,
 	SAVE_WORK_CHANGES,
 	WORK_CHANGE,
 } from './constants'
 
-import { getWork } from '../../lib/api'
+import { getWork, updateWork } from '../../lib/api'
 
 export const fetchWork = id => (dispatch, getState) => {
 	dispatch({type: FETCH_WORK })
@@ -63,9 +64,25 @@ export const removeWork = () => dispatch => (
 	})
 )
 
-export const saveWork = () => dispatch => (
+export const saveWork = () => (dispatch, getState) => {
+	const state = getState()
+	const id = state.work.data.id
+	const updates = state.updates
+
+	dispatch({ type: SAVING_WORK_CHANGES })
+
+	updateWork(id, updates, function (err, res) {
+		if (err) {
+			// handle errors
+		}
+
+		dispatch({
+			type: SAVE_WORK_CHANGES,
+		})
+	})
+
 	// TODO: actually make an API call to store changes
 	dispatch({
 		type: SAVE_WORK_CHANGES,
 	})
-)
+}

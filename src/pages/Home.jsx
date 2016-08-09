@@ -36,8 +36,8 @@ const Home = React.createClass({
 			<h2>Recent uploads</h2>
 			<ul>
 				<lh>Works</lh>
-				<li><Link to="/collections/test-collection/works/g732d898n">title5</Link></li>
-				<li><Link to="/collections/test-collection/works/2227mp65f">title4</Link></li>
+				<li><Link to="/works/g732d898n">title5</Link></li>
+				<li><Link to="/works/2227mp65f">title4</Link></li>
 			</ul>
 		</div>
 		)

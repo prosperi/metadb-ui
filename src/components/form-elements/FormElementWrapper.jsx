@@ -55,17 +55,17 @@ const FormElementWrapper = React.createClass({
 
 	mapChildren: function () {
 		return React.Children.map(this.props.children, (child, idx) => {
-			const props = {
+			const props = assign({}, {
 				placeholder: child.props.placeholder || this.props.placeholder,
 				readOnly: child.props.readOnly || this.props.readOnly,
-				key: child.displayName + idx,
+				key: idx,
 				onChange: this.handleChange.bind(null, idx)
-			}
+			}, child.props)
 
 			return (
 				<div className="form-element">
 					{this.maybeRenderCopyFieldCheckbox()}
-					{React.cloneElement(child, props)}
+					{React.cloneElement(child, assign({}, props, child.props))}
 					{this.renderFieldButton(idx)}
 				</div>
 			)

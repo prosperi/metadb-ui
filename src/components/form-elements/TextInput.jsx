@@ -1,30 +1,46 @@
 import React from 'react'
 import assign from 'object-assign'
-import BaseInputComponent from './BaseInputComponent.jsx'
 
 const T = React.PropTypes
 
-export default class TextInput extends React.Component {
-	constructor (props) {
-		super(props)
-	}
+const TextInput = React.createClass({
+	propTypes: {
+		inputProps: T.object,
+		onChange: T.func,
+		value: T.string,
+	},
 
-	render() {
+	getDefaultProps: function () {
+		return {
+			type: 'text',
+			value: '',
+		}
+	},
+
+	handleBlur: function (ev) {
+		const val = ev.target.value
+
+		if (val === this._initialValue) return
+
+		this.props.onChange && this.props.onChange.call(null, val)
+	},
+
+	handleFocus: function (ev) {
+		this._initialValue = ev.target.value
+	},
+
+	render: function () {
 		return (
 			<input
-				defaultValue={this.props.value || ''}
+				defaultValue={this.props.value}
 				onBlur={this.handleBlur}
 				onFocus={this.handleFocus}
-				type="text"
+				type={this.props.type}
 
 				{...this.props.inputProps}
 			/>
 		)
 	}
-}
+})
 
-TextInput.propTypes = {
-	inputProps: T.object,
-	onChange: T.func,
-	value: T.string,
-}
+export default TextInput
