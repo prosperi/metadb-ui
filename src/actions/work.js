@@ -67,7 +67,7 @@ export const removeWork = () => dispatch => (
 export const saveWork = () => (dispatch, getState) => {
 	const state = getState()
 	const id = state.work.data.id
-	const updates = state.updates
+	const updates = state.work.updates
 
 	dispatch({ type: SAVING_WORK_CHANGES })
 

@@ -4,11 +4,25 @@ import React from 'react'
 const T = React.PropTypes
 
 const TermsList = React.createClass({
-	renderRow: function (data, index) {
+	renderHeadings: function () {
+		const keys = Object.keys(this.props.terms[0])
 		return (
-			<tr key={index}>
-				{this.renderTermCell(data.term, index)}
-				{this.renderUriCell(data.uri, index)}
+			<tr>
+				{keys.map((k,i) => <th key={i}>{k}</th>)}
+			</tr>
+		)
+	},
+
+	renderRow: function (data, index) {
+		const keys = Object.keys(data)
+
+		return (
+			<tr>
+				{
+					keys.map((k, i) => (
+						<td key={i}>{data[k]}</td>
+					))
+				}
 			</tr>
 		)
 	},
@@ -33,6 +47,7 @@ const TermsList = React.createClass({
 	},
 
 	render: function () {
+		console.log(this.props.terms)
 		return (
 			<table className="vocabulary-terms-list">
 				<caption>
@@ -40,10 +55,7 @@ const TermsList = React.createClass({
 				</caption>
 
 				<thead>
-					<tr>
-						<th>term</th>
-						<th>uri</th>
-					</tr>
+					{this.renderHeadings()}
 				</thead>
 
 				<tbody>
