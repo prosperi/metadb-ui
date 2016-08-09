@@ -7,6 +7,7 @@ const EditableTableCell = React.createClass({
 	propTypes: {
 		disabled: T.bool,
 		editing: T.bool,
+		inputProps: T.object,
 
 		onCancel: T.func,
 		onClick: T.func,
@@ -15,6 +16,8 @@ const EditableTableCell = React.createClass({
 		placeholder: T.string,
 		
 		style: T.object,
+
+		useInput: T.bool,
 	},
 
 	getDefaultProps: function () {
@@ -43,8 +46,10 @@ const EditableTableCell = React.createClass({
 				},
 				placeholder: {
 					color: '#999'
-				}
-			}
+				},
+			},
+
+			useInput: false,
 		}
 	},
 
@@ -78,9 +83,18 @@ const EditableTableCell = React.createClass({
 		const textareaStyle = this.props.style.editing.textarea
 		const buttonStyle = this.props.style.buttons
 
+		const el = this.props.useInput ? 'input' : 'textarea'
+		const elProps = {
+			defaultValue: this.props.value,
+			placeholder: this.props.placeholder,
+			ref: el => this._input = el,
+			...this.props.inputProps,
+		}
+
 		return (
 		<div style={containerStyle}>
-			<textarea
+			
+			<input
 				defaultValue={this.props.value}
 				placeholder={this.props.placeholder}
 				ref={(el) => { this._input = el }}

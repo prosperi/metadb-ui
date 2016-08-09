@@ -1,5 +1,6 @@
 // vocabulary management styling
-$vocab-list-width: 20em;
+$vocab-list-height: ($base-font-size * 30);
+$vocab-list-width: ($base-font-size * 20);
 $vocab-list-item-padding: .5em;
 
 /////////////////////////////////
@@ -10,7 +11,7 @@ $vocab-list-item-padding: .5em;
 }
 
 .vocabularies {
-  border: 1px solid $border-color;
+  border: 1px solid $muted-border-color;
   box-shadow: 0 1px 1px 0 #999;
   display: inline-block;
   max-width: $vocab-list-width;
@@ -19,12 +20,16 @@ $vocab-list-item-padding: .5em;
   overflow-x: hidden;
 }
 
-.list-filter {
+.list-filter,
+.list-footer {
   background-color: #efefef;
-  border-bottom: 1px solid $border-color;;
-  padding: ($vocab-list-item-padding + .5em) $vocab-list-item-padding ;
   max-width: $vocab-list-width;
   z-index: 10;
+}
+
+.list-filter {
+  border-bottom: 1px solid $muted-border-color;;
+  padding: ($vocab-list-item-padding + .5em) $vocab-list-item-padding;
   
   .filter {
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"><circle cx="18" cy="12" r="6" stroke-width="2" fill="transparent" stroke="#{$muted-border-color}" /><path d="M13,16L5,23" stroke-width="3" fill="transparent" stroke="#{$muted-border-color}" /></svg>');
@@ -35,8 +40,11 @@ $vocab-list-item-padding: .5em;
     transition: none;
     width: 100%;
     
-    &:focus {
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"><circle cx="18" cy="12" r="6" stroke-width="2" fill="transparent" stroke="#{$active-border-color}" /><path d="M13,16L5,23" stroke-width="3" fill="transparent" stroke="#{$active-border-color}" /></svg>');
+    &:not(:empty) {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"><circle cx="18" cy="12" r="6" stroke-width="2" fill="transparent" stroke="#{$muted-border-color}" /><path d="M13,16L5,23" stroke-width="3" fill="transparent" stroke="#{$muted-border-color}" /></svg>');
+      &:focus {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"><circle cx="18" cy="12" r="6" stroke-width="2" fill="transparent" stroke="#{$active-border-color}" /><path d="M13,16L5,23" stroke-width="3" fill="transparent" stroke="#{$active-border-color}" /></svg>');
+      }
     }
   }
 }
@@ -65,13 +73,33 @@ $vocab-list-item-padding: .5em;
     }
     
     &:not(:last-of-type) {
-      border-bottom: 1px solid $border-color;
+      border-bottom: 1px solid $muted-border-color;
     }
     
-    &:hover {
+    &.hover {
       background-color: #ddd;
     }
+
+    &.active {
+      background-color: #dee;
+    }
   }
+}
+
+.vocab-list,
+.vocab-list--empty {
+  height: $vocab-list-height;
+  width: $vocab-list-width;
+}
+
+.vocab-list--empty {
+  $bg-color: #dedede;
+  background-color: $bg-color;
+  color: darken($bg-color, 25%);
+  font-size: 30px;
+  padding: 50px;
+  text-align: center;
+  word-wrap: break-word;
 }
 
 .term-count {
@@ -79,4 +107,64 @@ $vocab-list-item-padding: .5em;
   display: block;
   font-size: .75em;
   font-style: italic;
+}
+
+.list-footer {
+  border-top: 1px solid $muted-border-color;
+  padding: $vocab-list-item-padding;
+}
+
+.vocabulary-terms-list-container {
+  display: inline-block;
+  padding: 0 4em;
+  vertical-align: top;
+  width: 50em;
+}
+
+.vocabulary-terms-list {
+  border: 1px solid #aaa;
+  border-collapse: collapse;
+  width: 100%;
+
+  caption {
+    font-weight: bold;
+  }
+  
+  thead tr {
+    background-color: #ddd;
+    border-bottom: 1px solid #aaa;
+  }
+  
+  tbody tr {
+    &:hover {
+      background-color: #eee;
+    }
+  }
+  
+  thead th,
+  tbody td {
+    padding: .5em;  
+  }
+
+  tbody td {
+    border-bottom: 1px solid #aaa;
+    width: 25%;
+  }
+  
+  tbody tr td:not(:last-of-type) {
+    border-right: 1px solid #aaa;
+  }
+
+  td textarea {
+    // height: 1em;
+    min-height: 1em;
+  }
+
+  td input {
+    font-size: 1em;
+  }
+  
+  .uri {
+    font-family: monospace;
+  }
 }

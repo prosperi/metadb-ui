@@ -8,6 +8,8 @@ label {
 
 input[type="text"],
 input[type="number"],
+input[type="search"],
+input[type="date"],
 textarea,
 select {
 	@include border(lighten($grey, 40%));

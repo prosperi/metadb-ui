@@ -15,14 +15,14 @@ export const clearVocabularies = () => dispatch => (
 	})
 )
 
-export const fetchVocabulary = opts => (dispatch, getState) => {
+export const fetchVocabulary = (opts, callback) => (dispatch, getState) => {
 	const state = getState()
 	const uri = opts.uri
 	const path = opts.relative_path
 	const vocab = state.vocabulary[uri]
 
 	// TODO: check for staleness
-	if (vocab) return
+	if (vocab) return callback(null, vocab)
 
 	dispatch({
 		type: FETCH_VOCABULARY,
@@ -30,13 +30,13 @@ export const fetchVocabulary = opts => (dispatch, getState) => {
 	})
 
 	getVocabulary(path, function (err, res) {
-		console.log(path, arguments)
-
 		dispatch({
 			type: RECEIVE_VOCABULARY,
 			uri,
 			data: res.terms.map(t => t.pref_label)
 		})
+
+		callback(null, res)
 	})
 }
 

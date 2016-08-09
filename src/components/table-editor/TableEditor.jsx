@@ -8,7 +8,6 @@ const inArray = (val, arr) => (!!(arr.length && arr.indexOf(val) > -1))
 
 const TableEditor = React.createClass({
 	propTypes: {
-		activeCells: T.array.isRequired,
 		headings: T.array.isRequired,
 		data: T.array.isRequired,
 
@@ -20,31 +19,70 @@ const TableEditor = React.createClass({
 
 		cellPlaceholder: T.string,
 
-		style: T.object,
+		classNames: T.object,
 	},
 
 	getDefaultProps: function () {
 		return {
 			cellPlaceholder: '',
 			disabledKeys: [],
-			style: {
-				table: {},
-				thead: {},
-				tbody: {},
-				cell: {},
-			},
+			classNames: {
+				table: '',
+				thead: '',
+				tbody: '',
+				activeCell: '',
+				cell: '',
+			}
+		}
+	},
+
+	getInitialState: function () {
+		return {
+			activeCells: [],
+			data: this.props.data,
 		}
 	},
 
 	handleCellCancel: function (cellNumber, index, key, value) {
+		const ac = this.state.activeCells
+		const idx = ac.indexOf(cellNumber)
+
+		if (idx === -1) return
+
+		const sdata = this.state.data
+		const pdata = this.props.data
+
+		const updatedActiveCells = [].concat(ac.slice(0, idx), ac.slice(idx + 1))
+		const data = [].concat(sdata.slice(0, index), pdata[index], sdata.slice(index + 1))
+
+		this.setState({
+			activeCells: [].concat(ac.slice(0, idx), ac.slice(idx + 1)),
+			data,
+		})
+
 		this.props.onCellCancel.apply(null, arguments)
 	},
 
 	handleCellClick: function (cellNumber, editing) {
+		this.setState({activeCells: [].concat(this.state.activeCells, cellNumber)})
+
 		this.props.onCellClick.apply(null, arguments)
 	},
 
 	handleCellSubmit: function (cellNumber, index, key, value) {
+		const ac = this.state.activeCells
+		const idx = ac.indexOf(cellNumber)
+
+		const data = this.state.data
+		data[index][key] = value
+
+		const updatedActiveCells = [].concat(ac.slice(0, idx), ac.slice(idx + 1))
+
+		this.setState({
+			activeCells: [].concat(ac.slice(0, idx), ac.slice(idx + 1)),
+			data,
+		})
+
 		this.props.onCellSubmit.apply(null, arguments)
 	},
 
@@ -58,11 +96,15 @@ const TableEditor = React.createClass({
 			const keys = Object.keys(row)
 			const children = this.props.headings.map(k => {
 				const num = counter++
-				const editing = inArray(num, this.props.activeCells)
+				const editing = inArray(num, this.state.activeCells)
 				const disabled = inArray(k, this.props.disabledKeys)
+
+				const classname = [this.props.classNames.cell]
+				if (editing) classname.push(this.props.classNames.activeCell)
 
 				return (
 					<EditableTableCell
+						className={classname.join(' ').trim()}
 						disabled={disabled}
 						editing={editing}
 						key={num}
@@ -70,7 +112,8 @@ const TableEditor = React.createClass({
 						onClick={this.handleCellClick.bind(null, num, idx, k)}
 						onSubmit={this.handleCellSubmit.bind(null, num, idx, k)}
 						placeholder={this.props.cellPlaceholder}
-						value={row[k]}
+						useInput={true}
+						value={editing ? this.state.data[idx][k] : row[k]}
 					/>
 				)
 			})
@@ -81,13 +124,13 @@ const TableEditor = React.createClass({
 
 	render: function () {
 		return (
-		<table>
-			<thead>
+		<table className={this.props.classNames.table}>
+			<thead className={this.props.classNames.thead}>
 				<tr>
 					{this.props.headings.map(h => <th key={h}>{h}</th>)}
 				</tr>
 			</thead>
-			<tbody>
+			<tbody className={this.props.classNames.tbody}>
 				{this.mapDataToRows()}
 			</tbody>
 		</table>

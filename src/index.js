@@ -12,8 +12,9 @@ import store, { history } from './store'
 // pages / wrappers
 import App from './App.jsx'
 import Home from './pages/Home.jsx'
-import WorkEdit from './pages/WorkEdit.jsx'
 import Search from './pages/Search.jsx'
+import Vocabularies from './pages/Vocabularies.jsx'
+import WorkEdit from './pages/WorkEdit.jsx'
 
 import CollectionWrapper from './pages/CollectionWrapper.jsx'
 import CollectionHome from './pages/collection/Home.jsx'
@@ -46,6 +47,8 @@ const MetaDB = (
 			</Route>
 
 			<Route path="search" component={Search} />
+
+			<Route path="vocabularies" component={Vocabularies} />
 		</Route>
 	</Router>
 </Provider>

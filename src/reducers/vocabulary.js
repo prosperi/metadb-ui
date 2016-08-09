@@ -37,6 +37,7 @@ function fetchVocabulary (state, action) {
 
 
 function receiveVocabulary (state, action) {
+	console.log('received vocab', action)
 	const merge = {}
 	merge[action.uri] = {
 		fetchedAt: Date.now(),
