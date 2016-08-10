@@ -40,6 +40,12 @@ const WorkEdit = React.createClass({
 
 	handleFormSubmit: function () {
 		this.props.saveWork()
+
+		const interval = setInterval(function () {
+			if (window.pageYOffset <= 0) return clearInterval(interval)
+			window.scrollTo(0, window.pageYOffset - 75)
+		}, 1)
+		
 	},
 
 	onExit: function (nextLocation) {
