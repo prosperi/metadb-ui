@@ -104,7 +104,6 @@ function removeWorkValueField (state, action) {
 }
 
 function saveWorkChanges (state) {
-
 	const original = state.data
 	const updates = state.updates
 	const merged = assign({}, original, updates)

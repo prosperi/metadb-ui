@@ -1,7 +1,43 @@
 import React from 'react'
+import { get } from '../../lib/api/request'
 import Link from 'react-router/lib/Link'
 
+import Gallery from '../components/Gallery.jsx'
+
 const Home = React.createClass({
+	getInitialState: function () {
+		return {
+			galleryData: null,
+		}
+	},
+
+	componentDidMount: function () {
+		get('/catalog.json', (err, res) => {
+			const items = res.resources
+			console.log(items)
+
+			this.setState({
+				items: items.map(i => ({
+					id: i.id,
+					thumbnail_path: i.thumbnail_path,
+					title: i.title,
+				}))
+			})
+		})
+	},
+
+	renderRecentAdditions: function () {
+		if (!this.state.items) return
+
+		return (
+			<Gallery
+				buildThumbnailUrl={i => `https://sporades0.stage.lafayette.edu/${i}`}
+				buildUrl={i => `/works/${i.id}`}
+				items={this.state.items}
+			/>
+		)
+	},
+
 	render: function () {
 		return (
 		<div>
@@ -33,12 +69,8 @@ const Home = React.createClass({
 			and Haruki Yamaguchi. Documentation and source code are available
 			on the MetaDB project page hosted by Google Code. </p>
 
-			<h2>Recent uploads</h2>
-			<ul>
-				<lh>Works</lh>
-				<li><Link to="/works/g732d898n">title5</Link></li>
-				<li><Link to="/works/2227mp65f">title4</Link></li>
-			</ul>
+			{this.renderRecentAdditions()}
+
 		</div>
 		)
 	}
