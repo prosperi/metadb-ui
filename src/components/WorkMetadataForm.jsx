@@ -70,7 +70,7 @@ const WorkMetadataForm = React.createClass({
 		const schema = this.props.schema
 		return schema.map((scheme, idx) => {
 			const { label, type, name, authorities } = scheme
-			let data = this.props.data[name] || []
+			let data = this.props.data[name]
 
 			// make sure we're dealing with arrays for data
 			if (!Array.isArray(data)) {
@@ -100,6 +100,9 @@ const WorkMetadataForm = React.createClass({
 				<FormElementWrapper
 					key={idx}
 					label={label}
+					multipleValues={true}
+					onAddValueField={this.handleAddValueField.bind(null, name)}
+					onRemoveValueField={this.handleRemoveValueField.bind(null, name)}
 					onChange={this.handleChange.bind(null, name)}
 				>
 					{data.map((d, i) => (

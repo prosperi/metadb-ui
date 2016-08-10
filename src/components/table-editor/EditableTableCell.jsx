@@ -98,10 +98,12 @@ const EditableTableCell = React.createClass({
 				defaultValue={this.props.value}
 				placeholder={this.props.placeholder}
 				ref={(el) => { this._input = el }}
-				style={textareaStyle}
+				style={{width: '100%'}}
 			/>
-			<button onClick={this.handleCancel} style={buttonStyle}>Cancel</button>
-			<button onClick={this.handleSubmit} style={buttonStyle}>Submit</button>
+			<div className="button-group">
+				<button className="submit" onClick={this.handleSubmit} style={buttonStyle}>OK</button>
+				<button onClick={this.handleCancel} style={buttonStyle}>Cancel</button>
+			</div>
 		</div>
 		)
 	},

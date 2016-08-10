@@ -129,6 +129,11 @@ const ControlledVocabularyField = React.createClass({
 	},
 
 	render: function () {
+		// return (
+		// 	<Autocomplete
+		// 		getItemValue={v => v.label}
+		// 	/>
+		// )
 		// return <Autocomplete {...this.getAutocompleteProps()}/>
 		return (
 			<div className="controlled-vocabulary">

@@ -112,7 +112,6 @@ const TableEditor = React.createClass({
 						onClick={this.handleCellClick.bind(null, num, idx, k)}
 						onSubmit={this.handleCellSubmit.bind(null, num, idx, k)}
 						placeholder={this.props.cellPlaceholder}
-						useInput={true}
 						value={editing ? this.state.data[idx][k] : row[k]}
 					/>
 				)

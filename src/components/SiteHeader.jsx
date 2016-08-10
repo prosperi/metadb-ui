@@ -17,13 +17,13 @@ const SiteHeader = React.createClass({
 							Search
 						</Link>
 					</li>
-
+{/*
 					<li>
 						<Link to={`/collections`}>
 							Collections
 						</Link>
 					</li>
-
+*/}
 					<li>
 						<Link to={`/vocabularies`}>
 							Vocabularies

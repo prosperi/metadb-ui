@@ -4,10 +4,19 @@ $vocab-list-width: ($base-font-size * 20);
 $vocab-list-item-padding: .5em;
 
 /////////////////////////////////
-.vocabulary-manager {
-  padding: 1em;
+.vocabulary-management-container {
   vertical-align: top;
   z-index: 1;
+}
+
+.vocabulary-management {
+  margin-top: 1em;
+}
+
+.vocabularies-container {
+  @include omega;
+  @include span-columns(3);
+  text-align: center;
 }
 
 .vocabularies {
@@ -18,6 +27,7 @@ $vocab-list-item-padding: .5em;
   margin: 0;
   // margin-right: 10em;
   overflow-x: hidden;
+  text-align: left;
 }
 
 .list-filter,
@@ -51,6 +61,7 @@ $vocab-list-item-padding: .5em;
 
 .vocab-list {
   display: inline-block;
+  font-size: 1.1em;
   height: 30em;
   list-style-type: none;
   margin: 0;
@@ -115,10 +126,10 @@ $vocab-list-item-padding: .5em;
 }
 
 .vocabulary-terms-list-container {
+  @include span-columns(9);
   display: inline-block;
   padding: 0 4em;
   vertical-align: top;
-  width: 50em;
 }
 
 .vocabulary-terms-list {
@@ -148,7 +159,7 @@ $vocab-list-item-padding: .5em;
 
   tbody td {
     border-bottom: 1px solid #aaa;
-    width: 25%;
+    width: 20%;
   }
   
   tbody tr td:not(:last-of-type) {

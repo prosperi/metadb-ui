@@ -50,7 +50,7 @@ export default function workReducer (state, action) {
 
 function addWorkValueField (state, action) {
 	const updates = assign({}, state.updates)
-	const vals = state.data.metadata[action.key]
+	const vals = state.data[action.key]
 
 	if (updates[action.key])
 		updates[action.key] = updates[action.key].concat('')
@@ -86,7 +86,7 @@ function removeWorkValueField (state, action) {
 	if (state.updates[key])
 		field = state.updates[key]
 	else
-		field = state.data.metadata[key]
+		field = state.data[key]
 
 	const update = {}
 	update[key] = [].concat(field.slice(0,index), field.slice(index+1))
@@ -106,7 +106,12 @@ function removeWorkValueField (state, action) {
 function saveWorkChanges (state) {
 	const original = state.data
 	const updates = state.updates
-	const merged = assign({}, original, updates)
+	const filtered = {}
+
+	for (let k in updates)
+		filtered[k] = updates[k].filter(u => u)
+
+	const merged = assign({}, original, filtered)
 
 	return assign({}, state, {
 		data: merged,

@@ -79,7 +79,7 @@ const Search = React.createClass({
 
 		return (
 			<div>
-				<h1>Search!</h1>
+				<h1>Search</h1>
 				{this.renderSearchForm()}
 				{
 					displayResults

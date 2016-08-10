@@ -133,7 +133,7 @@ const VocabularyList = React.createClass({
 				{this.renderVocabList()}
 				
 				<div className="list-footer" key={'footer'}>
-					<button onClick={this.handleAddVocabulary}>+ Add Vocabulary</button>
+					<button onClick={this.handleAddVocabulary} disabled>+ Add Vocabulary</button>
 				</div>
 			</div>
 		)

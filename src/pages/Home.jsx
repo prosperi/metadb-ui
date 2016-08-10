@@ -12,7 +12,7 @@ const Home = React.createClass({
 	},
 
 	componentDidMount: function () {
-		get('/catalog.json', (err, res) => {
+		get('/catalog.json?limit=4', (err, res) => {
 			const items = res.resources
 			console.log(items)
 

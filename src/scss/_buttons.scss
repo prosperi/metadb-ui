@@ -26,8 +26,18 @@ button,
 	}
 }
 
-button.light-blue {
-	@extend .button;
+button[disabled] {
+	cursor: not-allowed;
+	opacity: .5;
+}
 
-	
+.button-group {
+	button:not(:first-of-type) {
+		margin-left: 5px;
+	}
+}
+
+button.submit {
+	background-color: #50dd50;
+	border-color: darken(#50dd50, 20%);
 }

@@ -80,9 +80,4 @@ export const saveWork = () => (dispatch, getState) => {
 			type: SAVE_WORK_CHANGES,
 		})
 	})
-
-	// TODO: actually make an API call to store changes
-	dispatch({
-		type: SAVE_WORK_CHANGES,
-	})
 }

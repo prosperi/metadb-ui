@@ -14,6 +14,7 @@ const FormElementWrapper = React.createClass({
 		multipleValues: T.bool,
 		onAddValueField: T.func,
 		onCopyFields: T.func,
+		onRemoveValueField: T.func,
 		placeholder: T.string,
 		readOnly: T.bool,
 	},

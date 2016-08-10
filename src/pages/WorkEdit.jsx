@@ -26,6 +26,7 @@ const WorkEdit = React.createClass({
 	},
 
 	handleAddValueField: function (which) {
+		console.log('which', which)
 		this.props.addValueField(which)
 	},
 
@@ -56,6 +57,7 @@ const WorkEdit = React.createClass({
 	renderEditForm: function () {
 		const work = this.props.work
 		const workData = work.data
+		const updates = work.updates
 		const schema = workData.form
 
 		return (
@@ -65,7 +67,7 @@ const WorkEdit = React.createClass({
 				/>
 				<WorkMetadataForm
 					fetchVocabulary={this.props.fetchVocabulary}
-					data={workData}
+					data={assign({}, workData, updates)}
 					onAddValueField={this.handleAddValueField}
 					onRemoveValueField={this.handleRemoveValueField}
 					onChange={this.handleChange}
