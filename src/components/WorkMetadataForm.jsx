@@ -36,6 +36,12 @@ const WorkMetadataForm = React.createClass({
 		}
 	},
 
+	getInitialState: function () {
+		return {
+			displayCopyFieldCheckboxes: false,
+		}
+	},
+
 	getComponentForElement: function (schema) {
 		const type = schema.type
 
@@ -98,6 +104,7 @@ const WorkMetadataForm = React.createClass({
 
 			return (
 				<FormElementWrapper
+					copyFields={this.state.displayCopyFieldCheckboxes}
 					key={idx}
 					label={label}
 					multipleValues={true}
@@ -120,9 +127,26 @@ const WorkMetadataForm = React.createClass({
 		)
 	},
 
+	toggleDisplayCopyMetadata: function () {
+		this.setState({
+			displayCopyFieldCheckboxes: !this.state.displayCopyFieldCheckboxes
+		})
+	},
+
 	render: function () {
 		return (
 			<div className="work-metadata">
+				<button 
+					onClick={this.toggleDisplayCopyMetadata}
+					>
+					{
+						this.state.displayCopyFieldCheckboxes
+						? 'Hide copy-fields boxes' 
+						: 'Copy fields to another work'
+					}
+				</button>
+
+
 				{this.mapFormElements()}
 				{this.renderSaveButton()}
 			</div>
