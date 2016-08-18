@@ -7,65 +7,20 @@ import thunk from 'redux-thunk'
 
 import rootReducer from '../reducers'
 
-// test data
-import { schema } from '../../data/schema'
-
 const initialState = {
-	collection: {
-		// preloading our schema/collection data for testing,
-		// be sure to empty out the top level attributes!!!
-		isFetching: false,
-		data: {
-			id: 'test-collection',
-			name: 'test-collection',
-			description: 'An archive of non-existing objects'
-		},
-
-		// prestuffed ids
-		works: [
-			{ id: '2227mp65f' },
-			{ id: 'b2773v68h' },
-		],
-
-		saved: false,
-		updates: null,
-	},
-
-
-	collections: [],
-
+	collection: {},
 	error: {},
-
 	search: {},
+	vocabulary: {},	
+	work: {},
 
-	// vocabs consist of
-	// {[vocabName]: [ /* ... terms, moreTerms ... */ ]}
-	vocabulary: {
-	},
-	
-	work: {
-		isFetching: false,
-		updated: false,
-		data: {},
-		updates: null,
-		saved: false,
-	},
-
-
-	// user: {
-
-	// },
+	// user: {},
 
 	// kept for React-Router
 	routing: {},
 }
 
 const middlewares = [thunk]
-
-// if (typeof window === 'object' && window.devToolsExtension) {
-// 	let dev = window.devToolsExtension()
-// 	if (dev) middlewares.unshift(dev)
-// }
 
 const store = createStore(
 	rootReducer, 
