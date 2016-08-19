@@ -1,8 +1,12 @@
 import React from 'react'
 import withRouter from 'react-router/lib/withRouter'
 import assign from 'object-assign'
+import scrollToTop from '../../lib/scroll-to-top'
 
 import WorkMetadataForm from '../components/WorkMetadataForm.jsx'
+import ThumbnailPreview from '../components/media/ThumbnailPreview.jsx'
+import OpenSeadragonViewer from '../components/media/OpenSeadragonViewer.jsx'
+
 
 const Work = React.createClass({
 	componentDidMount: function () {
@@ -13,16 +17,13 @@ const Work = React.createClass({
 		}
 
 		this.props.fetchWork(id)
-		this.props.router.setRouteLeaveHook(this.props.route, this.onExit)
-
-		document.addEventListener('scroll', this.handleScroll)
+		// this.props.router.setRouteLeaveHook(this.props.route, this.onExit)
 	},
 
 	componentWillUnmount: function () {
-		this.props.removeError()
-		this.props.removeWork()
+		// this.props.removeError()
+		// this.props.removeWork()
 
-		document.removeEventListener('scroll', this.handleScroll)
 	},
 
 	onExit: function (nextLocation) {
@@ -43,12 +44,12 @@ const Work = React.createClass({
 
 	handleAddValueField: function (which) {
 		console.log('adding value field to', which)
-		this.props.addValueField.apply(null, arguments)
+		this.props.addEmptyValueToWork.apply(null, arguments)
 	},
 
 	handleRemoveValueField: function (which, index) {
 		console.log(`removing value field [idx:${index}] from ${which}`)
-		this.props.removeValueField.apply(null, arguments)
+		this.props.removeValueFromWork.apply(null, arguments)
 	},
 
 	handleChange: function (key, index, value) {
@@ -57,35 +58,55 @@ const Work = React.createClass({
 	},
 
 	handleFormSubmit: function () {
-		this.props.saveWork()
+		this.props.saveWork(this.props.params.workId)
 
-		const interval = setInterval(function () {
-			if (window.pageYOffset <= 0) return clearInterval(interval)
-			window.scrollTo(0, window.pageYOffset - 75)
-		}, 1)
+		scrollToTop()
+	},
+
+	mediaPreview: function () {
+		const work = this.props.work
+
+		if (!work || !work.data)
+			return
+
+		if (work.isFetching || !Object.keys(work.data).length)
+			return
+
+		if (!work.data.thumbnail_path)
+			return
+
+		return (
+			<ThumbnailPreview
+				onClick={this.adjustSections}
+				src={work.data.thumbnail_path}
+			/>
+		)
 	},
 
 	mediaPreviewSide: function () {
-		const initStyle = {
-			backgroundColor: '#f42069',
-			display: 'table-cell',
-			transition: 'width 500ms ease-out',
-			width: (this.state.mediaOpen ? '66%' : '33%'),
-		}
-
 		return (
-			<div style={initStyle}>
+			<div>
 				{
 					this.state.mediaOpen
-					? <h2>OpEn SeAdRaGoN!!</h2>
-					: <h2>MeDiA pReViEw</h2>
+					? this.openSeadragonViewer()
+					: this.mediaPreview()
 				}
+			</div>
+		)
+	},
+
+	openSeadragonViewer: function () {
+		return (
+			<div>
+				<OpenSeadragonViewer />
 			</div>
 		)
 	},
 
 	workEditSide: function () {
 		const work = this.props.work
+		if (!work || !work.data)
+			return
 
 		if (work.isFetching || !Object.keys(work.data).length)
 			return
@@ -96,11 +117,12 @@ const Work = React.createClass({
 
 		return (
 			<WorkMetadataForm
-				fetchVocabulary={() => {}}
+				{...this.props}
+
 				data={assign({}, workData, updates)}
 				onAddValueField={this.handleAddValueField}
-				onRemoveValueField={this.handleRemoveValueField}
 				onChange={this.handleChange}
+				onRemoveValueField={this.handleRemoveValueField}
 				onSubmit={this.handleFormSubmit}
 				schema={schema}
 			/>
@@ -111,10 +133,14 @@ const Work = React.createClass({
 		const work = this.props.work
 		let title
 
-		if (work.isFetching || !Object.keys(work.data))
+		if (work.isFetching || typeof work.data === 'undefined')
 			title = 'fetching...'
 		else
 			title = work.data.title || work.data.id
+
+		// default to just the first title for now
+		if (Array.isArray(title) && title.length > 1)
+			title = title[0]
 
 		const base = `${process.env.API_BASE_URL}/concern/generic_works`
 		const debugUrl = `${base}/${this.props.params.workId}.json`
@@ -130,9 +156,8 @@ const Work = React.createClass({
 						margin: '0 1em',
 					}}
 					target="_blank"
-					>(debug)</a>
-
-				<button onClick={this.adjustSections}>click slowly + see</button>
+					children={'(debug)'}
+				/>
 			</header>
 		)
 	},
@@ -147,13 +172,15 @@ const Work = React.createClass({
 		const workEditStyle = {
 			display: 'table-cell',
 			verticalAlign: 'top',
+			width: (this.state.mediaOpen ? '33%' : '66%'),
 		}
 
 		const mediaPreviewStyle = {
-			backgroundColor: '#f42069',
+			borderLeft: '1px solid #aaa',
 			display: 'table-cell',
 			transition: 'width 250ms ease-in',
 			verticalAlign: 'top',
+			padding: '1em',
 			width: (this.state.mediaOpen ? '66%' : '33%'),
 		}
 

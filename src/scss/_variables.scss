@@ -1,0 +1,24 @@
+$lafayette-light-blue: #4ea8d8;
+$lafayette-dark-blue: #1d5f83;
+
+$grey: #ccc;
+
+$inactive: $grey;
+
+$base-font-size: 14px;
+
+$default-body-margin: 10px;
+
+$default-border-width: 2px;
+$default-border-radius: 2px;
+
+// theming
+
+$theme-primary: $lafayette-light-blue;
+
+// input element border
+$inactive-border-color: $inactive;
+
+$muted-border-color: $inactive-border-color;
+$active-border-color: $theme-primary;
+

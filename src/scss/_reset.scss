@@ -1,0 +1,7 @@
+body {
+	font-family: sans-serif; 
+	margin: $default-body-margin;
+}
+
+@import "reset/input";
+@import "reset/label";

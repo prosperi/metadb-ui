@@ -7,15 +7,17 @@ import Main from './pages/Main.jsx'
 
 function mapStateToProps (state, ownProps) {
 	return {
-		collection: state.collection,
-		collections: state.collections,
+		// collection: state.collection,
+		// collections: state.collections,
 
-		error: state.error,
+		// error: state.error,
 
-		schema: state.collection.schema,
+		// schema: state.collection.schema,
 
-		search: state.search,
+		// search: state.search,
 
+		terms: state.terms,
+		
 		vocabulary: state.vocabulary,
 
 		work: state.work,

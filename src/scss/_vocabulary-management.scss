@@ -1,0 +1,123 @@
+$vocab-list-bgcolor: #e5e5e5;
+$vocab-list-height: ($base-font-size * 30);
+$vocab-list-width: ($base-font-size * 25);
+$vocab-list-item-padding: .5em;
+
+.vocabulary-list {
+	@include omega;
+
+	box-shadow: 0 0 2px 1px #aaa;
+	display: inline-block;
+
+	header,
+	footer {
+		background-color: $vocab-list-bgcolor;
+		padding: 10px;
+	}
+
+	input {
+		font-size: .90em;
+		width: 100%;
+	}
+}
+
+.vocab-list, 
+.vocab-list--empty {
+	height: $vocab-list-height;
+	width: $vocab-list-width;
+}
+
+.vocab-list {
+	display: inline-block;
+	margin: 0;
+	overflow-y: scroll;
+	padding: 0;
+	word-wrap: break-word;
+}
+
+.vocab-list--item {
+	border-bottom: 1px solid darken($vocab-list-bgcolor, 15%);
+	cursor: pointer;
+	padding: $vocab-list-item-padding;
+
+	&.active {
+		background-color: lighten($theme-primary, 25%);
+	}
+
+	&.hover:not(.active) {
+		background-color: lighten($theme-primary, 37.5%);
+	}
+}
+
+.term-count {
+	display: block;
+	font-size: .80em;
+	font-style: italic;
+}
+
+.vocab-list--empty {
+	background-color: darken($vocab-list-bgcolor, 15%);
+	color: darken($vocab-list-bgcolor, 40%);
+	font-size: 2rem;
+	padding: 1em;
+	text-align: center;
+	word-wrap: break-word;
+}
+
+//// --- term list --- ////
+
+.term-edit-container {
+	box-shadow: 0 0 2px 1px #aaa;
+	margin: auto;
+	position: relative;
+	width: 100%;
+
+	// target immediate header/footer
+	// (terms also have header)
+	> header,
+	> footer {
+		background-color: $vocab-list-bgcolor;
+		padding: 10px;
+	}
+
+	> header {
+		@include clearfix;
+		border-bottom: 1px solid #aeaeae;
+
+		button { 
+			float: right;
+		}
+	}
+
+	> footer {
+		border-top: 1px solid #aeaeae;
+	}
+}
+
+.terms {
+	height: $vocab-list-height;
+	overflow-y: scroll;
+}
+
+.term {
+	border-bottom: 1px solid $vocab-list-bgcolor;
+
+	header {
+		cursor: pointer;
+		font-weight: bold;
+		padding: $vocab-list-item-padding;
+	}
+}
+
+.term-edit-fields {
+	background-color: #efefef;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	font-size: .90em;
+	overflow-y: scroll;
+	padding: .25em 1.5em;
+
+	.form-element-wrapper {
+		width: 100%;
+	}
+}

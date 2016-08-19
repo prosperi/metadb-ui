@@ -1,0 +1,64 @@
+// text input styles
+input,
+textarea {
+  border-color: $muted-border-color;
+  border-radius: $default-border-radius;
+  border-style: solid;
+  border-width: $default-border-width;
+  font-size: 1em;
+  line-height: 1.5em;
+  outline: none;
+  padding: 3px;
+
+  &:focus {
+    border-color: $active-border-color;
+  }
+
+  &[disabled] {
+    background-color: lighten($muted-border-color, 10%);
+    cursor: not-allowed;
+  }
+
+  &[readonly] {
+    border-color: transparent;
+  }
+
+  &[type="checkbox"] {
+    $base-size: 15px;
+    $selected-color: #00aaff;
+
+    border: 1px solid #aaa;
+    height: $base-size;
+    outline: 0;
+    cursor: pointer;
+    width: $base-size;
+
+    appearance: none;
+
+    &:checked {
+      $white-escaped: '%23fff';
+      background-color: $selected-color;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M3,6L5,10L10,2" fill="transparent" stroke-width="2" stroke="#{$white-escaped}"/></svg>');
+      border-color: $selected-color;
+    }
+  }
+}
+
+textarea {
+  resize: vertical;
+}
+
+input.search {
+  $muted-escaped: '%23' + str-slice(quote($muted-border-color), 2);
+  $active-escaped: '%23' + str-slice(quote($active-border-color), 2);
+
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"><circle cx="18" cy="12" r="6" stroke-width="2" fill="transparent" stroke="#{$muted-escaped}" /><path d="M13,16L5,23" stroke-width="3" fill="transparent" stroke="#{$muted-escaped}" /></svg>');
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: contain;
+  padding-right: 30px;
+
+  &:focus {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"><circle cx="18" cy="12" r="6" stroke-width="2" fill="transparent" stroke="#{$active-escaped}" /><path d="M13,16L5,23" stroke-width="3" fill="transparent" stroke="#{$active-escaped}" /></svg>');
+  }
+}

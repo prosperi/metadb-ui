@@ -9,6 +9,12 @@ module.exports = {
 				test: /\.scss$/,
 				loaders: ['style', 'css','sass'],
 				include: path.resolve(__dirname, '../'),
+			},
+			{
+				test: /\.json$/,
+				exclude: /node_modules/,
+				loader: 'json-loader',
+				include: path.resolve(__dirname, '../'),
 			}
 		]
 	},
