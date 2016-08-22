@@ -1,5 +1,4 @@
 import React from 'react'
-import isAbsoluteUrl from 'is-absolute-url'
 
 const T = React.PropTypes
 
@@ -9,15 +8,6 @@ const ThumbnailPreview = React.createClass({
 
 		caption: T.string,
 		onClick: T.func,
-	},
-
-
-	fullSrc: function () {
-		if (isAbsoluteUrl(this.props.src))
-			return this.props.src
-
-		return `${process.env.API_BASE_URL || ''}${this.props.src}`
-
 	},
 
 	handleOnClick: function () {
@@ -37,7 +27,7 @@ const ThumbnailPreview = React.createClass({
 	render: function () {
 		return(
 			<figure className="thumbnail-preview" onClick={this.handleOnClick}>
-				<img src={this.fullSrc()} />
+				<img src={this.props.src} />
 
 				{this.maybeRenderCaption()}
 			</figure>
