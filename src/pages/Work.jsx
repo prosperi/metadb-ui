@@ -17,7 +17,7 @@ const Work = React.createClass({
 		}
 
 		this.props.fetchWork(id)
-		// this.props.router.setRouteLeaveHook(this.props.route, this.onExit)
+		this.props.router.setRouteLeaveHook(this.props.route, this.onExit)
 	},
 
 	componentWillUnmount: function () {
@@ -27,7 +27,7 @@ const Work = React.createClass({
 	},
 
 	onExit: function (nextLocation) {
-		if (this.props.work.updated)
+		if (this.props.work.isChanged)
 			return 'Any unsaved changes will be lost. Are you sure?'
 	},
 
@@ -165,7 +165,15 @@ const Work = React.createClass({
 					target="_blank"
 					children={'(debug)'}
 				/>
+
+				{this.props.work.isChanged ? this.showChangedBadge() : ''}
 			</header>
+		)
+	},
+
+	showChangedBadge: function () {
+		return (
+			<span className="badge badge-changed">updated</span>
 		)
 	},
 

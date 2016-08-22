@@ -78,27 +78,39 @@ function removeValueFromWork (state, action) {
 	const key = action.key
 	const index = action.index
 
+	let changed = !!state.isChanged
+
 	// TODO: refactor this
 	if (updates[key]) {
+		if (updates[key][index] !== '')
+			changed = true
+
 		updates[key] = [].concat(
 			updates[key].slice(0, index),
 			updates[key].slice(index + 1)
 		)
 	} else {
+		if (data[key][index] !== '')
+			changed = true
+
 		updates[key] = [].concat(
 			data[key].slice(0, index),
 			data[key].slice(index + 1)
 		)
 	}
 
-	console.log('remove value updates', updates)
+	console.log('checking changed', changed)
 
-	return assign({}, state, {updates})
+	return assign({}, state, {
+		isChanged: changed,
+		updates,
+	})
 }
 
 function savedWork (state, action) {
 	return assign({}, state, {
 		data: assign({}, state.data, state.updates),
+		isChanged: false,
 		isSaving: false,
 		updates: {},
 	})
@@ -107,9 +119,6 @@ function savedWork (state, action) {
 function savingWork (state, action) {
 	return assign({}, state, {isSaving: true})
 }
-
-// when changing value to '', for some reason every value
-// is being removed!!
 
 function updateWork (state, action) {
 	const key = action.key
@@ -124,5 +133,8 @@ function updateWork (state, action) {
 
 	updates[key][index] = val
 
-	return assign({}, state, {updates})
+	return assign({}, state, {
+		isChanged: true,
+		updates,
+	})
 }
