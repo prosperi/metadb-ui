@@ -98,6 +98,13 @@ const Work = React.createClass({
 	openSeadragonViewer: function () {
 		return (
 			<div>
+				<button
+					children="X"
+					onClick={this.adjustSections}
+					style={{
+						float: 'right',
+					}}
+				/>
 				<OpenSeadragonViewer />
 			</div>
 		)
