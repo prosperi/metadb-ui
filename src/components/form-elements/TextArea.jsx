@@ -5,15 +5,29 @@ const T = React.PropTypes
 const TextArea = React.createClass({
 	propTypes: {
 		disabled: T.bool,
-		inputProps: T.object,
-		onChange: T.func,
+		placeholder: T.string,
 		readOnly: T.bool,
+		required: T.bool,
 		value: T.string,
+
+		onChange: T.func,
+	},
+
+	getDefaultProps: function () {
+		return {
+			disabled: false,
+			placeholder: '',
+			readOnly: false,
+			required: false,
+			value: '',
+		}
 	},
 
 	handleBlur: function (ev) {
 		const val = ev.target.value
-		if (this._initialValue === val)
+		const check = this._initalValue ? this._initialValue : this.props.value
+
+		if (this.props.disabled || this.props.readOnly || check === val)
 			return
 
 		this.props.onChange && this.props.onChange.call(null, val)
@@ -26,7 +40,10 @@ const TextArea = React.createClass({
 	render: function () {
 		return (
 			<textarea
-				{...this.props.inputProps}
+				disabled={this.props.disabled}
+				placeholder={this.props.placeholder}
+				readOnly={this.props.readOnly}
+				required={this.props.required}
 
 				defaultValue={this.props.value}
 				onBlur={this.handleBlur}

@@ -4,39 +4,53 @@ const T = React.PropTypes
 
 const TextInput = React.createClass({
 	propTypes: {
-		inputProps: T.object,
-		onChange: T.func,
+		disabled: T.bool,
+		placeholder: T.string,
+		readOnly: T.bool,
+		required: T.bool,
 		type: T.string,
 		value: T.string,
+
+		onChange: T.func,
 	},
 
 	getDefaultProps: function () {
 		return {
+			disabled: false,
+			placeholder: '',
+			readOnly: false,
+			required: false,
 			type: 'text',
+			value: '',
 		}
 	},
 
 	handleBlur: function (ev) {
 		const val = ev.target.value
+		const check = this._initialValue ? this._initialValue : this.props.value
 
-		if (this._initVal === val) return
+		if (this.props.disabled || this.props.readOnly || check === val)
+			return
 
 		this.props.onChange && this.props.onChange.call(null, val)
 	},
 
 	handleFocus: function (ev) {
-		this._initVal = ev.target.value
+		this._initialValue = ev.target.value
 	},
 
 	render: function () {
 		return (
 			<input
-				{...this.props.inputProps}
-				
+				disabled={this.props.disabled}
+				placeholder={this.props.placeholder}
+				readOnly={this.props.readOnly}
+				required={this.props.required}
+				type={this.props.type}
+
+				defaultValue={this.props.value}
 				onBlur={this.handleBlur}
 				onFocus={this.handleFocus}
-				type={this.props.type}
-				defaultValue={this.props.value}
 			/>
 		)
 	}
