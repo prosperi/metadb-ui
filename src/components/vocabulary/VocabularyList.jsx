@@ -13,6 +13,8 @@ const VocabularyList = React.createClass({
 
 		onAddVocabulary: T.func.isRequired,
 		onVocabularyClick: T.func.isRequired,
+
+		placeholder: T.string,
 		vocabularies: T.array,
 	},
 
@@ -57,7 +59,7 @@ const VocabularyList = React.createClass({
 			if (Array.isArray(label))
 				label = label[0]
 
-			return label.toLowerCase().indexOf(val.toLowerCase()) > -1 ? 1 : 0
+			return (label || '').toLowerCase().indexOf(val.toLowerCase()) > -1 ? 1 : 0
 		})
 
 		this.setState({

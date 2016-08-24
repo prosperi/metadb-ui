@@ -5,6 +5,8 @@ import React from 'react'
 import VocabularyList from '../components/vocabulary/VocabularyList.jsx'
 import TermEdit from '../components/vocabulary/TermEdit.jsx'
 
+import FormFieldsFromDataObject from '../components/FormFieldsFromDataObject.jsx'
+
 const VocabularyPage = React.createClass({
 	componentDidMount: function () {
 		this.props.fetchAllVocabularies()
@@ -33,10 +35,8 @@ const VocabularyPage = React.createClass({
 	renderTermList: function () {
 		const active = this.state.activeVocabulary
 
-		if (!active) {
-			console.log('no activeVocabulary')
+		if (!active)
 			return
-		}
 
 		// assume fetching
 		if (!this.props.terms[active]) {
@@ -48,19 +48,33 @@ const VocabularyPage = React.createClass({
 			return <h2>fetching...</h2>
 		}
 
+		const vocab = this.props.vocabulary.data[active]
+
 		return (
-			<div style={{
-				display: 'inline-block',
-				float: 'right',
-				verticalAlign: 'top',
-				width: '66%'
-			}}>
-				<TermEdit
-					displayKey="label"
-					terms={this.props.terms[active].data}
+			<form onSubmit={e => e.preventDefault()}>
+				<FormFieldsFromDataObject
+					data={vocab}
+					ignoreKeys={['terms']}
+					onAddValueField={console.log}
+					onChange={console.log}
+					onRemoveValueField={console.log}
 				/>
-			</div>
-		)
+			</form>
+		)		
+
+		// return (
+		// 	<div style={{
+		// 		display: 'inline-block',
+		// 		float: 'right',
+		// 		verticalAlign: 'top',
+		// 		width: '66%'
+		// 	}}>
+		// 		<TermEdit
+		// 			displayKey="label"
+		// 			terms={this.props.terms[active].data}
+		// 		/>
+		// 	</div>
+		// )
 	},
 
 	renderVocabularyList: function () {
@@ -88,6 +102,7 @@ const VocabularyPage = React.createClass({
 			keys,
 			onAddVocabulary: this.handleAddVocabulary,
 			onVocabularyClick: this.handleVocabularyClick,
+			placeholder: 'filter vocabularies',
 			vocabularies,
 		}
 

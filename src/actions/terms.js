@@ -19,8 +19,9 @@ export const fetchTerms = data => (dispatch, getState) => {
 		return
 	}
 
-	if (isFresh(terms[uri]), STALE_TIME)
+	if (isFresh(terms[uri], STALE_TIME)) {
 		return
+	}
 
 	dispatch({
 		type: FETCHING_TERMS,
@@ -28,7 +29,7 @@ export const fetchTerms = data => (dispatch, getState) => {
 	})
 	
 	// TODO: straighten out absolute/relative path
-	get(`https:${absPath}`, (err, results) => {
+	get(absPath, (err, results) => {
 		if (err) {
 			return dispatch({
 				type: RECEIVE_TERMS_ERROR,

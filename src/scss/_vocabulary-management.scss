@@ -64,60 +64,60 @@ $vocab-list-item-padding: .5em;
 	word-wrap: break-word;
 }
 
-//// --- term list --- ////
+// //// --- term list --- ////
 
-.term-edit-container {
-	box-shadow: 0 0 2px 1px #aaa;
-	margin: auto;
-	position: relative;
-	width: 100%;
+// .term-edit-container {
+// 	box-shadow: 0 0 2px 1px #aaa;
+// 	margin: auto;
+// 	position: relative;
+// 	width: 100%;
 
-	// target immediate header/footer
-	// (terms also have header)
-	> header,
-	> footer {
-		background-color: $vocab-list-bgcolor;
-		padding: 10px;
-	}
+// 	// target immediate header/footer
+// 	// (terms also have header)
+// 	> header,
+// 	> footer {
+// 		background-color: $vocab-list-bgcolor;
+// 		padding: 10px;
+// 	}
 
-	> header {
-		@include clearfix;
-		border-bottom: 1px solid #aeaeae;
+// 	> header {
+// 		@include clearfix;
+// 		border-bottom: 1px solid #aeaeae;
 
-		button { 
-			float: right;
-		}
-	}
+// 		button { 
+// 			float: right;
+// 		}
+// 	}
 
-	> footer {
-		border-top: 1px solid #aeaeae;
-	}
-}
+// 	> footer {
+// 		border-top: 1px solid #aeaeae;
+// 	}
+// }
 
-.terms {
-	height: $vocab-list-height;
-	overflow-y: scroll;
-}
+// .terms {
+// 	height: $vocab-list-height;
+// 	overflow-y: scroll;
+// }
 
-.term {
-	border-bottom: 1px solid $vocab-list-bgcolor;
+// .term {
+// 	border-bottom: 1px solid $vocab-list-bgcolor;
 
-	header {
-		cursor: pointer;
-		font-weight: bold;
-		padding: $vocab-list-item-padding;
-	}
-}
+// 	header {
+// 		cursor: pointer;
+// 		font-weight: bold;
+// 		padding: $vocab-list-item-padding;
+// 	}
+// }
 
-.term-edit-fields {
-	background-color: #efefef;
-	border-top: 1px solid #ccc;
-	border-bottom: 1px solid #ccc;
-	font-size: .90em;
-	overflow-y: scroll;
-	padding: .25em 1.5em;
+// .term-edit-fields {
+// 	background-color: #efefef;
+// 	border-top: 1px solid #ccc;
+// 	border-bottom: 1px solid #ccc;
+// 	font-size: .90em;
+// 	overflow-y: scroll;
+// 	padding: .25em 1.5em;
 
-	.form-element-wrapper {
-		width: 100%;
-	}
-}
+// 	.form-element-wrapper {
+// 		width: 100%;
+// 	}
+// }

@@ -1,0 +1,43 @@
+.recents {
+  border: 2px solid #aaa;
+  border-radius: 2px;
+  padding: 1em .5em;
+}
+
+.recent-items {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  
+  lh,
+  li {
+    display: inline-block;
+  }
+  
+  lh {
+    font-weight: bold;
+    
+    &::after {
+      content: ':';
+      margin-right: 3px;
+    }
+  }
+  
+  li {
+    a {
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    
+    &:not(:last-of-type)::after {
+      content: ',';
+      margin-right: 3px;
+    }
+  }
+  
+  &:not(:first-of-type) {
+    margin-top: .5em;
+  }
+}

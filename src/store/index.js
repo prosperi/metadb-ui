@@ -1,6 +1,6 @@
 'use strict'
 
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 import { syncHistoryWithStore } from 'react-router-redux'
 import { browserHistory } from 'react-router'
 import thunk from 'redux-thunk'
@@ -26,7 +26,10 @@ const middlewares = [thunk]
 const store = createStore(
 	rootReducer, 
 	initialState,
-	applyMiddleware.apply(null, middlewares)
+	compose(
+		applyMiddleware(...middlewares),
+		window.devToolsExtension ? window.devToolsExtension() : f => f
+	)
 )
 
 // set up module hot-loading

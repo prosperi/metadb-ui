@@ -72,29 +72,33 @@ const TermEdit = React.createClass({
 	},
 
 	renderTerms: function () {
-		const terms = this.props.terms
+		const val = this.props.terms.reduce((prev, curr) => `${prev}${curr.pref_label}\n`, '')
+
+		return <textarea defaultValue={val} />
+
+		// const terms = this.props.terms
 		
-		return terms.map((term, index) => {
-			let props = {
-				displayKey: this.state.displayKey,
-				key: index,
-				onToggle: this.handleToggle.bind(null, index),
-				term,
-			}
+		// return terms.map((term, index) => {
+		// 	let props = {
+		// 		displayKey: this.state.displayKey,
+		// 		key: index,
+		// 		onToggle: this.handleToggle.bind(null, index),
+		// 		term,
+		// 	}
 
-			if (index === this.state.selectedIndex) {
-				props = assign(props, {
-					open: true,
-					onAddValueField: this.handleAddValueField.bind(null, index),
-					onChange: this.handleChange.bind(null, index),
-					onRemoveValueField: this.handleRemoveValueField.bind(null, index),
-				})
-			}
+		// 	if (index === this.state.selectedIndex) {
+		// 		props = assign(props, {
+		// 			open: true,
+		// 			onAddValueField: this.handleAddValueField.bind(null, index),
+		// 			onChange: this.handleChange.bind(null, index),
+		// 			onRemoveValueField: this.handleRemoveValueField.bind(null, index),
+		// 		})
+		// 	}
 
-			return (
-				<TermEditItem {...props} />
-			)
-		})
+		// 	return (
+		// 		<TermEditItem {...props} />
+		// 	)
+		// })
 	},
 
 	render: function () {

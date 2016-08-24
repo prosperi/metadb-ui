@@ -1,6 +1,7 @@
 import {
 	FETCHING_ALL_VOCABULARIES,
 	RECEIVE_ALL_VOCABULARIES,
+	UPDATE_VOCABULARY,
 } from '../actions/constants'
 
 export default function vocabularyReducer (state, action) {
@@ -13,6 +14,9 @@ export default function vocabularyReducer (state, action) {
 
 		case RECEIVE_ALL_VOCABULARIES:
 			return receiveAllVocabs(state, action)
+
+		case UPDATE_VOCABULARY:
+			return updateVocab(state, action)
 
 		default:
 			return state
@@ -36,4 +40,9 @@ function receiveAllVocabs (state, action) {
 		fetchedAt: Date.now(),
 		data: out,
 	}
+}
+
+function updateVocab (state, action) {
+	const { uri, key, index, value } = action
+	
 }

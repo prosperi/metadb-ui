@@ -1,7 +1,7 @@
 import assign from 'object-assign'
 
 import {
-	FETCH_TERMS,
+	FETCHING_TERMS,
 	RECEIVE_TERMS,
 } from '../actions/constants'
 
@@ -10,8 +10,7 @@ export default function termsReducer (state, action) {
 		return {}
 
 	switch (action.type) {
-
-		case FETCH_TERMS:
+		case FETCHING_TERMS:
 			return fetchTerms(state, action)
 
 		case RECEIVE_TERMS:
@@ -34,6 +33,8 @@ function fetchTerms (state, action) {
 function receiveTerms (state, action) {
 	const terms = action.data
 	const uri = action.uri
+
+	console.log('received terms!')
 
 	const update = {}
 	update[uri] = {

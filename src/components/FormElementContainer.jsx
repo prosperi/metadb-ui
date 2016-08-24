@@ -15,9 +15,10 @@ const T = React.PropTypes
 
 const FormElementContainer = React.createClass({
 	propTypes: {
-		onAddValueField: T.func.isRequired,
-		onRemoveValueField: T.func.isRequired,
 		onChange: T.func.isRequired,
+
+		onAddValueField: T.func,
+		onRemoveValueField: T.func,
 
 		multipleValues: T.bool,
 	},
