@@ -7,6 +7,7 @@ import FormElementContainer from '../FormElementContainer.jsx'
 import TextInput from '../form-elements/TextInput.jsx'
 
 import TagList from '../tags/TagList.jsx'
+import VocabularyMetadataFormFields from './VocabularyMetadataFormFields.jsx'
 
 const T = React.PropTypes
 
@@ -312,15 +313,12 @@ const ExampleTermEditor = React.createClass({
 				<h2>Edit term</h2>
 
 				<form onSubmit={saveForm}>
-					{termKeys.map((key, index) => {
-						if (key === 'pref_label') return
-						if (key === 'uri') 
-							return renderReadOnly(key, index)
-
-						return renderField(key, index)
-					})}
-					
-					{renderSelect()}
+					<VocabularyMetadataFormFields
+						data={term}
+						onAddValueField={addValueField}
+						onChange={onChange}
+						onRemoveValueField={removeValueField}
+					/>
 
 					<button>
 						save term
