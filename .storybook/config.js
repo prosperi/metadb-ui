@@ -3,7 +3,6 @@ import '../src/scss/main.scss'
 
 configure(() => {
 	require('../stories/VocabularyList.jsx')
-	require('../stories/TermEditFields.jsx')
 
 	require('../stories/FormElementContainer.jsx')
 	require('../stories/ExampleTermEditor.jsx')

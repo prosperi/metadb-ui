@@ -6,6 +6,8 @@ import assign from 'object-assign'
 import FormElementContainer from '../FormElementContainer.jsx'
 import TextInput from '../form-elements/TextInput.jsx'
 
+import TagList from '../tags/TagList.jsx'
+
 const T = React.PropTypes
 
 const ExampleTermEditor = React.createClass({
@@ -86,80 +88,15 @@ const ExampleTermEditor = React.createClass({
 	},
 
 	mapTermsToTags: function () {
-		const liStyle = {
-			margin: '3px 0',
-		}
-
-		const tagStyle = {
-			backgroundColor: '#99d5ca',
-			borderRadius: '3px',
-			// color: '#fff',
-			cursor: 'pointer',
-			display: 'inline-block',
-			fontWeight: '100',
-			padding: '5px 10px',
-			position: 'relative',
-			transition: 'all 75ms ease-in-out',
-			verticalAlign: 'middle',
-			WebkitUserSelect: 'none',
-		}
-
-		const btnStyle = {
-			backgroundColor: 'transparent',
-			border: '2px solid #efefef',
-			borderRadius: '3px',
-			color: tagStyle.color,
-			cursor: 'pointer',
-			fontSize: '.75em',
-			height: '100%',
-			marginLeft: '.5em',
-			outline: 'none',
-			transition: 'all 75ms ease-in-out',
-			WebkitAppearance: 'none',
-			WebkitUserSelect: 'none',
-		}
-
-		const tag = val => {
-			return (
-				<div>
-				  <span
-				  	onClick={this.toggleTermModal.bind(null, val)}
-				  	onMouseOut={e => e.target.style.color = '#000'}
-				  	onMouseOver={e => e.target.style.color = '#fff'}
-				  	style={tagStyle}
-				  >
-				  	{val}
-				  </span>
-					<button
-						children="x"
-						onClick={this.removeTag.bind(null,val)}
-						onMouseOut={e => {
-							e.target.style.backgroundColor = 'transparent'
-							e.target.style.borderColor = '#efefef'
-							e.target.style.color = '#000'
-						}}
-
-						onMouseOver={e => {
-							e.target.style.backgroundColor = '#cc092f'
-							e.target.style.borderColor = '#aa070c'
-							e.target.style.color = '#fff'
-						}}
-						style={btnStyle}
-					/>
-
-				</div>
-			)
-		}
-
-		return this.state.terms.map((_term, index) => {
-			const term = _term.pref_label[0]
-
-			return (
-				<li key={index+(term||'empty')} style={liStyle}>
-					{tag(term)}
-				</li>
-			)
-		})
+		return (
+			<TagList
+				className="terms"
+				onTagClick={this.toggleTermModal}
+				onTagRemove={this.removeTag}
+				tagClassName="vocabulary-term"
+				tags={this.state.terms.map(t => t.pref_label[0])}
+			/>
+		)
 	},
 
 	removeTag: function (val) {
@@ -416,12 +353,6 @@ const ExampleTermEditor = React.createClass({
 			width: '50em',
 		}
 
-		const termsStyle = {
-			listStyleType: 'none',
-			margin: '0',
-			padding: '.5em',
-		}
-
 		const footerStyle = {
 			backgroundColor: '#efefef',
 			marginTop: '1em',
@@ -448,9 +379,9 @@ const ExampleTermEditor = React.createClass({
 		return (
 			<div className="term-editor-container">
 				<div className="term-editor" style={containerStyle}>
-					<ul className="terms" style={termsStyle}>
-						{this.mapTermsToTags()}
-					</ul>
+
+					{this.mapTermsToTags()}
+
 					<footer style={footerStyle}>
 						<form
 							onSubmit={this.handleTermSubmit}

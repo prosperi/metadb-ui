@@ -65,59 +65,57 @@ $vocab-list-item-padding: .5em;
 }
 
 // //// --- term list --- ////
+$term-tag-background-color: #99d5ca;
+$term-tag-text-color: #222;
 
-// .term-edit-container {
-// 	box-shadow: 0 0 2px 1px #aaa;
-// 	margin: auto;
-// 	position: relative;
-// 	width: 100%;
+.terms {
+	list-style-type: none;
+	margin: 0;
+	padding: .5em;
 
-// 	// target immediate header/footer
-// 	// (terms also have header)
-// 	> header,
-// 	> footer {
-// 		background-color: $vocab-list-bgcolor;
-// 		padding: 10px;
-// 	}
+	li {
+		margin: 3px 0;
+	}
+}
 
-// 	> header {
-// 		@include clearfix;
-// 		border-bottom: 1px solid #aeaeae;
+.vocabulary-term {
+	.tag,
+	.remove-tag-btn {
+		border-radius: $default-border-radius;
+		color: $term-tag-text-color;
+		cursor: pointer;
 
-// 		button { 
-// 			float: right;
-// 		}
-// 	}
+		transition: all 75ms ease-in-out;
+		
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		-o-user-select: none;
+		user-select: none;
 
-// 	> footer {
-// 		border-top: 1px solid #aeaeae;
-// 	}
-// }
+		&:hover {
+			color: #fff;
+		}
+	}
 
-// .terms {
-// 	height: $vocab-list-height;
-// 	overflow-y: scroll;
-// }
+	.tag {
+		background-color: $term-tag-background-color;
+		display: inline-block;
+		font-weight: 100;
+		padding: 5px 10px;
+	}
+	
+	.remove-tag-btn {
+		background-color: transparent;
+		border: 2px solid #efefef;
+		font-size: .75em;
+		margin-left: .5em;
+		outline: none;
 
-// .term {
-// 	border-bottom: 1px solid $vocab-list-bgcolor;
+		&:hover {
+			background-color: #cc092f;
+			border-color: #aa070c;
+		}
+	}
+}
 
-// 	header {
-// 		cursor: pointer;
-// 		font-weight: bold;
-// 		padding: $vocab-list-item-padding;
-// 	}
-// }
-
-// .term-edit-fields {
-// 	background-color: #efefef;
-// 	border-top: 1px solid #ccc;
-// 	border-bottom: 1px solid #ccc;
-// 	font-size: .90em;
-// 	overflow-y: scroll;
-// 	padding: .25em 1.5em;
-
-// 	.form-element-wrapper {
-// 		width: 100%;
-// 	}
-// }
