@@ -40,7 +40,7 @@ const TagList = React.createClass({
 			}
 
 			if (this.props.tagClassName)
-				props.className = this.props.className
+				props.className = this.props.tagClassName
 
 			if (this.props.onTagRemove)
 				props.onRemove = this.handleTagRemove.bind(null, tag)
