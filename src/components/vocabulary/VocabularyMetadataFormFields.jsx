@@ -90,7 +90,7 @@ const VocabularyMetadataFormFields = React.createClass({
 			if (ignoreKeys && ignoreKeys.indexOf(key) > -1)
 				return
 
-			const vals = this.props.data[key]
+			let vals = this.props.data[key]
 			let children
 
 			if (!Array.isArray(vals)) {
@@ -101,6 +101,9 @@ const VocabularyMetadataFormFields = React.createClass({
 					/>
 				)
 			} else {
+				// make a copy of values so we're not pushing to the original data
+				vals = [].concat(vals)
+
 				if (!vals.length)
 					vals.push('')
 
