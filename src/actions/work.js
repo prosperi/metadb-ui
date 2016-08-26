@@ -50,7 +50,8 @@ export const removeValueFromWork = (key, index) => dispatch => {
 	return dispatch({
 		type: REMOVE_VALUE_FROM_WORK,
 		key,
-		index,	})
+		index,
+	})
 }
 
 export const saveWork = (id) => (dispatch, getState) => {

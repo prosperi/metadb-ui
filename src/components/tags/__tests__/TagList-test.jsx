@@ -30,19 +30,17 @@ describe('<TagList />', function () {
 		expect($Tags).has.length(defaultTags.length)
 	})
 
-	it('binds `onClick` to correct tag', function () {
+	it('binds `onClickTag` to correct tag', function () {
 		const which = Math.floor(Math.random() * defaultTags.length)
 		const tag = defaultTags[which]
 		let count = 0
 
-		const onTagClick = t => {
+		const onClickTag = t => {
 			expect(t).to.equal(tag)
-			
-			if (t === tag)
-				count++
+			count++
 		}
 
-		const $el = shallowWrap({onTagClick})
+		const $el = shallowWrap({onClickTag})
 		const $tag = $el.find('Tag').at(which)
 
 		$tag.simulate('click', EV)
@@ -52,21 +50,21 @@ describe('<TagList />', function () {
 
 	it('does not render remove buttons if `readOnly`', function () {
 		const $el = mountWrap({
-			onTagRemove: () => {},
+			onRemoveTag: () => {},
 			readOnly: true,
 		})
 
 		expect($el.find('button')).to.have.length(0)
 	})
 
-	it('does not render remove buttons if no `onTagRemove` provided', function () {
+	it('does not render remove buttons if no `onRemoveTag` provided', function () {
 		const $el = mountWrap()
 
 		expect($el.find('button')).to.have.length(0)
 	})
 
-	it('does render remove buttons if `onTagRemove` provided', function () {
-		const $el = mountWrap({onTagRemove: () => {}})
+	it('does render remove buttons if `onRemoveTag` provided', function () {
+		const $el = mountWrap({onRemoveTag: () => {}})
 
 		expect($el.find('button')).to.have.length(defaultTags.length)
 	})
@@ -76,14 +74,14 @@ describe('<TagList />', function () {
 		const tag = defaultTags[which]
 		let count = 0
 
-		const onTagRemove = t => {
+		const onRemoveTag = t => {
 			expect(t).to.equal(tag)
 
 			if (t === tag)
 				count++
 		}
 
-		const $el = mountWrap({onTagRemove})
+		const $el = mountWrap({onRemoveTag})
 		const $removeBtn = $el.find('button').at(which)
 
 		$removeBtn.simulate('click', EV)

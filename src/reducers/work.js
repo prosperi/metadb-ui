@@ -42,8 +42,8 @@ export default function workReducer (state, action) {
 }
 
 function addEmptyValueToWork (state, action) {
-	const data = state.data
-	const updates = state.updates
+	const data = assign({}, state.data)
+	const updates = assign({}, state.updates)
 	const key = action.key
 
 	if (!updates[key])
@@ -98,8 +98,6 @@ function removeValueFromWork (state, action) {
 			data[key].slice(index + 1)
 		)
 	}
-
-	console.log('checking changed', changed)
 
 	return assign({}, state, {
 		isChanged: changed,
