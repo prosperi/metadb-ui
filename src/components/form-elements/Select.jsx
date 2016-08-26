@@ -24,7 +24,7 @@ const Select = React.createClass({
 	},
 
 	handleChange: function (ev) {
-		this.props.onChange && this.props.onChange.call(ev.target.value)
+		this.props.onChange && this.props.onChange.call(null, ev.target.value)
 	},
 
 	mapOptions: function () {
