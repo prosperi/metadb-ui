@@ -3,9 +3,9 @@ import {
 	FETCHING_WORK,
 	RECEIVE_WORK,
 	REMOVE_VALUE_FROM_WORK,
-	UPDATE_WORK,
 	SAVED_WORK,
 	SAVING_WORK,
+	UPDATE_WORK,
 } from '../actions/constants'
 
 import assign from 'object-assign'
@@ -72,8 +72,8 @@ function receiveWork (state, action) {
 }
 
 function removeValueFromWork (state, action) {
-	const data = state.data
-	const updates = state.updates
+	const data = assign({}, state.data)
+	const updates = assign({}, state.updates)
 
 	const key = action.key
 	const index = action.index
@@ -123,8 +123,8 @@ function updateWork (state, action) {
 	const index = action.index
 	const val = action.value
 
-	const data = state.data
-	const updates = state.updates
+	const data = assign({}, state.data)
+	const updates = assign({}, state.updates)
 
 	if (!updates[key])
 		updates[key] = data[key]
