@@ -4,7 +4,7 @@ import VocabularyList from '../components/vocabulary/VocabularyList.jsx'
 import TermsManager from '../components/vocabulary/TermsManager.jsx'
 
 const T = React.PropTypes
-const VOCAB_LABEL_KEY = 'label'
+const VOCAB_LABEL_KEY = 'pref_label'
 
 const VocabularyManager = React.createClass({
 	propTypes: {
