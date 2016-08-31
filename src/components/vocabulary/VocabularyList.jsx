@@ -11,11 +11,23 @@ const VocabularyList = React.createClass({
 			label: T.string,
 		}),
 
+		activeIndex: T.number,
+		activeKey: T.string,
+
 		onAddVocabulary: T.func.isRequired,
 		onVocabularyClick: T.func.isRequired,
 
 		placeholder: T.string,
 		vocabularies: T.array,
+	},
+
+	componentWillReceiveProps: function (nextProps, nextState) {
+		const vocabs = nextProps.vocabularies
+		const query = nextState.filterQuery || ''
+
+		this.setState({
+			vocabularies: this.filterVocabularies(query, vocabs),
+		})
 	},
 
 	getDefaultProps: function () {
@@ -29,20 +41,36 @@ const VocabularyList = React.createClass({
 
 	getInitialState: function () {
 		return {
-			activeIndex: -1,
-			activeKey: null,
 			filterQuery: '',
 			hoverIndex: -1,
 			vocabularies: this.props.vocabularies,
 		}
 	},
 
-	// shouldComponentRender: function (nextState) {
-	// 	return true
-	// },
-
 	clearHoverIndex: function () {
 		this.setHoverIndex(-1)
+	},
+
+	filterVocabularies: function (val, vocabs) {
+		if (!vocabs)
+			vocabs = this.props.vocabularies
+
+		if (val === '')
+			return vocabs
+
+		const lowerVal = val.toLowerCase()
+
+		return this.props.vocabularies.filter(vocab => {
+			const key = this.props.keys.label
+
+			let label = vocab[key]
+			if (Array.isArray(label))
+				label = label[0]
+
+			if (label === '') return 0
+
+			return label.toLowerCase().indexOf(lowerVal) > -1 ? 1 : 0
+		})
 	},
 
 	handleAddVocabulary: function (ev) {
@@ -53,14 +81,7 @@ const VocabularyList = React.createClass({
 		if (!this.props.vocabularies) return
 
 		const val = ev.target.value
-		const filtered = this.props.vocabularies.filter(vocab => {
-			const key = this.props.keys.label
-			let label = vocab[key]
-			if (Array.isArray(label))
-				label = label[0]
-
-			return (label || '').toLowerCase().indexOf(val.toLowerCase()) > -1 ? 1 : 0
-		})
+		const filtered = this.filterVocabularies(val)
 
 		this.setState({
 			filterQuery: val,
@@ -91,14 +112,10 @@ const VocabularyList = React.createClass({
 	},
 
 	handleVocabularyClick: function (data, index) {
-		if (index === this.state.activeIndex) return
+		if (index === this.props.activeIndex) return
+		if (data[this.props.keys.label] === this.props.activeKey) return
 
-		this.setState({
-			activeIndex: index,
-			activeKey: data[this.props.keys.label],
-		})
-
-		this.props.onVocabularyClick.call(null, data)
+		this.props.onVocabularyClick.call(null, data, index)
 	},
 
 	maybeRenderCount: function (data) {
@@ -156,7 +173,7 @@ const VocabularyList = React.createClass({
 			classname.push('hover')
 		}
 
-		if (this.state.activeKey === data[this.props.keys.label]) {
+		if (this.props.activeKey === data[this.props.keys.label][0]) {
 			classname.push('active')
 		}
 
@@ -167,7 +184,7 @@ const VocabularyList = React.createClass({
 				onClick={this.handleVocabularyClick.bind(null, data, index)}
 				onMouseOver={this.setHoverIndex.bind(null, index)}
 			>
-				{data[this.props.keys.label]}
+				{data[this.props.keys.label][0]}
 				{this.maybeRenderCount(data)}
 			</li>
 		)

@@ -3,9 +3,7 @@
 import React from 'react'
 
 import VocabularyList from '../components/vocabulary/VocabularyList.jsx'
-import TermEdit from '../components/vocabulary/TermEdit.jsx'
-
-import FormFieldsFromDataObject from '../components/FormFieldsFromDataObject.jsx'
+import TermsEditor from '../components/vocabulary/TermsEditor.jsx'
 
 const VocabularyPage = React.createClass({
 	componentDidMount: function () {
@@ -22,11 +20,36 @@ const VocabularyPage = React.createClass({
 		console.log('addin a vocabulary')
 	},
 
+	handleAddTerm: function (val) {
+		if (!this.props.activeVocabulary)
+			return
+
+		this.props.addTermToVocabulary({
+			uri: this.props.activeVocabulary,
+			term: val,
+		})
+	},
+
+	handleRemoveTerm: function (val) {
+
+	},
+
+	handleTermUpdate: function (term, data) {
+		if (!this.props.activeVocabulary)
+			return
+
+		this.props.updateTermInVocabulary({
+			uri: this.props.activeVocabulary,
+			term,
+			data,
+		})
+	},
+
 	handleVocabularyClick: function (data) {
 		const uri = data.uri
 
 		this.setState({
-			activeVocabulary: uri
+			activeVocabulary: uri,
 		})
 
 		this.props.fetchTerms(data)
@@ -49,32 +72,17 @@ const VocabularyPage = React.createClass({
 		}
 
 		const vocab = this.props.vocabulary.data[active]
-
+		const terms = this.props.terms[active].data
+		
 		return (
-			<form onSubmit={e => e.preventDefault()}>
-				<FormFieldsFromDataObject
-					data={vocab}
-					ignoreKeys={['terms']}
-					onAddValueField={console.log}
-					onChange={console.log}
-					onRemoveValueField={console.log}
-				/>
-			</form>
-		)		
-
-		// return (
-		// 	<div style={{
-		// 		display: 'inline-block',
-		// 		float: 'right',
-		// 		verticalAlign: 'top',
-		// 		width: '66%'
-		// 	}}>
-		// 		<TermEdit
-		// 			displayKey="label"
-		// 			terms={this.props.terms[active].data}
-		// 		/>
-		// 	</div>
-		// )
+			<TermsEditor
+				label={vocab.label[0]}
+				onAddTerm={this.handleAddTerm}
+				onRemoveTerm={this.handleRemoveTerm}
+				onUpdateTerm={this.handleUpdateTerm}
+				terms={terms}
+			/>
+		)
 	},
 
 	renderVocabularyList: function () {
@@ -106,22 +114,20 @@ const VocabularyPage = React.createClass({
 			vocabularies,
 		}
 
-		return (
-			<div style={{display: 'inline-block', width: '25%'}}>
-				<VocabularyList {...props} />
-			</div>
-		)
-
+		return <VocabularyList {...props} />
 	},
 
 	render: function () {
 		return (
 			<div>
-				<h1>the vocab page!</h1>
-				
-				{this.renderVocabularyList()}
+				<h1>Vocabulary Management</h1>
+				<div className="vocabulary-list-container">
+					{this.renderVocabularyList()}
+				</div>
 
-				{this.renderTermList()}
+				<div className="term-list-container">
+					{this.renderTermList()}
+				</div>
 
 			</div>
 		)

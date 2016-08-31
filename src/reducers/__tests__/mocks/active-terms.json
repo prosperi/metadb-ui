@@ -1,0 +1,83 @@
+{
+  "fetchedAt": 1472582374611,
+  "isFetching": false,
+  "data": [
+    {
+      "uri": "http://example-auth.org/ns/testVocab/testTerm",
+      "label": [
+        "Test Term"
+      ],
+      "alt_label": [],
+      "pref_label": [
+        "Test Term"
+      ],
+      "hidden_label": []
+    },
+    {
+      "uri": "http://example-auth.org/ns/testVocab/testTermAnother",
+      "label": [
+        "Test Term: Another one"
+      ],
+      "alt_label": [],
+      "pref_label": [
+        "Test Term: Another one"
+      ],
+      "hidden_label": []
+    },
+    {
+      "uri": "http://example-auth.org/ns/testVocab/testTermBar",
+      "label": [],
+      "alt_label": [
+        "Test Term Bar PUT create"
+      ],
+      "pref_label": [
+        "Test Term Bar PUT create"
+      ],
+      "hidden_label": []
+    },
+    {
+      "uri": "http://example-auth.org/ns/testVocab/testTermBaz",
+      "label": [],
+      "alt_label": [
+        "Test Term Baz PUT create"
+      ],
+      "pref_label": [
+        "Test Term Baz PUT create"
+      ],
+      "hidden_label": []
+    },
+    {
+      "uri": "http://example-auth.org/ns/testVocab/testTermCat",
+      "label": [
+        "Test Term Cat"
+      ],
+      "alt_label": [],
+      "pref_label": [
+        "Test Term Cat"
+      ],
+      "hidden_label": []
+    },
+    {
+      "uri": "http://example-auth.org/ns/testVocab/testTermFoo",
+      "label": [],
+      "alt_label": [
+        "Test Term Foo PUT create"
+      ],
+      "pref_label": [
+        "Test Term Foo PUT create"
+      ],
+      "hidden_label": []
+    },
+    {
+      "uri": "http://example-auth.org/ns/testVocab/testTermQux",
+      "label": [],
+      "alt_label": [
+        "Test Term Qux PUT create"
+      ],
+      "pref_label": [
+        "Test Term Qux PUT create"
+      ],
+      "hidden_label": []
+    }
+  ]
+}

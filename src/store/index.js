@@ -11,8 +11,8 @@ const initialState = {
 	// collection: {},
 	// error: {},
 	// search: {},
-	terms: {},
-	vocabulary: {},	
+	activeVocabularyTerms: null,
+	vocabularies: {},	
 	work: {},
 
 	// user: {},

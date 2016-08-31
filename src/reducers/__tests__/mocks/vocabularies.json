@@ -1,0 +1,68 @@
+{
+	"fetchedAt": 1472582214412,
+	"isFetching": false,
+  "data": [
+    {
+      "uri": "http://example-ns.org/ns/testVocab",
+      "label": [
+        "A Test Vocabulary",
+        "Test Vocabulary Label Update",
+        "A test vocabulary created using the RESTful endpoint",
+        "testing PATCH updates for vocabularies"
+      ],
+      "alt_label": [
+        "Test Vocabulary Alt. Label Update",
+        "An alternative label for a test vocabulary created using the RESTful endpoint",
+        "testing PATCH updates with multiple fields"
+      ],
+      "pref_label": [],
+      "hidden_label": [],
+      "absolute_path": "https://example-api.org/vocabularies/testVocab.json",
+      "term_count": 7
+    },
+    {
+      "uri": "http://example-ns.org/ns/testVocab2",
+      "label": [],
+      "alt_label": [],
+      "pref_label": [],
+      "hidden_label": [],
+      "absolute_path": "https://example-api.org/vocabularies/testVocab2.json",
+      "term_count": 244
+    },
+    {
+      "uri": "http://example-ns.org/ns/testVocab3",
+      "label": [],
+      "alt_label": [],
+      "pref_label": [],
+      "hidden_label": [],
+      "absolute_path": "https://example-api.org/vocabularies/testVocab3.json",
+      "term_count": 2
+    },
+    {
+      "uri": "http://example-ns.org/ns/testVocabPatch",
+      "label": [
+        "testing single PUT updates for vocabularies"
+      ],
+      "alt_label": [
+        "testing PUT updates with multiple fields"
+      ],
+      "pref_label": [],
+      "hidden_label": [],
+      "absolute_path": "https://example-api.org/vocabularies/testVocabPatch.json",
+      "term_count": 23
+    },
+    {
+      "uri": "http://example-ns.org/ns/testVocabPut",
+      "label": [
+        "testing single PUT updates for vocabularies"
+      ],
+      "alt_label": [
+        "testing PUT updates with multiple fields"
+      ],
+      "pref_label": [],
+      "hidden_label": [],
+      "absolute_path": "https://example-api.org/vocabularies/testVocabPut.json",
+      "term_count": 2
+    }
+  ]
+}

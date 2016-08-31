@@ -12,7 +12,7 @@ import store, { history } from './store'
 // pages / wrappers
 import App from './App.jsx'
 import Home from './pages/Home.jsx'
-import Vocabulary from './pages/Vocabulary.jsx'
+import VocabularyManager from './pages/VocabularyManager.jsx'
 import Work from './pages/Work.jsx'
 
 const MetaDB = (
@@ -20,7 +20,7 @@ const MetaDB = (
 	<Router history={history}>
 		<Route path="/" component={App}>
 			<IndexRoute component={Home} />
-			<Route path="vocabularies" component={Vocabulary} />
+			<Route path="vocabularies" component={VocabularyManager} />
 			<Route path="works/:workId" component={Work} />
 		</Route>
 	</Router>

@@ -3,6 +3,18 @@ $vocab-list-height: ($base-font-size * 30);
 $vocab-list-width: ($base-font-size * 25);
 $vocab-list-item-padding: .5em;
 
+// containers on /vocabularies page
+.vocabulary-list-container {
+	@include span-columns(1 of 4);
+}
+
+.terms-manager-container {
+	@include omega;
+	@include span-columns(3 of 4);
+}
+
+// individual component styles
+
 .vocabulary-list {
 	@include omega;
 
@@ -119,3 +131,19 @@ $term-tag-text-color: #222;
 	}
 }
 
+.term-editor {
+	box-shadow: 0 0 2px 1px #aaa;
+
+	header,
+	footer {
+		padding: 10px;
+	}
+
+	header {
+		border-bottom: 1px solid $vocab-list-bgcolor;
+	}
+
+	footer {
+		background-color: $vocab-list-bgcolor;
+	}
+}

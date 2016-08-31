@@ -61,21 +61,9 @@ const VocabularyMetadataFormFields = React.createClass({
 				key={PREF_LABEL_NAME}
 				label={PREF_LABEL_NAME}
 				multipleValues={false}
-				onChange={this.handleOnChange.bind(null, PREF_LABEL_KEY)}
+				onChange={this.props.onChange.bind(null, PREF_LABEL_KEY)}
 			/>
 		)
-	},
-
-	handleOnAddValueField: function (key) {
-		this.props.onAddValueField.apply(null, arguments)
-	},
-
-	handleOnChange: function (key, index, value) {
-		this.props.onChange.apply(null, arguments)
-	},
-
-	handleOnRemoveValueField: function (key, index) {
-		this.props.onRemoveValueField.apply(null, arguments)
 	},
 
 	mapDataKeysToFormElements: function () {
@@ -120,9 +108,9 @@ const VocabularyMetadataFormFields = React.createClass({
 				key,
 				label: key,
 				multipleValues: Array.isArray(vals),
-				onAddValueField: this.handleOnAddValueField.bind(null, key),
-				onChange: this.handleOnChange.bind(null, key),
-				onRemoveValueField: this.handleOnRemoveValueField.bind(null, key),
+				onAddValueField: this.props.onAddValueField.bind(null, key),
+				onChange: this.props.onChange.bind(null, key),
+				onRemoveValueField: this.props.onRemoveValueField.bind(null, key),
 			}
 
 			return <FormElementContainer {...props} />

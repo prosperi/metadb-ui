@@ -10,8 +10,8 @@ const TagList = React.createClass({
 		className: T.string,
 		tagClassName: T.string,
 
-		onTagClick: T.func,
-		onTagRemove: T.func,
+		onClickTag: T.func,
+		onRemoveTag: T.func,
 		readOnly: T.bool,
 	},
 
@@ -23,12 +23,12 @@ const TagList = React.createClass({
 		}
 	},
 
-	handleTagClick: function (tag) {
-		this.props.onTagClick && this.props.onTagClick.call(null, tag)
+	handleTagClick: function (/* tag, index */) {
+		this.props.onClickTag && this.props.onClickTag.apply(null, arguments)
 	},
 
-	handleTagRemove: function (tag) {
-		this.props.onTagRemove && this.props.onTagRemove.call(null, tag)
+	handleTagRemove: function (/* tag, index */) {
+		this.props.onRemoveTag && this.props.onRemoveTag.apply(null, arguments)
 	},
 
 	mapTags: function () {
@@ -42,11 +42,11 @@ const TagList = React.createClass({
 			if (this.props.tagClassName)
 				props.className = this.props.tagClassName
 
-			if (this.props.onTagRemove)
-				props.onRemove = this.handleTagRemove.bind(null, tag)
+			if (this.props.onRemoveTag)
+				props.onRemove = this.handleTagRemove.bind(null, tag, index)
 
-			if (this.props.onTagClick)
-				props.onClick = this.handleTagClick.bind(null, tag)
+			if (this.props.onClickTag)
+				props.onClick = this.handleTagClick.bind(null, tag, index)
 
 			return (
 				<li className="tag-list-item" key={tag+index}>

@@ -15,7 +15,7 @@ const Tag = React.createClass({
 	handleOnClick: function (ev) {
 		ev.preventDefault()
 
-		return this.props.onClick && this.props.onClick.call(null)
+		return this.props.onClick && this.props.onClick.call()
 	},
 
 	handleRemoveTag: function (ev) {
@@ -24,7 +24,7 @@ const Tag = React.createClass({
 		if (this.props.readOnly)
 			return
 
-		return this.props.onRemove && this.props.onRemove.call(null)
+		return this.props.onRemove && this.props.onRemove.call()
 	},
 
 	maybeRenderRemoveButton: function () {

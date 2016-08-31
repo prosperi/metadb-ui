@@ -3,6 +3,8 @@ import Modal from 'react-modal'
 import xhr from 'xhr'
 import assign from 'object-assign'
 
+import createNewTerm from '../../lib/create-new-term'
+
 import FormElementContainer from '../FormElementContainer.jsx'
 import TextInput from '../form-elements/TextInput.jsx'
 
@@ -46,13 +48,7 @@ const ExampleTermEditor = React.createClass({
 		if (term)
 			return term
 
-		return {
-			uri: '',
-			alt_label: [],
-			hidden_label: [],
-			pref_label: [val],
-			label: [val],
-		}
+		return createNewTerm(val)
 	},
 
 	findTerm: function (val) {

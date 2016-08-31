@@ -1,11 +1,12 @@
 // essentially wrapping yr store to yr main component
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import assign from 'object-assign'
 
 import * as actionCreators from './actions/'
 import Main from './pages/Main.jsx'
 
-function mapStateToProps (state, ownProps) {
+function mapStateToProps (state) {
 	return {
 		// collection: state.collection,
 		// collections: state.collections,
@@ -16,9 +17,10 @@ function mapStateToProps (state, ownProps) {
 
 		// search: state.search,
 
-		terms: state.terms,
+		// activeVocabulary,
+		activeVocabularyTerms: state.activeVocabularyTerms,
 		
-		vocabulary: state.vocabulary,
+		vocabularies: state.vocabularies,
 
 		work: state.work,
 	}
