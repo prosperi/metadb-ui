@@ -5,6 +5,7 @@ import assign from 'object-assign'
 
 import {
 	ADD_TERM_TO_VOCABULARY,
+	REMOVE_TERM_FROM_VOCABULARY,
 } from '../../actions/constants'
 
 const originalStatePure = assign({}, originalState)
@@ -49,5 +50,27 @@ describe('vocabularyReducer', function () {
 
 	xdescribe('@RECEIVE_ALL_VOCABULARIES', function () {
 
+	})
+
+	describe('@REMOVE_TERM_FROM_VOCABULARY', function () {
+		it('decrements the `term_count` property', function () {
+			const originalData = originalState.data
+			const idx = Math.floor(Math.random() * originalData.length)
+
+			const originalVocab = originalData[idx]
+			const uri = originalVocab.uri
+
+			const action = {
+				type: REMOVE_TERM_FROM_VOCABULARY,
+				term: 'whatever',
+				uri,
+			}
+
+			const result = vocabReducer(originalState, action)
+			const updatedVocab = result.data[idx]
+
+			expect(updatedVocab.term_count).to.be.lessThan(originalVocab.term_count)
+			expect(originalVocab.term_count - updatedVocab.term_count).to.equal(1)
+		})
 	})
 })
