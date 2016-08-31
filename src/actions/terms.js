@@ -34,30 +34,36 @@ const findInArray = function (arr, fn) {
 // older than a minute is stale, let's say
 const STALE_TIME = 60 * 1000
 
+function mintUri (vocab, term) {
+	const authBaseUrl = vocab.uri
+	const cameledTerm = term
+		.replace(/[^0-9a-zA-Z\s]/g, '')
+		.replace(/\s+/, ' ')
+		.toLowerCase()
+		.split(' ')
+		.map((w, i) => {
+			if (i === 0) return w
+			return w.substr(0,1).toUpperCase() + w.substr(1)
+		}).join('')
+
+	return `${authBaseUrl}/${cameledTerm}`
+}
+
 // 1. creates the term object
 // 2. makes an API request to add new term
 // 3. dispatches:
 //		1. ADD_TERM_TO_VOCABULARY
 //	  2. UPDATE_VOCABULARY_TERM_COUNT
-//
-// NOTE: I've been trying to stick with ES6 standards throughout,
-// however, in order to bypass the XHR request, I'm binding a `this`
-// object to the dispatcher during testing. When defining functions
-// as shorthand-constants in ES6 (const func = () => {/* ... */}) no
-// `this` object is actually attached, so `this.addTerm` will always
-// be `undefined` even when bound.
 
 export const addTermToVocabulary = function (vocab, term) {
 	return dispatch => {
 		const newTerm = createNewTerm(term)
 		const uri = vocab.uri
 
-		const cameledTerm = term.toLowerCase().split(' ').map((w, i) => {
-			if (i === 0) return w
-			return w.substr(0,1).toUpperCase() + w.substr(1)
-		}).join('')
-
-		newTerm.uri = `http://authority.lafayette.edu/ns/testVocab/${cameledTerm}`
+		// Eventually I expect this will be handled on the server, but until then,
+		// a URI needs to be passed for the term to be accepted, so we'll create a
+		// mock one.
+		newTerm.uri = mintUri(vocab, term)
 
 		return addTerm(vocab, newTerm, function (err, response) {
 			if (err) {

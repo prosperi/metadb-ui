@@ -52,7 +52,9 @@ module.exports = {
 		new ExtractTextPlugin('style.css', {
 			allChunks: true,
 		}),
-		new webpack.EnvironmentPlugin(['API_BASE_URL']),
+		new webpack.EnvironmentPlugin([
+			'API_BASE_URL',
+		]),
 	],
 	sassLoader: {
 		includePaths: Bourbon.with(Neat.includePaths)
