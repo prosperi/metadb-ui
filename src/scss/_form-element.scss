@@ -1,12 +1,30 @@
+$input-width: 90%;
+$button-offset: 1%;
+
 .form-element-wrapper {
-	margin-bottom: 1em;
+
+	// need to offset for absolute-positioned button on bottom
+	margin-bottom: 2em;
+	position: relative;
+
+	button {
+		width: 2em;
+	}
+
+	button.add-row-btn {
+		left: $input-width + $button-offset;
+		margin-top: 1em;
+		position: absolute;
+	}
 }
 
 .form-element {
+
+	@include clearfix;
 	display: block;
 
 	button {
-		margin-left: 5px;
+		margin-left: $button-offset;
 	}
 
 	input[type="datetime-local"],
@@ -18,7 +36,7 @@
 	input[type="url"],
 	textarea {
 		vertical-align: middle;
-		width: 90%;
+		width: $input-width;
 	}
 
 	// add some room to multiple .form-elements

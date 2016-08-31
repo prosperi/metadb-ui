@@ -29,22 +29,16 @@ const FormElementContainer = React.createClass({
 		}
 	},
 
-	addOrRemoveButton: function (idx) {
-		const len = React.Children.count(this.props.children)
-		const last = len - 1
-
-		if (idx === last) {
-			return (
-				<button onClick={this.handleAddValueRow}>
-					{'+'}
-				</button>
-			)
-		}
-
+	addRowButton: function () {
+		if (!this.props.multipleValues) 
+			return
+		
 		return (
-			<button onClick={this.handleRemoveValueRow.bind(null, idx)}>
-				{'–'}
-			</button>
+			<button
+				children="+"
+				className="add-row-btn"
+				onClick={this.handleAddValueRow}
+			/>
 		)
 	},
 
@@ -74,6 +68,15 @@ const FormElementContainer = React.createClass({
 		)
 	},
 
+	removeButton: function (idx) {
+		return (
+			<button
+				children="-"
+				onClick={this.handleRemoveValueRow.bind(null, idx)}
+			/>
+		)
+	},
+
 	renderChildren: function () {
 		return React.Children.map(this.props.children, (child, idx) => {
 			const props = assign({}, {
@@ -83,7 +86,7 @@ const FormElementContainer = React.createClass({
 			return (
 				<div className="form-element">
 					{React.cloneElement(child, props)}
-					{this.props.multipleValues ? this.addOrRemoveButton(idx) : ''}
+					{this.props.multipleValues ? this.removeButton(idx) : ''}
 				</div>
 			)
 
@@ -96,6 +99,7 @@ const FormElementContainer = React.createClass({
 			<div className="form-element-wrapper">
 				{this.maybeRenderLabel()}
 				{this.renderChildren()}
+				{this.addRowButton()}
 			</div>
 		)
 	}

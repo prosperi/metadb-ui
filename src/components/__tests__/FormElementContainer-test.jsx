@@ -82,4 +82,11 @@ describe('<FormElementContainer/>', function () {
 
 		expect($el.find('button')).to.have.length(0)
 	})
+
+	it('renders `add-row-btn` as last element', function () {
+		const numberOfKids = Math.ceil(Math.random() * 5)
+		const $el = wrapElement({}, numberOfKids)
+
+		expect($el.children().last().hasClass('add-row-btn')).to.be.true
+	})
 })
