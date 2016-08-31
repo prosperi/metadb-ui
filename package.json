@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "karma start",
+    "test": "karma start --no-auto-watch --single-run",
+    "test:watch": "karma start --auto-watch --no-single-run",
     "storybook": "start-storybook -p 9001",
     "build": "webpack",
     "dev": "webpack-dev-server --content-base build/ --hot --inline --progress --colors --history-api-fallback",
@@ -59,7 +60,6 @@
     "karma-chrome-launcher": "^2.0.0",
     "karma-firefox-launcher": "^1.0.0",
     "karma-mocha-reporter": "^2.1.0",
-    "karma-nyan-reporter": "^0.2.4",
     "karma-phantomjs-launcher": "^1.0.1",
     "karma-safari-launcher": "^1.0.0",
     "karma-webpack": "^1.8.0",
