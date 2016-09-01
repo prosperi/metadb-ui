@@ -1,6 +1,8 @@
 import React from 'react'
 
 import FormElementContainer from './FormElementContainer.jsx'
+
+import ControlledVocabularyInput from './form-elements/ControlledVocabularyInput.jsx'
 import TextInput from './form-elements/TextInput.jsx'
 import TextArea from './form-elements/TextArea.jsx'
 
@@ -9,15 +11,36 @@ const T = React.PropTypes
 const WorkMetadataForm = React.createClass({
 	propTypes: {
 		data: T.object.isRequired,
+		getAutocompleteTerms: T.func.isRequired,
 		onAddValueField: T.func.isRequired,
 		onChange: T.func.isRequired,
 		onRemoveValueField: T.func.isRequired,
 		onSubmit: T.func.isRequired,
 		schema: T.array.isRequired,
+		autocompleteTerms: T.object,
 	},
 
-	determineFormElement: function (type) {
-		switch (type) {
+	getDefaultProps: function () {
+		return {
+			autocompleteTerms: {},
+		}
+	},
+
+	componentDidMount: function () {
+		this.props.schema.forEach(scheme => {
+			if (scheme.authorities.length) {
+				scheme.authorities.forEach(auth => {
+					this.props.getAutocompleteTerms(auth)
+				})
+			}
+		})
+	},
+
+	determineFormElement: function (scheme) {
+		if (scheme.authorities.length)
+			return ControlledVocabularyInput
+
+		switch (scheme.type) {
 
 			case 'text':
 				return TextArea
@@ -28,11 +51,20 @@ const WorkMetadataForm = React.createClass({
 		}
 	},
 
+	getAutocompleteTerms: function (auths) {
+		const terms = auths.reduce((prev, auth) => {
+			return prev.concat(this.props.autocompleteTerms[auth.uri])
+		}, []).filter(Boolean)
+
+		return terms
+	},
+
 	handleAddValueField: function (key) {
 		this.props.onAddValueField.call(null, key)
 	},
 
 	handleChange: function (key, index, value) {
+		console.log('change!', arguments)
 		this.props.onChange.apply(null, arguments)
 	},
 
@@ -50,10 +82,9 @@ const WorkMetadataForm = React.createClass({
 		const schema = this.props.schema
 		const data = this.props.data
 
-		return schema.map((s, index) => {
-			const key = s.name
-			const type = s.type
-			const label = s.label || key
+		return schema.map((scheme, index) => {
+			const key = scheme.name
+			const label = scheme.label || key
 
 			// skip schema things for which we don't have data
 			if (!data.hasOwnProperty(key))
@@ -73,7 +104,7 @@ const WorkMetadataForm = React.createClass({
 			if (Object.prototype.toString.call(values[0]) === '[object Object]')
 				return
 
-			const InputElement = this.determineFormElement(type)
+			const InputElement = this.determineFormElement(scheme)
 
 			const wrapperProps = {
 				...this.props,
@@ -84,7 +115,10 @@ const WorkMetadataForm = React.createClass({
 				onRemoveValueField: this.handleRemoveValueField.bind(null, key),
 			}
 
-			const inputProps = {
+			const inputProps = {}
+
+			if (InputElement.displayName === 'ControlledVocabularyInput') {
+				inputProps.vocabulary = this.getAutocompleteTerms(scheme.authorities)
 			}
 
 			// when creating each value element, be sure to include the value

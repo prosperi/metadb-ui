@@ -19,6 +19,7 @@ function mapStateToProps (state) {
 
 		// activeVocabulary,
 		activeVocabularyTerms: state.activeVocabularyTerms,
+		autocompleteTerms: state.autocompleteTerms,
 		
 		vocabularies: state.vocabularies,
 

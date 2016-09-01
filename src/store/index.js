@@ -12,6 +12,7 @@ const initialState = {
 	// error: {},
 	// search: {},
 	activeVocabularyTerms: null,
+	autocompleteTerms: {},
 	vocabularies: {},	
 	work: {},
 

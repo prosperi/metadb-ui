@@ -42,21 +42,6 @@ const Work = React.createClass({
 		this.setState({mediaOpen: !this.state.mediaOpen})
 	},
 
-	handleAddValueField: function (which) {
-		console.log('adding value field to', which)
-		this.props.addEmptyValueToWork.apply(null, arguments)
-	},
-
-	handleRemoveValueField: function (which, index) {
-		console.log(`removing value field [idx:${index}] from ${which}`)
-		this.props.removeValueFromWork.apply(null, arguments)
-	},
-
-	handleChange: function (key, index, value) {
-		console.log('making change [${value}] to key [${key}] @ idx ${index}')
-		this.props.editWorkField.apply(null, arguments)
-	},
-
 	handleFormSubmit: function () {
 		this.props.saveWork(this.props.params.workId)
 
@@ -127,9 +112,10 @@ const Work = React.createClass({
 				{...this.props}
 
 				data={assign({}, workData, updates)}
-				onAddValueField={this.handleAddValueField}
-				onChange={this.handleChange}
-				onRemoveValueField={this.handleRemoveValueField}
+				getAutocompleteTerms={this.props.fetchAutocompleteTerms}
+				onAddValueField={this.props.addEmptyValueToWork}
+				onChange={this.props.editWorkField}
+				onRemoveValueField={this.props.removeValueFromWork}
 				onSubmit={this.handleFormSubmit}
 				schema={schema}
 			/>
