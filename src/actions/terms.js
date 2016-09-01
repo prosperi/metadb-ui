@@ -10,13 +10,14 @@ import {
 	REMOVE_TERM_FROM_VOCABULARY,
 	REMOVE_VALUE_FROM_TERM,
 
-	UPDATE_TERM_IN_VOCABULARY,
+	UPDATE_TERM,
 } from './constants'
 
 import { get } from '../../lib/api/request'
 import { 
 	addTermToVocabulary as addTerm,
 	fetchTerms,
+	patchTerm,
 	putTerms,
 } from '../../lib/api/terms'
 
@@ -29,6 +30,14 @@ const findInArray = function (arr, fn) {
 			return arr[i]
 
 	return null
+}
+
+const findIndexInArray = function (arr, fn) {
+	for (let i = 0; i < arr.length; i++)
+		if (fn(arr[i], i, arr))
+			return i
+
+	return -1
 }
 
 // older than a minute is stale, let's say
@@ -123,49 +132,21 @@ export const removeTermFromVocabulary = function (vocabData, termData, index) {
 	}
 }
 
+export const updateTermInVocabulary = function (_data) {
+	return (dispatch, getState) => {
+		const { data, term, vocabulary } = _data
 
-// export const addTermToVocabulary = data => (dispatch, getState) => {
-// 	const terms = getState().terms
-// 	const uri = data.uri
-// 	const term = data.term
+		patchTerm(vocabulary, data, function (err, response) {
+			if (err) {
+				throw Error('patchTerm error for updateTermInVocabulary')
+			}
 
-// 	const vocab = terms[uri]
-
-// 	// add some error handling / fetch vocab
-// 	if (!vocab) {
-// 		return
-// 	}
-
-// 	const found = terms[uri].data.find(t => t.pref_label.indexOf(pref) > -1)
-
-// 	if (index)
-// 		return
-
-// 	return dispatch({
-// 		type: ADD_TERM_TO_VOCABULARY,
-// 		uri: data.uri,
-// 		value: data.term,
-// 	})
-// }
-
-export const addEmptyValueToTerm = data => dispatch => {
-	return dispatch({
-		type: ADD_EMPTY_VALUE_TO_TERM,
-		pref_label: data.pref_label,
-		key: data.key,
-		vocabularyUri: data.vocabularyUri,
-	})
-}
-
-export const updateTermInVocabulary = _data => dispatch => {
-	const { uri, data, term } = _data
-
-	// TODO: check to make sure `uri` exists in state
-
-	return dispatch({
-		type: UPDATE_TERM_IN_VOCABULARY,
-		uri,
-		data,
-		term,
-	})
+			return dispatch({
+				type: UPDATE_TERM,
+				previousPrefLabel: term,
+				data,
+				vocabulary,
+			})
+		})
+	}
 }

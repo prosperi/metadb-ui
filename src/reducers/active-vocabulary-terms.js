@@ -5,7 +5,16 @@ import {
 	FETCHING_VOCABULARY_TERMS,
 	RECEIVE_VOCABULARY_TERMS,
 	REMOVE_TERM_FROM_VOCABULARY,
+	UPDATE_TERM,
 } from '../actions/constants'
+
+const findIndex = function (arr, fn) {
+	for (let i = 0; i < arr.length; i++)
+		if (fn(arr[i], i, arr))
+			return i
+
+	return -1
+}
 
 export default function activeVocabularyTermsReducer (state, action) {
 	if (typeof state === 'undefined')
@@ -23,6 +32,9 @@ export default function activeVocabularyTermsReducer (state, action) {
 
 		case REMOVE_TERM_FROM_VOCABULARY:
 			return removeTermFromVocabulary(state, action)
+
+		case UPDATE_TERM:
+			return updateTerm(state, action)
 
 		default:
 			return state
@@ -54,4 +66,25 @@ function removeTermFromVocabulary (state, action) {
 	)
 
 	return assign({}, state, {data})
+}
+
+function updateTerm (state, action) {
+	const { vocabulary, previousPrefLabel, data } = action
+
+	const bundle = state.data
+	const index = findIndex(bundle, t => (
+		t.pref_label.indexOf(previousPrefLabel) > -1
+	))
+
+	if (index === -1) {
+		return state
+	}
+
+	const update = [].concat(
+		bundle.slice(0, index),
+		data,
+		bundle.slice(index + 1)
+	)
+
+	return assign({}, state, {data: update})
 }

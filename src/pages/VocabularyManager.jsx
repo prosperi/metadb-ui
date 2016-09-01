@@ -37,8 +37,12 @@ const VocabularyManager = React.createClass({
 	},
 
 
-	handleUpdateTermInVocabulary: function (term, termData) {
-
+	handleUpdateTermInVocabulary: function (vocabulary, term, data) {
+		this.props.updateTermInVocabulary({
+			data,
+			term,
+			vocabulary,
+		})
 	},
 
 	// sets the `activeVocabulary` prop + fetches terms
@@ -67,7 +71,7 @@ const VocabularyManager = React.createClass({
 				label={vocabName}
 				onAddTerm={this.props.addTermToVocabulary.bind(null, activeVocab)}
 				onRemoveTerm={this.props.removeTermFromVocabulary.bind(null, activeVocab)}
-				onUpdateTerm={this.handleUpdateTermInVocabulary}
+				onUpdateTerm={this.handleUpdateTermInVocabulary.bind(null, activeVocab)}
 				terms={terms.data}
 			/>
 		)

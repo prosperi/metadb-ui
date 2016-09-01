@@ -63,11 +63,22 @@ const TermEditModal = React.createClass({
 	render: function () {
 		const modalStyles = {
 			content: {
-				top: '10%',
+				borderColor: '#1d5f83',
+				boxShadow: '0 1px 2px 1px #aaa',
+				bottom: '25%',
 				left: '10%',
 				right: '10%',
-				bottom: '25%',
+				top: '10%',
 			}
+		}
+
+		const headerStyles = {
+			backgroundColor: '#1d5f83',
+			color: '#fff',
+			fontSize: '1.125em',
+			margin: '-20px',
+			marginBottom: '20px',
+			padding: '.75em',
 		}
 
 		return (
@@ -76,8 +87,8 @@ const TermEditModal = React.createClass({
 				onRequestClose={this.handleClose}
 				style={modalStyles}
 			>
-				<header>
-					Editing term: {this.state.data.pref_label[0]}
+				<header style={headerStyles}>
+					Editing term: <strong>{this.state.data.pref_label[0]}</strong>
 				</header>
 
 				<VocabularyMetadataFormFields

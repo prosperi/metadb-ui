@@ -167,6 +167,10 @@ const VocabularyList = React.createClass({
 	},
 
 	vocabularyListItem: function (data, index) {
+		// WORKAROUND: skip items w/o a pref-label defined
+		if (!data[this.props.keys.label][0])
+			return
+
 		const classname = ['vocab-list--item']
 
 		if (this.state.hoverIndex === index) {

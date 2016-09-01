@@ -5,21 +5,23 @@ $vocab-list-item-padding: .5em;
 
 // containers on /vocabularies page
 .vocabulary-list-container {
-	@include span-columns(1 of 4);
+	@include span-columns(1 of 3);
+	@include omega;
+
+	margin-right: 25px;
 }
 
 .terms-manager-container {
+	@include span-columns(2 of 3);
 	@include omega;
-	@include span-columns(3 of 4);
 }
 
 // individual component styles
 
 .vocabulary-list {
-	@include omega;
-
 	box-shadow: 0 0 2px 1px #aaa;
 	display: inline-block;
+	width: 100%;
 
 	header,
 	footer {
@@ -36,7 +38,8 @@ $vocab-list-item-padding: .5em;
 .vocab-list, 
 .vocab-list--empty {
 	height: $vocab-list-height;
-	width: $vocab-list-width;
+	// width: $vocab-list-width;
+	width: 100%;
 }
 
 .vocab-list {

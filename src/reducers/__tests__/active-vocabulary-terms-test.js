@@ -7,10 +7,10 @@ import {
 	FETCHING_VOCABULARY_TERMS,
 	RECEIVE_VOCABULARY_TERMS,
 	REMOVE_TERM_FROM_VOCABULARY,
+	UPDATE_TERM,
 } from '../../actions/constants'
 
 import createNewTerm from '../../../lib/create-new-term'
-
 import * as originalState from './mocks/active-terms.json'
 
 const originalStatePure = assign({}, originalState)
@@ -97,6 +97,61 @@ describe('activeVocabularyTermsReducer', function () {
 		it('removes a term from the `data` array by index', function () {
 			expect(result.data.length).to.be.lessThan(originalState.data.length)
 			expect(originalState.data.length - result.data.length).to.equal(1)
+		})
+	})
+
+	describe('@UPDATE_TERM', function () {
+		it('changes a term to the update passed', function () {
+			const index = Math.floor(Math.random() * originalState.data.length)
+			const original = originalState.data[index]
+			const copy = assign({}, original)
+
+			copy.alt_label = [].concat(
+				copy.alt_label,
+				'Hey here is a new alt_label',
+				'and another!'
+			)
+
+			const prefLabel = original.pref_label[0]
+
+			const action = {
+				type: UPDATE_TERM,
+				previousPrefLabel: prefLabel,
+				data: copy,
+			}
+
+			const result = termsReducer(originalState, action)
+
+			expect(result.data).to.have.length(originalState.data.length)
+			expect(result.data[index].alt_label).to.not.deep.equal(originalState.data[index].alt_label)
+		})
+
+		it('updates the correct term when pref_label is changed', function () {
+			const index = Math.floor(Math.random() * originalState.data.length)
+			const original = originalState.data[index]
+			const copy = assign({}, original)
+			const newLabel = 'Hey I am a new label!'
+
+			copy.label = [].concat(
+				copy.label,
+				newLabel
+			)
+
+			copy.pref_label = [newLabel]
+
+			const prefLabel = original.pref_label[0]
+
+			const action = {
+				type: UPDATE_TERM,
+				previousPrefLabel: prefLabel,
+				data: copy,
+			}
+
+			const result = termsReducer(originalState, action)
+
+			expect(result.data).to.have.length(originalState.data.length)
+			expect(result.data[index].pref_label)
+				.to.not.deep.equal(originalState.data[index].pref_label)
 		})
 	})
 })
