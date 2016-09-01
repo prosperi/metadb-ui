@@ -44,12 +44,13 @@ describe('vocabularyReducer', function () {
 		})
 	})
 
-	xdescribe('@FETCHING_ALL_VOCABULARIES', function () {
+	describe('@FETCHING_ALL_VOCABULARIES', function () {
+		it('sets the `isFetching` flag to true', function () {
+			const action = {type: FETCHING_ALL_VOCABULARIES}
+			const result = vocabReducer(originalState, action)
 
-	})
-
-	xdescribe('@RECEIVE_ALL_VOCABULARIES', function () {
-
+			expect(result.isFetching).to.be.true
+		})
 	})
 
 	describe('@REMOVE_TERM_FROM_VOCABULARY', function () {
