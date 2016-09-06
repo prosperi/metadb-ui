@@ -2,6 +2,7 @@ import assign from 'object-assign'
 
 import {
 	ADD_TERM_TO_VOCABULARY,
+	BULK_EDIT_TERMS,
 	FETCHING_VOCABULARY_TERMS,
 	RECEIVE_VOCABULARY_TERMS,
 	REMOVE_TERM_FROM_VOCABULARY,
@@ -24,6 +25,9 @@ export default function activeVocabularyTermsReducer (state, action) {
 		case ADD_TERM_TO_VOCABULARY:
 			return addTermToVocabulary(state, action)
 
+		case BULK_EDIT_TERMS:
+			return bulkEditTerms(state, action)
+
 		case FETCHING_VOCABULARY_TERMS:
 			return {isFetching: true, data: []}
 
@@ -44,8 +48,20 @@ export default function activeVocabularyTermsReducer (state, action) {
 // @ this point, the API call has already been made, so we're just
 // adding the term to our state-store
 function addTermToVocabulary (state, action) {
+	if (action.vocabulary.uri !== state.vocabularyUri)
+		return state
+
 	const terms = [].concat(state.data, action.data)
 	return assign({}, state, {data: terms})
+}
+
+// TODO: you might want to do some sanity checking _just to be sure_
+// the terms being bulkEdited are those in ActiveVocabularyTerms
+function bulkEditTerms (state, action) {
+	if (action.vocabulary.uri !== state.vocabularyUri)
+		return state
+
+	return assign({}, state, {data: action.data})
 }
 
 function receiveVocabularyTerms (state, action) {
@@ -53,10 +69,14 @@ function receiveVocabularyTerms (state, action) {
 		data: action.data,
 		fetchedAt: Date.now(),
 		isFetching: false,
+		vocabularyUri: action.vocabulary.uri,
 	}
 }
 
 function removeTermFromVocabulary (state, action) {
+	if (action.vocabulary.uri !== state.vocabularyUri)
+		return
+
 	const terms = state.data
 	const index = action.index
 
@@ -69,6 +89,9 @@ function removeTermFromVocabulary (state, action) {
 }
 
 function updateTerm (state, action) {
+	if (action.vocabulary.uri !== state.vocabularyUri)
+		return state
+
 	const { previousPrefLabel, data } = action
 
 	const bundle = state.data

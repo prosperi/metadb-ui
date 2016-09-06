@@ -1,6 +1,3 @@
-// Karma configuration
-// Generated on Wed Aug 24 2016 13:15:21 GMT-0400 (EDT)
-
 module.exports = function(config) {
 	config.set({
 
@@ -53,7 +50,7 @@ module.exports = function(config) {
 				'react/addons': true,
 				'react/lib/ExecutionEnvironment': true,
 				'react/lib/ReactContext': true,
-			},
+			}
 		},
 		webpackServer: {
 			noInfo: true,

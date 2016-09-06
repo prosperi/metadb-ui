@@ -1,6 +1,7 @@
 import assign from 'object-assign'
 import {
 	ADD_TERM_TO_VOCABULARY,
+	BULK_EDIT_TERMS,
 	FETCHING_ALL_VOCABULARIES,
 	RECEIVE_ALL_VOCABULARIES,
 	REMOVE_TERM_FROM_VOCABULARY,
@@ -22,6 +23,9 @@ export default function vocabularyReducer (state, action) {
 	switch (action.type) {
 		case ADD_TERM_TO_VOCABULARY:
 			return addTermToVocab(state, action)
+
+		case BULK_EDIT_TERMS:
+			return bulkEditTerms(state, action)
 
 		case FETCHING_ALL_VOCABULARIES:
 			return fetchingAllVocabs(state, action)
@@ -51,6 +55,24 @@ function addTermToVocab (state, action) {
 		return state
 
 	vocab.term_count++
+
+	const data = [].concat(
+		state.data.slice(0, idx),
+		vocab,
+		state.data.slice(idx + 1)
+	)
+
+	return assign({}, state, {data})
+}
+
+function bulkEditTerms (state, action) {
+	const idx = findIndex(state.data, v => v.uri === action.vocabulary.uri)
+
+	if (!idx)
+		return state
+
+	const vocab = assign({}, state.data[idx])
+	vocab.term_count = action.data.length
 
 	const data = [].concat(
 		state.data.slice(0, idx),

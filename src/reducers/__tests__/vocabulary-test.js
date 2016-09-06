@@ -5,6 +5,7 @@ import assign from 'object-assign'
 
 import {
 	ADD_TERM_TO_VOCABULARY,
+	BULK_EDIT_TERMS,
 	FETCHING_ALL_VOCABULARIES,
 	REMOVE_TERM_FROM_VOCABULARY,
 } from '../../actions/constants'
@@ -42,6 +43,44 @@ describe('vocabularyReducer', function () {
 
 			expect(updatedVocab.term_count).to.be.greaterThan(originalVocab.term_count)
 			expect(updatedVocab.term_count - originalVocab.term_count).to.equal(1)
+		})
+	})
+
+	describe('@BULK_EDIT_TERMS', function () {
+		it('updates the `term_count` property to new count', function () {
+			const originalData = originalState.data
+			const idx = Math.floor(Math.random() * originalData.length)
+			const vocab = originalData[idx]
+			const originalCount = vocab.term_count
+
+			const rando = () => Math.floor(Math.random() * 10)
+
+			let newCount = rando()
+
+			// reset if we're at the same number
+			while (newCount === originalCount)
+				newCount = Math.floor(Math.random() * 10)
+
+			const updates = []
+
+			for (let i = 0; i <= newCount; i++) {
+				updates.push({
+					uri: 'http://lol.club/' + i,
+					pref_label: ['Term ' + i],
+				})
+			}
+
+			const action = {
+				type: BULK_EDIT_TERMS,
+				data: updates,
+				vocabulary: vocab,
+			}
+
+			const result = vocabReducer(originalState, action)
+			const newData = result.data[idx]
+
+			expect(newData.term_count).to.not.equal(originalData.term_count)
+			expect(newData.term_count).to.equal(action.data.length)
 		})
 	})
 

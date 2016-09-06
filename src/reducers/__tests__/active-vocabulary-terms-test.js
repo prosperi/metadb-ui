@@ -4,6 +4,7 @@ import assign from 'object-assign'
 
 import {
 	ADD_TERM_TO_VOCABULARY,
+	BULK_EDIT_TERMS,
 	FETCHING_VOCABULARY_TERMS,
 	RECEIVE_VOCABULARY_TERMS,
 	REMOVE_TERM_FROM_VOCABULARY,
@@ -35,6 +36,9 @@ describe('activeVocabularyTermsReducer', function () {
 			const action = {
 				type: ADD_TERM_TO_VOCABULARY,
 				data: created,
+				vocabulary: {
+					uri: originalState.vocabularyUri,
+				}
 			}
 
 			const result = termsReducer(originalState, action)
@@ -44,6 +48,42 @@ describe('activeVocabularyTermsReducer', function () {
 
 			expect(result.data[result.data.length - 1]).to.deep.equal(created)
 		})
+	})
+
+	describe('@BULK_EDIT_TERMS', function () {
+		const prev = [
+			{uri: 'https://example.com/vocab/test1', pref_label: ['test1']},
+			{uri: 'https://example.com/vocab/test2', pref_label: ['test2']},
+		]
+
+		const update = [
+			{uri: 'https://example.com/vocab/test1', pref_label: ['new test1']},
+			{uri: 'https://example.com/vocab/test2', pref_label: ['test2']},
+			{uri: 'https://example.com/vocab/test3', pref_label: ['test3']},
+		]
+
+		const action = {
+			type: BULK_EDIT_TERMS,
+			data: update,
+			vocabulary: {
+				uri: 'https://example.com/vocab',
+				label: ['Test Vocab'],
+				pref_label: ['Test Vocab'],
+			},
+		}
+
+		const state = assign({}, originalState)
+		state.data = prev
+		state.vocabularyUri = action.vocabulary.uri
+
+		const result = termsReducer(state, action)
+
+		it('replaces the previous state with new terms objects', function () {
+			expect(result.data).to.not.deep.equal(state.data)
+			expect(result.data).to.deep.equal(update)
+		})
+
+
 	})
 
 	describe('@FETCHING_VOCABULARY_TERMS', function () {
@@ -67,7 +107,10 @@ describe('activeVocabularyTermsReducer', function () {
 			terms: [
 				{uri: 'http://whatever.org'},
 				{uri: 'http://whatever.org'},
-			]
+			],
+			vocabulary: {
+				uri: originalState.vocabularyUri,
+			},
 		}
 
 		const result = termsReducer(originalState, action)
@@ -90,6 +133,9 @@ describe('activeVocabularyTermsReducer', function () {
 		const action = {
 			type: REMOVE_TERM_FROM_VOCABULARY,
 			index,
+			vocabulary: {
+				uri: originalState.vocabularyUri,
+			},
 		}
 
 		const result = termsReducer(originalState, action)
@@ -118,6 +164,9 @@ describe('activeVocabularyTermsReducer', function () {
 				type: UPDATE_TERM,
 				previousPrefLabel: prefLabel,
 				data: copy,
+				vocabulary: {
+					uri: originalState.vocabularyUri,
+				},
 			}
 
 			const result = termsReducer(originalState, action)
@@ -145,6 +194,9 @@ describe('activeVocabularyTermsReducer', function () {
 				type: UPDATE_TERM,
 				previousPrefLabel: prefLabel,
 				data: copy,
+				vocabulary: {
+					uri: originalState.vocabularyUri,
+				},
 			}
 
 			const result = termsReducer(originalState, action)

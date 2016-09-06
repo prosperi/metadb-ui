@@ -1,6 +1,8 @@
 import {
 	ADD_TERM_TO_VOCABULARY,
 
+	BULK_EDIT_TERMS,
+
 	FETCHING_VOCABULARY_TERMS,
 	
 	RECEIVE_VOCABULARY_TERMS,
@@ -41,17 +43,17 @@ function mintUri (vocab, term) {
 //		1. ADD_TERM_TO_VOCABULARY
 //	  2. UPDATE_VOCABULARY_TERM_COUNT
 
-export const addTermToVocabulary = function (vocab, term) {
+export const addTermToVocabulary = function (vocabData, term) {
 	return dispatch => {
 		const newTerm = createNewTerm(term)
-		const uri = vocab.uri
+		const uri = vocabData.uri
 
 		// Eventually I expect this will be handled on the server, but until then,
 		// a URI needs to be passed for the term to be accepted, so we'll create a
 		// mock one.
-		newTerm.uri = mintUri(vocab, term)
+		newTerm.uri = mintUri(vocabData, term)
 
-		return addTerm(vocab, newTerm, function (err /*, response */) {
+		return addTerm(vocabData, newTerm, function (err /*, response */) {
 			if (err) {
 				// do something w/ the error!
 			}
@@ -60,29 +62,66 @@ export const addTermToVocabulary = function (vocab, term) {
 				type: ADD_TERM_TO_VOCABULARY,
 				data: newTerm,
 				uri,
+				vocabulary: vocabData,
 			})
 		})
 	}
 }
 
-// export const bulkEditTermsInVocabulary = function (vocabData, terms) {
-// 	return dispatch => {
-// 	}
-// }
+export const bulkEditTermsInVocabulary = function (vocabData, terms) {
+	return (dispatch, getState) => {
+		
+		const prevTerms = getState().activeVocabularyTerms.data
+		
+		// cut down on the # of array traversals by building an index
+		// `{ termUri: indexInPrevTerms }`
+		const indexed = {}
+		prevTerms.forEach((term, index) => (
+			indexed[term.pref_label[0]] = index
+		))
+
+		const updates = terms.map(term => {
+			const idx = indexed[term]
+
+			if (idx !== null)
+				return prevTerms[idx]
+			
+			return createNewTerm(term)
+		})
+
+		return putTerms(vocabData, updates, function (err) {
+			if (err) {
+				// do something w/ the error
+			}
+
+			return dispatch({
+				type: BULK_EDIT_TERMS,
+				terms: updates,
+				vocabulary: vocabData,
+			})
+		})
+	}
+}
 
 export const fetchTermsFromVocabulary = vocabData => dispatch => {
-	dispatch({type: FETCHING_VOCABULARY_TERMS})
+	dispatch({
+		type: FETCHING_VOCABULARY_TERMS, 
+		vocabulary: vocabData,
+	})
+
 	return fetchTerms(vocabData, function (err, results) {
 		if (err) {
 			return dispatch({
 				type: RECEIVE_VOCABULARY_TERMS_ERROR,
 				error: err,
+				vocabulary: vocabData,
 			})
 		}
 
 		return dispatch({
 			type: RECEIVE_VOCABULARY_TERMS,
 			data: results,
+			vocabulary: vocabData,
 		})
 	})
 }

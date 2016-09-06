@@ -1,6 +1,7 @@
 {
   "fetchedAt": 1472582374611,
   "isFetching": false,
+  "vocabularyUri": "http://example-auth.org/ns/testVocab",
   "data": [
     {
       "uri": "http://example-auth.org/ns/testVocab/testTerm",
