@@ -44,6 +44,10 @@ module.exports = function(config) {
                     test: /\.json$/,
                     loader: 'json-loader',
                 },
+                {
+                    test: /\.txt$/,
+                    loader: 'raw-loader',
+                }
             ],
         },
         externals: {

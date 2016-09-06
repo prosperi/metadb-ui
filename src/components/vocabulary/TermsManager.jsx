@@ -1,6 +1,7 @@
 import React from 'react'
 import Modal from 'react-modal'
 import TagList from '../tags/TagList.jsx'
+import BulkTermsEditModal from './BulkTermsEditModal.jsx'
 import TermEditModal from './TermEditModal.jsx'
 import shallowCompare from 'react-addons-shallow-compare'
 
@@ -12,6 +13,7 @@ const TermsManager = React.createClass({
 		terms: T.array.isRequired,
 
 		onAddTerm: T.func.isRequired,
+		onBulkTermUpdate: T.func.isRequired,
 		onRemoveTerm: T.func.isRequired,
 		onUpdateTerm: T.func.isRequired,
 	},
@@ -32,8 +34,28 @@ const TermsManager = React.createClass({
 
 	getInitialState: function () {
 		return {
+			// controls TermEditModal
 			activeEditingTerm: null,
+
+			// controls BulkTermsEditor
+			bulkTermsModalOpen: false,
 		}
+	},
+
+	handleBulkTermsModalClose: function (data) {
+		if (Array.isArray(data)) {
+			this.props.onBulkTermUpdate.call(null, data)
+		}
+
+		this.setState({
+			bulkTermsModalOpen: false,
+		})
+	},
+
+	handleBulkTermsModalOpen: function () {
+		this.setState({
+			bulkTermsModalOpen: true,
+		})
 	},
 
 	handleInputKeyDown: function (ev) {
@@ -47,7 +69,7 @@ const TermsManager = React.createClass({
 		ev.target.value = ''
 	},
 
-	handleTermAddValueField: function (term, key) {
+	handleTermAddValueField: function (/* term, key */) {
 		this.props.onTermAddValueField.apply(null, arguments)
 	},
 
@@ -82,6 +104,19 @@ const TermsManager = React.createClass({
 
 	mapTermPrefLabels: function (terms) {
 		return terms.map(t => t.pref_label[0])
+	},
+
+	renderBulkTermsModal: function () {
+		if (!this.state.bulkTermsModalOpen)
+			return
+
+		return (
+			<BulkTermsEditModal
+				label={this.props.label}
+				onClose={this.handleTermModalClose}
+				terms={this.mapTermPrefLabels(this.props.terms)}
+			/>
+		)
 	},
 
 	renderTermModal: function () {
@@ -119,6 +154,27 @@ const TermsManager = React.createClass({
 	},
 
 	render: function () {
+		const styles = {
+			textInput: {
+				width: '20em',
+			},
+
+			bulkTermsContainer: {
+				float: 'right',
+			},
+
+			bulkTermsButton: {
+				backgroundColor: 'transparent',
+				border: '2px solid #a9a9a9',
+				borderRadius: '2px',
+				color: '#222',
+				cursor: 'pointer',
+				fontSize: '1em',
+				lineHeight: '1.5em',
+				outline: 'none',
+			},
+		}
+
 		return (
 			<div className="term-editor">
 				<header>
@@ -130,14 +186,26 @@ const TermsManager = React.createClass({
 				</section>
 
 				<footer>
-					<input
-						onKeyDown={this.handleInputKeyDown}
-						placeholder="Add new term"
-						type="text"
-					/>
+					<span>
+						<input
+							onKeyDown={this.handleInputKeyDown}
+							placeholder="Add new term"
+							style={styles.textInput}
+							type="text"
+						/>
+					</span>
+
+					<span style={styles.bulkTermsContainer}>
+						<button
+							children="Bulk add/edit terms"
+							onClick={this.handleBulkTermsModalOpen}
+							style={styles.bulkTermsButton}
+						/>
+					</span>
 				</footer>
 
 				{this.renderTermModal()}
+				{this.renderBulkTermsModal()}
 			</div>
 		)
 	}

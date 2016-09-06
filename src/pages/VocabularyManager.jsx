@@ -70,6 +70,7 @@ const VocabularyManager = React.createClass({
 			<TermsManager
 				label={vocabName}
 				onAddTerm={this.props.addTermToVocabulary.bind(null, activeVocab)}
+				onBulkTermUpdate={this.props.bulkEditTermsInVocabulary.bind(null, activeVocab)}
 				onRemoveTerm={this.props.removeTermFromVocabulary.bind(null, activeVocab)}
 				onUpdateTerm={this.handleUpdateTermInVocabulary.bind(null, activeVocab)}
 				terms={terms.data}

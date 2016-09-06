@@ -5,6 +5,7 @@ import assign from 'object-assign'
 
 import {
 	ADD_TERM_TO_VOCABULARY,
+	FETCHING_ALL_VOCABULARIES,
 	REMOVE_TERM_FROM_VOCABULARY,
 } from '../../actions/constants'
 

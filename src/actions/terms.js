@@ -88,6 +88,13 @@ export const addTermToVocabulary = function (vocab, term) {
 	}
 }
 
+export const bulkEditTermsInVocabulary = function (vocabData, terms) {
+	return dispatch => {
+
+		
+	}
+}
+
 export const fetchTermsFromVocabulary = vocabData => (dispatch, getState) => {
 	dispatch({type: FETCHING_VOCABULARY_TERMS})
 	return fetchTerms(vocabData, function (err, results) {

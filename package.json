@@ -52,6 +52,7 @@
   },
   "devDependencies": {
     "@kadira/storybook": "^1.29.4",
+    "babel-plugin-add-module-exports": "^0.2.1",
     "chai": "^3.5.0",
     "enzyme": "^2.4.1",
     "eslint": "^3.2.2",
@@ -64,6 +65,7 @@
     "karma-safari-launcher": "^1.0.0",
     "karma-webpack": "^1.8.0",
     "mocha": "^3.0.2",
+    "raw-loader": "^0.5.1",
     "react-addons-test-utils": "^15.3.1"
   }
 }

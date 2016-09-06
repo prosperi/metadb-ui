@@ -5,7 +5,10 @@ const T = React.PropTypes
 
 const BulkTermsEditor = React.createClass({
 	propTypes: {
+		onSubmit: T.func.isRequired,
+
 		autofocus: T.bool,
+		resizable: T.bool,
 		terms: T.arrayOf(T.string),
 	},
 
@@ -18,10 +21,10 @@ const BulkTermsEditor = React.createClass({
 
 	getInitialState: function () {
 		const terms = this.props.terms
-		const raw = terms.length ? terms.join('\n') : ''
+		const raw = terms.length ? (terms.join('\n') + '\n') : ''
 
 		return {
-			appendFile: false,
+			overwrite: false,
 			loadingFile: false,
 			raw,
 		}
@@ -36,7 +39,15 @@ const BulkTermsEditor = React.createClass({
 		this.setState({raw: ev.target.value})
 	},
 
+	handleDrop: function (ev) {
+		ev.preventDefault()
+
+		this.setState({dragOverText: false})
+	},
+
 	handleFileDrop: function (files) {
+		if (!files.length) return
+
 		const reader = new FileReader()
 		
 		reader.onloadstart = () => {
@@ -48,52 +59,163 @@ const BulkTermsEditor = React.createClass({
 		reader.onloadend = (ev) => {
 			const result = ev.target.result.trim()
 			const original = this.state.raw.trim()
-			const append = this.state.appendFile
+			const overwrite = this.state.overwrite
+			const raw = overwrite ? result : `${original}\n${result}`
 
 			this.setState({
 				loadingFile: false,
-				raw: append ? `${original}\n${result}\n` : `${result}\n`
+				raw: `${raw}\n`,
 			})
+
+			// scroll to the bottom of our textbox
+			if (this._textarea) {
+				this._textarea.scrollTop = this._textarea.scrollHeight
+				this._textarea.focus()
+			}
 		}
 
 		reader.readAsText(files[0])
+	},
+
+	handleFileInputSelection: function (ev) {
+		this.handleFileDrop(ev.target.files)
 	},
 
 	handleSubmit: function (ev) {
 		ev.preventDefault()
 
 		// filter to remove any blank lines in the terms
-		console.log(this.state.terms.filter(t => t))
+		this.props.onSubmit.call(null, this.state.raw.split('\n').filter(Boolean))
+	},
+
+	toggleOverwriteTermsFlag: function (ev) {
+		this.setState({
+			overwrite: ev.target.checked
+		})
+	},
+
+	toggleDragLeave: function () {
+		this.setState({dragOverText: false})
+	},
+
+	toggleDragEnter: function (ev) {
+		this.setState({dragOverText: true})
 	},
 
 	render: function () {
-		const txtStyle = {
-			display: 'inline-block',
-			height: '15em',
-			width: '25em',
-		}
+		const txtbg = this.state.dragOverText ? '#deedee' : 'transparent'
 
-		const btnStyle = {
-			display: 'block',
+		const styles = {
+			container: {
+				height: '100%',
+				width: '100%',
+			},
+
+			header: {
+				// padding: '.5em 0',
+			},
+
+			opts: {
+				backgroundColor: '#efefef',
+				border: '2px solid #ccc',
+				borderBottom: 'none',
+				display: 'block',
+				padding: '.5em',
+			},
+
+			label: {
+				display: 'block',
+				fontWeight: 'normal',
+				margin: '.25em 0',
+				verticalAlign: 'middle',
+			},
+
+			fileInput: {
+				border: 'none',
+				fontSize: '.9em',
+				marginRight: '0',
+				width: '20em',
+			},
+
+			dropzone: {
+				default: {
+					border: 'none',
+					height: '100%',
+					width: '100%',
+				}
+			},
+
+			textarea: {
+				backgroundColor: txtbg,
+				borderTopLeftRadius: '0',
+				borderTopRightRadius: '0',
+				display: 'inline-block',
+				minHeight: '15em',
+				overflow: 'auto',
+				resize: this.props.resizble ? 'vertical' : 'none',
+				width: '100%',
+			},
+
+			button: {
+				display: 'block',
+			},
 		}
 
 		return (
-			<div>
+			<div style={styles.container}>
+				<header
+					style={styles.header}
+				>
+					<p>
+					To add terms to this vocabulary, enter them in the box below -- adding one per line.
+					To add from a text file, drag and drop it over the box below.
+					</p>
+
+					<div
+						className="bulk-terms-options"
+						style={styles.opts}
+						>
+
+						<label style={styles.label}>
+							Add terms from file (one term per line, <code>.txt</code> only)
+							<input
+								accept="text/plain"
+								onChange={this.handleFileInputSelection}
+								style={styles.fileInput}
+								type="file"
+							/>
+
+						</label>
+
+						<label style={styles.label}>
+							<input
+								name="bulk-terms-overwrite-terms"
+								onChange={this.toggleOverwriteTermsFlag}
+								type="checkbox"
+							/>
+							Write over previous terms?
+						</label>
+					</div>
+				</header>
 				<Dropzone
 					accept={'text/plain'}
 					disableClick={true}
 					multiple={false}
 					onDrop={this.handleFileDrop}
+					style={styles.dropzone.default}
 				>
 					<textarea
 						onChange={this.handleChange}
+						onDragEnter={this.toggleDragEnter}
+						onDragLeave={this.toggleDragLeave}
+						onDrop={this.handleDrop}
 						ref={e => this._textarea = e}
-						style={txtStyle}
+						style={styles.textarea}
 						value={this.state.raw}
 					/>
 				</Dropzone>
 
-				<button onClick={this.handleSubmit} style={btnStyle}>
+				<button onClick={this.handleSubmit} style={styles.button}>
 					Add Terms 
 				</button>
 			</div>
