@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 // yr main app
 import React from 'react'
 import { Provider } from 'react-redux'

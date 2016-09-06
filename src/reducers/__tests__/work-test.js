@@ -50,14 +50,13 @@ describe('workReducer', function () {
 			const result = workReducer(originalState, action)
 
 			const origData = originalState.data[key]
-			const origUpdates = originalState.updates[key]
 			const resData = result.data[key]
 			const resUpdates = result.updates[key]
 
 			// updates now has the field
 			expect(typeof result.updates[key]).to.not.equal('undefined')
 
-			// updates has one more field
+			// updates has one more field than the original data field
 			expect(resUpdates).to.have.length(origData.length + 1)
 
 			// `data` stayed the same
@@ -311,7 +310,7 @@ describe('workReducer', function () {
 			expect(result.isChanged).to.be.true
 
 			const newAction = assign({}, action, {index: result.updates.title.length - 1})		
-			const result2 = workReducer(result, action)
+			const result2 = workReducer(result, newAction)
 
 			expect(result2.isChanged).to.be.true
 		})

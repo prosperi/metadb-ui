@@ -61,13 +61,13 @@ function addTermToVocab (state, action) {
 	return assign({}, state, {data})
 }
 
-function fetchingAllVocabs (state, action) {
+function fetchingAllVocabs (/* state, action */) {
 	return { isFetching: true }
 }
 
 function receiveAllVocabs (state, action) {
 	const vocabs = action.data.vocabularies
-	const out = {}
+	// const out = {}
 
 	// vocabs.forEach((vocab, idx) => {
 	// 	out[vocab.uri] = vocab
@@ -99,7 +99,7 @@ function removeTermFromVocabulary (state, action) {
 	return assign({}, state, {data})
 }
 
-function updateVocab (state, action) {
-	const { uri, key, index, value } = action
-	
+function updateVocab (state/*, action */) {
+
+	return state	
 }

@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "karma start --no-auto-watch --single-run",
+    "test": "npm run lint && karma start --no-auto-watch --single-run",
     "test:watch": "karma start --auto-watch --no-single-run",
     "storybook": "start-storybook -p 9001",
     "build": "webpack",
@@ -59,6 +59,7 @@
     "eslint-plugin-react": "^6.0.0",
     "karma": "^1.2.0",
     "karma-chrome-launcher": "^2.0.0",
+    "karma-coverage": "^1.1.1",
     "karma-firefox-launcher": "^1.0.0",
     "karma-mocha-reporter": "^2.1.0",
     "karma-phantomjs-launcher": "^1.0.1",

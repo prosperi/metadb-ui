@@ -46,16 +46,16 @@ function addEmptyValueToWork (state, action) {
 	const updates = assign({}, state.updates)
 	const key = action.key
 
-	if (!updates[key])
-		updates[key] = [].concat(data[key], '')
-	else
+	if (updates[key])
 		updates[key] = [].concat(updates[key], '')
+	else
+		updates[key] = [].concat(data[key], '')
 
 	return assign({}, state, {updates})
 
 }
 
-function fetchingWork (state, action) {
+function fetchingWork (/* state, action */) {
 	return {
 		isFetching: true,
 	}
@@ -105,7 +105,7 @@ function removeValueFromWork (state, action) {
 	})
 }
 
-function savedWork (state, action) {
+function savedWork (state/* , action*/) {
 	return assign({}, state, {
 		data: assign({}, state.data, state.updates),
 		isChanged: false,
@@ -114,7 +114,7 @@ function savedWork (state, action) {
 	})
 }
 
-function savingWork (state, action) {
+function savingWork (state/* , action */) {
 	return assign({}, state, {isSaving: true})
 }
 

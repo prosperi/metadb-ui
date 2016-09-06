@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const json = {
   "uri": "http://authority.lafayette.edu/ns/testVocab",
   "label": [

@@ -4,9 +4,7 @@ import { getVocabulary } from '../../lib/api'
 import { RECEIVE_AUTOCOMPLETE_TERMS } from './constants'
 
 const autocompleteQueue = []
-const fetchedUris = []
 let fetching = false
-let vocabData
 
 export function fetchAutocompleteTerms (data) {
 	return (dispatch, getState) => {

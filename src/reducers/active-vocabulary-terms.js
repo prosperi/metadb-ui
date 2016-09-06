@@ -69,7 +69,7 @@ function removeTermFromVocabulary (state, action) {
 }
 
 function updateTerm (state, action) {
-	const { vocabulary, previousPrefLabel, data } = action
+	const { previousPrefLabel, data } = action
 
 	const bundle = state.data
 	const index = findIndex(bundle, t => (

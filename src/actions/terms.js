@@ -1,6 +1,5 @@
 import {
 	ADD_TERM_TO_VOCABULARY,
-	ADD_EMPTY_VALUE_TO_TERM,
 
 	FETCHING_VOCABULARY_TERMS,
 	
@@ -8,12 +7,10 @@ import {
 	RECEIVE_VOCABULARY_TERMS_ERROR,
 	
 	REMOVE_TERM_FROM_VOCABULARY,
-	REMOVE_VALUE_FROM_TERM,
 
 	UPDATE_TERM,
 } from './constants'
 
-import { get } from '../../lib/api/request'
 import { 
 	addTermToVocabulary as addTerm,
 	fetchTerms,
@@ -21,27 +18,7 @@ import {
 	putTerms,
 } from '../../lib/api/terms'
 
-import isFresh from '../../lib/is-fresh'
 import createNewTerm from '../../lib/create-new-term'
-
-const findInArray = function (arr, fn) {
-	for (let i = 0; i < arr.length; i++)
-		if (fn(arr[i], i, arr))
-			return arr[i]
-
-	return null
-}
-
-const findIndexInArray = function (arr, fn) {
-	for (let i = 0; i < arr.length; i++)
-		if (fn(arr[i], i, arr))
-			return i
-
-	return -1
-}
-
-// older than a minute is stale, let's say
-const STALE_TIME = 60 * 1000
 
 function mintUri (vocab, term) {
 	const authBaseUrl = vocab.uri
@@ -74,7 +51,7 @@ export const addTermToVocabulary = function (vocab, term) {
 		// mock one.
 		newTerm.uri = mintUri(vocab, term)
 
-		return addTerm(vocab, newTerm, function (err, response) {
+		return addTerm(vocab, newTerm, function (err /*, response */) {
 			if (err) {
 				// do something w/ the error!
 			}
@@ -88,14 +65,12 @@ export const addTermToVocabulary = function (vocab, term) {
 	}
 }
 
-export const bulkEditTermsInVocabulary = function (vocabData, terms) {
-	return dispatch => {
+// export const bulkEditTermsInVocabulary = function (vocabData, terms) {
+// 	return dispatch => {
+// 	}
+// }
 
-		
-	}
-}
-
-export const fetchTermsFromVocabulary = vocabData => (dispatch, getState) => {
+export const fetchTermsFromVocabulary = vocabData => dispatch => {
 	dispatch({type: FETCHING_VOCABULARY_TERMS})
 	return fetchTerms(vocabData, function (err, results) {
 		if (err) {
@@ -125,7 +100,7 @@ export const removeTermFromVocabulary = function (vocabData, termData, index) {
 		)
 		const uri = vocabData.uri
 
-		return putTerms(vocabData, terms, function (err, response) {
+		return putTerms(vocabData, terms, function (err) {
 			if (err) {
 				// do something with the error!
 			}
@@ -140,10 +115,10 @@ export const removeTermFromVocabulary = function (vocabData, termData, index) {
 }
 
 export const updateTermInVocabulary = function (_data) {
-	return (dispatch, getState) => {
+	return dispatch => {
 		const { data, term, vocabulary } = _data
 
-		patchTerm(vocabulary, data, function (err, response) {
+		patchTerm(vocabulary, data, function (err) {
 			if (err) {
 				throw Error('patchTerm error for updateTermInVocabulary')
 			}

@@ -3,6 +3,8 @@ import {
 	FETCHING_VOCABULARY,
 	RECEIVE_ALL_VOCABULARIES,
 	RECEIVE_VOCABULARY,
+	RECEIVE_VOCABULARY_ERROR,
+	UPDATE_VOCABULARY,
 } from './constants'
 
 import { get } from '../../lib/api/request'
@@ -11,7 +13,7 @@ import isFresh from '../../lib/is-fresh'
 
 const STALE_TIME = 60 * 1000
 
-export const fetchAllVocabularies = () => (dispatch, getState) => {
+export const fetchAllVocabularies = () => dispatch => {
 	dispatch({
 		type: FETCHING_ALL_VOCABULARIES,
 	})
@@ -59,7 +61,7 @@ export const fetchVocabulary = data => (dispatch, getState) => {
 	})
 }
 
-export const updateVocabulary = (uri, key, index, val) => dispatch => {
+export const updateVocabulary = (uri, key, index, value) => dispatch => {
 	return dispatch({
 		type: UPDATE_VOCABULARY,
 		index,
