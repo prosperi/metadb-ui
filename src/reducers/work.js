@@ -6,7 +6,7 @@ import {
 	SAVED_WORK,
 	SAVING_WORK,
 	UPDATE_WORK,
-} from '../actions/constants'
+} from '../constants'
 
 import assign from 'object-assign'
 

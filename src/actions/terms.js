@@ -11,7 +11,7 @@ import {
 	REMOVE_TERM_FROM_VOCABULARY,
 
 	UPDATE_TERM,
-} from './constants'
+} from '../constants'
 
 import { 
 	addTermToVocabulary as addTerm,

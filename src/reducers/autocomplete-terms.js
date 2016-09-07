@@ -1,5 +1,5 @@
 import assign from 'object-assign'
-import { RECEIVE_AUTOCOMPLETE_TERMS } from '../actions/constants'
+import { RECEIVE_AUTOCOMPLETE_TERMS } from '../constants'
 
 export default function autocompleteTermsReducer (state, action) {
 	if (typeof state === 'undefined')

@@ -6,7 +6,7 @@ import {
 	UPDATE_WORK,
 	SAVED_WORK,
 	SAVING_WORK,
-} from './constants'
+} from '../constants'
 
 import { getWork, updateWork } from '../../lib/api'
 import isFresh from '../../lib/is-fresh'

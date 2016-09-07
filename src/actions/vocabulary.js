@@ -13,7 +13,7 @@ import {
 	RECEIVE_VOCABULARY,
 	RECEIVE_VOCABULARY_ERROR,
 	UPDATE_VOCABULARY,
-} from './constants'
+} from '../constants'
 
 import { get } from '../../lib/api/request'
 import { 

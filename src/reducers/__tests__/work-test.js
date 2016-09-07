@@ -10,7 +10,7 @@ import {
 	SAVED_WORK,
 	SAVING_WORK,
 	UPDATE_WORK,
-} from '../../actions/constants'
+} from '../../constants'
 
 const originalState = {
 	data: {

@@ -7,7 +7,7 @@ import {
 	RECEIVE_VOCABULARY_TERMS,
 	REMOVE_TERM_FROM_VOCABULARY,
 	UPDATE_TERM,
-} from '../actions/constants'
+} from '../constants'
 
 const findIndex = function (arr, fn) {
 	for (let i = 0; i < arr.length; i++)

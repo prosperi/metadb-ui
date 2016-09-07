@@ -10,7 +10,7 @@ import {
 	DELETE_VOCABULARY_RESPONSE_OK,
 	FETCHING_ALL_VOCABULARIES,
 	REMOVE_TERM_FROM_VOCABULARY,
-} from '../../actions/constants'
+} from '../../constants'
 
 const originalStatePure = assign({}, originalState)
 
@@ -58,10 +58,8 @@ describe('vocabularyReducer', function () {
 			const rando = () => Math.floor(Math.random() * 10)
 
 			let newCount = rando()
-
-			// reset if we're at the same number
-			while (newCount === originalCount)
-				newCount = Math.floor(Math.random() * 10)
+			if (newCount === originalCount)
+				newCount++
 
 			const updates = []
 

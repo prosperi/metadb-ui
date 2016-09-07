@@ -1,0 +1,12 @@
+export const ADD_EMPTY_VALUE_TO_WORK = 'ADD_EMPTY_VALUE_TO_WORK'
+
+export const FETCHING_WORK = 'FETCHING_WORK'
+
+export const RECEIVE_WORK = 'RECEIVE_WORK'
+
+export const REMOVE_VALUE_FROM_WORK = 'REMOVE_VALUE_FROM_WORK'
+
+export const SAVED_WORK = 'SAVED_WORK'
+export const SAVING_WORK = 'SAVING_WORK'
+
+export const UPDATE_WORK = 'UPDATE_WORK'

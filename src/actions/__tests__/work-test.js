@@ -5,7 +5,7 @@ import {
 	ADD_EMPTY_VALUE_TO_WORK,
 	REMOVE_VALUE_FROM_WORK,
 	UPDATE_WORK,
-} from '../constants'
+} from '../../constants'
 
 const getActionData = function () {
 	const args = Array.prototype.slice.call(arguments)

@@ -1,7 +1,7 @@
 'use strict'
 
 import { getVocabulary } from '../../lib/api'
-import { RECEIVE_AUTOCOMPLETE_TERMS } from './constants'
+import { RECEIVE_AUTOCOMPLETE_TERMS } from '../constants'
 
 const autocompleteQueue = []
 let fetching = false

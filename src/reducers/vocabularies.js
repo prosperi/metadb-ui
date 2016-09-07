@@ -10,7 +10,7 @@ import {
 	RECEIVE_ALL_VOCABULARIES,
 	REMOVE_TERM_FROM_VOCABULARY,
 	UPDATE_VOCABULARY,
-} from '../actions/constants'
+} from '../constants'
 
 export default function vocabularyReducer (state, action) {
 	if (typeof state === 'undefined') 
@@ -68,17 +68,21 @@ function addTermToVocab (state, action) {
 }
 
 function bulkEditTerms (state, action) {
-	const idx = findIndex(state.data, v => v.uri === action.vocabulary.uri)
+	const uri = action.vocabulary.uri
 
-	if (!idx)
+	const idx = findIndex(state.data, vocab => vocab.uri === uri)
+
+	if (idx === -1) {
+		throw Error('could not find vocabulary with uri ' + action.vocabulary.uri)
 		return state
+	}
 
-	const vocab = assign({}, state.data[idx])
-	vocab.term_count = action.data.length
+	const target = assign({}, state.data[idx])
+	target.term_count = action.data.length
 
 	const data = [].concat(
 		state.data.slice(0, idx),
-		vocab,
+		target,
 		state.data.slice(idx + 1)
 	)
 

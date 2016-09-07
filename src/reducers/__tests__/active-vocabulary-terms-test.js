@@ -9,7 +9,7 @@ import {
 	RECEIVE_VOCABULARY_TERMS,
 	REMOVE_TERM_FROM_VOCABULARY,
 	UPDATE_TERM,
-} from '../../actions/constants'
+} from '../../constants'
 
 import createNewTerm from '../../../lib/create-new-term'
 import * as originalState from './mocks/active-terms.json'
