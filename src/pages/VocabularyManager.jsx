@@ -1,6 +1,10 @@
 import React from 'react'
 
+// vocab side
 import VocabularyList from '../components/vocabulary/VocabularyList.jsx'
+import CreateVocabularyModal from '../components/vocabulary/CreateVocabularyModal.jsx'
+
+// active vocabulary / terms side
 import TermsManager from '../components/vocabulary/TermsManager.jsx'
 
 const T = React.PropTypes
@@ -15,6 +19,8 @@ const VocabularyManager = React.createClass({
 		return {
 			activeVocabulary: null,
 			activeVocabularyIndex: -1,
+
+			addVocabularyModalOpen: false,
 		}
 	},
 
@@ -30,12 +36,23 @@ const VocabularyManager = React.createClass({
 		return <h2>fetching...</h2>
 	},
 
-	// eventually this will toggle a `New Vocabulary` modal,
-	// but for now just `console.log`s a confirmation
-	handleAddVocabulary: function () {
-		console.log('adding a vocabulary!')
+	handleCloseAddVocabularyModal: function () {
+		this.setState({
+			addVocabularyModalOpen: false,
+		})
 	},
 
+	handleCreateVocabulary: function (data) {
+		this.handleCloseAddVocabularyModal()
+
+		this.props.createVocabulary.call(null, data)
+	},
+
+	handleOpenAddVocabularyModal: function () {
+		this.setState({
+			addVocabularyModalOpen: true,
+		})
+	},
 
 	handleUpdateTermInVocabulary: function (vocabulary, term, data) {
 		this.props.updateTermInVocabulary({
@@ -52,6 +69,18 @@ const VocabularyManager = React.createClass({
 			activeVocabulary: vocabData,
 			activeVocabularyIndex: index,
 		})
+	},
+
+	renderAddVocabularyModal: function () {
+		if (!this.state.addVocabularyModalOpen)
+			return
+
+		return (
+			<CreateVocabularyModal
+				onClose={this.handleCloseAddVocabularyModal}
+				onSubmit={this.handleCreateVocabulary}
+			/>
+		)
 	},
 
 	renderTermsManager: function () {
@@ -84,12 +113,23 @@ const VocabularyManager = React.createClass({
 		if (!vocabs)
 			return
 
-		if (vocabs.isFetching)
-			return this.fetchingVocabularies()
+		const props = {
+			keys: {
+				count: 'term_count',
+				label: VOCAB_LABEL_KEY,
+			},
+			onAddVocabulary: this.handleOpenAddVocabularyModal,
+			onVocabularyClick: this.handleVocabularySelect,
+			placeholder: 'Filter vocabularies',
+		}
 
-		const vocabKeys = {
-			count: 'term_count',
-			label: VOCAB_LABEL_KEY,
+		if (vocabs.isFetching) {
+			return (
+				<VocabularyList
+					{...props}
+					isLoading
+				/>
+			)
 		}
 
 		let activeKey = null
@@ -99,12 +139,9 @@ const VocabularyManager = React.createClass({
 
 		return (
 			<VocabularyList
+				{...props}
 				activeIndex={this.state.activeVocabularyIndex}
 				activeKey={activeKey}
-				keys={vocabKeys}
-				onAddVocabulary={this.handleAddVocabulary}
-				onVocabularyClick={this.handleVocabularySelect}
-				placeholder={'Filter vocabularies'}
 				vocabularies={vocabs.data}
 			/>
 		)
@@ -123,6 +160,8 @@ const VocabularyManager = React.createClass({
 				<div className="terms-manager-container">
 					{this.renderTermsManager()}
 				</div>
+
+				{this.renderAddVocabularyModal()}
 			</div>
 		)
 	}

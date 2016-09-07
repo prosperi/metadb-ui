@@ -107,8 +107,6 @@ const BulkTermsEditor = React.createClass({
 
 		const styles = {
 			container: {
-				height: '100%',
-				width: '100%',
 			},
 
 			header: {

@@ -2,7 +2,7 @@ import React from 'react'
 
 import FormElementContainer from '../FormElementContainer.jsx'
 import TextInput from '../form-elements/TextInput.jsx'
-import TextArea rom '../form-elements/TextArea.jsx'
+import TextArea from '../form-elements/TextArea.jsx'
 
 const T = React.PropTypes
 
@@ -10,13 +10,13 @@ const CreateVocabularyForm = React.createClass({
 	propTypes: {
 		onSubmit: T.func.isRequired,
 
-		title: T.string,
+		name: T.string,
 		description: T.string,
 	},
 
 	getInitialState: function () {
 		return {
-			title: this.props.title || '',
+			name: this.props.name || '',
 			description: this.props.description || '',
 		}
 	},
@@ -27,11 +27,11 @@ const CreateVocabularyForm = React.createClass({
 		this.props.onSubmit.call(null, this.state)
 	},
 
-	updateDescription: function (val) {
+	updateDescription: function (_, val) {
 		this.setState({description: val})
 	},
 
-	updateName: function (val) {
+	updateName: function (_, val) {
 		this.setState({name: val})
 	},
 

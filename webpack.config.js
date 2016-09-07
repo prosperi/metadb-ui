@@ -54,7 +54,7 @@ module.exports = {
 		}),
 		new webpack.EnvironmentPlugin([
 			'API_BASE_URL',
-			'NODE_ENV',
+			// 'NODE_ENV',
 		]),
 	],
 	sassLoader: {

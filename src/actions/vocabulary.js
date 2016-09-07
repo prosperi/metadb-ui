@@ -9,9 +9,11 @@ import {
 
 	FETCHING_ALL_VOCABULARIES,
 	FETCHING_VOCABULARY,
+
 	RECEIVE_ALL_VOCABULARIES,
 	RECEIVE_VOCABULARY,
 	RECEIVE_VOCABULARY_ERROR,
+	
 	UPDATE_VOCABULARY,
 } from '../constants'
 
@@ -25,23 +27,26 @@ import camelCase from '../../lib/camel-case'
 
 const STALE_TIME = 60 * 1000
 
-const mockMintAuthUri = vocab => {
-	const pref = vocab.pref_label[0]
-	const camelized = camelCase(pref)
-
-	return `http://authority.lafayette.edu/ns/${camelized}`
-}
+const mockMintAuthUri = val => (
+	`http://authority.lafayette.edu/ns/${camelCase(val)}`
+)
 
 export const createVocabulary = data => dispatch => {
 	dispatch({
 		type: CREATE_VOCABULARY_REQUEST,
 	})
 
-	if (!data.uri)
-		data.uri = mockMintAuthUri(data)
+	const { name, description } = data
+	
+	const payload = {
+		uri: mockMintAuthUri(name),
+		label: [name],
+		pref_label: [name],
+		alt_label: [description],
+	}
 
 	// `res` is currently `{"status":"ok"}`, so no need to include it
-	create(data, (err) => {
+	return create(payload, (err) => {
 		// handle error
 		if (err) {
 			return dispatch({
@@ -50,9 +55,13 @@ export const createVocabulary = data => dispatch => {
 			})
 		}
 
+		payload.absolute_path = (
+			`${process.env.API_BASE_URL}/vocabularies/${camelCase(name)}.json`
+		)
+
 		return dispatch({
 			type: CREATE_VOCABULARY_RESPONSE_OK,
-			data,
+			data: payload,
 		})
 	})
 }

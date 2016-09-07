@@ -72,10 +72,8 @@ function bulkEditTerms (state, action) {
 
 	const idx = findIndex(state.data, vocab => vocab.uri === uri)
 
-	if (idx === -1) {
-		throw Error('could not find vocabulary with uri ' + action.vocabulary.uri)
+	if (idx === -1)
 		return state
-	}
 
 	const target = assign({}, state.data[idx])
 	target.term_count = action.data.length
@@ -95,6 +93,8 @@ function createVocabulary (state, action) {
 	data.term_count = 0
 
 	vocabs.push(data)
+
+	console.log(vocabs)
 
 	return assign({}, state, {data: vocabs})
 }

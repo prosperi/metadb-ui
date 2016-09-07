@@ -1,6 +1,7 @@
 'use strict'
 
 import React from 'react'
+import CreateVocabularyModal from './CreateVocabularyModal.jsx'
 
 const T = React.PropTypes
 
@@ -13,6 +14,8 @@ const VocabularyList = React.createClass({
 
 		activeIndex: T.number,
 		activeKey: T.string,
+
+		isLoading: T.bool,
 
 		onAddVocabulary: T.func.isRequired,
 		onVocabularyClick: T.func.isRequired,
@@ -64,17 +67,19 @@ const VocabularyList = React.createClass({
 			const key = this.props.keys.label
 
 			let label = vocab[key]
+
 			if (Array.isArray(label))
 				label = label[0]
 
-			if (label === '') return 0
+			if (!label)
+				return 0
 
 			return label.toLowerCase().indexOf(lowerVal) > -1 ? 1 : 0
 		})
 	},
 
-	handleAddVocabulary: function (ev) {
-		this.props.onAddVocabulary()
+	handleAddVocabulary: function () {
+		this.props.onAddVocabulary.call()
 	},
 
 	handleInputChange: function (ev) {
@@ -148,6 +153,14 @@ const VocabularyList = React.createClass({
 	},
 
 	vocabularyList: function () {
+		if (this.props.isLoading) {
+			return (
+				<div className="vocab-list--empty">
+					Loading ...
+				</div>
+			)
+		}
+
 		const query = this.state.filterQuery
 
 		if (!this.state.vocabularies || !this.state.vocabularies.length) {
@@ -200,6 +213,7 @@ const VocabularyList = React.createClass({
 				<header key="filter">
 					<input
 						className="filter"
+						disabled={this.props.isLoading}
 						onFocus={this.handleInputFocus}
 						onChange={this.handleInputChange}
 						onKeyDown={this.handleKeyDown}
