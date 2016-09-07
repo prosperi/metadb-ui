@@ -6,6 +6,8 @@ import assign from 'object-assign'
 import {
 	ADD_TERM_TO_VOCABULARY,
 	BULK_EDIT_TERMS,
+	CREATE_VOCABULARY_RESPONSE_OK,
+	DELETE_VOCABULARY_RESPONSE_OK,
 	FETCHING_ALL_VOCABULARIES,
 	REMOVE_TERM_FROM_VOCABULARY,
 } from '../../actions/constants'
@@ -81,6 +83,57 @@ describe('vocabularyReducer', function () {
 
 			expect(newData.term_count).to.not.equal(originalData.term_count)
 			expect(newData.term_count).to.equal(action.data.length)
+		})
+	})
+
+	describe('@CREATE_VOCABULARY_RESPONSE_OK', function () {
+		const action = {
+			type: CREATE_VOCABULARY_RESPONSE_OK,
+			data: {
+				uri: 'http://example.com/ns/newVocabEntry',
+				label: ['New Vocab'],
+				alt_label: [],
+				hidden_label: [],
+				pref_label: ['New Vocab'],
+			}
+		}
+
+		const result = vocabReducer(originalState, action)
+
+		it('appends an empty `term_count` key', function () {
+			const copy = [].concat(result.data)
+			const target = copy.pop()
+
+			expect(target.uri).to.equal(action.data.uri)
+			expect(target.term_count).to.not.be.undefined
+			expect(target.term_count).to.equal(0)
+		})
+
+		it('adds vocabulary to state.data', function () {
+			const origLen = originalState.data.length
+			const resLen = result.data.length
+
+			expect(resLen).to.be.greaterThan(origLen)
+			expect(resLen - origLen).to.equal(1)
+			expect(result.data[resLen - 1].uri).to.equal(action.data.uri)
+		})
+	})
+
+	describe('@DELETE_VOCABULARY_RESPONSE_OK', function () {
+		const originalData = originalState.data
+		const idx = Math.floor(Math.random() * originalData.length)
+		const target = originalData[idx]
+
+		const action = {
+			type: DELETE_VOCABULARY_RESPONSE_OK,
+			data: target,
+		}
+
+		const result = vocabReducer(originalState, action)
+
+		it('removes the target vocabulary from the vocab list', function () {
+			expect(originalData.length).to.be.greaterThan(result.data.length)
+			expect(originalData.length - result.data.length).to.equal(1)
 		})
 	})
 

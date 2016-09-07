@@ -1,20 +1,16 @@
 import assign from 'object-assign'
+import findIndex from 'array-find-index'
+
 import {
 	ADD_TERM_TO_VOCABULARY,
 	BULK_EDIT_TERMS,
+	CREATE_VOCABULARY_RESPONSE_OK,
+	DELETE_VOCABULARY_RESPONSE_OK,
 	FETCHING_ALL_VOCABULARIES,
 	RECEIVE_ALL_VOCABULARIES,
 	REMOVE_TERM_FROM_VOCABULARY,
 	UPDATE_VOCABULARY,
 } from '../actions/constants'
-
-const findIndex = (arr, fn) => {
-	for (let i = 0; i < arr.length; i++)
-		if (fn(arr[i], i, arr))
-			return i
-
-	return -1
-}
 
 export default function vocabularyReducer (state, action) {
 	if (typeof state === 'undefined') 
@@ -26,6 +22,12 @@ export default function vocabularyReducer (state, action) {
 
 		case BULK_EDIT_TERMS:
 			return bulkEditTerms(state, action)
+
+		case CREATE_VOCABULARY_RESPONSE_OK:
+			return createVocabulary(state, action)
+
+		case DELETE_VOCABULARY_RESPONSE_OK:
+			return deleteVocabulary(state, action)
 
 		case FETCHING_ALL_VOCABULARIES:
 			return fetchingAllVocabs(state, action)
@@ -83,17 +85,37 @@ function bulkEditTerms (state, action) {
 	return assign({}, state, {data})
 }
 
+function createVocabulary (state, action) {
+	const vocabs = [].concat(state.data)
+	const data = assign({}, action.data)
+	data.term_count = 0
+
+	vocabs.push(data)
+
+	return assign({}, state, {data: vocabs})
+}
+
+function deleteVocabulary (state, action) {
+	const target = action.data
+	const idx = findIndex(state.data, vocab => vocab.uri === target.uri)
+
+	if (idx === -1)
+		return state
+
+	const data = [].concat(
+		state.data.slice(0, idx),
+		state.data.slice(idx + 1)
+	)
+
+	return assign({}, state, {data})
+}
+ 
 function fetchingAllVocabs (/* state, action */) {
 	return { isFetching: true }
 }
 
 function receiveAllVocabs (state, action) {
 	const vocabs = action.data.vocabularies
-	// const out = {}
-
-	// vocabs.forEach((vocab, idx) => {
-	// 	out[vocab.uri] = vocab
-	// })
 
 	return { 
 		isFetching: false,

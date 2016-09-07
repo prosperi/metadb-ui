@@ -16,6 +16,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "array-find-index": "^1.0.1",
     "babel-core": "^6.9.1",
     "babel-loader": "^6.2.4",
     "babel-plugin-transform-object-rest-spread": "^6.8.0",
@@ -54,6 +55,7 @@
   "devDependencies": {
     "@kadira/storybook": "^1.29.4",
     "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-static-fs": "^1.1.0",
     "chai": "^3.5.0",
     "enzyme": "^2.4.1",
     "eslint": "^3.2.2",
@@ -67,7 +69,9 @@
     "karma-safari-launcher": "^1.0.0",
     "karma-webpack": "^1.8.0",
     "mocha": "^3.0.2",
+    "nock": "^8.0.0",
     "raw-loader": "^0.5.1",
-    "react-addons-test-utils": "^15.3.1"
+    "react-addons-test-utils": "^15.3.1",
+    "redux-mock-store": "^1.2.0"
   }
 }
