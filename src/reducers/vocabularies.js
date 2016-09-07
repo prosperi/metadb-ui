@@ -69,14 +69,13 @@ function addTermToVocab (state, action) {
 
 function bulkEditTerms (state, action) {
 	const uri = action.vocabulary.uri
-
 	const idx = findIndex(state.data, vocab => vocab.uri === uri)
 
 	if (idx === -1)
 		return state
 
 	const target = assign({}, state.data[idx])
-	target.term_count = action.data.length
+	target.term_count = action.terms.length
 
 	const data = [].concat(
 		state.data.slice(0, idx),
@@ -93,8 +92,6 @@ function createVocabulary (state, action) {
 	data.term_count = 0
 
 	vocabs.push(data)
-
-	console.log(vocabs)
 
 	return assign({}, state, {data: vocabs})
 }
@@ -129,14 +126,20 @@ function receiveAllVocabs (state, action) {
 }
 
 function removeTermFromVocabulary (state, action) {
-	const uri = action.uri
+	const uri = action.vocabulary.uri
 	const idx = findIndex(state.data, v => v.uri === uri)
+
+	// couldn't find the vocabulary, let's bail
+	if (idx === -1)
+		return state
+
 	const vocab = assign({}, state.data[idx])
 
 	if (!vocab)
 		return state
 
-	vocab.term_count--
+	if (vocab.term_count)
+		vocab.term_count--
 
 	const data = [].concat(
 		state.data.slice(0, idx),

@@ -1,4 +1,5 @@
 import React from 'react'
+import assign from 'object-assign'
 
 // vocab side
 import VocabularyList from '../components/vocabulary/VocabularyList.jsx'
@@ -6,9 +7,15 @@ import CreateVocabularyModal from '../components/vocabulary/CreateVocabularyModa
 
 // active vocabulary / terms side
 import TermsManager from '../components/vocabulary/TermsManager.jsx'
+import BulkTermsEditModal from '../components/vocabulary/BulkTermsEditModal.jsx'
 
 const T = React.PropTypes
 const VOCAB_LABEL_KEY = 'pref_label'
+
+const MODAL = {
+	ADD_VOCABULARY: 'addVocabulary',
+	BULK_TERMS: 'bulkTerms',
+}
 
 const VocabularyManager = React.createClass({
 	propTypes: {
@@ -20,7 +27,11 @@ const VocabularyManager = React.createClass({
 			activeVocabulary: null,
 			activeVocabularyIndex: -1,
 
-			addVocabularyModalOpen: false,
+			// modal window management
+			modals: {
+				addVocabulary: false,
+				bulkTerms: false,
+			},
 		}
 	},
 
@@ -28,30 +39,22 @@ const VocabularyManager = React.createClass({
 		this.props.fetchAllVocabularies()
 	},
 
+	closeModal: function (which) {
+		this.toggleModal(which, false)
+	},
+
 	fetchingTerms: function () {
 		return <h2>fetching terms...</h2>
 	},
 
-	fetchingVocabularies: function () {
-		return <h2>fetching...</h2>
-	},
-
 	handleCloseAddVocabularyModal: function () {
-		this.setState({
-			addVocabularyModalOpen: false,
-		})
+		this.closeModal(MODAL.ADD_VOCABULARY)
 	},
 
 	handleCreateVocabulary: function (data) {
 		this.handleCloseAddVocabularyModal()
 
 		this.props.createVocabulary.call(null, data)
-	},
-
-	handleOpenAddVocabularyModal: function () {
-		this.setState({
-			addVocabularyModalOpen: true,
-		})
 	},
 
 	handleUpdateTermInVocabulary: function (vocabulary, term, data) {
@@ -71,16 +74,42 @@ const VocabularyManager = React.createClass({
 		})
 	},
 
+	openModal: function (which) {
+		this.toggleModal(which, true)
+	},
+
 	renderAddVocabularyModal: function () {
-		if (!this.state.addVocabularyModalOpen)
+		if (!this.state.modals[MODAL.ADD_VOCABULARY])
 			return
 
 		return (
 			<CreateVocabularyModal
-				onClose={this.handleCloseAddVocabularyModal}
+				onClose={this.closeModal.bind(null, MODAL.ADD_VOCABULARY)}
 				onSubmit={this.handleCreateVocabulary}
 			/>
 		)
+	},
+
+	renderBulkTermsModal: function () {
+		if (!this.state.modals[MODAL.BULK_TERMS])
+			return
+
+		const activeVocab = this.state.activeVocabulary
+		const activeTerms = this.props.activeVocabularyTerms
+
+		// we might want to also close the bulk modal if it's been opened
+		// without an activeVocabulary selected
+		if (!activeVocab)
+			return
+
+		const props = {
+			label: activeVocab[VOCAB_LABEL_KEY][0],
+			onClose: this.closeModal.bind(null, MODAL.BULK_TERMS),
+			onSubmit: this.props.bulkEditTermsInVocabulary.bind(null, activeVocab),
+			terms: activeTerms.data.map(term => term.pref_label[0]),
+		}
+
+		return React.createElement(BulkTermsEditModal, props)
 	},
 
 	renderTermsManager: function () {
@@ -99,7 +128,7 @@ const VocabularyManager = React.createClass({
 			<TermsManager
 				label={vocabName}
 				onAddTerm={this.props.addTermToVocabulary.bind(null, activeVocab)}
-				onBulkTermUpdate={this.props.bulkEditTermsInVocabulary.bind(null, activeVocab)}
+				onBulkTermsOpen={this.openModal.bind(null, MODAL.BULK_TERMS)}
 				onRemoveTerm={this.props.removeTermFromVocabulary.bind(null, activeVocab)}
 				onUpdateTerm={this.handleUpdateTermInVocabulary.bind(null, activeVocab)}
 				terms={terms.data}
@@ -113,39 +142,50 @@ const VocabularyManager = React.createClass({
 		if (!vocabs)
 			return
 
+		// required + common props
 		const props = {
 			keys: {
 				count: 'term_count',
 				label: VOCAB_LABEL_KEY,
 			},
-			onAddVocabulary: this.handleOpenAddVocabularyModal,
+			onAddVocabulary: this.openModal.bind(null, MODAL.ADD_VOCABULARY),
 			onVocabularyClick: this.handleVocabularySelect,
 			placeholder: 'Filter vocabularies',
 		}
 
-		if (vocabs.isFetching) {
-			return (
-				<VocabularyList
-					{...props}
-					isLoading
-				/>
-			)
-		}
+		if (!vocabs.isFetching) {
+			let activeKey = null
 
-		let activeKey = null
+			if (this.state.activeVocabulary)
+				activeKey = this.state.activeVocabulary[VOCAB_LABEL_KEY][0]
 
-		if (this.state.activeVocabulary)
-			activeKey = this.state.activeVocabulary[VOCAB_LABEL_KEY][0]
+			props.activeKey = activeKey
+			props.activeIndex = this.state.activeVocabularyIndex
+			props.vocabularies = vocabs.data
+		} 
 
-		return (
-			<VocabularyList
-				{...props}
-				activeIndex={this.state.activeVocabularyIndex}
-				activeKey={activeKey}
-				vocabularies={vocabs.data}
-			/>
-		)
+		else props.isLoading = true
 
+		return React.createElement(VocabularyList, props)
+	},
+
+	toggleModal: function (which, toggle) {
+		if (typeof toggle !== 'boolean')
+			toggle = !!toggle
+
+		const modals = assign({}, this.state.modals)
+
+		if (typeof modals[which] === 'undefined')
+			return
+
+		// reset all modals to false
+		for (let m in modals)
+			modals[m] = false
+
+		if (toggle === true)
+			modals[which] = true
+
+		this.setState({modals})
 	},
 
 	render: function () {
@@ -162,6 +202,7 @@ const VocabularyManager = React.createClass({
 				</div>
 
 				{this.renderAddVocabularyModal()}
+				{this.renderBulkTermsModal()}
 			</div>
 		)
 	}

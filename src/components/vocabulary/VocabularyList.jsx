@@ -1,7 +1,6 @@
 'use strict'
 
 import React from 'react'
-import CreateVocabularyModal from './CreateVocabularyModal.jsx'
 
 const T = React.PropTypes
 
@@ -180,8 +179,13 @@ const VocabularyList = React.createClass({
 	},
 
 	vocabularyListItem: function (data, index) {
+		let label = data[this.props.keys.label]
+
+		if (Array.isArray(label))
+			label = label[0]
+
 		// WORKAROUND: skip items w/o a pref-label defined
-		if (!data[this.props.keys.label][0])
+		if (!label)
 			return
 
 		const classname = ['vocab-list--item']

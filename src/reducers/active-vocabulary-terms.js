@@ -61,7 +61,7 @@ function bulkEditTerms (state, action) {
 	if (action.vocabulary.uri !== state.vocabularyUri)
 		return state
 
-	return assign({}, state, {data: action.data})
+	return assign({}, state, {data: action.terms})
 }
 
 function receiveVocabularyTerms (state, action) {
@@ -75,7 +75,7 @@ function receiveVocabularyTerms (state, action) {
 
 function removeTermFromVocabulary (state, action) {
 	if (action.vocabulary.uri !== state.vocabularyUri)
-		return
+		return state
 
 	const terms = state.data
 	const index = action.index

@@ -72,7 +72,7 @@ describe('vocabularyReducer', function () {
 
 			const action = {
 				type: BULK_EDIT_TERMS,
-				data: updates,
+				terms: updates,
 				vocabulary: vocab,
 			}
 
@@ -80,7 +80,7 @@ describe('vocabularyReducer', function () {
 			const newData = result.data[idx]
 
 			expect(newData.term_count).to.not.equal(originalData.term_count)
-			expect(newData.term_count).to.equal(action.data.length)
+			expect(newData.term_count).to.equal(action.terms.length)
 		})
 	})
 
@@ -150,12 +150,11 @@ describe('vocabularyReducer', function () {
 			const idx = Math.floor(Math.random() * originalData.length)
 
 			const originalVocab = originalData[idx]
-			const uri = originalVocab.uri
 
 			const action = {
 				type: REMOVE_TERM_FROM_VOCABULARY,
 				term: 'whatever',
-				uri,
+				vocabulary: originalVocab,
 			}
 
 			const result = vocabReducer(originalState, action)

@@ -83,10 +83,10 @@ export const bulkEditTermsInVocabulary = function (vocabData, terms) {
 		const updates = terms.map(term => {
 			const idx = indexed[term]
 
-			if (idx !== null)
+			if (typeof idx !== 'undefined')
 				return prevTerms[idx]
 			
-			return createNewTerm(term)
+			return createNewTerm(term, vocabData)
 		})
 
 		return putTerms(vocabData, updates, function (err) {
@@ -137,7 +137,6 @@ export const removeTermFromVocabulary = function (vocabData, termData, index) {
 			termsList.slice(0, index),
 			termsList.slice(index + 1)
 		)
-		const uri = vocabData.uri
 
 		return putTerms(vocabData, terms, function (err) {
 			if (err) {
@@ -147,7 +146,8 @@ export const removeTermFromVocabulary = function (vocabData, termData, index) {
 			return dispatch({
 				type: REMOVE_TERM_FROM_VOCABULARY,
 				index,
-				uri,
+				term: termData,
+				vocabulary: vocabData,
 			})
 		})
 	}

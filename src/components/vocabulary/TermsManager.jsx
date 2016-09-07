@@ -13,7 +13,7 @@ const TermsManager = React.createClass({
 		terms: T.array.isRequired,
 
 		onAddTerm: T.func.isRequired,
-		onBulkTermUpdate: T.func.isRequired,
+		onBulkTermsOpen: T.func.isRequired,
 		onRemoveTerm: T.func.isRequired,
 		onUpdateTerm: T.func.isRequired,
 	},
@@ -36,26 +36,7 @@ const TermsManager = React.createClass({
 		return {
 			// controls TermEditModal
 			activeEditingTerm: null,
-
-			// controls BulkTermsEditor
-			bulkTermsModalOpen: false,
 		}
-	},
-
-	handleBulkTermsModalClose: function (data) {
-		if (Array.isArray(data)) {
-			this.props.onBulkTermUpdate.call(null, data)
-		}
-
-		this.setState({
-			bulkTermsModalOpen: false,
-		})
-	},
-
-	handleBulkTermsModalOpen: function () {
-		this.setState({
-			bulkTermsModalOpen: true,
-		})
 	},
 
 	handleInputKeyDown: function (ev) {
@@ -104,19 +85,6 @@ const TermsManager = React.createClass({
 
 	mapTermPrefLabels: function (terms) {
 		return terms.map(t => t.pref_label[0])
-	},
-
-	renderBulkTermsModal: function () {
-		if (!this.state.bulkTermsModalOpen)
-			return
-
-		return (
-			<BulkTermsEditModal
-				label={this.props.label}
-				onClose={this.handleTermModalClose}
-				terms={this.mapTermPrefLabels(this.props.terms)}
-			/>
-		)
 	},
 
 	renderTermModal: function () {
@@ -198,14 +166,13 @@ const TermsManager = React.createClass({
 					<span style={styles.bulkTermsContainer}>
 						<button
 							children="Bulk add/edit terms"
-							onClick={this.handleBulkTermsModalOpen}
+							onClick={this.props.onBulkTermsOpen}
 							style={styles.bulkTermsButton}
 						/>
 					</span>
 				</footer>
 
 				{this.renderTermModal()}
-				{this.renderBulkTermsModal()}
 			</div>
 		)
 	}

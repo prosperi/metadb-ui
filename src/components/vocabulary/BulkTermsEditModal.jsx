@@ -7,6 +7,8 @@ const T = React.PropTypes
 const BulkTermsEditModal = React.createClass({
 	propTypes: {
 		onClose: T.func.isRequired,
+		onSubmit: T.func.isRequired,
+
 		terms: T.arrayOf(T.string).isRequired,
 
 		label: T.string,
@@ -28,6 +30,7 @@ const BulkTermsEditModal = React.createClass({
 	},
 
 	handleSubmit: function (data) {
+		this.props.onSubmit.call(null, data)
 		this.closeModal(data)
 	},
 
@@ -49,7 +52,7 @@ const BulkTermsEditModal = React.createClass({
 		const styles = {
 			modal: {
 				content: {
-					bottom: '25%',
+					bottom: '12.5%',
 					left: '12.5%',
 					right: '12.5%',
 					top: '12.5%',

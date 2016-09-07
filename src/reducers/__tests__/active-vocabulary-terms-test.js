@@ -32,7 +32,7 @@ describe('activeVocabularyTermsReducer', function () {
 	describe('@ADD_TERM_TO_VOCABULARY', function () {
 		it('appends newly-created term to the `data` object', function () {
 			const term = 'whaaaa?'
-			const created = createNewTerm(term)
+			const created = createNewTerm(term, originalState.vocabularyUri)
 			const action = {
 				type: ADD_TERM_TO_VOCABULARY,
 				data: created,
@@ -64,7 +64,7 @@ describe('activeVocabularyTermsReducer', function () {
 
 		const action = {
 			type: BULK_EDIT_TERMS,
-			data: update,
+			terms: update,
 			vocabulary: {
 				uri: 'https://example.com/vocab',
 				label: ['Test Vocab'],
