@@ -1,6 +1,7 @@
 import {
 	ADD_EMPTY_VALUE_TO_WORK,
 	FETCHING_WORK,
+	FETCHING_WORK_ERROR,
 	RECEIVE_WORK,
 	REMOVE_VALUE_FROM_WORK,
 	UPDATE_WORK,
@@ -26,13 +27,20 @@ export const fetchWork = id => (dispatch/*, getState*/) => {
 	})
 
 	return getWork(id)
-		.then(data => {
-			dispatch({
-				type: RECEIVE_WORK,
-				data,
-			})
-		})
-		//.catch(err => {})
+		.then(
+			data => {
+				dispatch({
+					type: RECEIVE_WORK,
+					data,
+				})
+			},
+			error => {
+				dispatch({
+					type: FETCHING_WORK_ERROR,
+					error,
+				})
+			}
+		)
 }
 
 export const addEmptyValueToWork = key => dispatch => {
@@ -59,7 +67,7 @@ export const removeValueFromWork = (key, index) => dispatch => {
 	})
 }
 
-export const saveWork = (id) => (dispatch, getState) => {
+export const saveWork = id => (dispatch, getState) => {
 	// TODO
 	// 	 bail on save if already saving so to prevent duplicates
 

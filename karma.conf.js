@@ -1,3 +1,5 @@
+const webpack = require('webpack')
+
 module.exports = function(config) {
 	config.set({
 
@@ -51,7 +53,13 @@ module.exports = function(config) {
 				'react/lib/ExecutionEnvironment': true,
 				'react/lib/ReactContext': true,
 			},
-			plugins: [],
+			plugins: [
+				new webpack.DefinePlugin({
+					'process.env': {
+						API_BASE_URL: JSON.stringify('http://example.org')
+					}
+				})
+			],
 			devtool: '#inline-source-map',
 			node: {
 				fs: 'empty',
