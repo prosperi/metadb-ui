@@ -22,7 +22,7 @@ const BulkTermsEditModal = React.createClass({
 
 	closeModal: function (data) {
 		this.setState({modalOpen: false})
-		this.props.onClose(data)
+		this.props.onClose()
 	},
 
 	handleClose: function (ev) {
@@ -30,8 +30,8 @@ const BulkTermsEditModal = React.createClass({
 	},
 
 	handleSubmit: function (data) {
-		this.props.onSubmit.call(null, data)
-		this.closeModal(data)
+		this.props.onSubmit(data)
+		this.closeModal()
 	},
 
 	renderHeader: function (styles) {
@@ -52,7 +52,9 @@ const BulkTermsEditModal = React.createClass({
 		const styles = {
 			modal: {
 				content: {
+					borderColor: '#1d5f83',
 					bottom: '12.5%',
+					boxShadow: '0 1px 2px 1px #aaa',
 					left: '12.5%',
 					right: '12.5%',
 					top: '12.5%',
