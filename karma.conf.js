@@ -52,7 +52,10 @@ module.exports = function(config) {
 				'react/lib/ReactContext': true,
 			},
 			plugins: [],
-			devtool: '#inline-source-map'
+			devtool: '#inline-source-map',
+			node: {
+				fs: 'empty',
+			}
 		},
 		webpackServer: {
 			noInfo: true,

@@ -15,17 +15,7 @@ const TermsManager = React.createClass({
 		onAddTerm: T.func.isRequired,
 		onBulkTermsOpen: T.func.isRequired,
 		onRemoveTerm: T.func.isRequired,
-		onUpdateTerm: T.func.isRequired,
-	},
-
-	componentDidMount: function () {
-		this._index = this.indexTerms()
-	},
-
-	componentDidUpdate: function (prevProps) {
-		// if we added/removed terms, reindex the lot so we have fresh data
-		if (prevProps.terms.length !== this.props.terms.length) 
-			this._index = this.indexTerms()
+		onTermClick: T.func.isRequired,
 	},
 
 	shouldComponentUpdate: function (nextProps, nextState) {
@@ -50,22 +40,6 @@ const TermsManager = React.createClass({
 		ev.target.value = ''
 	},
 
-	handleTermAddValueField: function (/* term, key */) {
-		this.props.onTermAddValueField.apply(null, arguments)
-	},
-
-	handleTermClick: function (term) {
-		this.setState({
-			activeEditingTerm: term,
-		})
-	},
-
-	handleTermModalClose: function () {
-		this.setState({
-			activeEditingTerm: null,
-		})
-	},
-
 	handleTermRemove: function (/* term, index */) {
 		this.props.onRemoveTerm.apply(null, arguments)
 	},
@@ -76,32 +50,8 @@ const TermsManager = React.createClass({
 		this.props.onUpdateTerm.call(null, term, data)
 	},
 
-	indexTerms: function () {
-		const index = {}
-		this.props.terms.forEach(t => index[t.pref_label[0]] = t)
-
-		return index
-	},
-
 	mapTermPrefLabels: function (terms) {
 		return terms.map(t => t.pref_label[0])
-	},
-
-	renderTermModal: function () {
-		const active = this.state.activeEditingTerm
-
-		if (!active)
-			return
-
-		const data = this._index[active]
-
-		return (
-			<TermEditModal
-				data={data}
-				onClose={this.handleTermModalClose}
-				onSave={this.handleTermSave.bind(null, active)}
-			/>
-		)
 	},
 
 	renderTermTagList: function () {
@@ -113,7 +63,7 @@ const TermsManager = React.createClass({
 		return (
 			<TagList
 				className="terms"
-				onClickTag={this.handleTermClick}
+				onClickTag={this.props.onTermClick}
 				onRemoveTag={this.handleTermRemove}
 				tagClassName="vocabulary-term"
 				tags={this.mapTermPrefLabels(this.props.terms)}
@@ -171,8 +121,6 @@ const TermsManager = React.createClass({
 						/>
 					</span>
 				</footer>
-
-				{this.renderTermModal()}
 			</div>
 		)
 	}

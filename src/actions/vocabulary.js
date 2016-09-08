@@ -45,43 +45,43 @@ export const createVocabulary = data => dispatch => {
 		alt_label: [description],
 	}
 
-	// `res` is currently `{"status":"ok"}`, so no need to include it
-	return create(payload, (err) => {
-		// handle error
-		if (err) {
-			return dispatch({
+	return create(payload)
+		.then(() => {
+			
+			// append `absolute_path` to the payload
+			payload.absolute_path = (
+				`${process.env.API_BASE_URL}/vocabularies/${camelCase(name)}.json`
+			)
+
+			dispatch({
+				type: CREATE_VOCABULARY_RESPONSE_OK,
+				data: payload,
+			})
+		})
+		.catch(err => {
+			dispatch({
 				type: CREATE_VOCABULARY_RESPONSE_ERR,
 				error: err,
 			})
-		}
-
-		payload.absolute_path = (
-			`${process.env.API_BASE_URL}/vocabularies/${camelCase(name)}.json`
-		)
-
-		return dispatch({
-			type: CREATE_VOCABULARY_RESPONSE_OK,
-			data: payload,
 		})
-	})
 }
 
 export const deleteVocabulary = data => dispatch => {
 	dispatch({type: DELETE_VOCABULARY_REQUEST})
 
-	return deleteVocabulary(data, err => {
-		if (err) {
-			return dispatch({
+	return deleteVocabulary(data)
+		.then(() => {
+			dispatch({
+				type: DELETE_VOCABULARY_RESPONSE_OK,
+				data,
+			})
+		})
+		.catch(err => {
+			dispatch({
 				type: DELETE_VOCABULARY_RESPONSE_ERR,
 				error: err,
 			})
-		}
-
-		return dispatch({
-			type: DELETE_VOCABULARY_RESPONSE_OK,
-			data,
 		})
-	})
 }
 
 export const fetchAllVocabularies = () => dispatch => {
@@ -89,15 +89,14 @@ export const fetchAllVocabularies = () => dispatch => {
 		type: FETCHING_ALL_VOCABULARIES,
 	})
 
-	getVocabularies((err, vocabs) => {
-		if (err)
-			throw err
-
-		return dispatch({
-			type: RECEIVE_ALL_VOCABULARIES,
-			data: vocabs,
+	getVocabularies()
+		.then(vocabs => {
+			dispatch({
+				type: RECEIVE_ALL_VOCABULARIES,
+				data: vocabs,
+			})
 		})
-	})
+		//.catch(err => {})
 }
 
 export const fetchVocabulary = data => (dispatch, getState) => {
@@ -117,19 +116,19 @@ export const fetchVocabulary = data => (dispatch, getState) => {
 		uri,
 	})
 
-	return get(abs, (err, results) => {
-		if (err) {
-			return dispatch({
-				type: RECEIVE_VOCABULARY_ERROR,
-				err,
+	return get(abs)
+		.then(data => {
+			dispatch({
+				type: RECEIVE_VOCABULARY,
+				data,
 			})
-		}
-
-		return dispatch({
-			type: RECEIVE_VOCABULARY,
-			data: results,
 		})
-	})
+		.catch(error => {
+			dispatch({
+				type: RECEIVE_VOCABULARY_ERROR,
+				error,
+			})
+		})
 }
 
 export const updateVocabulary = (uri, key, index, value) => dispatch => {

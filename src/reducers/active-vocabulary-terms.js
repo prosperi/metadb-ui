@@ -6,7 +6,7 @@ import {
 	FETCHING_VOCABULARY_TERMS,
 	RECEIVE_VOCABULARY_TERMS,
 	REMOVE_TERM_FROM_VOCABULARY,
-	UPDATE_TERM,
+	UPDATE_TERM_RESPONSE_OK,
 } from '../constants'
 
 const findIndex = function (arr, fn) {
@@ -37,7 +37,7 @@ export default function activeVocabularyTermsReducer (state, action) {
 		case REMOVE_TERM_FROM_VOCABULARY:
 			return removeTermFromVocabulary(state, action)
 
-		case UPDATE_TERM:
+		case UPDATE_TERM_RESPONSE_OK:
 			return updateTerm(state, action)
 
 		default:

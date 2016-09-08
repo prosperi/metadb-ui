@@ -10,8 +10,7 @@ const TermEditModal = React.createClass({
 	propTypes: {
 		data: T.object.isRequired,
 		onSave: T.func.isRequired,
-
-		onClose: T.func,
+		onClose: T.func.isRequired,
 	},
 
 	getInitialState: function () {

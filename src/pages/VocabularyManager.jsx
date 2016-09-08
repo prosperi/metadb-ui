@@ -1,5 +1,6 @@
 import React from 'react'
 import assign from 'object-assign'
+import arrayFind from 'array-find'
 
 // vocab side
 import VocabularyList from '../components/vocabulary/VocabularyList.jsx'
@@ -8,6 +9,7 @@ import CreateVocabularyModal from '../components/vocabulary/CreateVocabularyModa
 // active vocabulary / terms side
 import TermsManager from '../components/vocabulary/TermsManager.jsx'
 import BulkTermsEditModal from '../components/vocabulary/BulkTermsEditModal.jsx'
+import TermEditModal from '../components/vocabulary/TermEditModal.jsx'
 
 const T = React.PropTypes
 const VOCAB_LABEL_KEY = 'pref_label'
@@ -15,15 +17,13 @@ const VOCAB_LABEL_KEY = 'pref_label'
 const MODAL = {
 	ADD_VOCABULARY: 'addVocabulary',
 	BULK_TERMS: 'bulkTerms',
+	TERM_EDIT: 'termEdit',
 }
 
 const VocabularyManager = React.createClass({
-	propTypes: {
-
-	},
-
 	getInitialState: function () {
 		return {
+			activeEditingTerm: null,
 			activeVocabulary: null,
 			activeVocabularyIndex: -1,
 
@@ -31,12 +31,23 @@ const VocabularyManager = React.createClass({
 			modals: {
 				addVocabulary: false,
 				bulkTerms: false,
+				termEdit: false,
 			},
 		}
 	},
 
 	componentDidMount: function () {
 		this.props.fetchAllVocabularies()
+	},
+
+	clearActiveEditingTerm: function () {
+		const modals = assign({}, this.state.modals)
+		modals[MODAL.TERM_EDIT] = false
+
+		this.setState({
+			activeEditingTerm: null,
+			modals,
+		})
 	},
 
 	closeModal: function (which) {
@@ -55,14 +66,6 @@ const VocabularyManager = React.createClass({
 		this.handleCloseAddVocabularyModal()
 
 		this.props.createVocabulary.call(null, data)
-	},
-
-	handleUpdateTermInVocabulary: function (vocabulary, term, data) {
-		this.props.updateTermInVocabulary({
-			data,
-			term,
-			vocabulary,
-		})
 	},
 
 	// sets the `activeVocabulary` prop + fetches terms
@@ -112,6 +115,33 @@ const VocabularyManager = React.createClass({
 		return React.createElement(BulkTermsEditModal, props)
 	},
 
+	renderTermEditModal: function () {
+		if (!this.state.modals[MODAL.TERM_EDIT])
+			return
+
+		const activeTerm = this.state.activeEditingTerm
+		const activeVocab = this.state.activeVocabulary
+		const pool = this.props.activeVocabularyTerms.data
+
+		if (!activeTerm || !activeVocab || !pool || !pool.length)
+			return
+
+		const term = arrayFind(pool, t => t.pref_label.indexOf(activeTerm) > -1)
+
+		if (!term)
+			return
+
+		const updateTerm = this.props.updateTermInVocabulary
+
+		const props = {
+			data: term,
+			onSave: updateTerm.bind(null, activeVocab, activeTerm),
+			onClose: this.clearActiveEditingTerm,
+		}
+
+		return React.createElement(TermEditModal, props)
+	},
+
 	renderTermsManager: function () {
 		const terms = this.props.activeVocabularyTerms
 		const activeVocab = this.state.activeVocabulary
@@ -130,7 +160,7 @@ const VocabularyManager = React.createClass({
 				onAddTerm={this.props.addTermToVocabulary.bind(null, activeVocab)}
 				onBulkTermsOpen={this.openModal.bind(null, MODAL.BULK_TERMS)}
 				onRemoveTerm={this.props.removeTermFromVocabulary.bind(null, activeVocab)}
-				onUpdateTerm={this.handleUpdateTermInVocabulary.bind(null, activeVocab)}
+				onTermClick={this.setActiveEditingTerm}
 				terms={terms.data}
 			/>
 		)
@@ -169,6 +199,14 @@ const VocabularyManager = React.createClass({
 		return React.createElement(VocabularyList, props)
 	},
 
+	setActiveEditingTerm: function (term) {
+		this.setState({
+			activeEditingTerm: term,
+		})
+
+		this.openModal(MODAL.TERM_EDIT)
+	},
+
 	toggleModal: function (which, toggle) {
 		if (typeof toggle !== 'boolean')
 			toggle = !!toggle
@@ -201,8 +239,10 @@ const VocabularyManager = React.createClass({
 					{this.renderTermsManager()}
 				</div>
 
+				{/* modal hangout */}
 				{this.renderAddVocabularyModal()}
 				{this.renderBulkTermsModal()}
+				{this.renderTermEditModal()}
 			</div>
 		)
 	}

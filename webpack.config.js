@@ -5,19 +5,12 @@ var Bourbon = require('node-bourbon')
 var Neat = require('node-neat')
 
 module.exports = {
-	// entry: [
-	// 	'./src/index.js',
-	// 	'webpack/hot/dev-server',
-	// 	'webpack-dev-server/client?http://localhost:8081',
-	// ],
-
 	entry: [
 		'./src/index.js',
 		'./src/scss/main.scss',
 	],
 
 	output: {
-		// publicPath: 'http://loclahost:8081/assets/',
 		path: path.join(__dirname, 'build'),
 		filename: 'bundle.js',
 	},
@@ -54,7 +47,6 @@ module.exports = {
 		}),
 		new webpack.EnvironmentPlugin([
 			'API_BASE_URL',
-			// 'NODE_ENV',
 		]),
 	],
 	sassLoader: {

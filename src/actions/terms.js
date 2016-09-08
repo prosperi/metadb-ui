@@ -10,7 +10,9 @@ import {
 	
 	REMOVE_TERM_FROM_VOCABULARY,
 
-	UPDATE_TERM,
+	UPDATE_TERM_REQUEST,
+	UPDATE_TERM_RESPONSE_ERR,
+	UPDATE_TERM_RESPONSE_OK,
 } from '../constants'
 
 import { 
@@ -43,32 +45,30 @@ function mintUri (vocab, term) {
 //		1. ADD_TERM_TO_VOCABULARY
 //	  2. UPDATE_VOCABULARY_TERM_COUNT
 
-export const addTermToVocabulary = function (vocabData, term) {
+export const addTermToVocabulary = function (vocabulary, term) {
 	return dispatch => {
 		const newTerm = createNewTerm(term)
-		const uri = vocabData.uri
+		const uri = vocabulary.uri
 
 		// Eventually I expect this will be handled on the server, but until then,
 		// a URI needs to be passed for the term to be accepted, so we'll create a
 		// mock one.
-		newTerm.uri = mintUri(vocabData, term)
+		newTerm.uri = mintUri(vocabulary, term)
 
-		return addTerm(vocabData, newTerm, function (err /*, response */) {
-			if (err) {
-				// do something w/ the error!
-			}
-
-			return dispatch({
-				type: ADD_TERM_TO_VOCABULARY,
-				data: newTerm,
-				uri,
-				vocabulary: vocabData,
+		return addTerm(vocabulary, newTerm)
+			.then(() => {
+				dispatch({
+					type: ADD_TERM_TO_VOCABULARY,
+					data: newTerm,
+					uri,
+					vocabulary,
+				})
 			})
-		})
+			//.catch(function (err) {})
 	}
 }
 
-export const bulkEditTermsInVocabulary = function (vocabData, terms) {
+export const bulkEditTermsInVocabulary = (vocabulary, terms) => {
 	return (dispatch, getState) => {
 		
 		const prevTerms = getState().activeVocabularyTerms.data
@@ -86,51 +86,51 @@ export const bulkEditTermsInVocabulary = function (vocabData, terms) {
 			if (typeof idx !== 'undefined')
 				return prevTerms[idx]
 			
-			return createNewTerm(term, vocabData)
+			return createNewTerm(term, vocabulary)
 		})
 
-		return putTerms(vocabData, updates, function (err) {
-			if (err) {
-				// do something w/ the error
-			}
-
-			return dispatch({
-				type: BULK_EDIT_TERMS,
-				terms: updates,
-				vocabulary: vocabData,
+		return putTerms(vocabulary, updates)
+			.then(() => {
+				dispatch({
+					type: BULK_EDIT_TERMS,
+					terms: updates,
+					vocabulary,
+				})
 			})
-		})
+			//.catch(function (err) {})
 	}
 }
 
-export const fetchTermsFromVocabulary = vocabData => dispatch => {
-	dispatch({
-		type: FETCHING_VOCABULARY_TERMS, 
-		vocabulary: vocabData,
-	})
-
-	return fetchTerms(vocabData, function (err, results) {
-		if (err) {
-			return dispatch({
-				type: RECEIVE_VOCABULARY_TERMS_ERROR,
-				error: err,
-				vocabulary: vocabData,
-			})
-		}
-
-		return dispatch({
-			type: RECEIVE_VOCABULARY_TERMS,
-			data: results,
-			vocabulary: vocabData,
+export const fetchTermsFromVocabulary = vocabulary => {
+	return dispatch => {
+		dispatch({
+			type: FETCHING_VOCABULARY_TERMS, 
+			vocabulary,
 		})
-	})
+
+		return fetchTerms(vocabulary)
+			.then(results => {
+				dispatch({
+					type: RECEIVE_VOCABULARY_TERMS,
+					data: results,
+					vocabulary,
+				})
+			})
+			.catch(err => {
+				dispatch({
+					type: RECEIVE_VOCABULARY_TERMS_ERROR,
+					error: err,
+					vocabulary,
+				})
+			})
+	}
 }
 
 // currently, the way we can remove a term is by omitting it
 // in a PUT request of terms. In the future, a `/terms` API
 // might open up so that only a DELETE request to an absolute_path
 // would be needed to remove a term
-export const removeTermFromVocabulary = function (vocabData, termData, index) {
+export const removeTermFromVocabulary = (vocabulary, termData, index) => {
 	return (dispatch, getState) => {
 		const termsList = getState().activeVocabularyTerms.data
 		const terms = [].concat(
@@ -138,36 +138,37 @@ export const removeTermFromVocabulary = function (vocabData, termData, index) {
 			termsList.slice(index + 1)
 		)
 
-		return putTerms(vocabData, terms, function (err) {
-			if (err) {
-				// do something with the error!
-			}
-
-			return dispatch({
-				type: REMOVE_TERM_FROM_VOCABULARY,
-				index,
-				term: termData,
-				vocabulary: vocabData,
+		return putTerms(vocabulary, terms)
+			.then(() => {
+				dispatch({
+					type: REMOVE_TERM_FROM_VOCABULARY,
+					index,
+					term: termData,
+					vocabulary,
+				})
 			})
-		})
+			//.catch(err => {})
 	}
 }
 
-export const updateTermInVocabulary = function (_data) {
+export const updateTermInVocabulary = function (vocabulary, term, data) {
 	return dispatch => {
-		const { data, term, vocabulary } = _data
+		dispatch({type: UPDATE_TERM_REQUEST})
 
-		patchTerm(vocabulary, data, function (err) {
-			if (err) {
-				throw Error('patchTerm error for updateTermInVocabulary')
-			}
-
-			return dispatch({
-				type: UPDATE_TERM,
-				previousPrefLabel: term,
-				data,
-				vocabulary,
+		return patchTerm(vocabulary, data)
+			.then(() => {
+				dispatch({
+					type: UPDATE_TERM_RESPONSE_OK,
+					previousPrefLabel: term,
+					data,
+					vocabulary,
+				})
 			})
-		})
+			.catch(err => {
+				dispatch({
+					type: UPDATE_TERM_RESPONSE_ERR,
+					error: err,
+				})
+			})
 	}
 }

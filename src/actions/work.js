@@ -9,25 +9,30 @@ import {
 } from '../constants'
 
 import { getWork, updateWork } from '../../lib/api'
-import isFresh from '../../lib/is-fresh'
+// import isFresh from '../../lib/is-fresh'
 
-export const fetchWork = id => (dispatch, getState) => {
-	const work = getState().work
+export const fetchWork = id => (dispatch/*, getState*/) => {
+	// const work = getState().work
 
-	if (isFresh(work) || work.isFetching)
-		return
+	// TODO: return an empty promise so if we're chaining
+	// this it won't throw an undefined error b/c of a missing
+	// `.then` method
+	// if (isFresh(work) || work.isFetching)
+	// 	return
 
 	dispatch({
 		type: FETCHING_WORK,
 		id,
 	})
 
-	getWork(id, (err, data) => {
-		return dispatch({
-			type: RECEIVE_WORK,
-			data,
+	return getWork(id)
+		.then(data => {
+			dispatch({
+				type: RECEIVE_WORK,
+				data,
+			})
 		})
-	})
+		//.catch(err => {})
 }
 
 export const addEmptyValueToWork = key => dispatch => {
@@ -66,17 +71,11 @@ export const saveWork = (id) => (dispatch, getState) => {
 		id,
 	})
 
-	updateWork(id, updates, (err, res) => {
-		if (err) {
-			// saving error
-		}
-
-		if (res.status !== 'ok') {
-			// not-ok error
-		}
-
-		dispatch({
-			type: SAVED_WORK,
+	return updateWork(id, updates)
+		.then(() => {
+			dispatch({
+				type: SAVED_WORK,
+			})
 		})
-	})
+		//.catch(err => {})
 }

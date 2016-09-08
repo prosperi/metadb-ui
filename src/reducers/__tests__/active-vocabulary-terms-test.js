@@ -8,7 +8,7 @@ import {
 	FETCHING_VOCABULARY_TERMS,
 	RECEIVE_VOCABULARY_TERMS,
 	REMOVE_TERM_FROM_VOCABULARY,
-	UPDATE_TERM,
+	UPDATE_TERM_RESPONSE_OK,
 } from '../../constants'
 
 import createNewTerm from '../../../lib/create-new-term'
@@ -146,7 +146,7 @@ describe('activeVocabularyTermsReducer', function () {
 		})
 	})
 
-	describe('@UPDATE_TERM', function () {
+	describe('@UPDATE_TERM_RESPONSE_OK', function () {
 		it('changes a term to the update passed', function () {
 			const index = Math.floor(Math.random() * originalState.data.length)
 			const original = originalState.data[index]
@@ -161,7 +161,7 @@ describe('activeVocabularyTermsReducer', function () {
 			const prefLabel = original.pref_label[0]
 
 			const action = {
-				type: UPDATE_TERM,
+				type: UPDATE_TERM_RESPONSE_OK,
 				previousPrefLabel: prefLabel,
 				data: copy,
 				vocabulary: {
@@ -191,7 +191,7 @@ describe('activeVocabularyTermsReducer', function () {
 			const prefLabel = original.pref_label[0]
 
 			const action = {
-				type: UPDATE_TERM,
+				type: UPDATE_TERM_RESPONSE_OK,
 				previousPrefLabel: prefLabel,
 				data: copy,
 				vocabulary: {
