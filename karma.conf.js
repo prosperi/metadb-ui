@@ -56,8 +56,9 @@ module.exports = function(config) {
 			plugins: [
 				new webpack.DefinePlugin({
 					'process.env': {
-						API_BASE_URL: JSON.stringify('http://example.org')
-					}
+						API_BASE_URL: JSON.stringify('http://example.org'),
+						AUTH_BASE_URL: JSON.stringify('http://auth.example.org/ns'),
+					},
 				})
 			],
 			devtool: '#inline-source-map',

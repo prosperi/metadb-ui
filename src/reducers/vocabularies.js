@@ -116,12 +116,10 @@ function fetchingAllVocabs (/* state, action */) {
 }
 
 function receiveAllVocabs (state, action) {
-	const vocabs = action.data.vocabularies
-
 	return { 
 		isFetching: false,
 		fetchedAt: Date.now(),
-		data: vocabs,
+		data: action.data,
 	}
 }
 

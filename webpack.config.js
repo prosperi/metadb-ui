@@ -47,6 +47,7 @@ module.exports = {
 		}),
 		new webpack.EnvironmentPlugin([
 			'API_BASE_URL',
+			'AUTH_BASE_URL',
 		]),
 	],
 	sassLoader: {

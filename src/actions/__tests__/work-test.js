@@ -5,13 +5,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import fetchMock from 'fetch-mock'
-
-const mockStore = configureMockStore([thunk])
-
-const apiWorkUrl = id => (
-	`${process.env.API_BASE_URL}/concern/generic_works/${id}.json`
-)
-
 import {
 	ADD_EMPTY_VALUE_TO_WORK,
 	FETCHING_WORK,
@@ -22,6 +15,12 @@ import {
 	SAVED_WORK,
 	UPDATE_WORK,
 } from '../../constants'
+
+const mockStore = configureMockStore([thunk])
+
+const apiWorkUrl = id => (
+	`${process.env.API_BASE_URL}/concern/generic_works/${id}.json`
+)
 
 describe('Work actionCreator', function () {
 	describe('#addEmptyValueToWork', function () {

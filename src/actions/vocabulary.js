@@ -20,6 +20,7 @@ import {
 import { get } from '../../lib/api/request'
 import { 
 	createVocabulary as create,
+	deleteVocabulary as deleteVocab,
 	getVocabularies,
 } from '../../lib/api'
 import isFresh from '../../lib/is-fresh'
@@ -28,7 +29,7 @@ import camelCase from '../../lib/camel-case'
 const STALE_TIME = 60 * 1000
 
 const mockMintAuthUri = val => (
-	`http://authority.lafayette.edu/ns/${camelCase(val)}`
+	`${process.env.AUTH_BASE_URL}/${camelCase(val)}`
 )
 
 export const createVocabulary = data => dispatch => {
@@ -43,6 +44,7 @@ export const createVocabulary = data => dispatch => {
 		label: [name],
 		pref_label: [name],
 		alt_label: [description],
+		hidden_label: [],
 	}
 
 	return create(payload)
@@ -69,7 +71,7 @@ export const createVocabulary = data => dispatch => {
 export const deleteVocabulary = data => dispatch => {
 	dispatch({type: DELETE_VOCABULARY_REQUEST})
 
-	return deleteVocabulary(data)
+	return deleteVocab(data)
 		.then(() => {
 			dispatch({
 				type: DELETE_VOCABULARY_RESPONSE_OK,
@@ -89,11 +91,11 @@ export const fetchAllVocabularies = () => dispatch => {
 		type: FETCHING_ALL_VOCABULARIES,
 	})
 
-	getVocabularies()
-		.then(vocabs => {
+	return getVocabularies()
+		.then(response => {
 			dispatch({
 				type: RECEIVE_ALL_VOCABULARIES,
-				data: vocabs,
+				data: response.vocabularies,
 			})
 		})
 		//.catch(err => {})
