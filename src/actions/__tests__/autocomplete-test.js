@@ -8,12 +8,13 @@ import {
 	RECEIVE_AUTOCOMPLETE_TERMS,
 } from '../../constants'
 
-import VOCAB_ONE from './data/vocabulary-with-terms'
-import VOCAB_TWO from './data/another-vocabulary-with-terms'
+import {
+	testVocabulary as VOCAB_ONE,
+	anotherTestVocabulary as VOCAB_TWO,
+} from './data/vocabularies-with-terms'
 
 const API_BASE = process.env.API_BASE_URL
 const mockStore = configureMockStore([thunk])
-
 
 describe('Autocomplete actionCreators', function () {
 	beforeEach(function () {

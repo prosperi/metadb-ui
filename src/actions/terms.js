@@ -17,10 +17,10 @@ import {
 
 import { 
 	addTermToVocabulary as addTerm,
-	fetchTerms,
+	getVocabulary,
 	patchTerm,
 	putTerms,
-} from '../../lib/api/terms'
+} from '../../lib/api'
 
 import createNewTerm from '../../lib/create-new-term'
 
@@ -47,7 +47,7 @@ function mintUri (vocab, term) {
 
 export const addTermToVocabulary = function (vocabulary, term) {
 	return dispatch => {
-		const newTerm = createNewTerm(term)
+		const newTerm = createNewTerm(term, vocabulary)
 		const uri = vocabulary.uri
 
 		// Eventually I expect this will be handled on the server, but until then,
@@ -108,18 +108,19 @@ export const fetchTermsFromVocabulary = vocabulary => {
 			vocabulary,
 		})
 
-		return fetchTerms(vocabulary)
-			.then(results => {
+		return getVocabulary(vocabulary)
+			.then(results => results.terms)
+			.then(terms => {
 				dispatch({
 					type: RECEIVE_VOCABULARY_TERMS,
-					data: results,
+					data: terms,
 					vocabulary,
 				})
 			})
-			.catch(err => {
+			.catch(error => {
 				dispatch({
 					type: RECEIVE_VOCABULARY_TERMS_ERROR,
-					error: err,
+					error,
 					vocabulary,
 				})
 			})
@@ -164,10 +165,10 @@ export const updateTermInVocabulary = function (vocabulary, term, data) {
 					vocabulary,
 				})
 			})
-			.catch(err => {
+			.catch(error => {
 				dispatch({
 					type: UPDATE_TERM_RESPONSE_ERR,
-					error: err,
+					error,
 				})
 			})
 	}

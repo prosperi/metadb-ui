@@ -17,7 +17,7 @@ import {
 	RECEIVE_ALL_VOCABULARIES,
 } from '../../constants'
 
-import VOCAB_DATA from './data/vocabulary-with-terms'
+import { testVocabulary as VOCAB_DATA } from './data/vocabularies-with-terms'
 
 const mockStore = configureMockStore([thunk])
 const API_BASE = process.env.API_BASE_URL
