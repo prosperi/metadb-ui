@@ -3,65 +3,41 @@
 import { getVocabulary } from '../../lib/api'
 import { RECEIVE_AUTOCOMPLETE_TERMS } from '../constants'
 
-const autocompleteQueue = []
-let fetching = false
+import Queue from 'promise-queue'
 
-export function fetchAutocompleteTerms (data) {
-	return (dispatch, getState) => {
-		if (fetching) {
-			if (existsInQueue(data))
-				return
+const queue = new Queue
+let fetchedVocabularies = []
 
-			autocompleteQueue.push(data)
+export const fetchAutocompleteTerms = vocabulary => (dispatch, getState) => {
+	return queue.add(genGetVocab.bind(null, vocabulary)).then((data) => {
+		if (!data)
 			return
-		}
 
-		return getAutocompleteTerms(data)
+		const terms = data.terms.map(t => t.pref_label[0])
 
-		function getAutocompleteTerms (data) {
-			// we're at the end of the queue
-			if (!data) {
-				fetching = false
-				return
-			}
+		dispatch({
+			type: RECEIVE_AUTOCOMPLETE_TERMS,
+			uri: vocabulary.uri,
+			terms,
+		})
 
-			// get a fresh state + check to see if we've already fetched
-			// this uri before
-			const terms = getState().autocompleteTerms
+		// reset when we reach zero
+		if (queue.getPendingLength() === 0)
+			fetchedVocabularies = []
 
-			if (terms.hasOwnProperty(data.uri))
-				return
+		return
+	})
+	
+	function genGetVocab (vocab) {
+		if (fetchedVocabularies.indexOf(vocab.uri) > -1)
+			return
 
-			fetching = true
+		if (Object.keys(getState().autocompleteTerms).indexOf(vocab.uri) > -1)
+			return
 
-			getVocabulary(data.absolute_path, function (err, results) {
-				if (err) {
-					// dispatch autocomplete error
-					return
-				}
-
-				const terms = results.terms.map(t => t.pref_label[0])
-				
-				dispatch({
-					type: RECEIVE_AUTOCOMPLETE_TERMS,
-					uri: data.uri,
-					terms,
-				})
-
-				return getAutocompleteTerms(autocompleteQueue.shift())
-			})
-		}
+		fetchedVocabularies.push(vocab.uri)
+		return getVocabulary(vocab)
 	}
 }
 
-function existsInQueue (data) {
-	let item, i
 
-	for (i = 0; i < autocompleteQueue.length; i++) {
-		item = autocompleteQueue[i]
-		if (item.uri === data.uri || item.absolute_path === data.absolute_path)
-			return true
-	}
-
-	return false
-}

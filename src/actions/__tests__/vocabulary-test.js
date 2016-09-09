@@ -8,30 +8,19 @@ import fetchMock from 'fetch-mock'
 
 import {
 	CREATE_VOCABULARY_REQUEST,
-	CREATE_VOCABULARY_RESPONSE_ERR,
 	CREATE_VOCABULARY_RESPONSE_OK,
 
 	DELETE_VOCABULARY_REQUEST,
-	DELETE_VOCABULARY_RESPONSE_ERR,
 	DELETE_VOCABULARY_RESPONSE_OK,
 
 	FETCHING_ALL_VOCABULARIES,
 	RECEIVE_ALL_VOCABULARIES,
 } from '../../constants'
 
+import VOCAB_DATA from './data/vocabulary-with-terms'
+
 const mockStore = configureMockStore([thunk])
-
 const API_BASE = process.env.API_BASE_URL
-const AUTH_BASE = process.env.AUTH_BASE_URL
-
-const VOCAB_DATA = {
-	uri: `${AUTH_BASE}/testVocabulary`,
-	label: ['Test Vocabulary'],
-	pref_label: ['Test Vocabulary'],
-	alt_label: ['Test Description'],
-	hidden_label: [],
-	absolute_path: `${API_BASE}/vocabularies/testVocabulary.json`,
-}
 
 describe('Vocabulary actionCreator', function () {
 	describe('#createVocabulary', function () {
@@ -55,17 +44,23 @@ describe('Vocabulary actionCreator', function () {
 		}
 
 		const store = mockStore({vocabularies: []})
+
+		// the data we get back is the same as the full Vocab output
+		// (minus the `terms` array)
+		const expectData = assign({}, VOCAB_DATA)
+		delete expectData.terms
+
 		const expectActions = [
 			{
 				type: CREATE_VOCABULARY_REQUEST
 			},
 			{
 				type: CREATE_VOCABULARY_RESPONSE_OK,
-				data: VOCAB_DATA,
+				data: expectData,
 			}
 		]
 
-		it('dispatches CREATE_VOCABULARY_REQUEST and CREATE_VOCABULARY_RESPONSE_OK', function () {
+		it('dispatches CREATE_VOCABULARY_REQUEST{,_OK}', function () {
 			return store.dispatch(actions.createVocabulary(data))
 				.then(() => {
 					expect(store.getActions()).to.deep.equal(expectActions)
@@ -165,9 +160,7 @@ describe('Vocabulary actionCreator', function () {
 
 		afterEach(fetchMock.restore)
 
-		it('dispatches {FETCHING,RECEIVE}_VOCABULARY', function () {
-			const store = mockStore({vocabulary})
-		})
+		it('dispatches {FETCHING,RECEIVE}_VOCABULARY')
 
 		it('does not fetch if `isFetching` flag is true')
 
