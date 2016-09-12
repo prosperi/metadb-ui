@@ -15,12 +15,11 @@ export default function autocompleteTermsReducer (state, action) {
 }
 
 function receiveTerms (state, action) {
-	const { uri, terms } = action
+	const terms = action.terms
+	const uri = action.vocabulary.uri
 	const update = assign({}, state)
 
-	// we're checking for duplicates in the action, but just in case
-	if (!update[uri])
-		update[uri] = terms
+	update[uri] = terms
 
 	return update
 }

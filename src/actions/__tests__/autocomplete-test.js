@@ -39,7 +39,7 @@ describe('Autocomplete actionCreators', function () {
 				{
 					type: RECEIVE_AUTOCOMPLETE_TERMS,
 					terms: VOCAB_ONE.terms.map(t => t.pref_label[0]),
-					uri: VOCAB_ONE.uri,
+					vocabulary: VOCAB_ONE,
 				}
 			]
 

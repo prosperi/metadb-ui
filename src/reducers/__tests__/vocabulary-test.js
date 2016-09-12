@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import vocabReducer from '../vocabularies'
-import * as originalState from './mocks/vocabularies.json'
+import * as originalState from './data/vocabularies.json'
 import assign from 'object-assign'
 
 import {

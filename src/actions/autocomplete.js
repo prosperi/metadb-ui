@@ -17,8 +17,8 @@ export const fetchAutocompleteTerms = vocabulary => (dispatch, getState) => {
 
 		dispatch({
 			type: RECEIVE_AUTOCOMPLETE_TERMS,
-			uri: vocabulary.uri,
 			terms,
+			vocabulary,
 		})
 
 		// reset when we reach zero

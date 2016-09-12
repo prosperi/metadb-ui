@@ -12,7 +12,7 @@ import {
 } from '../../constants'
 
 import createNewTerm from '../../../lib/create-new-term'
-import * as originalState from './mocks/active-terms.json'
+import * as originalState from './data/active-terms.json'
 
 const originalStatePure = assign({}, originalState)
 
