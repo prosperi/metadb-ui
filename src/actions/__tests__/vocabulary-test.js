@@ -23,20 +23,19 @@ const mockStore = configureMockStore([thunk])
 const API_BASE = process.env.API_BASE_URL
 
 describe('Vocabulary actionCreator', function () {
+	beforeEach(function () {
+		if (!API_BASE)
+			this.skip()
+	})
 	describe('#createVocabulary', function () {
-		before(function () {
-			if (!API_BASE) {
-				this.skip()
-				return
-			}
-
+		beforeEach(function () {
 			fetchMock.post(
 				`${API_BASE}/vocabularies.json`,
 				{ status: 200, body: {status: 'ok'} }
 			)
 		})
 
-		after(fetchMock.restore)
+		afterEach(fetchMock.restore)
 
 		const data = {
 			name: 'Test Vocabulary',
@@ -70,11 +69,6 @@ describe('Vocabulary actionCreator', function () {
 
 	describe('#deleteVocabulary', function () {
 		before(function () {
-			if (!API_BASE) {
-				this.skip()
-				return
-			}
-
 			fetchMock.delete(
 				VOCAB_DATA.absolute_path,
 				{status: 200, body: {status: 'ok'}}
@@ -108,12 +102,7 @@ describe('Vocabulary actionCreator', function () {
 	})
 
 	describe('#fetchAllVocabularies', function () {
-		before(function () {
-			if (!API_BASE) {
-				this.skip()
-				return
-			}
-
+		beforeEach(function () {
 			fetchMock.get(
 				`${API_BASE}/vocabularies.json`,
 				{
@@ -122,7 +111,7 @@ describe('Vocabulary actionCreator', function () {
 			)
 		})
 
-		after(fetchMock.restore)
+		afterEach(fetchMock.restore)
 
 		const store = mockStore({vocabularies: []})
 		const expectActions = [
@@ -147,15 +136,7 @@ describe('Vocabulary actionCreator', function () {
 	// need to be revisited
 	xdescribe('#fetchVocabulary', function () {
 		beforeEach(function () {
-			if (!API_BASE) {
-				this.skip()
-				return
-			}
-
-			fetchMock.get(
-				`${API_BASE}/vocabularies/testVocab.json`,
-				assign({}, VOCAB_DATA, {terms: []})
-			)
+			fetchMock.get(VOCAB_DATA.absolute_path, VOCAB_DATA)
 		})
 
 		afterEach(fetchMock.restore)

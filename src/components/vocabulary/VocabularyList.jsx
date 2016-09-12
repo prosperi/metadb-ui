@@ -11,9 +11,7 @@ const VocabularyList = React.createClass({
 			label: T.string,
 		}),
 
-		activeIndex: T.number,
 		activeKey: T.string,
-
 		isLoading: T.bool,
 
 		onAddVocabulary: T.func.isRequired,
@@ -116,7 +114,6 @@ const VocabularyList = React.createClass({
 	},
 
 	handleVocabularyClick: function (data, index) {
-		if (index === this.props.activeIndex) return
 		if (data[this.props.keys.label] === this.props.activeKey) return
 
 		this.props.onVocabularyClick.call(null, data, index)
@@ -138,13 +135,18 @@ const VocabularyList = React.createClass({
 	moveHoverIndex: function (dir) {
 		const vocabs = this.state.vocabularies
 		const idx = this.state.hoverIndex
-		const next = idx + dir
+		
+		let next = idx + dir
 
-		if (next < -1 || next >= vocabs.length) return
+		// wrap to the end of the list
+		if (next === -1)
+			next = (vocabs.length - 1)
 
-		this.setState({
-			hoverIndex: next,
-		})
+		// wrap to the beginning of the list
+		if (next === vocabs.length)
+			next = 0
+
+		this.setHoverIndex(next)
 	},
 
 	setHoverIndex: function (index) {
