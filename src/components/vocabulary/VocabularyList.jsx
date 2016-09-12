@@ -120,6 +120,9 @@ const VocabularyList = React.createClass({
 	},
 
 	maybeRenderCount: function (data) {
+		if (!('count' in this.props.keys))
+			return
+
 		if (!data || !data.hasOwnProperty(this.props.keys.count))
 			return
 
