@@ -1,6 +1,7 @@
 import { expect } from 'chai'
 import termsReducer from '../active-vocabulary-terms'
 import assign from 'object-assign'
+import randomIndex from 'random-array-index'
 
 import {
 	ADD_TERM_TO_VOCABULARY,
@@ -129,7 +130,7 @@ describe('activeVocabularyTermsReducer', function () {
 	})
 
 	describe('@REMOVE_TERM_FROM_VOCABULARY', function () {
-		const index = Math.floor(Math.random() * originalState.data.length)
+		const index = randomIndex(originalState.data)
 		const action = {
 			type: REMOVE_TERM_FROM_VOCABULARY,
 			index,
@@ -148,7 +149,7 @@ describe('activeVocabularyTermsReducer', function () {
 
 	describe('@UPDATE_TERM_RESPONSE_OK', function () {
 		it('changes a term to the update passed', function () {
-			const index = Math.floor(Math.random() * originalState.data.length)
+			const index = randomIndex(originalState.data)
 			const original = originalState.data[index]
 			const copy = assign({}, original)
 
@@ -176,7 +177,7 @@ describe('activeVocabularyTermsReducer', function () {
 		})
 
 		it('updates the correct term when pref_label is changed', function () {
-			const index = Math.floor(Math.random() * originalState.data.length)
+			const index = randomIndex(originalState.data)
 			const original = originalState.data[index]
 			const copy = assign({}, original)
 			const newLabel = 'Hey I am a new label!'

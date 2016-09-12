@@ -2,6 +2,8 @@ import React from 'react'
 import { expect } from 'chai'
 import { shallow, mount } from 'enzyme'
 import assign from 'object-assign'
+import randomIndex from 'random-array-index'
+
 import VocabularyList from '../VocabularyList.jsx'
 import vocabResults from './data/multiple-vocabularies'
 
@@ -19,8 +21,6 @@ const wrapComponent = (xtend, renderer) => {
 
 const wrapMount = xtend => wrapComponent(xtend, mount)
 const wrapShallow = xtend => wrapComponent(xtend, shallow)
-
-const randomIndex = arr => Math.floor(Math.random() * arr.length)
 
 describe('<VocabularyList />', function () {
 	describe('when loading', function () {
@@ -50,7 +50,10 @@ describe('<VocabularyList />', function () {
 
 		describe('when an item is hovered', function () {
 			const $vocabItems = $el.find('.vocab-list--item')
-			const idx = randomIndex($vocabItems)
+
+			// $vocabItems isn't actually an array, but a ReactWrapper that
+			// acts like an array, so we can't use the randomIndex function
+			const idx = Math.floor(Math.random() * $vocabItems.length)
 			const $hovered = $vocabItems.at(idx)
 
 			$hovered.simulate('mouseOver')

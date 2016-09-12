@@ -35,7 +35,5 @@ describe('autocomplete-terms reducer', function () {
 
 			expect(uri in result).to.be.true
 		})
-
-		it('')
 	})
 })

@@ -2,6 +2,7 @@ import { expect } from 'chai'
 import vocabReducer from '../vocabularies'
 import * as originalState from './data/vocabularies.json'
 import assign from 'object-assign'
+import randomIndex from 'random-array-index'
 
 import {
 	ADD_TERM_TO_VOCABULARY,
@@ -29,7 +30,7 @@ describe('vocabularyReducer', function () {
 	describe('@ADD_TERM_TO_VOCABULARY', function () {
 		it('increments the `term_count` property', function () {
 			const originalData = originalState.data
-			const idx = Math.floor(Math.random() * originalData.length)
+			const idx = randomIndex(originalData)
 
 			const originalVocab = originalData[idx]
 			const uri = originalVocab.uri
@@ -51,7 +52,7 @@ describe('vocabularyReducer', function () {
 	describe('@BULK_EDIT_TERMS', function () {
 		it('updates the `term_count` property to new count', function () {
 			const originalData = originalState.data
-			const idx = Math.floor(Math.random() * originalData.length)
+			const idx = randomIndex(originalData)
 			const vocab = originalData[idx]
 			const originalCount = vocab.term_count
 
@@ -119,7 +120,7 @@ describe('vocabularyReducer', function () {
 
 	describe('@DELETE_VOCABULARY_RESPONSE_OK', function () {
 		const originalData = originalState.data
-		const idx = Math.floor(Math.random() * originalData.length)
+		const idx = randomIndex(originalData)
 		const target = originalData[idx]
 
 		const action = {
@@ -147,7 +148,7 @@ describe('vocabularyReducer', function () {
 	describe('@REMOVE_TERM_FROM_VOCABULARY', function () {
 		it('decrements the `term_count` property', function () {
 			const originalData = originalState.data
-			const idx = Math.floor(Math.random() * originalData.length)
+			const idx = randomIndex(originalData)
 
 			const originalVocab = originalData[idx]
 

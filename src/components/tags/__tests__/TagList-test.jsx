@@ -2,6 +2,7 @@ import React from 'react'
 import { shallow, mount } from 'enzyme'
 import { expect } from 'chai'
 import assign from 'object-assign'
+import randomIndex from 'random-array-index'
 
 import TagList from '../TagList.jsx'
 
@@ -31,7 +32,7 @@ describe('<TagList />', function () {
 	})
 
 	it('binds `onClickTag` to correct tag', function () {
-		const which = Math.floor(Math.random() * defaultTags.length)
+		const which = randomIndex(defaultTags)
 		const tag = defaultTags[which]
 		let count = 0
 
@@ -70,7 +71,7 @@ describe('<TagList />', function () {
 	})
 
 	it('binds `onRemove` to correct tag when provided', function () {
-		const which = Math.floor(Math.random() * defaultTags.length)
+		const which = randomIndex(defaultTags)
 		const tag = defaultTags[which]
 		let count = 0
 

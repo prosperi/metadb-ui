@@ -3,6 +3,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import fetchMock from 'fetch-mock'
 import assign from 'object-assign'
+import randomIndex from 'random-array-index'
 
 import {
 	addTermToVocabulary,
@@ -226,7 +227,7 @@ describe('Terms actionCreators', function () {
 		const terms = [].concat(vocab.terms)
 
 		const removeRandomTerm = () => {
-			const index = Math.floor(Math.random() * terms.length)
+			const index = randomIndex(terms)
 			const term = terms[index].pref_label[0]
 
 			return removeTermFromVocabulary(vocab, term, index)
@@ -294,7 +295,7 @@ describe('Terms actionCreators', function () {
 		const store = mockStore({})
 
 		const getRandomTerm = () => {
-			const index = Math.floor(Math.random() * terms.length)
+			const index = randomIndex(terms)
 			return assign({}, terms[index])
 		}
 
@@ -307,7 +308,7 @@ describe('Terms actionCreators', function () {
 				'Enzuigiri', 'European uppercut', 'Eye poke', 'Go 2 Sleep',
 			]
 
-			const update = pool[Math.floor(Math.random() * pool.length)]
+			const update = pool[randomIndex(pool)]
 			term.alt_label.push(update)
 
 			return term
