@@ -13,7 +13,8 @@ const initialState = {
 	// search: {},
 	activeVocabularyTerms: null,
 	autocompleteTerms: {},
-	vocabularies: {},	
+	notifications: [],
+	vocabularies: {},
 	work: {},
 
 	// user: {},

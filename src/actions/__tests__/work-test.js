@@ -95,11 +95,6 @@ describe('Work actionCreator', function () {
 
 		it('sends FETCHING_WORK and WORK_NOT_FOUND if not found', function () {
 			const id = 'fake-id'
-			const expectedActions = [
-				{type: FETCHING_WORK, id},
-				{type: WORK_NOT_FOUND_ERROR},
-			]
-
 			const store = mockStore({work: {}})
 
 			return store.dispatch(actions.fetchWork(id))
@@ -114,11 +109,6 @@ describe('Work actionCreator', function () {
 
 		it('sends FETCHING_WORK and FETCHING_WORK_ERROR if encountering an error', function () {
 			const id = 'whatever'
-			const expectedActions = [
-				{type: FETCHING_WORK, id},
-				{type: WORK_NOT_FOUND_ERROR},
-			]
-
 			const store = mockStore({work: {}})
 
 			return store.dispatch(actions.fetchWork(id))

@@ -81,6 +81,7 @@ export const deleteVocabulary = data => dispatch => {
 		.catch(err => {
 			dispatch({
 				type: DELETE_VOCABULARY_RESPONSE_ERR,
+				data,
 				error: err,
 			})
 		})

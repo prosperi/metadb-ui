@@ -21,6 +21,8 @@ function mapStateToProps (state) {
 		activeVocabularyTerms: state.activeVocabularyTerms,
 		autocompleteTerms: state.autocompleteTerms,
 		
+		messages: state.messages,
+
 		vocabularies: state.vocabularies,
 
 		work: state.work,
