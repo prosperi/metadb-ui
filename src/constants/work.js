@@ -11,3 +11,5 @@ export const SAVED_WORK = 'SAVED_WORK'
 export const SAVING_WORK = 'SAVING_WORK'
 
 export const UPDATE_WORK = 'UPDATE_WORK'
+
+export const WORK_NOT_FOUND_ERROR = 'WORK_NOT_FOUND_ERROR'

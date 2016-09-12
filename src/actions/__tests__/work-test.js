@@ -14,6 +14,7 @@ import {
 	SAVING_WORK,
 	SAVED_WORK,
 	UPDATE_WORK,
+	WORK_NOT_FOUND_ERROR,
 } from '../../constants'
 
 const mockStore = configureMockStore([thunk])
@@ -71,7 +72,8 @@ describe('Work actionCreator', function () {
 
 			fetchMock
 				.get(apiWorkUrl(id), { title: ['HULLO!'] })
-				.get('*', 404)
+				.get(apiWorkUrl('fake-id'), 404)
+				.get('*', 500)
 		})
 
 		after(fetchMock.restore)
@@ -91,28 +93,40 @@ describe('Work actionCreator', function () {
 				})
 		})
 
-		it('sends FETCHING_WORK and FETCHING_WORK_ERROR if not found', function () {
+		it('sends FETCHING_WORK and WORK_NOT_FOUND if not found', function () {
 			const id = 'fake-id'
 			const expectedActions = [
 				{type: FETCHING_WORK, id},
-				{type: FETCHING_WORK_ERROR},
+				{type: WORK_NOT_FOUND_ERROR},
 			]
 
 			const store = mockStore({work: {}})
 
 			return store.dispatch(actions.fetchWork(id))
 				.then(() => {
-					// at the moment, we're returning the full error message
-					// with the dispatch + this includes a stack trace. so
-					// instead of copying/mocking the entire trace, we'll
-					// just check the things we know will be in the error --
-					// namely, 404 and 'Not Found'
 					const actions = store.getActions()
-					expect(actions[0]).to.deep.equal(expectedActions[0])
-
-					expect(actions[1].type).to.equal(expectedActions[1].type)
+					expect(actions[0].type).to.equal(FETCHING_WORK)
+					expect(actions[0].id).to.equal(id)
+					expect(actions[1].type).to.equal(WORK_NOT_FOUND_ERROR)
 					expect(actions[1].error.status).to.equal(404)
-					expect(actions[1].error.message).to.equal('Not Found')
+				})
+		})
+
+		it('sends FETCHING_WORK and FETCHING_WORK_ERROR if encountering an error', function () {
+			const id = 'whatever'
+			const expectedActions = [
+				{type: FETCHING_WORK, id},
+				{type: WORK_NOT_FOUND_ERROR},
+			]
+
+			const store = mockStore({work: {}})
+
+			return store.dispatch(actions.fetchWork(id))
+				.then(() => {
+					const actions = store.getActions()
+					expect(actions[0].type).to.equal(FETCHING_WORK)
+					expect(actions[1].id).to.equal(id)
+					expect(actions[1].type).to.equal(FETCHING_WORK_ERROR)
 				})
 		})
 	})

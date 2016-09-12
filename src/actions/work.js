@@ -7,6 +7,7 @@ import {
 	UPDATE_WORK,
 	SAVED_WORK,
 	SAVING_WORK,
+	WORK_NOT_FOUND_ERROR,
 } from '../constants'
 
 import { getWork, updateWork } from '../../lib/api'
@@ -14,12 +15,6 @@ import { getWork, updateWork } from '../../lib/api'
 
 export const fetchWork = id => (dispatch/*, getState*/) => {
 	// const work = getState().work
-
-	// TODO: return an empty promise so if we're chaining
-	// this it won't throw an undefined error b/c of a missing
-	// `.then` method
-	// if (isFresh(work) || work.isFetching)
-	// 	return
 
 	dispatch({
 		type: FETCHING_WORK,
@@ -35,9 +30,20 @@ export const fetchWork = id => (dispatch/*, getState*/) => {
 				})
 			},
 			error => {
+				if (error.status === 404) {
+					dispatch({
+						type: WORK_NOT_FOUND_ERROR,
+						error,
+						id,
+					})
+
+					return
+				}
+
 				dispatch({
 					type: FETCHING_WORK_ERROR,
 					error,
+					id,
 				})
 			}
 		)
