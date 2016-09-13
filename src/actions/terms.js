@@ -1,5 +1,6 @@
 import {
 	ADD_TERM_TO_VOCABULARY,
+	ADD_TERM_TO_VOCABULARY_ERR,
 
 	BULK_EDIT_TERMS,
 
@@ -64,7 +65,13 @@ export const addTermToVocabulary = function (vocabulary, term) {
 					vocabulary,
 				})
 			})
-			//.catch(function (err) {})
+			.catch(error => {
+				dispatch({
+					type: ADD_TERM_TO_VOCABULARY_ERR,
+					error,
+					term,
+				})
+			})
 	}
 }
 

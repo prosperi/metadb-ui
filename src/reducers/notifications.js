@@ -5,6 +5,9 @@ import {
 	CLEAR_NOTIFICATION,
 	CLEAR_STALE_NOTIFICATIONS,
 
+	// term constants
+	ADD_TERM_TO_VOCABULARY_ERR,
+
 	// vocab constants
 	CREATE_VOCABULARY_RESPONSE_ERR,
 	CREATE_VOCABULARY_RESPONSE_OK,
@@ -26,6 +29,9 @@ export default function notificationReducer (state, action) {
 		return []
 
 	switch (action.type) {
+		case ADD_TERM_TO_VOCABULARY_ERR:
+			return addTermToVocabError(state, action)
+
 		case CLEAR_ALL_NOTIFICATIONS:
 			return clearAllNotifications(state, action)
 
@@ -62,6 +68,15 @@ function createNotification (type, message) {
 		message,
 		time: Date.now(),
 	}
+}
+
+function addTermToVocabError (state, action) {
+	const tmpl = messages.CREATE_TERM_ERROR
+	const errMsg = action.error.message
+	const term = action.term
+	const message = sprintf(tmpl, term, errMsg)
+
+	return [].concat(state, createNotification(ERROR, message))
 }
 
 function clearAllNotifications () {
