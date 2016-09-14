@@ -1,6 +1,9 @@
 import React from 'react'
 import assign from 'object-assign'
 import arrayFind from 'array-find'
+import { sprintf } from 'sprintf-js'
+
+import camelCase from '../../lib/camel-case'
 
 // vocab side
 import VocabularyList from '../components/vocabulary/VocabularyList.jsx'
@@ -9,7 +12,10 @@ import CreateVocabularyModal from '../components/vocabulary/CreateVocabularyModa
 // active vocabulary / terms side
 import TermsManager from '../components/vocabulary/TermsManager.jsx'
 import BulkTermsEditModal from '../components/vocabulary/BulkTermsEditModal.jsx'
+import VocabularyEditModal from '../components/vocabulary/VocabularyEditModal.jsx'
 import TermEditModal from '../components/vocabulary/TermEditModal.jsx'
+
+import { DELETE_VOCABULARY_WARNING } from '../messages'
 
 const T = React.PropTypes
 const VOCAB_LABEL_KEY = 'pref_label'
@@ -18,6 +24,7 @@ const MODAL = {
 	ADD_VOCABULARY: 'addVocabulary',
 	BULK_TERMS: 'bulkTerms',
 	TERM_EDIT: 'termEdit',
+	VOCABULARY_EDIT: 'vocabularyEdit',
 }
 
 const VocabularyManager = React.createClass({
@@ -32,6 +39,7 @@ const VocabularyManager = React.createClass({
 				addVocabulary: false,
 				bulkTerms: false,
 				termEdit: false,
+				vocabularyEdit: false,
 			},
 		}
 	},
@@ -58,14 +66,59 @@ const VocabularyManager = React.createClass({
 		return <h2>fetching terms...</h2>
 	},
 
-	handleCloseAddVocabularyModal: function () {
+	handleCreateVocabulary: function (data) {
 		this.closeModal(MODAL.ADD_VOCABULARY)
+
+		this.props.createVocabulary(data).then(newVocab => {
+			this.setState({
+				activeVocabulary: newVocab,
+				activeVocabularyIndex: this.props.vocabularies.length - 1,
+			})
+		})
 	},
 
-	handleCreateVocabulary: function (data) {
-		this.handleCloseAddVocabularyModal()
+	handleDeleteVocabulary: function () {
+		const vocab = this.state.activeVocabulary
 
-		this.props.createVocabulary.call(null, data)
+		if (!vocab)
+			return
+
+		const name = vocab.pref_label[0]
+		const msg = sprintf(DELETE_VOCABULARY_WARNING, name)
+
+		if (!window.confirm(msg))
+			return
+
+		// close edit modal
+		this.closeModal(MODAL.VOCABULARY_EDIT)
+
+		// call `deleteVocabulary`
+		this.props.deleteVocabulary(vocab).then(() => {
+			// clear `activeVocab`
+			this.setState({
+				activeVocabulary: null,
+				activeVocabularyIndex: -1,
+			})
+		})
+	},
+
+	handleUpdateVocabulary: function (data) {
+		if (!this.state.activeVocabulary)
+			return
+
+		const vocab = assign({}, this.state.activeVocabulary)
+		const {name, description} = data
+
+		vocab.label = vocab.pref_label = [name]
+		vocab.alt_label = [description]
+
+		this.closeModal(MODAL.VOCABULARY_EDIT)
+
+		this.props.updateVocabularyMetadata(vocab)
+		.then(() => {
+			this.setState({activeVocabulary: vocab})
+		})
+		.catch(() => {})
 	},
 
 	// sets the `activeVocabulary` prop + fetches terms
@@ -159,11 +212,31 @@ const VocabularyManager = React.createClass({
 				label={vocabName}
 				onAddTerm={this.props.addTermToVocabulary.bind(null, activeVocab)}
 				onBulkTermsOpen={this.openModal.bind(null, MODAL.BULK_TERMS)}
+				onEditVocabulary={this.openModal.bind(null, MODAL.VOCABULARY_EDIT)}
 				onRemoveTerm={this.props.removeTermFromVocabulary.bind(null, activeVocab)}
 				onTermClick={this.setActiveEditingTerm}
 				terms={terms.data}
 			/>
 		)
+	},
+
+	renderVocabularyEditModal: function () {
+		if (!this.state.modals[MODAL.VOCABULARY_EDIT])
+			return
+
+		const activeVocab = this.state.activeVocabulary
+		const name = activeVocab.pref_label[0]
+		const description = activeVocab.alt_label[0] || ''
+
+		const props = {
+			name,
+			description,
+			onDelete: this.handleDeleteVocabulary,
+			onSubmit: this.handleUpdateVocabulary,
+			onClose: this.closeModal.bind(null, MODAL.VOCABULARY_EDIT),
+		}
+
+		return React.createElement(VocabularyEditModal, props)
 	},
 
 	renderVocabularyList: function () {
@@ -243,6 +316,7 @@ const VocabularyManager = React.createClass({
 				{this.renderAddVocabularyModal()}
 				{this.renderBulkTermsModal()}
 				{this.renderTermEditModal()}
+				{this.renderVocabularyEditModal()}
 			</div>
 		)
 	}

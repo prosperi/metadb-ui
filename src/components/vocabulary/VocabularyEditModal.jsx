@@ -4,7 +4,7 @@ import VocabularyMetadataForm from './VocabularyMetadataForm.jsx'
 
 const T = React.PropTypes
 
-const CreateVocabularyModal = React.createClass({
+const EditVocabularyModal = React.createClass({
 	propTypes: {
 		onClose: T.func.isRequired,
 		onSubmit: T.func.isRequired,
@@ -34,7 +34,7 @@ const CreateVocabularyModal = React.createClass({
 				content: {
 					borderColor: '#1d5f83',
 					boxShadow: '0 1px 2px 1px #aaa',
-					bottom: '40%',
+					bottom: '10%',
 					left: '10%',
 					right: '10%',
 					top: '10%',
@@ -48,6 +48,15 @@ const CreateVocabularyModal = React.createClass({
 				margin: '-20px',
 				marginBottom: '20px',
 				padding: '.75em',
+			},
+
+			deleteButton: {
+				backgroundColor: '#cc092f',
+				border: '2px solid #aa070d',
+				borderRadius: '2px',
+				color: '#fff',
+				cursor: 'pointer',
+				marginTop: '2em',
 			}
 		}
 
@@ -58,16 +67,24 @@ const CreateVocabularyModal = React.createClass({
 				style={style.modal}
 			>
 				<header style={style.header}>
-					Create a new vocabulary
+					Edit metadata for {this.props.name}
 				</header>
 
 				<VocabularyMetadataForm
-					buttonLabel="Create new vocabulary"
+					buttonLabel="Submit changes"
+					description={this.props.description}
+					name={this.props.name}
 					onSubmit={this.handleSubmit} 
+				/>
+
+				<button
+					children={'Delete ' + this.props.name}
+					onClick={this.props.onDelete}
+					style={style.deleteButton}
 				/>
 			</Modal>
 		)
 	}
 })
 
-export default CreateVocabularyModal
+export default EditVocabularyModal

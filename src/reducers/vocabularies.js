@@ -9,7 +9,7 @@ import {
 	FETCHING_ALL_VOCABULARIES,
 	RECEIVE_ALL_VOCABULARIES,
 	REMOVE_TERM_FROM_VOCABULARY,
-	UPDATE_VOCABULARY,
+	UPDATE_VOCABULARY_OK,
 } from '../constants'
 
 export default function vocabularyReducer (state, action) {
@@ -38,7 +38,7 @@ export default function vocabularyReducer (state, action) {
 		case REMOVE_TERM_FROM_VOCABULARY:
 			return removeTermFromVocabulary(state, action)
 
-		case UPDATE_VOCABULARY:
+		case UPDATE_VOCABULARY_OK:
 			return updateVocab(state, action)
 
 		default:

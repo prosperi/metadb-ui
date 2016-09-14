@@ -6,10 +6,11 @@ import TextArea from '../form-elements/TextArea.jsx'
 
 const T = React.PropTypes
 
-const CreateVocabularyForm = React.createClass({
+const VocabularyMetadataForm = React.createClass({
 	propTypes: {
 		onSubmit: T.func.isRequired,
 
+		buttonLabel: T.string,
 		name: T.string,
 		description: T.string,
 	},
@@ -36,6 +37,12 @@ const CreateVocabularyForm = React.createClass({
 	},
 
 	render: function () {
+		const style = {
+			textarea: {
+				height: '10em',
+			}
+		}
+
 		return (
 			<form onSubmit={this.handleSubmit}>
 				<FormElementContainer
@@ -56,14 +63,17 @@ const CreateVocabularyForm = React.createClass({
 				>
 					<TextArea
 						placeholder=""
+						style={style.textarea}
 						value={this.state.description}
 					/>
 				</FormElementContainer>
 
-				<button>Create new vocabulary</button>
+				<button>
+					{this.props.buttonLabel || 'Submit'}
+				</button>
 			</form>
 		)
 	}
 })
 
-export default CreateVocabularyForm
+export default VocabularyMetadataForm

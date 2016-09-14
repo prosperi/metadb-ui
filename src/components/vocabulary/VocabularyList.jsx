@@ -1,6 +1,7 @@
 'use strict'
 
 import React from 'react'
+import Button from '../Button.jsx'
 
 const T = React.PropTypes
 
@@ -234,9 +235,9 @@ const VocabularyList = React.createClass({
 				{this.vocabularyList()}
 
 				<footer key="footer">
-					<button onClick={this.handleAddVocabulary}>
+					<Button onClick={this.handleAddVocabulary}>
 						+ Add Vocabulary
-					</button>
+					</Button>
 				</footer>
 			</div>
 		)

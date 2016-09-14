@@ -14,6 +14,7 @@ import {
 	DELETE_VOCABULARY_RESPONSE_ERR,
 	DELETE_VOCABULARY_RESPONSE_OK,
 	FETCHING_ALL_VOCABULARIES_ERR,
+	UPDATE_VOCABULARY_ERR,
 
 	// work constants
 	WORK_NOT_FOUND_ERROR,
@@ -56,6 +57,9 @@ export default function notificationReducer (state, action) {
 
 		case FETCHING_ALL_VOCABULARIES_ERR:
 			return fetchingVocabulariesError(state, action)
+
+		case UPDATE_VOCABULARY_ERR:
+			return updateVocabularyError(state, action)
 
 		case WORK_NOT_FOUND_ERROR:
 			return workNotFound(state, action)
@@ -138,6 +142,15 @@ function fetchingVocabulariesError (state, action) {
 	const tmpl = messages.FETCHING_VOCABULARIES_ERROR
 	const msg = action.error.message
 	const message = sprintf(tmpl, msg)
+
+	return [].concat(state, createNotification(ERROR, message))
+}
+
+function updateVocabularyError (state, action) {
+	const tmpl = messages.UPDATE_VOCABULARY_ERROR
+	const name = action.vocabulary.pref_label[0]
+	const msg = action.error.message
+	const message = sprintf(tmpl, name, msg)
 
 	return [].concat(state, createNotification(ERROR, message))
 }

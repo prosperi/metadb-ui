@@ -14,8 +14,10 @@ import {
 	RECEIVE_ALL_VOCABULARIES,
 	RECEIVE_VOCABULARY,
 	RECEIVE_VOCABULARY_ERROR,
-	
-	UPDATE_VOCABULARY,
+
+	UPDATING_VOCABULARY,
+	UPDATE_VOCABULARY_ERR,
+	UPDATE_VOCABULARY_OK,
 } from '../constants'
 
 import { get } from '../../lib/api/request'
@@ -23,6 +25,7 @@ import {
 	createVocabulary as create,
 	deleteVocabulary as deleteVocab,
 	getVocabularies,
+	updateVocabulary,
 } from '../../lib/api'
 import isFresh from '../../lib/is-fresh'
 import camelCase from '../../lib/camel-case'
@@ -60,12 +63,16 @@ export const createVocabulary = data => dispatch => {
 				type: CREATE_VOCABULARY_RESPONSE_OK,
 				data: payload,
 			})
+
+			return payload
 		})
-		.catch(err => {
+		.catch(error => {
 			dispatch({
 				type: CREATE_VOCABULARY_RESPONSE_ERR,
-				error: err,
+				error,
 			})
+
+			throw error
 		})
 }
 
@@ -79,12 +86,14 @@ export const deleteVocabulary = data => dispatch => {
 				data,
 			})
 		})
-		.catch(err => {
+		.catch(error => {
 			dispatch({
 				type: DELETE_VOCABULARY_RESPONSE_ERR,
 				data,
-				error: err,
+				error,
 			})
+
+			throw error
 		})
 }
 
@@ -105,6 +114,8 @@ export const fetchAllVocabularies = () => dispatch => {
 				type: FETCHING_ALL_VOCABULARIES_ERR,
 				error,
 			})
+
+			throw error
 		})
 }
 
@@ -137,15 +148,31 @@ export const fetchVocabulary = data => (dispatch, getState) => {
 				type: RECEIVE_VOCABULARY_ERROR,
 				error,
 			})
+
+			throw error
 		})
 }
 
-export const updateVocabulary = (uri, key, index, value) => dispatch => {
-	return dispatch({
-		type: UPDATE_VOCABULARY,
-		index,
-		key,
-		uri,
-		value,
+export const updateVocabularyMetadata = data => dispatch => {
+	dispatch({
+		type: UPDATING_VOCABULARY,
+		vocabulary: data,
+	})
+
+	return updateVocabulary(data)
+	.then(() => {
+		dispatch({
+			type: UPDATE_VOCABULARY_OK,
+			vocabulary: data,
+		})
+	})
+	.catch(error => {
+		dispatch({
+			type: UPDATE_VOCABULARY_ERR,
+			error,
+			vocabulary: data,
+		})
+
+		throw error
 	})
 }

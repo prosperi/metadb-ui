@@ -8,6 +8,7 @@ const TextArea = React.createClass({
 		placeholder: T.string,
 		readOnly: T.bool,
 		required: T.bool,
+		style: T.object,
 		value: T.string,
 
 		onChange: T.func,
@@ -19,6 +20,7 @@ const TextArea = React.createClass({
 			placeholder: '',
 			readOnly: false,
 			required: false,
+			style: {},
 			value: '',
 		}
 	},
@@ -38,18 +40,19 @@ const TextArea = React.createClass({
 	},
 
 	render: function () {
-		return (
-			<textarea
-				disabled={this.props.disabled}
-				placeholder={this.props.placeholder}
-				readOnly={this.props.readOnly}
-				required={this.props.required}
+		const props = {
+			defaultValue: this.props.value,
+			disabled: this.props.disabled,
+			onBlur: this.handleBlur,
+			onFocus: this.handleFocus,
+			placeholder: this.props.placeholder,
+			readOnly: this.props.readOnly,
+			required: this.props.required,
+			style: this.props.style,
+		}
 
-				defaultValue={this.props.value}
-				onBlur={this.handleBlur}
-				onFocus={this.handleFocus}
-			/>
-		)
+
+		return React.createElement('textarea', props, this.props.children)
 	}
 })
 

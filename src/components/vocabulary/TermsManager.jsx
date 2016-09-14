@@ -14,6 +14,7 @@ const TermsManager = React.createClass({
 
 		onAddTerm: T.func.isRequired,
 		onBulkTermsOpen: T.func.isRequired,
+		onEditVocabulary: T.func.isRequired,
 		onRemoveTerm: T.func.isRequired,
 		onTermClick: T.func.isRequired,
 	},
@@ -73,6 +74,11 @@ const TermsManager = React.createClass({
 
 	render: function () {
 		const styles = {
+			editVocabButton: {
+				cursor: 'pointer',
+				float: 'right',
+			},
+
 			textInput: {
 				width: '20em',
 			},
@@ -83,7 +89,7 @@ const TermsManager = React.createClass({
 
 			bulkTermsButton: {
 				backgroundColor: 'transparent',
-				border: '2px solid #a9a9a9',
+				border: '1px solid #a9a9a9',
 				borderRadius: '2px',
 				color: '#222',
 				cursor: 'pointer',
@@ -91,15 +97,31 @@ const TermsManager = React.createClass({
 				lineHeight: '1.5em',
 				outline: 'none',
 			},
+
+			termsList: {
+				height: (14 * 30) + 'px',
+				overflowY: 'scroll',
+			}
+		}
+
+		const wrapperProps = {
+			className: 'term-editor'
 		}
 
 		return (
 			<div className="term-editor">
 				<header>
 					Viewing terms for <strong>{this.props.label}</strong>
+
+					<button 
+						style={styles.editVocabButton}
+						onClick={this.props.onEditVocabulary}
+						>
+						Edit vocabulary metadata
+					</button>
 				</header>
 
-				<section className="term-tag-list">
+				<section className="term-tag-list" style={styles.termsList}>
 					{this.renderTermTagList()}
 				</section>
 
