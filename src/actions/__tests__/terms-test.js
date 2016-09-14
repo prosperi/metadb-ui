@@ -39,11 +39,9 @@ const expectTerm = term => {
 	expect(term).to.have.property('alt_label')
 	expect(term).to.have.property('pref_label')
 	expect(term).to.have.property('hidden_label')
-	expect(term).to.have.property('absolute_path')
 
 	expect(term.uri).to.be.a('string')
-	expect(term.absolute_path).to.be.a('string')
-
+	
 	expect(term.label).to.be.an('array')
 	expect(term.alt_label).to.be.an('array')
 	expect(term.pref_label).to.be.an('array')
