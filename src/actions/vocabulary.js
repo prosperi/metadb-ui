@@ -8,6 +8,7 @@ import {
 	DELETE_VOCABULARY_RESPONSE_OK,
 
 	FETCHING_ALL_VOCABULARIES,
+	FETCHING_ALL_VOCABULARIES_ERR,
 	FETCHING_VOCABULARY,
 
 	RECEIVE_ALL_VOCABULARIES,
@@ -99,7 +100,12 @@ export const fetchAllVocabularies = () => dispatch => {
 				data: response.vocabularies,
 			})
 		})
-		//.catch(err => {})
+		.catch(error => {
+			dispatch({
+				type: FETCHING_ALL_VOCABULARIES_ERR,
+				error,
+			})
+		})
 }
 
 export const fetchVocabulary = data => (dispatch, getState) => {

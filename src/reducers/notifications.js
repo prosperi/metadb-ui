@@ -13,6 +13,7 @@ import {
 	CREATE_VOCABULARY_RESPONSE_OK,
 	DELETE_VOCABULARY_RESPONSE_ERR,
 	DELETE_VOCABULARY_RESPONSE_OK,
+	FETCHING_ALL_VOCABULARIES_ERR,
 
 	// work constants
 	WORK_NOT_FOUND_ERROR,
@@ -52,6 +53,9 @@ export default function notificationReducer (state, action) {
 
 		case DELETE_VOCABULARY_RESPONSE_OK:
 			return deleteVocabularySuccess(state, action)
+
+		case FETCHING_ALL_VOCABULARIES_ERR:
+			return fetchingVocabulariesError(state, action)
 
 		case WORK_NOT_FOUND_ERROR:
 			return workNotFound(state, action)
@@ -128,6 +132,14 @@ function deleteVocabularySuccess (state, action) {
 	const message = sprintf(tmpl, name)
 
 	return [].concat(state, createNotification(SUCCESS, message))
+}
+
+function fetchingVocabulariesError (state, action) {
+	const tmpl = messages.FETCHING_VOCABULARIES_ERROR
+	const msg = action.error.message
+	const message = sprintf(tmpl, msg)
+
+	return [].concat(state, createNotification(ERROR, message))
 }
 
 function workNotFound (state, action) {
