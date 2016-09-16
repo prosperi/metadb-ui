@@ -78,6 +78,7 @@
     "karma-webpack": "^1.8.0",
     "mocha": "^3.0.2",
     "random-array-index": "^1.1.0",
+    "random-bool": "^1.0.2",
     "raw-loader": "^0.5.1",
     "react-addons-test-utils": "^15.3.1",
     "redux-mock-store": "^1.2.0"
