@@ -8,4 +8,5 @@ configure(() => {
 	// require('../stories/ExampleTermEditor.jsx')
 
 	require('../stories/BulkTermsEditor.jsx')
+	require('../stories/FacetPanel.jsx')
 }, module)

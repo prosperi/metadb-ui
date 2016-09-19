@@ -77,6 +77,6 @@ describe('<FacetList />', function () {
 
 		const $el = mountEl({onChange})
 		const $item = $el.find('FacetListItem').at(idx)
-		$item.find('span').first().simulate('click')
+		$item.find('.facet-label').simulate('click')
 	})
 })

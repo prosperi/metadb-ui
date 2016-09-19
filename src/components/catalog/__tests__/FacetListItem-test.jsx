@@ -49,6 +49,6 @@ describe('<FacetListItem />', function () {
 		}
 
 		const $el = mountEl(props)
-		$el.find('span').first().simulate('click')
+		$el.find('.facet-label').simulate('click')
 	})
 })

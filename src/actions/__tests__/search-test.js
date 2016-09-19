@@ -46,7 +46,7 @@ describe('Search actionCreator', function () {
 		})
 
 		it('dispatches `SEARCHING` and `RECEIVE_SEARCH_RESULTS`', function () {
-			store.dispatch(searchCatalog(query.q))
+			return store.dispatch(searchCatalog(query.q))
 			.then(() => {
 				const actions = store.getActions()
 				expect(actions).to.have.length(2)
@@ -60,19 +60,19 @@ describe('Search actionCreator', function () {
 			const facets = { one: ['a', 'b']}
 			const options = { per_page: 5 }
 
-			store.dispatch(searchCatalog(query, facets, options))
+			return store.dispatch(searchCatalog(query, facets, options))
 			.then(() => {
 				const actions = store.getActions()
 				expect(actions).to.have.length(2)
 				expect(actions[0].type).to.equal(SEARCHING)
 				expect(actions[0].query).to.equal(query)
 				expect(actions[0].facets).to.deep.equal(facets)
-				expect(actions[0].options).to.deep.equal(options)
+				expect(actions[0].options.per_page).to.equal(options.per_page)
 			})
 		})
 
 		it('appends `format=json` and `search_field=search` to url', function () {
-			store.dispatch(searchCatalog(query.q, query.facets))
+			return store.dispatch(searchCatalog(query.q, query.facets))
 			.then(() => {
 				const url = fetchMock.lastUrl()
 				expect(url.indexOf('format=json')).to.be.greaterThan(-1)
@@ -81,7 +81,7 @@ describe('Search actionCreator', function () {
 		})
 
 		it('prepends unescaped `utf8=✓` to the querystring', function () {
-			store.dispatch(searchCatalog(query.q))
+			return store.dispatch(searchCatalog(query.q))
 			.then(() => {
 				const url = fetchMock.lastUrl()
 				expect(url.indexOf('utf8=✓')).to.be.greaterThan(-1)

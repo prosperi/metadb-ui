@@ -36,12 +36,17 @@ const FacetListItem = React.createClass({
   render: function () {
     return (
       <li>
-        <span
+        <label
           className="facet-label"
           onClick={this.handleClick}
         >
+          <input
+            type="checkbox"
+            checked={this.props.selected}
+            onChange={this.handleClick}
+          />
           {this.props.label}
-        </span>
+        </label>
         {this.maybeRenderHits()}
       </li>
     )

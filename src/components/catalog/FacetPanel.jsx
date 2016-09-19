@@ -1,36 +1,63 @@
 import React from 'react'
 
+import FacetList from './FacetList.jsx'
+
 const T = React.PropTypes
 
 const FacetPanel = React.createClass({
 	propTypes: {
+		items: T.array.isRequired,
 		label: T.string.isRequired,
 		name: T.string.isRequired,
-		items: T.array.isRequired,
+		onChange: T.func.isRequired,
+		onToggle: T.func.isRequired,
 
-		selectedItems: T.array,
-
+		selectedValues: T.array,
 		type: T.oneOf(['list'])
 	},
 
 	getDefaultProps: function () {
 		return {
-			selectedItems: [],
+			selectedValues: [],
+			type: 'list',
+		}
+	},
+
+	determinePanelBody: function () {
+		switch (this.props.type) {
+
+			case 'list':
+				return FacetList
 		}
 	},
 
 	renderFacetPanelBody: function () {
+		if (!this.props.open)
+			return
 
+		const FacetPanelBody = this.determinePanelBody()
+		
+		const props = {
+			items: this.props.items,
+			label: this.props.label,
+			name: this.props.name,
+			onChange: this.props.onChange,
+			selectedValues: this.props.selectedValues,
+		}
+
+		return React.createElement(FacetPanelBody, props)
 	},
 
 	render: function () {
-		<div className="facet-panel">
-			<header>
-				<h3 className="panel-title">{this.props.label}</h3>
-			</header>
+		return (
+			<div className="facet-panel">
+				<header onClick={this.props.onToggle}>
+					<h3 className="panel-title">{this.props.label}</h3>
+				</header>
 
-			{this.renderFacetPanelBody()}
-		</div>
+				{this.renderFacetPanelBody()}
+			</div>
+		)
 	}
 })
 
