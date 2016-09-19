@@ -8,12 +8,10 @@ import thunk from 'redux-thunk'
 import rootReducer from '../reducers'
 
 const initialState = {
-	// collection: {},
-	// error: {},
-	// search: {},
 	activeVocabularyTerms: null,
 	autocompleteTerms: {},
 	notifications: [],
+	search: {},
 	vocabularies: {},
 	work: {},
 
