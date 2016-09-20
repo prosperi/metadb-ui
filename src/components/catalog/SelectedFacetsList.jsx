@@ -5,7 +5,7 @@ const T = React.PropTypes
 const SelectedFacetsList = React.createClass({
 	propTypes: {
 		onRemove: T.func.isRequired,
-		values: T.array.isRequired,
+		facets: T.array.isRequired,
 		color: T.string,
 	},
 
@@ -65,7 +65,7 @@ const SelectedFacetsList = React.createClass({
 	},
 
 	render: function () {
-		if (!this.props.values.length)
+		if (!this.props.facets.length)
 			return
 
 		const containerColor = this.props.color
@@ -89,7 +89,7 @@ const SelectedFacetsList = React.createClass({
 		return (
 			<div style={styles.container}>
 				<ul style={styles.list}>
-					{this.props.values.map(this.renderListItem)}
+					{this.props.facets.map(this.renderListItem)}
 				</ul>
 			</div>
 		)

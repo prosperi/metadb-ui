@@ -13,7 +13,7 @@ const FacetList = React.createClass({
 		items: T.array.isRequired,
 		onRemove: T.func.isRequired,
 		onSelect: T.func.isRequired,
-		selectedValues: T.array.isRequired,
+		selectedFacets: T.array.isRequired,
 	},
 
 	handleFacetClick: function (facet) {
@@ -32,14 +32,14 @@ const FacetList = React.createClass({
 	},
 
 	renderSelectedFacets: function () {
-		const selected = this.props.selectedValues
+		const selected = this.props.selectedFacets
 		if (!selected.length)
 			return
 
 		return (
 			<SelectedFacetsList
 				onRemove={this.props.onRemove}
-				values={selected}
+				facets={selected}
 			/>
 		)
 	},

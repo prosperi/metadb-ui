@@ -37,7 +37,7 @@ const renderEl = (xtend, renderer) => {
 const mountEl = xtend => renderEl(xtend, mount)
 const shallowEl = xtend => renderEl(xtend, shallow)
 
-describe('<FacetList />', function () {
+xdescribe('<FacetList />', function () {
 	it('renders `FacetListItem`s for each item passed', function () {
 		const $el = shallowEl()
 		expect($el.find('FacetListItem')).to.have.length(defaultProps.items.length)

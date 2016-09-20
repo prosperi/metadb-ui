@@ -7,7 +7,8 @@ configure(() => {
 	// require('../stories/FormElementContainer.jsx')
 	// require('../stories/ExampleTermEditor.jsx')
 
-	require('../stories/BulkTermsEditor.jsx')
-	require('../stories/FacetPanel.jsx')
-	require('../stories/SelectedFacetsList.jsx')
+	// require('../stories/BulkTermsEditor.jsx')
+	// require('../stories/FacetPanel.jsx')
+	// require('../stories/SelectedFacetsList.jsx')
+	require('../stories/FacetGroup.jsx')
 }, module)

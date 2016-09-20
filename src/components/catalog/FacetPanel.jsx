@@ -13,19 +13,19 @@ const FacetPanel = React.createClass({
 		onToggle: T.func.isRequired,
 
 		open: T.bool,
-		selectedValues: T.array,
+		selectedFacets: T.array,
 		type: T.oneOf(['list']),
 
 		color: T.string,
-		hasSelectedValuesColor: T.string,
+		hasSelectedFacetsColor: T.string,
 	},
 
 	getDefaultProps: function () {
 		return {
 			color: '#ddd',
-			hasSelectedValuesColor: '#d8ecd8',
+			hasSelectedFacetsColor: '#d8ecd8',
 			open: false,
-			selectedValues: [],
+			selectedFacets: [],
 			type: 'list',
 		}
 	},
@@ -50,8 +50,8 @@ const FacetPanel = React.createClass({
 			name: this.props.name,
 			onRemove: this.props.onRemove,
 			onSelect: this.props.onSelect,
-			selectedValues: this.props.selectedValues,
-			selectedValuesColor: this.props.hasSelectedValuesColor,
+			selectedFacets: this.props.selectedFacets,
+			selectedFacetsColor: this.props.hasSelectedFacetsColor,
 		}
 
 		return React.createElement(
@@ -82,15 +82,15 @@ const FacetPanel = React.createClass({
 			padding: '0',
 		}
 
-		if (this.props.selectedValues.length) {
-			panelStyles.borderColor = this.props.hasSelectedValuesColor
+		if (this.props.selectedFacets.length) {
+			panelStyles.borderColor = this.props.hasSelectedFacetsColor
 			headerStyles.marginBottom = this.props.open ? '4px' : '0'
-			headerStyles.backgroundColor = this.props.hasSelectedValuesColor
+			headerStyles.backgroundColor = this.props.hasSelectedFacetsColor
 		}
 
 		return (
 			<div className="facet-panel" style={panelStyles}>
-				<header onClick={this.props.onToggle} style={headerStyles}>
+				<header onClick={this.props.onToggle.bind(null, !this.props.open)} style={headerStyles}>
 					<h3 className="panel-title" style={headerLabel}>{this.props.label}</h3>
 				</header>
 
