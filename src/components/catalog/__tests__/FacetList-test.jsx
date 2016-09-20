@@ -25,7 +25,7 @@ const defaultProps = {
 			value: 'value_3',
 		}
 	],
-	onChange: () => {},
+	onSelect: () => {},
 	selectedValues: [],
 }
 
@@ -52,30 +52,16 @@ describe('<FacetList />', function () {
 		})
 	})
 
-	it('toggles an Item as `selected` when value included in `selectedValues`', function () {
-		const idx = randomIndex(defaultProps.items)
-		const selectedVal = defaultProps.items[idx].value
-
-		const $el = shallowEl({selectedValues: [selectedVal]})	
-		$el.find('FacetListItem').forEach(($item, index) => {
-			if (index === idx)
-				expect($item.prop('selected')).to.be.true
-			else
-				expect($item.prop('selected')).to.be.false
-		})
-	})
-
-	it('calls `onChange` when an Item is clicked, passing the List name + Item value', function (done) {
+	it('calls `onSelect` when an Item is clicked, passing the List name + facet object', function (done) {
 		const idx = randomIndex(defaultProps.items)
 		const item = defaultProps.items[idx]
 
-		const onChange = (name, value) => {
-			expect(name).to.equal(defaultProps.name)
-			expect(value).to.equal(item.value)
+		const onSelect = facet => {
+			expect(facet).to.deep.equal(item)
 			done()
 		}
 
-		const $el = mountEl({onChange})
+		const $el = mountEl({onSelect})
 		const $item = $el.find('FacetListItem').at(idx)
 		$item.find('.facet-label').simulate('click')
 	})

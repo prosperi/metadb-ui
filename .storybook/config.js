@@ -9,4 +9,5 @@ configure(() => {
 
 	require('../stories/BulkTermsEditor.jsx')
 	require('../stories/FacetPanel.jsx')
+	require('../stories/SelectedFacetsList.jsx')
 }, module)

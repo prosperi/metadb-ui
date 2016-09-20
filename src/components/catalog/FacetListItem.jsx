@@ -1,5 +1,6 @@
 // renders a list-item element via a Blacklight facet-item
 import React from 'react'
+import assign from 'object-assign'
 
 const T = React.PropTypes
 
@@ -9,17 +10,18 @@ const FacetListItem = React.createClass({
     label: T.string.isRequired,
     value: T.string.isRequired,
 
-    onChange: T.func.isRequired,
-    selected: T.bool,
-
+    onClick: T.func.isRequired,
     hideCount: T.bool,
   },
 
-  handleClick: function () {
-    this.props.onChange(this.props.value, !this.props.selected)
+  getLabelStyle: function () {
+    return {
+      borderBottom: '1px dotted #aaa',
+      cursor: 'pointer',
+    }
   },
 
-  maybeRenderHits: function () {
+  maybeRenderHits: function (style) {
     if (
       typeof this.props.hits === 'undefined' 
       || this.props.hits === null
@@ -30,24 +32,38 @@ const FacetListItem = React.createClass({
     if (this.props.hideCount)
       return
 
-    return <span className="facet-count">{this.props.hits}</span>
+    return <span className="facet-count" style={style}>{this.props.hits}</span>
   },
 
   render: function () {
+    const styles = {
+      item: {
+        margin: '5px 0',
+        position: 'relative',
+      },
+      label: this.getLabelStyle(),
+      count: {
+        right: '0',
+        position: 'absolute',
+      },
+    }
+
+    const facet = {
+      hits: this.props.hits,
+      label: this.props.label,
+      value: this.props.value,
+    }
+
     return (
-      <li>
-        <label
+      <li style={styles.item}>
+        <span
           className="facet-label"
-          onClick={this.handleClick}
+          onClick={this.props.onClick.bind(null, facet)}
+          style={styles.label}
         >
-          <input
-            type="checkbox"
-            checked={this.props.selected}
-            onChange={this.handleClick}
-          />
           {this.props.label}
-        </label>
-        {this.maybeRenderHits()}
+        </span>
+        {this.maybeRenderHits(styles.count)}
       </li>
     )
   }
