@@ -7,21 +7,26 @@ const T = React.PropTypes
 
 const FacetList = React.createClass({
 	propTypes: {
-		label: T.string.isRequired,
-		name: T.string.isRequired,
+		// data related to the facet (as returned from the Blacklight JSON api)
+		data: T.shape({
+			label: T.string.isRequired,
+			name: T.string.isRequired,
+			items: T.array.isRequired,
+		}).isRequired,
 
-		items: T.array.isRequired,
-		onRemove: T.func.isRequired,
-		onSelect: T.func.isRequired,
+		onRemoveSelectedFacet: T.func.isRequired,
+		onSelectFacet: T.func.isRequired,
 		selectedFacets: T.array.isRequired,
 	},
 
 	renderFacetList: function () {
-		return this.props.items.map((item, index) => {
+		const { items, name, onSelectFacet } = this.props.data
+
+		return items.map((item, index) => {
 			const props = {
 				data: item,
-				key: this.props.name + index,
-				onClick: this.props.onSelect,
+				key: name + index,
+				onClick: this.props.onSelectFacet,
 			}
 
 			return React.createElement(FacetListItem, props)
@@ -35,7 +40,7 @@ const FacetList = React.createClass({
 
 		return (
 			<SelectedFacetsList
-				onRemove={this.props.onRemove}
+				onRemove={this.props.onRemoveSelectedFacet}
 				facets={selected}
 			/>
 		)

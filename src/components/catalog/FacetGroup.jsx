@@ -33,6 +33,7 @@ const FacetGroup = React.createClass({
 		onRemoveFacet: T.func.isRequired,
 		onSelectFacet: T.func.isRequired,
 
+		// TODO:
 		// `facetSchemas` is a map of facet schema info
 		// --------
 		// {

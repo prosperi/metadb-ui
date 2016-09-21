@@ -54,19 +54,27 @@ const SelectedFacetsList = React.createClass({
 				{facet.label}
 				<button 
 					onClick={this.handleRemove.bind(null, facet)}
-					onMouseOut={ev => this.setState({xHoverIdx: -1})}
-					onMouseOver={ev => this.setState({xHoverIdx: index})}
+					onMouseOut={this.resetHoverIndex}
+					onMouseOver={this.setHoverIndex.bind(null, index)}
 					style={buttonStyle}
-					>
+				>
 					X
 				</button>
 			</li>
 		)
 	},
 
+	resetHoverIndex: function () {
+		return this.setHoverIndex(-1)
+	},
+
+	setHoverIndex: function (xHoverIdx) {
+		this.setState({xHoverIdx})
+	},
+
 	render: function () {
 		if (!this.props.facets.length)
-			return
+			return null
 
 		const containerColor = this.props.color
 
