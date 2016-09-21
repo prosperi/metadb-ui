@@ -23,18 +23,26 @@ const ExampleFacetGroup = React.createClass({
 	},
 
 	handleFacetSelect: function (name, facet) {
-		const pool = assign({}, this.state.selectedFacets)
+		const selected = assign({}, this.state.selectedFacets)
 
-		if (pool[name])
-			pool[name] = [].concat(pool[name], facet)
+		// add it to the selected pool
+		if (selected[name])
+			selected[name] = [].concat(selected[name], facet)
 		else
-			pool[name] = [facet]
+			selected[name] = [facet]
+
+		// + remove it from the facet pool
 
 		const facets = [].concat(this.state.facets)
 		const idx = findIdx(facets, fg => fg.name === name)
-		facets[idx].items = facets[idx].items.filter(f => f.value !== facet.value)
+		const items = facets[idx].items
 
-		this.setState({selectedFacets: pool, facets})
+		facets[idx].items = items.filter(f => f.value !== facet.value)
+
+		this.setState({
+			selectedFacets: selected,
+			facets,
+		})
 	},
 
 	handleFacetRemove: function (name, facet) {
@@ -56,7 +64,7 @@ const ExampleFacetGroup = React.createClass({
 			<div>
 				<FacetGroup
 					facets={this.state.facets}
-					onRemoveFacet={this.handleFacetRemove}
+					onRemoveSelectedFacet={this.handleFacetRemove}
 					onSelectFacet={this.handleFacetSelect}
 					selectedFacets={this.state.selectedFacets}
 				/>

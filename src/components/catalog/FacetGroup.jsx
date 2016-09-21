@@ -30,7 +30,7 @@ const FacetGroup = React.createClass({
 			}))
 		})).isRequired,
 
-		onRemoveFacet: T.func.isRequired,
+		onRemoveSelectedFacet: T.func.isRequired,
 		onSelectFacet: T.func.isRequired,
 
 		// TODO:
@@ -95,16 +95,15 @@ const FacetGroup = React.createClass({
 
 	renderFacetPanel: function (facet, index) {
 		const isOpen = this.state.openFacetGroups.indexOf(facet.name) > -1
+		const name = facet.name
 
 		return (
 			<FacetPanel
-				{...facet}
-
-				key={facet.name + index}
+				data={facet}
+				key={name + index}
 				type={this.determineFacetType(name)}
-				onRemove={this.props.onRemoveFacet.bind(null, name)}
-				onSelect={this.props.onSelectFacet.bind(null, name)}
-				onToggle={this.handleToggle.bind(null, name)}
+				onRemoveSelectedFacet={this.props.onRemoveSelectedFacet.bind(null, name)}
+				onSelectFacet={this.props.onSelectFacet.bind(null, name)}
 				open={isOpen}
 				selectedFacets={this.getSelectedFacets(name)}
 			/>
@@ -112,8 +111,14 @@ const FacetGroup = React.createClass({
 	},
 
 	render: function () {
+		const wrapperStyles = {
+			border: '1px solid pink',
+			display: 'inline-block',
+			width: '33%',
+		}
+
 		return (
-			<div>
+			<div style={wrapperStyles}>
 				{this.props.facets.map(this.renderFacetPanel)}
 			</div>
 		)
