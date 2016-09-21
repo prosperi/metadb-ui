@@ -1,5 +1,6 @@
 import React from 'react'
 import FacetList from './FacetList.jsx'
+import sortFacets from '../../../lib/sort-facets'
 
 const T = React.PropTypes
 
@@ -14,6 +15,8 @@ const FacetPanel = React.createClass({
 
 		open: T.bool,
 		selectedFacets: T.array,
+		sort: T.oneOf(['asc', 'desc', false]),
+		sortField: T.oneOf(['value', 'label', 'hits']),
 		type: T.oneOf(['list']),
 
 		color: T.string,
@@ -26,6 +29,8 @@ const FacetPanel = React.createClass({
 			hasSelectedFacetsColor: '#d8ecd8',
 			open: false,
 			selectedFacets: [],
+			sort: 'desc',
+			sortField: 'hits',
 			type: 'list',
 		}
 	},
@@ -43,15 +48,13 @@ const FacetPanel = React.createClass({
 			return
 
 		const FacetPanelBody = this.determinePanelBody()
-		
+		const items = this.props.sort === false 
+			? this.props.items 
+			: this.props.items.sort(sortFacets(this.props.sort, this.props.sortFeld))
+
 		const props = {
-			items: this.props.items,
-			label: this.props.label,
-			name: this.props.name,
-			onRemove: this.props.onRemove,
-			onSelect: this.props.onSelect,
-			selectedFacets: this.props.selectedFacets,
-			selectedFacetsColor: this.props.hasSelectedFacetsColor,
+			...this.props,
+			items,
 		}
 
 		return React.createElement(

@@ -6,10 +6,12 @@ import randomBool from 'random-bool'
 import FacetListItem from '../FacetListItem.jsx'
 
 const defaultProps = {
-	hits: 10,
-	label: 'test label',
-	value: 'test_value',
-	onChange: () => {},
+	data: {
+		hits: 10,
+		label: 'test label',
+		value: 'test_value',
+	},
+	onClick: () => {},
 }
 
 const mountEl = (xtend) => {
@@ -17,7 +19,10 @@ const mountEl = (xtend) => {
 	return mount(React.createElement(FacetListItem, props))
 }
 
-xdescribe('<FacetListItem />', function () {
+const LABEL_SEL = '.facet-label'
+const COUNT_SEL = '.facet-count'
+
+describe('<FacetListItem />', function () {
 	it('renders an <li>', function () {
 		const $el = mountEl()
 		expect($el.find('li')).to.have.length(1)
@@ -25,30 +30,35 @@ xdescribe('<FacetListItem />', function () {
 
 	it('renders a `span.facet-count` of the `hits` by default', function () {
 		const hits = Math.floor(Math.random() * 1000)
-		const $el = mountEl({hits})
-		const $span = $el.find('span.facet-count')
+		const data = assign({}, defaultProps.data, {hits})
+		const $el = mountEl({data})
+		const $span = $el.find(COUNT_SEL)
 		expect($span).to.have.length(1)
 		expect(parseInt($span.text(), 10)).to.equal(hits)
 	})
 
 	it('hides the `hits` count when `hideCount` is true', function () {
-		const $el = mountEl({hideCount:true})
+		const $el = mountEl({hideCount: true})
 		expect($el.find('span.facet-count')).to.have.length(0)
 	})
 
-	it('calls `onChange` when clicked + passes the value + next `selected` value', function (done) {
+	it('calls `onClick` w/ the facet data when clicked ', function (done) {
 		const props = {
-			label: 'new test label',
-			selected: randomBool(),
-			value: 'hullo I am the value!',
-			onChange: (value, selected) => {
-				expect(value).to.equal(props.value)
-				expect(selected).to.equal(!props.selected)
+			data: {
+				label: 'new test label',
+				value: 'hullo I am the value!',
+				hits: 1234,
+			},
+			onClick: (facet) => {
+				const data = props.data
+				expect(facet.value).to.equal(data.value)
+				expect(facet.label).to.equal(data.label)
+				expect(facet.hits).to.equal(data.hits)
 				done()
 			},
 		}
 
 		const $el = mountEl(props)
-		$el.find('.facet-label').simulate('click')
+		$el.find(LABEL_SEL).simulate('click')
 	})
 })

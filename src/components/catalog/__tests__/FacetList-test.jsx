@@ -26,7 +26,7 @@ const defaultProps = {
 		}
 	],
 	onSelect: () => {},
-	selectedValues: [],
+	selectedFacets: [],
 }
 
 const renderEl = (xtend, renderer) => {
@@ -37,7 +37,7 @@ const renderEl = (xtend, renderer) => {
 const mountEl = xtend => renderEl(xtend, mount)
 const shallowEl = xtend => renderEl(xtend, shallow)
 
-xdescribe('<FacetList />', function () {
+describe('<FacetList />', function () {
 	it('renders `FacetListItem`s for each item passed', function () {
 		const $el = shallowEl()
 		expect($el.find('FacetListItem')).to.have.length(defaultProps.items.length)
@@ -48,11 +48,11 @@ xdescribe('<FacetList />', function () {
 		const $listItems = $el.find('FacetListItem')
 
 		$listItems.forEach(($li, index) => {
-			expect($li.prop('hits')).to.equal(defaultProps.items[index].hits)
+			expect($li.prop('data').hits).to.equal(defaultProps.items[index].hits)
 		})
 	})
 
-	it('calls `onSelect` when an Item is clicked, passing the List name + facet object', function (done) {
+	it('calls `onSelect` when an Item is clicked, passing the facet object', function (done) {
 		const idx = randomIndex(defaultProps.items)
 		const item = defaultProps.items[idx]
 

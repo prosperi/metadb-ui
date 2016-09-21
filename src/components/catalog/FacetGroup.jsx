@@ -33,7 +33,19 @@ const FacetGroup = React.createClass({
 		onRemoveFacet: T.func.isRequired,
 		onSelectFacet: T.func.isRequired,
 
-		facetTypes: T.object,
+		// `facetSchemas` is a map of facet schema info
+		// --------
+		// {
+		// 	"example_facet": {
+		// 		type: "list",
+		// 		sort: "desc",
+		// 		sortField: "hits",
+		//		options: {
+		//			/* facet-specific opts like limit/step/etc. */
+		//		}
+		// 	}
+		// }
+		facetSchemas: T.object,
 
 		// `selectedFacets` is a map of facet objects
 		// -----------
@@ -58,22 +70,14 @@ const FacetGroup = React.createClass({
 	},
 
 	determineFacetType: function (name) {
-		if (!this.props.facetTypes || !this.props.facetTypes[name])
+		if (!this.props.facetSchemas || !this.props.facetSchemas[name])
 			return 'list'
 
-		return this.props.facetTypes[name]
+		return this.props.facetSchemas[name]
 	},
 
 	getSelectedFacets: function (name) {
 		return this.props.selectedFacets[name] || []
-	},
-
-	handleRemove: function (name, facet) {
-		this.props.onRemove(name, facet)
-	},
-
-	handleSelect: function (name, facet) {
-		this.props.onSelect(name, facet)
 	},
 
 	handleToggle: function (name, open) {
@@ -88,17 +92,13 @@ const FacetGroup = React.createClass({
 		}
 	},
 
-	isFacetOpen: function (name) {
-		return this.state.openFacetGroups.indexOf(name) > -1
-	},
-
 	renderFacetPanel: function (facet, index) {
-		const name = facet.name
-		const isOpen = this.isFacetOpen(name)
+		const isOpen = this.state.openFacetGroups.indexOf(facet.name) > -1
 
 		return (
 			<FacetPanel
 				{...facet}
+
 				key={facet.name + index}
 				type={this.determineFacetType(name)}
 				onRemove={this.props.onRemoveFacet.bind(null, name)}

@@ -16,16 +16,13 @@ const FacetList = React.createClass({
 		selectedFacets: T.array.isRequired,
 	},
 
-	handleFacetClick: function (facet) {
-		this.props.onSelect(facet)
-	},
-
 	renderFacetList: function () {
 		return this.props.items.map((item, index) => {
-			const props = assign({}, item, {
+			const props = {
+				data: item,
 				key: this.props.name + index,
-				onClick: this.handleFacetClick,
-			})
+				onClick: this.props.onSelect,
+			}
 
 			return React.createElement(FacetListItem, props)
 		})

@@ -6,11 +6,14 @@ const T = React.PropTypes
 
 const FacetListItem = React.createClass({
   propTypes: {
-    hits: T.number.isRequired,
-    label: T.string.isRequired,
-    value: T.string.isRequired,
+    data: T.shape({
+      label: T.string.isRequired,
+      value: T.string.isRequired,
+      hits: T.number.isRequired,
+    }).isRequired,
 
     onClick: T.func.isRequired,
+    
     hideCount: T.bool,
   },
 
@@ -22,17 +25,12 @@ const FacetListItem = React.createClass({
   },
 
   maybeRenderHits: function (style) {
-    if (
-      typeof this.props.hits === 'undefined' 
-      || this.props.hits === null
-      || this.props.hideCount
-    )
+    const hits = this.props.data.hits
+
+    if (this.props.hideCount || (typeof hits !== 'number'))
       return
 
-    if (this.props.hideCount)
-      return
-
-    return <span className="facet-count" style={style}>{this.props.hits}</span>
+    return <span className="facet-count" style={style}>{hits}</span>
   },
 
   render: function () {
@@ -48,20 +46,14 @@ const FacetListItem = React.createClass({
       },
     }
 
-    const facet = {
-      hits: this.props.hits,
-      label: this.props.label,
-      value: this.props.value,
-    }
-
     return (
       <li style={styles.item}>
         <span
           className="facet-label"
-          onClick={this.props.onClick.bind(null, facet)}
+          onClick={this.props.onClick.bind(null, this.props.data)}
           style={styles.label}
         >
-          {this.props.label}
+          {this.props.data.label}
         </span>
         {this.maybeRenderHits(styles.count)}
       </li>
