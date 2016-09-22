@@ -1,0 +1,101 @@
+{
+  "items": [
+    {
+      "value": "American History",
+      "hits": 1,
+      "label": "American History"
+    },
+    {
+      "value": "Anthropology and Archaeology",
+      "hits": 1,
+      "label": "Anthropology and Archaeology"
+    },
+    {
+      "value": "British and Commonwealth History",
+      "hits": 1,
+      "label": "British and Commonwealth History"
+    },
+    {
+      "value": "British and Commonwealth Literary Studies",
+      "hits": 1,
+      "label": "British and Commonwealth Literary Studies"
+    },
+    {
+      "value": "Chemistry and Chemical Engineering",
+      "hits": 1,
+      "label": "Chemistry and Chemical Engineering"
+    },
+    {
+      "value": "Computer Science",
+      "hits": 1,
+      "label": "Computer Science"
+    },
+    {
+      "value": "Earth Sciences",
+      "hits": 1,
+      "label": "Earth Sciences"
+    },
+    {
+      "value": "Economics and Business",
+      "hits": 2,
+      "label": "Economics and Business"
+    },
+    {
+      "value": "Environmental Studies",
+      "hits": 1,
+      "label": "Environmental Studies"
+    },
+    {
+      "value": "General and Reference Works",
+      "hits": 3,
+      "label": "General and Reference Works"
+    },
+    {
+      "value": "Government Information: United States",
+      "hits": 2,
+      "label": "Government Information: United States"
+    },
+    {
+      "value": "Medicine",
+      "hits": 1,
+      "label": "Medicine"
+    },
+    {
+      "value": "Music",
+      "hits": 1,
+      "label": "Music"
+    },
+    {
+      "value": "Physics and Astronomy",
+      "hits": 1,
+      "label": "Physics and Astronomy"
+    },
+    {
+      "value": "Political Science",
+      "hits": 2,
+      "label": "Political Science"
+    },
+    {
+      "value": "Psychology",
+      "hits": 1,
+      "label": "Psychology"
+    },
+    {
+      "value": "Science (General)",
+      "hits": 1,
+      "label": "Science (General)"
+    },
+    {
+      "value": "Social Sciences (General)",
+      "hits": 1,
+      "label": "Social Sciences (General)"
+    },
+    {
+      "value": "Sociology",
+      "hits": 1,
+      "label": "Sociology"
+    }
+  ],
+  "name": "db_az_subject",
+  "label": "Database topic"
+}

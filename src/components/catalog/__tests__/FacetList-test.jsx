@@ -5,28 +5,10 @@ import assign from 'object-assign'
 import randomIndex from 'random-array-index'
 import FacetList from '../FacetList.jsx'
 
+import data from './data/facet.json'
+
 const defaultProps = {
-	data: {
-		label: 'Facet List Label',
-		name: 'facet_list_name',
-		items: [
-			{
-				label: 'label 1',
-				hits: 4,
-				value: 'value_1',
-			},
-			{
-				label: 'label_2',
-				hits: 10,
-				value: 'value_2',
-			},
-			{
-				label: 'label_3',
-				hits: 7,
-				value: 'value_3',
-			}
-		],
-	},
+	data,
 	onRemoveSelectedFacet: () => {},
 	onSelectFacet: () => {},
 	selectedFacets: [],

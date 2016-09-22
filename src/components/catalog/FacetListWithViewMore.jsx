@@ -19,6 +19,12 @@ const FacetListWithViewMore = React.createClass({
 
 		limit: T.number,
 		modalColor: T.string,
+
+		// determines whether or not the View More modal is open on mount.
+		// this is mostly as a means to test the modal w/o having to trigger
+		// it on each test.
+		// (default: `false`)
+		modalOpen: T.bool,
 		viewMoreText: T.string,
 	},
 
@@ -26,13 +32,14 @@ const FacetListWithViewMore = React.createClass({
 		return {
 			limit: 5,
 			modalColor: '#1d5f83',
-			seeMoreText: 'View more...',
+			modalOpen: false,
+			viewMoreText: 'View more...',
 		}
 	},
 
 	getInitialState: function () {
 		return {
-			modalOpen: false,
+			modalOpen: this.props.modalOpen,
 		}
 	},
 
@@ -123,6 +130,7 @@ const FacetListWithViewMore = React.createClass({
 			return limitedList
 
 		const seeMoreLink = React.createElement('span', {
+			className: 'view-more',
 			key: 'dss-fpwvm-view-more',
 			onClick: this.toggleModal,
 			style: {
@@ -132,7 +140,7 @@ const FacetListWithViewMore = React.createClass({
 				fontWeight: 'bold',
 				marginTop: '10px',
 			}
-		}, this.props.seeMoreText)
+		}, this.props.viewMoreText)
 
 		return [limitedList, seeMoreLink]
 	},

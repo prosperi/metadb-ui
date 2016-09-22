@@ -4,25 +4,12 @@ import { shallow } from 'enzyme'
 import assign from 'object-assign'
 import FacetPanel from '../FacetPanel.jsx'
 
+import data from './data/facet.json'
+
 const noop = () => {}
 
 const defaultProps = {
-	data: {
-		items: [
-			{
-				label: 'Facet Label 1',
-				value: 'facet_value_1',
-				hits: 23,
-			},
-			{
-				label: 'Facet Label 2',
-				value: 'facet_value_2',
-				hits: 311,
-			},
-		],
-		label: 'Test Label',
-		name: 'test_label',
-	},
+	data,
 	onRemoveSelectedFacet: noop,
 	onSelectFacet: noop,
 	open: true,
