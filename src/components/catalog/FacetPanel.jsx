@@ -44,6 +44,11 @@ const FacetPanel = React.createClass({
 		// array passed to panel-body to populate `SelectedFacetsList` component
 		selectedFacets: T.array,
 
+		// whether or not to display an angled line ('arrow' w/o a stem) as visual
+		// feedback on the facet-header
+		// (default: `true`)
+		showHeaderArrow: T.bool,
+
 		// which direction to sort the facets:
 		// passing `false` will bypass sorting + use Blacklight order
 		// (default: 'desc')
@@ -75,6 +80,7 @@ const FacetPanel = React.createClass({
 			hasSelectedFacetsColor: '#d8ecd8',
 			open: false,
 			selectedFacets: [],
+			showHeaderArrow: true,
 			sort: 'desc',
 			sortField: 'hits',
 			type: 'list',
@@ -95,6 +101,37 @@ const FacetPanel = React.createClass({
 			case 'list':
 				return FacetList
 		}
+	},
+
+	maybeRenderHeaderArrow: function () {
+		if (!this.props.showHeaderArrow)
+			return
+
+		const transformDeg = this.state.open ? 90 : 0
+		const arrowSvg = [
+		'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">',
+			'<path d="M2,1L8,5L2,9" stroke="%23000" stroke-width="2" fill="transparent" />',
+		'</svg>'].join('')
+
+		const props = {
+			key: 'dss-fp-header-arrow',
+			style: {
+				backgroundImage: 'url(\'data:image/svg+xml;utf8,' + arrowSvg + '\')',
+				backgroundRepeat: 'no-repeat',
+				backgroundPosition: 'center center',
+				display: 'inline-block',
+				float: 'right',
+				height: '15px',
+				marginLeft: '15px',
+				marginTop: '2px',
+				transform: 'rotate(' + transformDeg + 'deg)',
+				// transition: 'transform 75ms ease-out',
+				verticalAlign: 'middle',
+				width: '20px',
+			}
+		}
+
+		return React.createElement('span', props)
 	},
 
 	renderFacetPanelBody: function () {
@@ -141,6 +178,7 @@ const FacetPanel = React.createClass({
 		const headerLabel = {
 			margin: '0',
 			padding: '0',
+			verticalAlign: 'middle',
 		}
 
 		if (this.props.selectedFacets.length) {
@@ -152,7 +190,10 @@ const FacetPanel = React.createClass({
 		return (
 			<div className="facet-panel" style={panelStyles}>
 				<header onClick={ev => this.setState({open: !this.state.open})} style={headerStyles}>
-					<h3 className="panel-title" style={headerLabel}>{this.props.data.label}</h3>
+					<h3 className="panel-title" style={headerLabel}>
+						{this.props.data.label}
+						{this.maybeRenderHeaderArrow()}
+					</h3>
 				</header>
 
 				{this.renderFacetPanelBody()}

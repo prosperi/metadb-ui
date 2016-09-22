@@ -83,14 +83,16 @@ const FacetListWithViewMore = React.createClass({
 		return (
 			<Modal
 				isOpen={this.state.modalOpen}
+				key="dss-flwvm-modal"
 				onRequestClose={this.toggleModal}
 				style={styles.modal}
 			>
-				<header style={styles.header}>
+				<header key="dss-flmvw-modal-header" style={styles.header}>
 					Viewing all for <strong>{this.props.data.name}</strong>
 				</header>
 				<FacetList
 					data={this.props.data}
+					key="dss-flmvw-modal-list"
 					onSelectFacet={this.handleSelectFacet}
 					onRemoveSelectedFacet={this.handleRemoveSelectedFacet}
 					selectedFacets={this.props.selectedFacets}
@@ -109,6 +111,7 @@ const FacetListWithViewMore = React.createClass({
 		const limitedList = (
 			<FacetList
 				data={{...data, items: abbreviatedItems}}
+				key="dss-flwvm-list"
 				onSelectFacet={this.handleSelectFacet}
 				onRemoveSelectedFacet={this.handleRemoveSelectedFacet}
 				selectedFacets={this.props.selectedFacets}
@@ -120,6 +123,7 @@ const FacetListWithViewMore = React.createClass({
 			return limitedList
 
 		const seeMoreLink = React.createElement('span', {
+			key: 'dss-fpwvm-view-more',
 			onClick: this.toggleModal,
 			style: {
 				borderBottom: '1px dotted #aaa',
