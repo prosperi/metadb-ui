@@ -33,6 +33,12 @@ const FacetGroup = React.createClass({
 		onRemoveSelectedFacet: T.func.isRequired,
 		onSelectFacet: T.func.isRequired,
 
+		// if we don't have a schema passed, or, when iterating through, the
+		// facet doesn't appear in the schema, which facet-type should we
+		// default to?
+		// (default: 'list')
+		defaultFacetType: T.string,
+
 		// TODO:
 		// `facetSchemas` is a map of facet schema info
 		// --------
@@ -43,7 +49,8 @@ const FacetGroup = React.createClass({
 		// 		sortField: "hits",
 		//		options: {
 		//			/* facet-specific opts like limit/step/etc. */
-		//		}
+		//		},
+		//		hide: false,
 		// 	}
 		// }
 		facetSchemas: T.object,
@@ -60,6 +67,7 @@ const FacetGroup = React.createClass({
 
 	getDefaultProps: function () {
 		return {
+			defaultFacetType: 'list',
 			selectedFacets: {},
 		}
 	},
@@ -72,7 +80,7 @@ const FacetGroup = React.createClass({
 
 	determineFacetType: function (name) {
 		if (!this.props.facetSchemas || !this.props.facetSchemas[name])
-			return 'list'
+			return this.props.defaultFacetType
 
 		return this.props.facetSchemas[name]
 	},
