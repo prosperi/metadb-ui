@@ -11,4 +11,5 @@ configure(() => {
 	// require('../stories/FacetPanel.jsx')
 	// require('../stories/SelectedFacetsList.jsx')
 	require('../stories/FacetGroup.jsx')
+	require('../stories/FacetListWithViewMore.jsx')
 }, module)

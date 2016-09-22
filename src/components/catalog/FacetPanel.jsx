@@ -8,6 +8,7 @@
 
 import React from 'react'
 import FacetList from './FacetList.jsx'
+import FacetListWithViewMore from './FacetListWithViewMore.jsx'
 import sortFacets from '../../../lib/sort-facets'
 
 const T = React.PropTypes
@@ -54,7 +55,9 @@ const FacetPanel = React.createClass({
 
 		// which panel-body to use when displaying facts
 		// (default: 'list')
-		type: T.oneOf(['list']),
+		type: T.oneOf([
+			'list', 'view-more-list',
+		]),
 
 		// color of FacetPanel border + header background
 		// (default: '#ddd')
@@ -86,6 +89,8 @@ const FacetPanel = React.createClass({
 
 	determinePanelBody: function () {
 		switch (this.props.type) {
+			case 'view-more-list':
+				return FacetListWithViewMore
 
 			case 'list':
 				return FacetList
