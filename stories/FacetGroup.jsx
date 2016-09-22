@@ -63,6 +63,7 @@ const ExampleFacetGroup = React.createClass({
 		return (
 			<div>
 				<FacetGroup
+					defaultFacetType="list-view-more"
 					facets={this.state.facets}
 					onRemoveSelectedFacet={this.handleFacetRemove}
 					onSelectFacet={this.handleFacetSelect}

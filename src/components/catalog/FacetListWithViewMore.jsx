@@ -1,7 +1,6 @@
 import React from 'react'
 import Modal from 'react-modal'
 import FacetList from './FacetList.jsx'
-import FacetListItem from './FacetListItem.jsx'
 import SelectedFacetsList from './SelectedFacetsList.jsx'
 
 const T = React.PropTypes
@@ -41,7 +40,7 @@ const FacetListWithViewMore = React.createClass({
 		if (this.state.modalOpen)
 			this.setState({modalOpen: false})
 
-		this.props.onSelectFacet.apply(null, arguments)
+		this.props.onRemoveSelectedFacet.apply(null, arguments)
 	},
 
 	handleSelectFacet: function () {
@@ -105,55 +104,33 @@ const FacetListWithViewMore = React.createClass({
 		const { items, name } = data
 
 		const els = []
-		let i = 0
-		let item, props, el
 
-		for (let i = 0; i < limit; i++) {
-			item = items[i]
-
-			props = {
-				data: item,
-				key: name + i,
-				onClick: this.handleSelectFacet,
-			}
-
-			el = React.createElement(FacetListItem, props)
-			els.push(el)
-		}
+		const abbreviatedItems = items.slice(0, limit)
+		const limitedList = (
+			<FacetList
+				data={{...data, items: abbreviatedItems}}
+				onSelectFacet={this.handleSelectFacet}
+				onRemoveSelectedFacet={this.handleRemoveSelectedFacet}
+				selectedFacets={this.props.selectedFacets}
+			/>
+		)
 
 		// no need to add a `view more` link if there aren't more to view
 		if (items.length <= limit)
-			return els
+			return limitedList
 
 		const seeMoreLink = React.createElement('span', {
 			onClick: this.toggleModal,
 			style: {
 				borderBottom: '1px dotted #aaa',
 				cursor: 'pointer',
+				display: 'inline-block',
 				fontWeight: 'bold',
+				marginTop: '10px',
 			}
 		}, this.props.seeMoreText)
 
-		const seeMoreItem = React.createElement('li', {
-			style: {
-				marginTop: '5px',
-			}
-		}, seeMoreLink)
-
-		return [].concat(els, seeMoreItem)
-	},
-
-	renderSelectedFacets: function () {
-		const selected = this.props.selectedFacets
-		if (!selected.length)
-			return
-
-		return (
-			<SelectedFacetsList
-				facets={selected}
-				onRemove={this.handleRemoveSelectedFacet}
-			/>
-		)
+		return [limitedList, seeMoreLink]
 	},
 
 	toggleModal: function () {
@@ -171,11 +148,7 @@ const FacetListWithViewMore = React.createClass({
 
 		return (
 			<div>
-				{this.renderSelectedFacets()}
-				<ul style={styles.list}>
-					{this.renderLimitedFacetList()}
-				</ul>
-
+				{this.renderLimitedFacetList()}
 				{this.maybeRenderModal()}
 			</div>
 		)

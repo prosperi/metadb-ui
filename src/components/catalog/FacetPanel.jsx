@@ -56,7 +56,7 @@ const FacetPanel = React.createClass({
 		// which panel-body to use when displaying facts
 		// (default: 'list')
 		type: T.oneOf([
-			'list', 'view-more-list',
+			'list', 'list-view-more',
 		]),
 
 		// color of FacetPanel border + header background
@@ -89,7 +89,7 @@ const FacetPanel = React.createClass({
 
 	determinePanelBody: function () {
 		switch (this.props.type) {
-			case 'view-more-list':
+			case 'list-view-more':
 				return FacetListWithViewMore
 
 			case 'list':
