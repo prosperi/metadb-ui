@@ -25,11 +25,14 @@ const FacetList = React.createClass({
 		return items.map((item, index) => {
 			const props = {
 				data: item,
-				key: name + index,
 				onClick: this.props.onSelectFacet,
 			}
 
-			return React.createElement(FacetListItem, props)
+			return React.createElement(
+				'li', 
+				{ key: name + index },
+				React.createElement(FacetListItem, props)
+			)
 		})
 	},
 

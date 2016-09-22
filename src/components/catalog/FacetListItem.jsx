@@ -47,7 +47,7 @@ const FacetListItem = React.createClass({
     }
 
     return (
-      <li style={styles.item}>
+      <div style={styles.item}>
         <span
           className="facet-label"
           onClick={this.props.onClick.bind(null, this.props.data)}
@@ -56,7 +56,7 @@ const FacetListItem = React.createClass({
           {this.props.data.label}
         </span>
         {this.maybeRenderHits(styles.count)}
-      </li>
+      </div>
     )
   }
 })

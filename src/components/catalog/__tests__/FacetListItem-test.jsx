@@ -23,11 +23,6 @@ const LABEL_SEL = '.facet-label'
 const COUNT_SEL = '.facet-count'
 
 describe('<FacetListItem />', function () {
-	it('renders an <li>', function () {
-		const $el = mountEl()
-		expect($el.find('li')).to.have.length(1)
-	})
-
 	it('renders a `span.facet-count` of the `hits` by default', function () {
 		const hits = Math.floor(Math.random() * 1000)
 		const data = assign({}, defaultProps.data, {hits})
