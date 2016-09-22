@@ -120,9 +120,8 @@ const FacetGroup = React.createClass({
 
 	render: function () {
 		const wrapperStyles = {
-			border: '1px solid pink',
 			display: 'inline-block',
-			width: '33%',
+			width: '100%',
 		}
 
 		return (

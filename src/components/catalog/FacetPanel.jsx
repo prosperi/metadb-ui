@@ -166,7 +166,7 @@ const FacetPanel = React.createClass({
 			borderWidth: '1px',
 			borderStyle: 'solid',
 			borderRadius: '2px',
-			margin: '5px',
+			margin: '5px 0',
 		}
 
 		const headerStyles = {

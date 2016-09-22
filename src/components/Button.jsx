@@ -85,6 +85,7 @@ const Button = React.createClass({
 		if (thisProps.onMouseUp) delete thisProps.onMouseUp
 
 		const baseStyle = {
+			appearance: 'none',
 			boxShadow: 'none',
 			borderRadius: '2px',
 			borderStyle: 'solid',
@@ -92,6 +93,8 @@ const Button = React.createClass({
 			cursor: 'pointer',
 			lineHeight: '1.5em',
 			outline: 'none',
+			WebkitAppearance: 'none',
+			MozAppearance: 'none',
 		}
 
 		const typeStyle = this.getTypeStyle()
@@ -100,7 +103,7 @@ const Button = React.createClass({
 			baseStyle, 
 			this.getSizeStyle(),
 			(this.state.mousedown ? typeStyle.mousedown : typeStyle.normal),
-			this.props.style
+			thisProps.style
 		)
 
 		const props = assign({}, {
