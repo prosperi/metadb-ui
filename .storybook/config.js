@@ -13,4 +13,7 @@ configure(() => {
 	require('../stories/FacetGroup.jsx')
 	require('../stories/FacetListWithViewMore.jsx')
 	require('../stories/SearchFacetSidebar.jsx')
+	require('../stories/ResultsPager.jsx')
+	require('../stories/SearchResultsPagerHeader.jsx')
+	require('../stories/SearchResultsHeader.jsx')
 }, module)
