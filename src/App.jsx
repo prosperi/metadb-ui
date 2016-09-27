@@ -15,13 +15,13 @@ function mapStateToProps (state) {
 
 		// schema: state.collection.schema,
 
-		// search: state.search,
-
 		// activeVocabulary,
 		activeVocabularyTerms: state.activeVocabularyTerms,
 		autocompleteTerms: state.autocompleteTerms,
 		
 		notifications: state.notifications,
+
+		search: state.search,
 
 		vocabularies: state.vocabularies,
 

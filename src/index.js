@@ -15,6 +15,8 @@ import store, { history } from './store'
 import App from './App.jsx'
 import Home from './pages/Home.jsx'
 import VocabularyManager from './pages/VocabularyManager.jsx'
+import SearchWrapper from './pages/SearchWrapper.jsx'
+import SearchWithResults from './pages/SearchWithResults.jsx'
 import Work from './pages/Work.jsx'
 
 const MetaDB = (
@@ -22,6 +24,7 @@ const MetaDB = (
 	<Router history={history}>
 		<Route path="/" component={App}>
 			<IndexRoute component={Home} />
+			<Route path="search" component={SearchWrapper} />
 			<Route path="vocabularies" component={VocabularyManager} />
 			<Route path="works/:workId" component={Work} />
 		</Route>

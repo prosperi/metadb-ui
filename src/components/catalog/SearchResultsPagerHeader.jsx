@@ -39,7 +39,7 @@ const SearchResultsPagerHeader = React.createClass({
 		const containerProps = {
 			style: {
 				float: 'right',
-				width: '75px',
+				textAlign: 'right',
 			}
 		}
 
@@ -48,10 +48,16 @@ const SearchResultsPagerHeader = React.createClass({
 			key: 'per-page-select',
 			onChange: this.handlePerPageChange,
 			value: this.props.perPage,
+			style: {
+				borderColor: '#ccc',
+				outlineColor: '#1d5f83',
+				marginLeft: '10px',
+			}
 		}
 
 		return (
 			<div {...containerProps}>
+				per page
 				<Select {...selectProps} />
 			</div>
 		)

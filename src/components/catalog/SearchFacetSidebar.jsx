@@ -13,6 +13,8 @@ const SearchFacetSidebar = React.createClass({
 		onSubmitSearchQuery: T.func.isRequired,
 		selectedFacets: T.object.isRequired,
 
+		defaultFacetType: T.string,
+
 		query: T.string,
 	},
 
@@ -24,6 +26,7 @@ const SearchFacetSidebar = React.createClass({
 	renderFacetGroup: function () {
 		return (
 			<FacetGroup
+				defaultFacetType={this.props.defaultFacetType}
 				facets={this.props.facets}
 				onRemoveSelectedFacet={this.props.onRemoveSelectedFacet}
 				onSelectFacet={this.props.onSelectFacet}

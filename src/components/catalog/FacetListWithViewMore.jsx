@@ -25,6 +25,8 @@ const FacetListWithViewMore = React.createClass({
 		// it on each test.
 		// (default: `false`)
 		modalOpen: T.bool,
+
+		// text used for `View more...` link/span that will trigger modal open.
 		viewMoreText: T.string,
 	},
 

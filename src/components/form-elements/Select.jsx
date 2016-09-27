@@ -36,7 +36,7 @@ const Select = React.createClass({
 	mapOptions: function () {
 		if (!this.props.options || !this.props.options.length)
 			return
-		
+
 		return this.props.options.map((val, index) => (
 			<option key={'sel'+index+(val||'empty')}>{val}</option>
 		))
@@ -44,7 +44,12 @@ const Select = React.createClass({
 
 	render: function () {
 		const style = assign({}, this.defaultStyle(), this.props.style)
-		const props = assign({}, this.props, {style})
+		const props = assign({}, this.props, {style, onChange: this.handleChange})
+
+		// react will complain about props.options because <select/>
+		// doesn't actually have this prop irl
+		if (props.options)
+			delete props.options
 
 		return React.createElement('select', props, [
 			this.props.children,
