@@ -3,7 +3,11 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import fetchMock from 'fetch-mock'
 
-import { searchCatalog } from '../search'
+import {
+	searchCatalog,
+	setSearchOption,
+	toggleSearchFacet,
+} from '../search'
 
 import {
 	RECEIVE_SEARCH_RESULTS,
@@ -13,8 +17,8 @@ import {
 const mockStore = configureMockStore([thunk])
 const API_BASE = process.env.API_BASE_URL
 
-const query = {
-	q: 'cats AND dogs',
+const state = {
+	query: 'cats AND dogs',
 	facets: {
 		collection: [
 			'fake collection'
@@ -22,31 +26,33 @@ const query = {
 		format: [
 			'book', 'dvd',
 		]
-	}
+	},
+	options: {},
 }
 
-describe('Search actionCreator', function () {
+const store = mockStore({search: state})
+
+describe('Search actionCreator', function () {	
 	beforeEach(function () {
-		if (!API_BASE)
-			this.skip()		
+		if (!API_BASE) {
+			this.skip()
+			return
+		}
+
+		const escaped = API_BASE.replace(/\./g, '\\.')
+		const reg = new RegExp(escaped + '/catalog\\.json?.*')
+
+		fetchMock.get(reg, {status: 200, body: {response: {}}})		
+	})
+
+	afterEach(function () {
+		fetchMock.restore()
+		store.clearActions()
 	})
 
 	describe('#searchCatalog', function () {
-		const store = mockStore({})
-
-		beforeEach(function () {
-			const escaped = API_BASE.replace(/\./g, '\\.')
-			const reg = new RegExp(escaped + '/catalog\\.json?.*')
-			fetchMock.get(reg, {status: 200, body: {response: {}}})
-		})
-
-		afterEach(function () {
-			fetchMock.restore()
-			store.clearActions()
-		})
-
 		it('dispatches `SEARCHING` and `RECEIVE_SEARCH_RESULTS`', function () {
-			return store.dispatch(searchCatalog(query.q))
+			return store.dispatch(searchCatalog('some query'))
 			.then(() => {
 				const actions = store.getActions()
 				expect(actions).to.have.length(2)
@@ -71,20 +77,108 @@ describe('Search actionCreator', function () {
 			})
 		})
 
-		it('appends `format=json` and `search_field=search` to url', function () {
-			return store.dispatch(searchCatalog(query.q, query.facets))
+		it('appends `search_field=search` to url', function () {
+			return store.dispatch(searchCatalog('some query'))
 			.then(() => {
 				const url = fetchMock.lastUrl()
-				expect(url.indexOf('format=json')).to.be.greaterThan(-1)
 				expect(url.indexOf('search_field=search')).to.be.greaterThan(-1)
 			})
 		})
 
 		it('prepends unescaped `utf8=✓` to the querystring', function () {
-			return store.dispatch(searchCatalog(query.q))
+			return store.dispatch(searchCatalog('another query'))
 			.then(() => {
 				const url = fetchMock.lastUrl()
 				expect(url.indexOf('utf8=✓')).to.be.greaterThan(-1)
+			})
+		})
+	})
+
+	describe('#setSearchOption', function () {
+		it('adds key/val to `search.options`', function () {
+			const key = 'key'
+			const val = 'val'
+
+			return store.dispatch(setSearchOption(key, val)).then(() => {
+				const actions = store.getActions()
+				expect(actions[0].type).to.equal(SEARCHING)
+				expect(actions[0].options).to.have.property(key)
+				expect(actions[0].options[key]).to.equal(val)
+			})
+		})
+
+		it('will _not_ make another api call if the key/val already exists', function () {
+			const key = 'key'
+			const val = 'val'
+
+			const options = {}
+			options[key] = val
+
+			const store = mockStore({search: {options}})
+
+			return store.dispatch(setSearchOption(key, val))
+			.then(() => {
+				const actions = store.getActions()
+				expect(actions).to.be.empty
+			})
+		})
+	})
+
+	describe('#toggleSearchFacet', function () {
+		it('sets a facet + makes an API call', function () {
+			const field = 'facet_field'
+			const value = 'value'
+
+			return store.dispatch(toggleSearchFacet(field, value, true))
+			.then(() => {
+				const actions = store.getActions()
+
+				// it calls 2 actions (SEARCHING + RECEIVE_SEARCH_{RESULTS,ERROR})
+				expect(actions).to.have.length(2)
+
+				// it sends the updated props w/ SEARCHING
+				const action = actions[0]
+
+				// the facet prop now has the new property
+				expect(action.facets).to.have.property(field)
+				expect(action.facets[field]).to.have.length(1)
+				expect(action.facets[field].indexOf(value)).to.be.greaterThan(-1)
+
+				// finally, make sure the API was actually called
+				const calls = fetchMock.calls()
+				expect(calls.matched).to.not.be.empty
+				expect(calls.matched).to.have.length(1)
+			})
+		})
+
+		it('removes a facet + makes an API call', function () {
+			const search = {
+				query: 'search query',
+				facets: {
+					'facet_field': [
+						{value: 'one', name: 'one', hits: 12},
+						{value: 'two', name: 'two', hits: 123},
+						{value: 'three', name: 'three', hits: 1234},
+					]
+				}
+			}
+
+			const store = mockStore({search})
+			const field = 'facet_field'
+			const value = search.facets[field][1]
+
+			return store.dispatch(toggleSearchFacet(field, value, false))
+			.then(() => {
+				const actions = store.getActions()
+
+				expect(actions).to.have.length(2)
+
+				const action = actions[0]
+				expect(action.facets[field]).to.have.length(search.facets[field].length - 1)
+
+				const calls = fetchMock.calls()
+				expect(calls.matched).to.not.be.empty
+				expect(calls.matched).to.have.length(1)
 			})
 		})
 	})

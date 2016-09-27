@@ -1,3 +1,4 @@
+import findIndex from 'array-find-index'
 import assign from 'object-assign'
 
 import {
@@ -8,14 +9,6 @@ import {
 	REMOVE_TERM_FROM_VOCABULARY,
 	UPDATE_TERM_RESPONSE_OK,
 } from '../constants'
-
-const findIndex = function (arr, fn) {
-	for (let i = 0; i < arr.length; i++)
-		if (fn(arr[i], i, arr))
-			return i
-
-	return -1
-}
 
 export default function activeVocabularyTermsReducer (state, action) {
 	if (typeof state === 'undefined')

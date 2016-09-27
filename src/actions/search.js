@@ -1,14 +1,14 @@
 import assign from 'object-assign'
+import findIndex from 'array-find-index'
 import { search } from '../../lib/api'
+import formatSearchQuerystring from '../../lib/format-search-querystring'
 import {
 	RECEIVE_SEARCH_ERROR,
 	RECEIVE_SEARCH_RESULTS,
 	SEARCHING,
-	UPDATING_SEARCH,
 } from '../constants'
 
 const REQUIRED_OPTS = {
-	format: 'json', 
 	search_field: 'search'
 }
 
@@ -16,8 +16,24 @@ const DEFAULT_OPTS = {
 	per_page: 25,
 }
 
-const conductSearch = (dispatch, query, facet, opts) => {
-	return search(query, facet, opts)
+export const searchCatalog = (query, facets, opts) => dispatch => {
+	// save ourselves the hassle of keeping track of these defaults
+	const options = assign({}, opts, REQUIRED_OPTS)
+
+	if (!facets)
+		facets = {}
+
+	const queryString = formatSearchQuerystring(query, facets, options)
+
+	dispatch({
+		type: SEARCHING,
+		query,
+		facets,
+		options,
+		queryString
+	})
+
+	return search(queryString)
 	.then(results => {
 		dispatch({
 			type: RECEIVE_SEARCH_RESULTS,
@@ -36,55 +52,61 @@ const conductSearch = (dispatch, query, facet, opts) => {
 	})
 }
 
-// TODO: better name for this one?
-//
-// @arg query -> the actual search query
-// @arg facets -> an object of facets (from store)
-//							  in form of { 'facet': ['value', 'value2'] }
-// @arg options -> other querystring values, like `page`, `per_page`, etc.
-export const searchCatalog = (query, facets, opts) => dispatch => {
-	// save ourselves the hassle of keeping track of these defaults
-	const options = assign({}, DEFAULT_OPTS, opts, REQUIRED_OPTS)
-
-	dispatch({
-		type: SEARCHING,
-		query,
-		facets,
-		options,
-	})
-
-	return conductSearch(dispatch, query, facets, options)
-}
-
-export const toggleFacet = (field, value, checked) => (dispatch, getState) => {
+export const setSearchOption = (field, value) => (dispatch, getState) => {
 	const search = getState().search || {}
-	const query = search.query
-	const facets = assign({}, search.facets)
+
+	const query = search.query || ''
+	const facets = assign({}, search.selectedFacets)
 	const options = assign({}, DEFAULT_OPTS, search.options, REQUIRED_OPTS)
 
+	// save us another call
+	if (options[field] && options[field] === value)
+		return Promise.resolve()
+
+	options[field] = value
+
+	// since searchCatalog's a thunk, we'll use the passed `dispatch` + call it again
+	return searchCatalog(query, facets, options)(dispatch)
+}
+
+// while developing we had to worry about juggling facets vs. selected facets
+// (when adding a facet to selected we'd have to remove it from the original
+// pool to prevent duplication). when talking to the api, this will be handled
+// for us, making the job of this function to add/remove values from the 
+// `selectedFacets` array before resubmitting the search.
+export const toggleSearchFacet = (field, facet, checked) => (dispatch, getState) => {
+	const search = getState().search || {}
+	
+	// recycling the previous search info
+	const query = search.query || ''
+	const options = assign({}, DEFAULT_OPTS, search.options, REQUIRED_OPTS)
+	
+	const facets = assign({}, search.facets)
+	const idx = findIndex(facets[field], f => f.value === facet.value)
+
+	let dirty = false
+
+	// add to selected-facets
 	if (checked) {
-		if (facets[field] && facets[field].indexOf(value) > -1)
-			return
-
-		facets[field] = [].concat(facets[field], value).filter(Boolean)
-	} else {
-		const idx = facets[field].indexOf(value)
-
-		if (idx === -1)
-			return
-
-		facets[field] = [].concat(
-			facets[field].slice(0, idx),
-			facets[field].slice(idx + 1)
-		)
+		if (idx === -1) {
+			facets[field] = [].concat(facets[field], facet).filter(Boolean)
+			dirty = true
+		}
 	}
 
-	dispatch({
-		type: UPDATING_SEARCH,
-		query,
-		facets,
-		options,
-	})
+	// remove from selected-facets
+	else {
+		if (idx !== -1) {
+			facets[field] = [].concat(
+				facets[field].slice(0, idx),
+				facets[field].slice(idx + 1)
+			)
+			dirty = true
+		}
+	}
 
-	return conductSearch(dispatch, query, facets, options)
+	if (!dirty)
+		return Promise.resolve()
+
+	return searchCatalog(query, facets, options)(dispatch)
 }
