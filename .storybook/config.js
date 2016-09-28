@@ -16,4 +16,6 @@ configure(() => {
 	require('../stories/ResultsPager.jsx')
 	require('../stories/SearchResultsPagerHeader.jsx')
 	require('../stories/SearchResultsHeader.jsx')
+	require('../stories/SearchBreadcrumb.jsx')
+	require('../stories/SearchBreadcrumbTrail.jsx')
 }, module)
