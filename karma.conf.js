@@ -58,6 +58,7 @@ module.exports = function(config) {
 					'process.env': {
 						API_BASE_URL: JSON.stringify('http://example.org'),
 						AUTH_BASE_URL: JSON.stringify('http://auth.example.org/ns'),
+						SEARCH_BASE_URL: JSON.stringify('/catalog.json'),
 					},
 				})
 			],

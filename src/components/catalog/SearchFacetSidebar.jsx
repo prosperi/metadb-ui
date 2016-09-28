@@ -11,16 +11,20 @@ const SearchFacetSidebar = React.createClass({
 		onRemoveSelectedFacet: T.func.isRequired,
 		onSelectFacet: T.func.isRequired,
 		onSubmitSearchQuery: T.func.isRequired,
+
 		selectedFacets: T.object.isRequired,
 
 		defaultFacetType: T.string,
-
+		facetSchema: T.object,
 		query: T.string,
 	},
 
-	handleKeyDown: function (ev) {
-		if (ev.keyCode === 13)
-			this.props.onSubmitSearchQuery(ev.target.value)
+	handleSearchSubmit: function (ev) {
+		ev.preventDefault()
+
+		const query = ev.target.elements.query.value
+
+		this.props.onSubmitSearchQuery(query)
 	},
 
 	renderFacetGroup: function () {
@@ -28,6 +32,7 @@ const SearchFacetSidebar = React.createClass({
 			<FacetGroup
 				defaultFacetType={this.props.defaultFacetType}
 				facets={this.props.facets}
+				facetSchema={this.props.facetSchema}
 				onRemoveSelectedFacet={this.props.onRemoveSelectedFacet}
 				onSelectFacet={this.props.onSelectFacet}
 				selectedFacets={this.props.selectedFacets}
@@ -58,12 +63,16 @@ const SearchFacetSidebar = React.createClass({
 
 		return (
 			<div style={styles.container}>
-				<input
-					onKeyDown={this.handleKeyDown}
-					style={styles.input}
-					type="search"
-				/>
-				{button}
+				<form onSubmit={this.handleSearchSubmit}>
+					<input
+						defaultValue={this.props.query || ''}
+						name="query"
+						onKeyDown={this.handleKeyDown}
+						style={styles.input}
+						type="search"
+					/>
+					{button}
+				</form>
 			</div>
 		)
 	},

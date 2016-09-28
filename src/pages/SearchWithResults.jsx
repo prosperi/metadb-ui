@@ -6,6 +6,7 @@ import SearchResultsHeader from '../components/catalog/SearchResultsHeader.jsx'
 const SearchWithResults = React.createClass({
 	getInitialState: function () {
 		return {
+			results: {},
 			modals: {
 				metadataTools: false,
 				viewMoreFilter: false,

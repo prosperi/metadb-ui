@@ -15,7 +15,7 @@ import {
 } from '../../constants'
 
 const mockStore = configureMockStore([thunk])
-const API_BASE = process.env.API_BASE_URL
+const SEARCH_BASE = process.env.SEARCH_BASE_URL
 
 const state = {
 	query: 'cats AND dogs',
@@ -34,13 +34,13 @@ const store = mockStore({search: state})
 
 describe('Search actionCreator', function () {	
 	beforeEach(function () {
-		if (!API_BASE) {
+		if (!SEARCH_BASE) {
 			this.skip()
 			return
 		}
 
-		const escaped = API_BASE.replace(/\./g, '\\.')
-		const reg = new RegExp(escaped + '/catalog\\.json?.*')
+		const escaped = SEARCH_BASE.replace(/\./g, '\\.')
+		const reg = new RegExp(escaped + '\?.*')
 
 		fetchMock.get(reg, {status: 200, body: {response: {}}})		
 	})

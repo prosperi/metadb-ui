@@ -53,7 +53,7 @@ const FacetGroup = React.createClass({
 		//		hide: false,
 		// 	}
 		// }
-		facetSchemas: T.object,
+		facetSchema: T.object,
 
 		// `selectedFacets` is a map of facet objects
 		// -----------
@@ -79,10 +79,15 @@ const FacetGroup = React.createClass({
 	},
 
 	determineFacetType: function (name) {
-		if (!this.props.facetSchemas || !this.props.facetSchemas[name])
+		if (!this.props.facetSchema)
 			return this.props.defaultFacetType
 
-		return this.props.facetSchemas[name]
+		const schema = this.props.facetSchema[name]
+
+		if (!schema || !schema.type)
+			return this.props.defaultFacetType
+
+		return schema.type
 	},
 
 	getSelectedFacets: function (name) {
@@ -102,6 +107,10 @@ const FacetGroup = React.createClass({
 	},
 
 	renderFacetPanel: function (facet, index) {
+		// exclude facet groups w/ no items
+		if (!facet.items || !facet.items.length)
+			return
+
 		const isOpen = this.state.openFacetGroups.indexOf(facet.name) > -1
 		const name = facet.name
 

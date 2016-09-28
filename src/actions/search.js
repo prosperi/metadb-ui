@@ -1,7 +1,11 @@
 import assign from 'object-assign'
 import findIndex from 'array-find-index'
+
 import { search } from '../../lib/api'
+import browserHistory from 'react-router/lib/browserHistory'
 import formatSearchQuerystring from '../../lib/format-search-querystring'
+import parseSearchQuerystring from '../../lib/parse-search-querystring'
+
 import {
 	RECEIVE_SEARCH_ERROR,
 	RECEIVE_SEARCH_RESULTS,
@@ -16,21 +20,13 @@ const DEFAULT_OPTS = {
 	per_page: 25,
 }
 
-export const searchCatalog = (query, facets, opts) => dispatch => {
-	// save ourselves the hassle of keeping track of these defaults
-	const options = assign({}, opts, REQUIRED_OPTS)
-
-	if (!facets)
-		facets = {}
-
-	const queryString = formatSearchQuerystring(query, facets, options)
-
+function conductSearch (dispatch, query, facets, options, queryString) {
 	dispatch({
 		type: SEARCHING,
 		query,
 		facets,
 		options,
-		queryString
+		queryString,
 	})
 
 	return search(queryString)
@@ -50,6 +46,25 @@ export const searchCatalog = (query, facets, opts) => dispatch => {
 
 		throw error
 	})
+}
+
+export const searchCatalog = (query, facets, opts) => dispatch => {
+	// save ourselves the hassle of keeping track of these defaults
+	const options = assign({}, opts, REQUIRED_OPTS)
+
+	if (!facets)
+		facets = {}
+
+	const queryString = formatSearchQuerystring(query, facets, options)
+	browserHistory.push('/search?' + queryString)
+
+	return conductSearch(dispatch, query, facets, options, queryString)
+}
+
+export const searchCatalogByQueryString = queryString => dispatch => {
+	const parsed = parseSearchQuerystring(queryString)
+
+	return conductSearch(dispatch, parsed.query, parsed.facets, parsed.opts, queryString)
 }
 
 export const setSearchOption = (field, value) => (dispatch, getState) => {
@@ -82,9 +97,14 @@ export const toggleSearchFacet = (field, facet, checked) => (dispatch, getState)
 	const options = assign({}, DEFAULT_OPTS, search.options, REQUIRED_OPTS)
 	
 	const facets = assign({}, search.facets)
-	const idx = findIndex(facets[field], f => f.value === facet.value)
-
 	let dirty = false
+	let idx
+	
+	if (facets[field])
+		idx = findIndex(facets[field], f => f.value === facet.value)
+	else
+		idx = -1
+
 
 	// add to selected-facets
 	if (checked) {
@@ -101,6 +121,10 @@ export const toggleSearchFacet = (field, facet, checked) => (dispatch, getState)
 				facets[field].slice(0, idx),
 				facets[field].slice(idx + 1)
 			)
+			
+			if (!facets[field].length) 
+				delete facets[field]
+
 			dirty = true
 		}
 	}

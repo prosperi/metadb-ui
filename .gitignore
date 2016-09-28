@@ -4,3 +4,4 @@ build/style.css
 build/bundle.js
 npm-debug.log
 start
+test-server

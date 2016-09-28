@@ -97,7 +97,7 @@ const FacetListWithViewMore = React.createClass({
 				style={styles.modal}
 			>
 				<header key="dss-flmvw-modal-header" style={styles.header}>
-					Viewing all for <strong>{this.props.data.name}</strong>
+					Viewing all for <strong>{this.props.data.label}</strong>
 				</header>
 				<FacetList
 					data={this.props.data}
