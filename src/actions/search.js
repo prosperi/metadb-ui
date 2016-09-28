@@ -56,7 +56,7 @@ export const setSearchOption = (field, value) => (dispatch, getState) => {
 	const search = getState().search || {}
 
 	const query = search.query || ''
-	const facets = assign({}, search.selectedFacets)
+	const facets = assign({}, search.facets)
 	const options = assign({}, DEFAULT_OPTS, search.options, REQUIRED_OPTS)
 
 	// save us another call
@@ -72,7 +72,7 @@ export const setSearchOption = (field, value) => (dispatch, getState) => {
 // while developing we had to worry about juggling facets vs. selected facets
 // (when adding a facet to selected we'd have to remove it from the original
 // pool to prevent duplication). when talking to the api, this will be handled
-// for us, making the job of this function to add/remove values from the 
+// for us, making the job of this function to add/remove values from a 
 // `selectedFacets` array before resubmitting the search.
 export const toggleSearchFacet = (field, facet, checked) => (dispatch, getState) => {
 	const search = getState().search || {}
