@@ -82,7 +82,6 @@ const SearchFacetSidebar = React.createClass({
 			// TODO: maybe get rid of this border
 			borderRight: '1px solid #ccc',
 			paddingRight: '10px',
-			width: '25%',
 		}
 
 		return (
