@@ -8,6 +8,8 @@ const SearchFacetSidebar = React.createClass({
 	propTypes: {
 		facets: T.array.isRequired,
 
+		clearSelectedFacets: T.func.isRequired,
+
 		onRemoveSelectedFacet: T.func.isRequired,
 		onSelectFacet: T.func.isRequired,
 		onSubmitSearchQuery: T.func.isRequired,
@@ -19,11 +21,16 @@ const SearchFacetSidebar = React.createClass({
 		query: T.string,
 	},
 
+	handleClearFacets: function (ev) {
+		ev.preventDefault && ev.preventDefault()
+
+		this.props.clearSelectedFacets()
+	},
+
 	handleSearchSubmit: function (ev) {
-		ev.preventDefault()
+		ev.preventDefault && ev.preventDefault()
 
 		const query = ev.target.elements.query.value
-
 		this.props.onSubmitSearchQuery(query)
 	},
 
@@ -53,7 +60,7 @@ const SearchFacetSidebar = React.createClass({
 		// TODO: this button isn't rendering correctly
 		const button = !Object.keys(this.props.selectedFacets).length ? null : (
 			<Button
-				onClick={this.props.clearSelectedFacets}
+				onClick={this.handleClearFacets}
 				size="small"
 				style={{margin: '5px 0', width: '100%'}}
 			>

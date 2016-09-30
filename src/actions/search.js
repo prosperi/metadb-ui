@@ -13,7 +13,8 @@ import {
 } from '../constants'
 
 const REQUIRED_OPTS = {
-	search_field: 'search'
+	utf8: '✓',
+	search_field: 'search',
 }
 
 const DEFAULT_OPTS = {
@@ -29,8 +30,10 @@ function conductSearch (dispatch, query, facets, options, queryString) {
 		queryString,
 	})
 
-	return search(queryString)
+	return search(queryString + '&format=json')
 	.then(results => {
+		console.log('search results', results)
+
 		dispatch({
 			type: RECEIVE_SEARCH_RESULTS,
 			results,
@@ -39,6 +42,7 @@ function conductSearch (dispatch, query, facets, options, queryString) {
 		return results
 	})
 	.catch(error => {
+		console.warn('search error!', error)
 		dispatch({
 			type: RECEIVE_SEARCH_ERROR,
 			error,
@@ -50,7 +54,7 @@ function conductSearch (dispatch, query, facets, options, queryString) {
 
 export const searchCatalog = (query, facets, opts) => dispatch => {
 	// save ourselves the hassle of keeping track of these defaults
-	const options = assign({}, opts, REQUIRED_OPTS)
+	const options = assign({}, REQUIRED_OPTS, opts)
 
 	if (!facets)
 		facets = {}
@@ -62,7 +66,7 @@ export const searchCatalog = (query, facets, opts) => dispatch => {
 }
 
 export const searchCatalogByQueryString = queryString => dispatch => {
-	const parsed = parseSearchQuerystring(queryString)
+	const parsed = parseSearchQuerystring(queryString.replace(/^\?/, ''))
 
 	return conductSearch(dispatch, parsed.query, parsed.facets, parsed.opts, queryString)
 }
@@ -72,11 +76,16 @@ export const setSearchOption = (field, value) => (dispatch, getState) => {
 
 	const query = search.query || ''
 	const facets = assign({}, search.facets)
-	const options = assign({}, DEFAULT_OPTS, search.options, REQUIRED_OPTS)
+	const options = assign({}, DEFAULT_OPTS, REQUIRED_OPTS, search.options)
 
 	// save us another call
 	if (options[field] && options[field] === value)
 		return Promise.resolve()
+
+	// we'll pass null to remove the option
+	if (value === null) {
+		delete options[field]
+	}
 
 	options[field] = value
 
@@ -94,7 +103,7 @@ export const toggleSearchFacet = (field, facet, checked) => (dispatch, getState)
 	
 	// recycling the previous search info
 	const query = search.query || ''
-	const options = assign({}, DEFAULT_OPTS, search.options, REQUIRED_OPTS)
+	const options = assign({}, DEFAULT_OPTS, REQUIRED_OPTS, search.options)
 	
 	const facets = assign({}, search.facets)
 	let dirty = false
@@ -131,6 +140,10 @@ export const toggleSearchFacet = (field, facet, checked) => (dispatch, getState)
 
 	if (!dirty)
 		return Promise.resolve()
+
+	// reset the page count (if it's already set)
+	if (options.page)
+		delete options.page
 
 	return searchCatalog(query, facets, options)(dispatch)
 }

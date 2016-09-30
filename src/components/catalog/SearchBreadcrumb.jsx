@@ -37,6 +37,7 @@ const SearchBreadcrumb = React.createClass({
 
 		const styles = {
 			container: {
+				backgroundColor: '#fff',
 				borderColor: (btnHover ? '#cc092f' : '#ccc'),
 				borderStyle: 'solid',
 				borderWidth: '1px',
@@ -59,7 +60,7 @@ const SearchBreadcrumb = React.createClass({
 
 			closeBtn: {
 				appearance: 'none',
-				backgroundColor: (btnHover ? btnHoverColor : 'transparent'),
+				backgroundColor: (btnHover ? btnHoverColor : '#fff'),
 				border: (btnHover ? '1px solid ' + btnHoverColor : 'none'),
 				borderLeft: (btnHover ? 'inherit' : '1px solid #ccc'),
 				borderBottomRightRadius: (borderRadiusVal - 1) + 'px',

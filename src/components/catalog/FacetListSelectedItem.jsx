@@ -4,12 +4,15 @@ const T = React.PropTypes
 
 const FacetListSelectedItem = React.createClass({
 	propTypes: {
+		data: T.object.isRequired,
+		onRemove: T.func.isRequired,
+
 		color: T.string,
 	},
 
 	getDefaultProps: function () {
 		return {
-			color: '#d8ecd8',
+			color: '#a4b9a4'
 		}
 	},
 
@@ -31,7 +34,16 @@ const FacetListSelectedItem = React.createClass({
 			},
 
 			button: {
-
+				appearance: 'none',
+				backgroundColor: 'transparent',
+				border: 'none',
+				color: this.props.color,
+				cursor: 'pointer',
+				fontSize: '1em',
+				fontWeight: 'bold',
+				marginLeft: '5px',
+				outline: 'none',
+				WebkitAppearance: 'none',
 			},
 			
 			count: {
@@ -49,7 +61,7 @@ const FacetListSelectedItem = React.createClass({
 					style={styles.button}
 				/>
 
-				{this.props.maybeRenderHits({style: style.count})}
+				{this.maybeRenderHits({style: styles.count})}
 			</div>
 		)
 	}

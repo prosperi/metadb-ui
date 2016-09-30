@@ -12,7 +12,7 @@ const SearchResultsPagerHeader = React.createClass({
 		onPreviousPage: T.func.isRequired,
 		onPerPageChange: T.func.isRequired,
 
-		perPage: T.number,
+		perPage: T.oneOfType([T.number, T.string]),
 		perPageOptions: T.array,
 	},
 
@@ -76,6 +76,7 @@ const SearchResultsPagerHeader = React.createClass({
 				<ResultsPager {...pagerProps}/>
 
 				{this.renderPerPage()}
+				<div style={{clear: 'both'}}/>
 			</div>
 		)
 	}

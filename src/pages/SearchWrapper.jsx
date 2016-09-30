@@ -6,6 +6,7 @@ import SearchWithResults from './SearchWithResults.jsx'
 import Button from '../components/Button.jsx'
 import SearchFacetSidebar from '../components/catalog/SearchFacetSidebar.jsx'
 import SearchBreadcrumb from '../components/catalog/SearchBreadcrumb.jsx'
+import SearchBreadcrumbTrail from '../components/catalog/SearchBreadcrumbTrail.jsx'
 import SearchResultsHeader from '../components/catalog/SearchResultsHeader.jsx'
 
 import { getBreadcrumbList } from '../../lib/facet-helpers'
@@ -22,6 +23,15 @@ const SearchWrapper = React.createClass({
 		return {
 			resultsView: 'list',
 		}
+	},
+
+	clearSelectedFacets: function (ev) {
+		const query = this.props.search.query
+		const options = this.props.search.options
+
+		console.log('this.props.search.options', options)
+
+		this.props.searchCatalog(query, {}, this.props.search.options).then(this.handleSearchResponse)
 	},
 
 	getFacetSchema: function () {
@@ -49,6 +59,30 @@ const SearchWrapper = React.createClass({
 		return null
 	},
 
+	handleNextPage: function () {
+		const pages = this.state.pages
+		
+		if (!pages.next_page)
+			return
+
+		this.props.setSearchOption('page', pages.next_page).then(this.handleSearchResponse)
+	},
+
+	handlePerPageChange: function (val) {
+		this.props.setSearchOption('per_page', val).then(this.handleSearchResponse)
+	},
+
+	handlePreviousPage: function () {
+		const pages = this.state.pages
+
+		if (!pages.prev_page)
+			return
+
+		const prev = pages.prev_page === 1 ? null : pages.prev_page
+
+		this.props.setSearchOption('page', prev).then(this.handleSearchResponse)
+	},
+
 	handleSearchResponse: function (res) {
 		const facets = res.response.facets
 		const breadcrumbs = getBreadcrumbList(facets, this.props.search.facets)
@@ -73,11 +107,8 @@ const SearchWrapper = React.createClass({
 	},
 
 	handleSubmitSearchQuery: function (query) {
-		this.props.searchCatalog(query)
-	},
-
-	hasSearchQuery: function () {
-		return !!this.props.location.search
+		this.props.searchCatalog(query, this.props.search.facets, this.props.search.options)
+		.then(this.handleSearchResponse)
 	},
 
 	onRemoveFacet: function (key, facet) {
@@ -92,11 +123,11 @@ const SearchWrapper = React.createClass({
 		const bc = this.state.breadcrumbs
 		const query = this.props.search.query
 
-		const querybc = (
+		const querybc = !query ? null : (
 			<SearchBreadcrumb
 				key="bc-query"
-				onRemove={console.log}
-				value={query}
+				onRemove={this.handleSubmitSearchQuery}
+				value={'"' + query + '"'}
 			/>
 		)
 
@@ -115,7 +146,6 @@ const SearchWrapper = React.createClass({
 		})
 
 		const style = {
-			backgroundColor: '#fafafa',
 			marginBottom: '10px',
 			marginTop: '-5px',
 		}
@@ -130,16 +160,80 @@ const SearchWrapper = React.createClass({
 	renderResultsHeader: function () {
 		const props = {
 			pageData: this.state.pages,
-			onNextPage: console.log,
-			onPreviousPage: console.log,
+			onNextPage: this.handleNextPage,
+			onPreviousPage: this.handlePreviousPage,
 			onOpenToolModal: console.log,
-			onPerPageChange: console.log,
+			onPerPageChange: this.handlePerPageChange,
 			onViewChange: this.toggleResultsView,
+			perPage: this.props.search.options.per_page,
 			view: this.state.resultsView,
 			viewOptions: ['list', 'gallery'],
 		}
 
 		return React.createElement(SearchResultsHeader, props)
+	},
+
+	renderResults: function () {
+		const styles = {
+			container: {
+				marginTop: '10px',
+			},
+
+			itemContainer: {
+				backgroundColor: '#fff',
+				border: '1px solid #aaa',
+				borderRadius: '2px',
+				margin: '10px 0',
+				padding: '10px',
+			},
+
+			itemHeader: {
+				display: 'block',
+				fontSize: '18px',
+				fontWeight: 'bold',
+			},
+
+			subtitle: {
+				display: 'block',
+				fontSize: '14px',
+				fontStyle: 'italic',
+				fontWeight: 'normal',
+			},
+
+			author: {
+				color: '#666',
+				marginTop: '5px',
+			},
+
+			format: {
+
+			},
+		}
+
+		const kids = this.state.results.map((item, index) => {
+			return (
+				<div key={'item'+index+item.id} style={styles.itemContainer}>
+					<heading style={styles.itemHeader}>
+						{item.title_display}
+						{
+							item.subtitle_display
+							? <small style={styles.subtitle}>{item.subtitle_display}</small>
+							: null
+						}
+					</heading>
+
+					{
+						item.author_display
+						? <p style={styles.author}>{item.author_display}</p>
+						: null
+					}
+
+					<p style={styles.format}>{item.format}</p>
+				</div>
+			)
+		})
+
+		return <div style={styles.container}>{kids}</div>
 	},
 
 	toggleResultsView: function (val) {
@@ -164,6 +258,10 @@ const SearchWrapper = React.createClass({
 		}
 
 		const styles = {
+			container: {
+				backgroundColor: '#fafafa',
+			},
+
 			sidebar: {
 				container: {
 					display: 'inline-block',
@@ -182,12 +280,13 @@ const SearchWrapper = React.createClass({
 		}
 
 		return (
-			<div>
+			<div style={styles.container}>
 				<section key="sidebar" style={styles.sidebar.container}>
 					<SearchFacetSidebar
 						defaultFacetType="list-view-more"
 						facets={this.state.facets}
 						facetSchema={this.getFacetSchema()}
+						clearSelectedFacets={this.clearSelectedFacets}
 						onRemoveSelectedFacet={this.onRemoveFacet}
 						onSelectFacet={this.onSelectFacet}
 						onSubmitSearchQuery={this.handleSubmitSearchQuery}
@@ -199,6 +298,8 @@ const SearchWrapper = React.createClass({
 				<section key="results" style={styles.results.container}>
 					{this.renderBreadcrumbs()}
 					{this.renderResultsHeader()}
+
+					{this.renderResults()}
 				</section>
 			</div>
 		)

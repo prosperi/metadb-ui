@@ -18,7 +18,7 @@ const SearchResultsHeader = React.createClass({
 		view: T.string,
 		viewOptions: T.array,
 
-		perPage: T.number,
+		perPage: T.oneOfType([T.number, T.string]),
 		perPageOptions: T.array,
 	},
 

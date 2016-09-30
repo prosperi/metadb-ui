@@ -24,12 +24,19 @@ const SearchBreadcrumbTrail = React.createClass({
 
 			return React.createElement(SearchBreadcrumb, props)
 		})
+	},
 
-		const props = {
-			onRemove: this.props.onRemoveBreadcrumb.bind(null, facet),
-		}
+	renderQuery: function () {
+		if (!this.props.query || this.props.query === '')
+			return
 
-		return React.createElement(SearchBreadcrumb, props)
+		return (
+			<SearchBreadcrumb
+				key={'query'}
+				onRemove={this.props.onRemoveBreadcrumb.bind(null, 'q', this.props.query)}
+				value={'"' + this.props.query + '"'}
+			/>
+		)
 	},
 
 	render: function () {
@@ -43,11 +50,8 @@ const SearchBreadcrumbTrail = React.createClass({
 
 		return (
 			<div>
-				<SearchBreadcrumb
-					key={'query'}
-					onRemove={this.props.onRemoveBreadcrumb.bind(null, 'q', this.props.query)}
-					value={this.props.query}
-				/>
+				{this.renderQuery()}
+
 				{keys.map(this.renderGroupBreadcrumbs)}
 			</div>
 		)

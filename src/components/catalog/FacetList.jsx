@@ -1,6 +1,6 @@
 import React from 'react'
 import assign from 'object-assign'
-import SelectedFacetsList from './SelectedFacetsList.jsx'
+import FacetListSelectedItem from './FacetListSelectedItem.jsx'
 import FacetListItem from './FacetListItem.jsx'
 
 const T = React.PropTypes
@@ -23,6 +23,9 @@ const FacetList = React.createClass({
 		const { items, name, onSelectFacet } = this.props.data
 
 		return items.map((item, index) => {
+			if (this._selectedFacetValues && this._selectedFacetValues.indexOf(item.value) > -1)
+				return null
+
 			const props = {
 				data: item,
 				onClick: this.props.onSelectFacet,
@@ -36,17 +39,25 @@ const FacetList = React.createClass({
 		})
 	},
 
-	renderSelectedFacets: function () {
+	renderSelectedFacetList: function () {
 		const selected = this.props.selectedFacets
 		if (!selected.length)
 			return
 
-		return (
-			<SelectedFacetsList
-				onRemove={this.props.onRemoveSelectedFacet}
-				facets={selected}
-			/>
-		)
+		return selected.map((item, index) => {
+			const props = {
+				key: 'sel' + index + item.value,
+				data: item,
+				onRemove: this.props.onRemoveSelectedFacet,
+			}
+
+			if (this._selectedFacetValues && this._selectedFacetValues.push)
+				this._selectedFacetValues.push(item.value)
+			else
+				this._selectedFacetValues = [item.value]
+
+			return React.createElement(FacetListSelectedItem, props)
+		})
 	},
 
 	render: function () {
@@ -60,8 +71,8 @@ const FacetList = React.createClass({
 
 		return (
 			<div>
-				{this.renderSelectedFacets()}
 				<ul style={styles.list}>
+					{this.renderSelectedFacetList()}
 					{this.renderFacetList()}
 				</ul>
 			</div>
