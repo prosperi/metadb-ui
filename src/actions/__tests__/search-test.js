@@ -85,7 +85,8 @@ describe('Search actionCreator', function () {
 			})
 		})
 
-		it('prepends unescaped `utf8=✓` to the querystring', function () {
+		// how this is handled is still up in the air, so we'll skip for now
+		xit('prepends unescaped `utf8=✓` to the querystring', function () {
 			return store.dispatch(searchCatalog('another query'))
 			.then(() => {
 				const url = fetchMock.lastUrl()

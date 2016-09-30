@@ -32,8 +32,6 @@ function conductSearch (dispatch, query, facets, options, queryString) {
 
 	return search(queryString + '&format=json')
 	.then(results => {
-		console.log('search results', results)
-
 		dispatch({
 			type: RECEIVE_SEARCH_RESULTS,
 			results,
@@ -42,7 +40,6 @@ function conductSearch (dispatch, query, facets, options, queryString) {
 		return results
 	})
 	.catch(error => {
-		console.warn('search error!', error)
 		dispatch({
 			type: RECEIVE_SEARCH_ERROR,
 			error,

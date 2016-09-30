@@ -72,9 +72,8 @@ const SearchFacetSidebar = React.createClass({
 			<div style={styles.container}>
 				<form onSubmit={this.handleSearchSubmit}>
 					<input
-						defaultValue={this.props.query || ''}
+						defaultValue={this.props.query}
 						name="query"
-						onKeyDown={this.handleKeyDown}
 						style={styles.input}
 						type="search"
 					/>

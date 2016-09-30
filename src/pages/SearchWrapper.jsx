@@ -2,6 +2,7 @@
 // a) no search query in the url? SearchForm (tbd)
 // b) has a search query? SearchWithResults
 import React from 'react'
+import Modal from 'react-modal'
 import SearchWithResults from './SearchWithResults.jsx'
 import Button from '../components/Button.jsx'
 import SearchFacetSidebar from '../components/catalog/SearchFacetSidebar.jsx'
@@ -28,8 +29,6 @@ const SearchWrapper = React.createClass({
 	clearSelectedFacets: function (ev) {
 		const query = this.props.search.query
 		const options = this.props.search.options
-
-		console.log('this.props.search.options', options)
 
 		this.props.searchCatalog(query, {}, this.props.search.options).then(this.handleSearchResponse)
 	},
@@ -111,6 +110,31 @@ const SearchWrapper = React.createClass({
 		.then(this.handleSearchResponse)
 	},
 
+	maybeRenderLoadingModal: function () {
+		const open = this.props.search.isSearching ? true : false
+
+		const styles = {
+			overlay: {
+				backgroundColor: 'rgba(0, 0, 0, .5)',
+			},
+			content: {
+				bottom: '75%',
+				left: '25%',
+				right: '25%',
+				top: '15%',
+			},
+			header: {
+				margin: '0',
+			}
+		}
+
+		return (
+			<Modal isOpen={open} style={styles}>
+				<h1 style={styles.header}>Searching... </h1>
+			</Modal>
+		)
+	},
+
 	onRemoveFacet: function (key, facet) {
 		this.props.toggleSearchFacet(key, facet, false).then(this.handleSearchResponse)
 	},
@@ -157,7 +181,29 @@ const SearchWrapper = React.createClass({
 		)
 	},
 
+	renderFacetSidebar: function () {
+		if (!this.props.search.facets)
+			return
+
+		return (
+			<SearchFacetSidebar
+				defaultFacetType="list-view-more"
+				facets={this.state.facets}
+				facetSchema={this.getFacetSchema()}
+				clearSelectedFacets={this.clearSelectedFacets}
+				onRemoveSelectedFacet={this.onRemoveFacet}
+				onSelectFacet={this.onSelectFacet}
+				onSubmitSearchQuery={this.handleSubmitSearchQuery}
+				query={this.props.search.query}
+				selectedFacets={this.props.search.facets}
+			/>
+		)
+	},
+
 	renderResultsHeader: function () {
+		if (!this.state.pages)
+			return
+
 		const props = {
 			pageData: this.state.pages,
 			onNextPage: this.handleNextPage,
@@ -174,6 +220,9 @@ const SearchWrapper = React.createClass({
 	},
 
 	renderResults: function () {
+		if (!this.state.results)
+			return 
+
 		const styles = {
 			container: {
 				marginTop: '10px',
@@ -181,10 +230,11 @@ const SearchWrapper = React.createClass({
 
 			itemContainer: {
 				backgroundColor: '#fff',
-				border: '1px solid #aaa',
+				border: '1px solid #1d5f83',
 				borderRadius: '2px',
 				margin: '10px 0',
-				padding: '10px',
+				padding: '25px 10px 10px',
+				position: 'relative',
 			},
 
 			itemHeader: {
@@ -198,6 +248,7 @@ const SearchWrapper = React.createClass({
 				fontSize: '14px',
 				fontStyle: 'italic',
 				fontWeight: 'normal',
+				marginBottom: '10px',
 			},
 
 			author: {
@@ -208,9 +259,22 @@ const SearchWrapper = React.createClass({
 			format: {
 
 			},
+
+			number: {
+				backgroundColor: '#1d5f83',
+				borderTopLeftRadius: '1px',
+				borderBottomRightRadius: '2px',
+				color: '#fff',
+				fontSize: '12px',
+				left: '0',
+				padding: '2px 4px',
+				position: 'absolute',
+				top: '0',
+			}
 		}
 
 		const kids = this.state.results.map((item, index) => {
+			const number = this.state.pages.offset_value + 1 + index
 			return (
 				<div key={'item'+index+item.id} style={styles.itemContainer}>
 					<heading style={styles.itemHeader}>
@@ -229,6 +293,8 @@ const SearchWrapper = React.createClass({
 					}
 
 					<p style={styles.format}>{item.format}</p>
+
+					<div style={styles.number}>{number}</div>
 				</div>
 			)
 		})
@@ -241,17 +307,14 @@ const SearchWrapper = React.createClass({
 	},
 
 	render: function () {
-		if (this.props.search.isSearching) {
-			return <div><h1>{"I'M SEARCHIN HERE"}</h1></div>
-		}
-
 		if (!this.state.results) {
 			return (
 				<div>
-					<h1>searchin</h1>
+					{this.maybeRenderLoadingModal()}
+					<h1>search</h1>
 					<form onSubmit={this.handleSearchSubmit}>
 						<input name="query" type="text" />
-						<Button>search</Button>
+						<Button style={{display: 'block'}}>search</Button>
 					</form>
 				</div>
 			)
@@ -281,18 +344,10 @@ const SearchWrapper = React.createClass({
 
 		return (
 			<div style={styles.container}>
+				{this.maybeRenderLoadingModal()}
+
 				<section key="sidebar" style={styles.sidebar.container}>
-					<SearchFacetSidebar
-						defaultFacetType="list-view-more"
-						facets={this.state.facets}
-						facetSchema={this.getFacetSchema()}
-						clearSelectedFacets={this.clearSelectedFacets}
-						onRemoveSelectedFacet={this.onRemoveFacet}
-						onSelectFacet={this.onSelectFacet}
-						onSubmitSearchQuery={this.handleSubmitSearchQuery}
-						query={this.props.search.query}
-						selectedFacets={this.props.search.facets}
-					/>
+					{this.renderFacetSidebar()}
 				</section>
 
 				<section key="results" style={styles.results.container}>
