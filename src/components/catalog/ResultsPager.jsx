@@ -31,14 +31,20 @@ const ResultsPager = React.createClass({
 		prev_page: T.number,
 		total_count: T.number.isRequired,
 
-		// sprintf-js formatted text (which may contain HTML) using named
-		// arguments: `start`, `end`, `total`
-		// (see: https://github.com/alexei/sprintf.js#named-arguments)
-		// note: these are passed strings of EN-US formatted numbers
-		// (comma-ed thousands)
+		// message generated between prev/next buttons
+		// displaying current page info + total.
 		//
-		// (default: '%(start)s &ndash; %(end)s of <strong>%(total)s</strong>')
-		message: T.string,
+		// if a string, it is passed to sprintf with the (en-US) commafied values:
+		// start, end, total count
+		//
+		// if a function, these three values are passed (un-(en-US)commafied) to
+		// the function, which is expected to return a string
+		//
+		// presently: html values are allowed (the string is passed
+		// into `dangerouslySetInnerHtml`)
+		//
+		// (default: '%s &ndash; %s of <strong>%s</strong>')
+		message: T.oneOfType([T.string, T.func]),
 
 		// text used for next/prev buttons 
 
@@ -55,7 +61,7 @@ const ResultsPager = React.createClass({
 		return {
 			next_page: null,
 			prev_page: null,
-			message: '%(start)s &ndash; %(end)s of <strong>%(total)s</strong>',
+			message: '%s &ndash; %s of <strong>%s</strong>',
 			nextText: 'Next »',
 			previousText: '« Previous',
 		}
@@ -63,9 +69,12 @@ const ResultsPager = React.createClass({
 
 	nextButton: function () {
 		return this.positionButton(
-			this.props.nextText,
+			'next',
 			() => this.props.next_page === null,
-			this.props.onNextClick,
+			ev => {
+				ev.preventDefault && ev.preventDefault()
+				this.props.onNextClick()
+			},
 			this.positionButtonStyles('next')
 		)
 	},
@@ -77,14 +86,17 @@ const ResultsPager = React.createClass({
 
 		// prevent the upper-bounds from exceeding the total value
 		const upper = Math.min(offset + this.props.limit_value, total)
+		let msg
 
-		const args = {
-			start: commafy(lower),
-			end: commafy(upper),
-			total: commafy(total),
+		if (typeof this.props.message === 'function') {
+			msg = this.props.message.call(null, lower, upper, total)
+		} else {
+			msg = sprintf(this.props.message,
+				commafy(lower),
+				commafy(upper),
+				commafy(total)
+			)
 		}
-
-		const msg = sprintf(this.props.message, args)
 
 		// the template currently uses HTML (for a <strong> tag), so we'll need
 		// to `dangerouslySetInnerHTML`
@@ -94,12 +106,14 @@ const ResultsPager = React.createClass({
 		})
 	},
 
-	positionButton: function (text, positionCheck, onClick, style) {
+	positionButton: function (which, positionCheck, onClick, style) {
 		const atLimit = positionCheck()
+		const text = this.props[which + 'Text']
 
 		const props = {
 			children: text,
-			key: text.replace(/\W/g, ''),
+			key: 'dir-' + which,
+			ref: e => this[which + 'Button'] = e,
 			style: assign({}, {
 				backgroundColor: 'transparent',
 				border: 'none',
@@ -133,9 +147,12 @@ const ResultsPager = React.createClass({
 
 	previousButton: function () {
 		return this.positionButton(
-			this.props.previousText,
+			'previous',
 			() => this.props.prev_page === null,
-			this.props.onPreviousClick,
+			ev => {
+				ev.preventDefault && ev.preventDefault()
+				this.props.onPreviousClick()
+			},
 			this.positionButtonStyles('prev')
 		)
 	},
