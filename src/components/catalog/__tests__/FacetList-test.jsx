@@ -52,6 +52,16 @@ describe('<FacetList />', function () {
 		$item.find('.facet-label').simulate('click')
 	})
 
+	// describe('when provided `selectedFacets`', function () {
+	// 	const items = [].concat(defaultProps.data.items)
+	// 	const idx = randomIndex(items)
+	// 	const selectedFacets = [items[idx]]
+
+	// 	it('renders FacetListSelectedItem component', function () {
+	// 		const $el = shallowEl({items, selectedFacets})
+	// 	})
+	// })
+
 	// skipping for now because of using FacetListSelectedItem instead
 	xdescribe('when provided `selectedFacets`', function () {
 		const items = [].concat(defaultProps.data.items)

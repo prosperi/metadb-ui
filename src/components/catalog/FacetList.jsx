@@ -70,12 +70,10 @@ const FacetList = React.createClass({
 		}
 
 		return (
-			<div>
-				<ul style={styles.list}>
-					{this.renderSelectedFacetList()}
-					{this.renderFacetList()}
-				</ul>
-			</div>
+			<ul style={styles.list}>
+				{this.renderSelectedFacetList()}
+				{this.renderFacetList()}
+			</ul>
 		)
 	}
 })

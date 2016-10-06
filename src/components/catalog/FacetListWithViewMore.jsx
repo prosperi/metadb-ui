@@ -1,7 +1,6 @@
 import React from 'react'
 import Modal from 'react-modal'
 import FacetList from './FacetList.jsx'
-import SelectedFacetsList from './SelectedFacetsList.jsx'
 
 const T = React.PropTypes
 
