@@ -2,6 +2,7 @@ import assign from 'object-assign'
 import findIndex from 'array-find-index'
 
 import { search } from '../../lib/api'
+import { addSearch as addSearchToHistory } from '../../lib/search-history'
 import browserHistory from 'react-router/lib/browserHistory'
 import formatSearchQuerystring from '../../lib/format-search-querystring'
 import parseSearchQuerystring from '../../lib/parse-search-querystring'
@@ -29,6 +30,8 @@ function conductSearch (dispatch, query, facets, options, queryString) {
 		options,
 		queryString,
 	})
+
+	addSearchToHistory({query, facets, options})
 
 	return search(queryString + '&format=json')
 	.then(results => {
