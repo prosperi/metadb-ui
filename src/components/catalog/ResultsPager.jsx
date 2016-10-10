@@ -67,16 +67,22 @@ const ResultsPager = React.createClass({
 		}
 	},
 
-	nextButton: function () {
-		return this.positionButton(
-			'next',
-			() => this.props.next_page === null,
-			ev => {
-				ev.preventDefault && ev.preventDefault()
-				this.props.onNextClick()
-			},
-			this.positionButtonStyles('next')
-		)
+	atFirstPage: function () {
+		return this.props.prev_page === null
+	},
+
+	atLastPage: function () {
+		return this.props.next_page === null
+	},
+
+	handleNextClick: function (ev) {
+		ev.preventDefault && ev.preventDefault()
+		this.props.onNextClick()
+	},
+
+	handlePreviousClick: function (ev) {
+		ev.preventDefault && ev.preventDefault()
+		this.props.onPreviousClick()
 	},
 
 	pagerText: function () {
@@ -106,7 +112,7 @@ const ResultsPager = React.createClass({
 		})
 	},
 
-	positionButton: function (which, positionCheck, onClick, style) {
+	positionButtonProps: function (which, positionCheck, onClick, style) {
 		const atLimit = positionCheck()
 		const text = this.props[which + 'Text']
 
@@ -128,7 +134,7 @@ const ResultsPager = React.createClass({
 		else
 			props.disabled = true
 
-		return React.createElement('button', props)
+		return props
 	},
 
 	positionButtonStyles: function (direction) {
@@ -145,28 +151,33 @@ const ResultsPager = React.createClass({
 		return style
 	},
 
-	previousButton: function () {
-		return this.positionButton(
-			'previous',
-			() => this.props.prev_page === null,
-			ev => {
-				ev.preventDefault && ev.preventDefault()
-				this.props.onPreviousClick()
-			},
-			this.positionButtonStyles('prev')
-		)
-	},
 
 	render: function () {
 		const style = assign({}, {
 			display: 'inline-block',
 		}, this.props.style)
 
-		return React.createElement('div', {style}, [
-			this.previousButton(),
-			this.pagerText(),
-			this.nextButton(),
-		])
+		const prevProps = this.positionButtonProps(
+			'previous',
+			this.atFirstPage,
+			this.handlePreviousClick,
+			this.positionButtonStyles('prev')
+		)
+
+		const nextProps = this.positionButtonProps(
+			'next',
+			this.atLastPage,
+			this.handleNextClick,
+			this.positionButtonStyles('next')
+		)
+
+		return (
+			<div style={style}>
+				<button {...prevProps} />
+				{this.pagerText()}
+				<button {...nextProps} />
+			</div>
+		)
 	}
 })
 

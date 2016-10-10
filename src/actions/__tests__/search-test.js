@@ -108,7 +108,7 @@ describe('Search actionCreator', function () {
 			})
 		})
 
-		it('will _not_ make another api call if the key/val already exists', function () {
+		it('will make an api call even if the key/val already exists', function () {
 			const key = 'key'
 			const val = 'val'
 
@@ -120,7 +120,7 @@ describe('Search actionCreator', function () {
 			return store.dispatch(setSearchOption(key, val))
 			.then(() => {
 				const actions = store.getActions()
-				expect(actions).to.be.empty
+				expect(actions).to.not.be.empty
 			})
 		})
 	})

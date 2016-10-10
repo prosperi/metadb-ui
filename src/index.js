@@ -16,7 +16,6 @@ import App from './App.jsx'
 import Home from './pages/Home.jsx'
 import VocabularyManager from './pages/VocabularyManager.jsx'
 import SearchWrapper from './pages/SearchWrapper.jsx'
-import SearchWithResults from './pages/SearchWithResults.jsx'
 import Work from './pages/Work.jsx'
 
 const MetaDB = (

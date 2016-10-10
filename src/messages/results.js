@@ -1,1 +1,1 @@
-export const RESULTS_PAGER = '%(start)s &ndash; %(end)s of <strong>%(total)s</strong>'
+export const RESULTS_PAGER = '%s &ndash; %s of <strong>%s</strong>'

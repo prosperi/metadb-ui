@@ -1,9 +1,5 @@
-// we'll use this as a thin-wrapper to determine which view to use:
-// a) no search query in the url? SearchForm (tbd)
-// b) has a search query? SearchWithResults
 import React from 'react'
 import Modal from 'react-modal'
-import SearchWithResults from './SearchWithResults.jsx'
 import Button from '../components/Button.jsx'
 import SearchFacetSidebar from '../components/catalog/SearchFacetSidebar.jsx'
 import SearchBreadcrumb from '../components/catalog/SearchBreadcrumb.jsx'
@@ -83,6 +79,8 @@ const SearchWrapper = React.createClass({
 	},
 
 	handleSearchResponse: function (res) {
+		console.log('handleSearchResponse', res)
+
 		const facets = res.response.facets
 		const breadcrumbs = getBreadcrumbList(facets, this.props.search.facets)
 
@@ -99,7 +97,8 @@ const SearchWrapper = React.createClass({
 		ev.preventDefault()
 		const query = ev.target.elements.query.value
 
-		this.props.searchCatalog(query).then(this.handleSearchResponse)
+		this.props.searchCatalog(query)
+		.then(this.handleSearchResponse)
 		.catch(err => {
 			console.warn('got a search error', err)
 		})

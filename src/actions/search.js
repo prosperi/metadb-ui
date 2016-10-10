@@ -65,12 +65,17 @@ export const searchCatalog = (query, facets, opts) => dispatch => {
 	return conductSearch(dispatch, query, facets, options, queryString)
 }
 
+// this function is used when arriving on a Search page w/ a pre-populated
+// search querystring (ex. arriving from a link, refreshing the results)
+// `parseSearchQuerystring` is used to extract the query, facets, and 
+// options + passed to `conductSearch`
 export const searchCatalogByQueryString = queryString => dispatch => {
-	const parsed = parseSearchQuerystring(queryString.replace(/^\?/, ''))
+	const {query, facets, options} = parseSearchQuerystring(queryString.replace(/^\?/, ''))
 
-	return conductSearch(dispatch, parsed.query, parsed.facets, parsed.opts, queryString)
+	return conductSearch(dispatch, query, facets, options, queryString)
 }
 
+// used to toggle options such as `per_page` and `page`
 export const setSearchOption = (field, value) => (dispatch, getState) => {
 	const search = getState().search || {}
 
@@ -78,26 +83,18 @@ export const setSearchOption = (field, value) => (dispatch, getState) => {
 	const facets = assign({}, search.facets)
 	const options = assign({}, DEFAULT_OPTS, REQUIRED_OPTS, search.options)
 
-	// save us another call
-	if (options[field] && options[field] === value)
-		return Promise.resolve()
-
 	// we'll pass null to remove the option
 	if (value === null) {
 		delete options[field]
+	} else {
+		options[field] = value
 	}
-
-	options[field] = value
 
 	// since searchCatalog's a thunk, we'll use the passed `dispatch` + call it again
 	return searchCatalog(query, facets, options)(dispatch)
 }
 
-// while developing we had to worry about juggling facets vs. selected facets
-// (when adding a facet to selected we'd have to remove it from the original
-// pool to prevent duplication). when talking to the api, this will be handled
-// for us, making the job of this function to add/remove values from a 
-// `selectedFacets` array before resubmitting the search.
+
 export const toggleSearchFacet = (field, facet, checked) => (dispatch, getState) => {
 	const search = getState().search || {}
 	
