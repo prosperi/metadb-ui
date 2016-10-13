@@ -5,7 +5,7 @@ import { search } from '../../lib/api'
 import { addSearch as addSearchToHistory } from '../../lib/search-history'
 import browserHistory from 'react-router/lib/browserHistory'
 import formatSearchQuerystring from '../../lib/format-search-querystring'
-import parseSearchQuerystring from '../../lib/parse-search-querystring'
+import { parse as parseQs } from 'blacklight-querystring'
 
 import {
 	RECEIVE_SEARCH_ERROR,
@@ -70,8 +70,7 @@ export const searchCatalog = (query, facets, opts) => dispatch => {
 // `parseSearchQuerystring` is used to extract the query, facets, and 
 // options + passed to `conductSearch`
 export const searchCatalogByQueryString = queryString => dispatch => {
-	const {query, facets, options} = parseSearchQuerystring(queryString.replace(/^\?/, ''))
-
+	const {query, facets, options} = parseQs(queryString)
 	return conductSearch(dispatch, query, facets, options, queryString)
 }
 
