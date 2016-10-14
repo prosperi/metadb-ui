@@ -19,6 +19,13 @@ const FacetList = React.createClass({
 		selectedFacets: T.array.isRequired,
 	},
 
+	componentWillUpdate: function () {
+		// need to clear out internal list when props change, otherwise
+		// previously selected values will linger around in the array
+		// and not appear as unselected values when the render arrives
+		this._selectedFacetValues = null
+	},
+	
 	renderFacetList: function () {
 		const { items, name, onSelectFacet } = this.props.data
 
@@ -33,7 +40,7 @@ const FacetList = React.createClass({
 
 			return React.createElement(
 				'li', 
-				{ key: name + index },
+				{ key: 'unsel' + name + index },
 				React.createElement(FacetListItem, props)
 			)
 		})
@@ -46,8 +53,8 @@ const FacetList = React.createClass({
 
 		return selected.map((item, index) => {
 			const props = {
-				key: 'sel' + index + item.value,
 				data: item,
+				// onRemove: this.removeFacetFromInternalValueList,
 				onRemove: this.props.onRemoveSelectedFacet,
 			}
 
@@ -56,7 +63,11 @@ const FacetList = React.createClass({
 			else
 				this._selectedFacetValues = [item.value]
 
-			return React.createElement(FacetListSelectedItem, props)
+			return React.createElement(
+				'li',
+				{ key: 'sel-' + index + '-' + item.value },
+				React.createElement(FacetListSelectedItem, props)
+			)
 		})
 	},
 
