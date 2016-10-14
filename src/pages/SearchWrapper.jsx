@@ -1,10 +1,12 @@
 import React from 'react'
 import Modal from 'react-modal'
+import assign from 'object-assign'
 import Button from '../components/Button.jsx'
 import SearchFacetSidebar from '../components/catalog/SearchFacetSidebar.jsx'
 import SearchBreadcrumb from '../components/catalog/SearchBreadcrumb.jsx'
 import SearchBreadcrumbTrail from '../components/catalog/SearchBreadcrumbTrail.jsx'
 import SearchResultsHeader from '../components/catalog/SearchResultsHeader.jsx'
+import ResultsListItem from '../components/catalog/ResultsListItem.jsx'
 
 import { getBreadcrumbList } from '../../lib/facet-helpers'
 
@@ -79,8 +81,6 @@ const SearchWrapper = React.createClass({
 	},
 
 	handleSearchResponse: function (res) {
-		console.log('handleSearchResponse', res)
-
 		const facets = res.response.facets
 		const breadcrumbs = getBreadcrumbList(facets, this.props.search.facets)
 
@@ -188,7 +188,6 @@ const SearchWrapper = React.createClass({
 			<SearchFacetSidebar
 				defaultFacetType="list-view-more"
 				facets={this.state.facets}
-				facetSchema={this.getFacetSchema()}
 				clearSelectedFacets={this.clearSelectedFacets}
 				onRemoveSelectedFacet={this.onRemoveFacet}
 				onSelectFacet={this.onSelectFacet}
@@ -225,80 +224,23 @@ const SearchWrapper = React.createClass({
 		const styles = {
 			container: {
 				marginTop: '10px',
-			},
-
-			itemContainer: {
-				backgroundColor: '#fff',
-				border: '1px solid #1d5f83',
-				borderRadius: '2px',
-				margin: '10px 0',
-				padding: '25px 10px 10px',
-				position: 'relative',
-			},
-
-			itemHeader: {
-				display: 'block',
-				fontSize: '18px',
-				fontWeight: 'bold',
-			},
-
-			subtitle: {
-				display: 'block',
-				fontSize: '14px',
-				fontStyle: 'italic',
-				fontWeight: 'normal',
-				marginBottom: '10px',
-			},
-
-			author: {
-				color: '#666',
-				marginTop: '5px',
-			},
-
-			format: {
-
-			},
-
-			number: {
-				backgroundColor: '#1d5f83',
-				borderTopLeftRadius: '1px',
-				borderBottomRightRadius: '2px',
-				color: '#fff',
-				fontSize: '12px',
-				left: '0',
-				padding: '2px 4px',
-				position: 'absolute',
-				top: '0',
 			}
 		}
 
-		const kids = this.state.results.map((item, index) => {
-			const number = this.state.pages.offset_value + 1 + index
-			return (
-				<div key={'item'+index+item.id} style={styles.itemContainer}>
-					<heading style={styles.itemHeader}>
-						{item.title_display}
-						{
-							item.subtitle_display
-							? <small style={styles.subtitle}>{item.subtitle_display}</small>
-							: null
-						}
-					</heading>
+		return (
+			<div style={styles.container}>
+				{this.state.results.map(this.renderResultsItem)}
+			</div>
+		)
+	},
 
-					{
-						item.author_display
-						? <p style={styles.author}>{item.author_display}</p>
-						: null
-					}
-
-					<p style={styles.format}>{item.format}</p>
-
-					<div style={styles.number}>{number}</div>
-				</div>
-			)
+	renderResultsItem: function (data, index) {
+		const props = assign({}, data, {
+			itemNumber: this.state.pages.offset_value + 1 + index,
+			key: 'result-' + index + '-' + data.id,
 		})
 
-		return <div style={styles.container}>{kids}</div>
+		return React.createElement(ResultsListItem, props)
 	},
 
 	toggleResultsView: function (val) {
