@@ -18,4 +18,5 @@ configure(() => {
 	require('../stories/SearchResultsHeader.jsx')
 	require('../stories/SearchBreadcrumb.jsx')
 	require('../stories/SearchBreadcrumbTrail.jsx')
+	require('../stories/RangeLimit.jsx')
 }, module)
