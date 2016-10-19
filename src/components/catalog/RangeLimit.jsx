@@ -1,7 +1,8 @@
 import React from 'react'
 import Button from '../Button.jsx'
-import FacetListSelectedItem from './FacetListSelectedItem.jsx'
 import Slider from 'rc-slider'
+
+import 'rc-slider/assets/index.css'
 
 const T = React.PropTypes
 
@@ -10,10 +11,9 @@ const RangeLimit = React.createClass({
 		max: T.oneOfType([T.string, T.number]).isRequired,
 		min: T.oneOfType([T.string, T.number]).isRequired,
 
-		onRemoveSelectedFacet: T.func.isRequired,
-		onSelectFacet: T.func.isRequired,
-		selectedFacets: T.array.isRequired,
+		onApplyRange: T.func.isRequired,
 	},
+
 
 	getInitialState: function () {
 		return {
@@ -24,7 +24,7 @@ const RangeLimit = React.createClass({
 	handleApplyRange: function (ev) {
 		ev.preventDefault && ev.preventDefault()
 
-		this.props.onSelectFacet(this.state.value)
+		this.props.onApplyRange(this.state.value)
 	},
 
 	handleMaxValueChange: function (ev) {
@@ -47,15 +47,6 @@ const RangeLimit = React.createClass({
 
 	handleSliderChange: function (value) {
 		this.setState({value})
-	},
-
-	maybeRenderSelectedRange: function () {
-		if (!this.props.selectedFacets.length)
-			return
-
-		
-
-		return null
 	},
 
 	renderInputPair: function (which, onChange, value) {
@@ -102,8 +93,14 @@ const RangeLimit = React.createClass({
 		const min = val[0]
 		const max = val[1]
 
+		const wrapperProps = {
+			style: {
+				marginBottom: '10px',
+			}
+		}
+
 		return (
-			<div>
+			<div {...wrapperProps}>
 				{this.renderInputPair('min', this.handleMinValueChange, min)}
 				{this.renderInputPair('max', this.handleMaxValueChange, max)}
 				<Button onClick={this.handleApplyRange}>Apply range</Button>
@@ -128,7 +125,6 @@ const RangeLimit = React.createClass({
 	render: function () {
 		return (
 			<div>
-				{this.maybeRenderSelectedRange()}
 				{this.renderInputs()}
 				{this.renderSlider()}
 			</div>

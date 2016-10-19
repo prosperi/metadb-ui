@@ -46,6 +46,10 @@ module.exports = function(config) {
 						test: /\.txt$/,
 						loader: 'raw-loader',
 					},
+					{
+						test: /\.css$/,
+						loader: 'css-loader',
+					},
 				],
 			},
 			externals: {

@@ -9,6 +9,7 @@
 import React from 'react'
 import FacetList from './FacetList.jsx'
 import FacetListWithViewMore from './FacetListWithViewMore.jsx'
+import RangeLimitFacetWrapper from './RangeLimitFacetWrapper.jsx'
 import sortFacets from '../../../lib/sort-facets'
 
 const T = React.PropTypes
@@ -61,7 +62,7 @@ const FacetPanel = React.createClass({
 		// which panel-body to use when displaying facts
 		// (default: 'list')
 		type: T.oneOf([
-			'list', 'list-view-more',
+			'list', 'list-view-more', 'range',
 		]),
 
 		// color of FacetPanel border + header background
@@ -98,7 +99,11 @@ const FacetPanel = React.createClass({
 			case 'list-view-more':
 				return FacetListWithViewMore
 
+			case 'range':
+				return RangeLimitFacetWrapper
+
 			case 'list':
+			default:
 				return FacetList
 		}
 	},
