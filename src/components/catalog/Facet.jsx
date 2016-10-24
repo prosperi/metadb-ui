@@ -1,0 +1,221 @@
+/**
+ *  This is intended to be the shell of a pluggable facet system.
+ *	The `bodyComponent` property is used to determine which facet-display
+ *  component to use This also uses a crude toggle-able system which
+ *  allows facet-bodies to be hidden/visible by clicking the `facet-panel-header`
+ */
+
+import React from 'react'
+import assign from 'object-assign'
+import FacetList from './FacetList.jsx'
+
+const T = React.PropTypes
+
+const Facet = React.createClass({
+	propTypes: {
+		// an array of facet items provided from Blacklight. 
+		items: T.arrayOf(T.shape({
+			name: T.string,
+			hits: T.number,
+			value: T.string,
+		})).isRequired,
+
+		// The display label to use on the facet header
+		// (defaults to the `name` property which is required)
+		label: T.string,
+
+		// the name of the facet that relates to the key within the `facets` object
+		// provided by Blacklight. 
+		name: T.string.isRequired,
+
+		// triggered when a `selectedFacet`s `X` button is clicked.
+		// (passed to panel-body `SelectedFacetsList` component)
+		// @param object  the facet being removed
+		onRemoveSelectedFacet: T.func.isRequired,
+
+		// triggered when a facet is selected (passed to panel-body)
+		// @param object  the facet being selected
+		onSelectFacet: T.func.isRequired,
+
+		// whether or not the panel-body is visible. this is handled in state
+		// but this allows us to have a panel open initially
+		// (default: `false`)
+		open: T.bool,
+
+		// array passed to panel-body to populate `SelectedFacetsList` component
+		selectedFacets: T.array,
+
+		// whether or not to display an angled line ('arrow' w/o a stem) as visual
+		// feedback on the facet-header
+		// (default: `true`)
+		showHeaderArrow: T.bool,
+
+		// component used to render the facet body when opened.
+		// (default: `FacetList`)
+		bodyComponent: T.element,
+
+		// styles used for the facet wrapper
+		styles: T.shape({
+			default: T.shape({
+				panel: T.object,
+				header: T.object,
+			}),
+			hasSelectedFacets: T.shape({
+				panel: T.object,
+				header: T.object,
+			}),
+		}),
+
+		// color of Facet border + header background
+		// (default: '#ddd')
+		backgroundColor: T.string,
+
+		// color of Facet border + header background
+		// when that Panel contains selectedFacets
+		// (default: '#d8ecd8', a subtle/light green)
+		hasSelectedFacetsColor: T.string,
+	},
+
+	getDefaultProps: function () {
+		const panelColor = '#dddddd'
+		const selectedColor = '#d8ecd8'
+		const textColor = '#1e1e1e'
+
+		return {
+			bodyComponent: FacetList,
+			open: false,
+			selectedFacets: [],
+			showHeaderArrow: true,
+			sort: 'desc',
+
+			styles: {
+				default: {
+					panel: {
+						borderColor: panelColor,
+						borderRadius: '2px',
+						borderStyle: 'solid',
+						borderWidth: '1px',
+						color: textColor,
+						margin: '5px 0',
+					},
+
+					header: {
+						backgroundColor: panelColor,
+						cursor: 'pointer',
+						padding: '5px',
+					},
+				},
+				hasSelectedFacets: {
+					panel: {
+						borderColor: selectedColor,
+						color: textColor,
+					},
+
+					header: {
+						backgroundColor: selectedColor,
+						color: textColor,
+					}
+				},
+			}
+		}
+	},
+
+	getInitialState: function () {
+		return {
+			open: this.props.open,
+		}
+	},
+
+	maybeRenderHeaderArrow: function () {
+		if (!this.props.showHeaderArrow)
+			return
+
+		const hasSel = this.props.selectedFacets.length > 0
+
+		let stroke = hasSel 
+		? this.props.styles.hasSelectedFacets.color 
+		: this.props.styles.default.color
+
+		if (!stroke)
+			stroke = '#1e1e1e'
+
+		const transformDeg = this.state.open ? 90 : 0
+		const arrowSvg = [
+		'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">',
+			// remember to urlencode the hash for hex colors! (%23)
+			'<path d="M2,1L8,5L2,9" stroke="%23" stroke-width="2" fill="transparent" />',
+		'</svg>'].join('')
+
+		const props = {
+			key: 'dss-fp-header-arrow',
+			style: {
+				backgroundImage: "url('data:image/svg+xml;utf8," + arrowSvg + "')",
+				backgroundRepeat: 'no-repeat',
+				backgroundPosition: 'center center',
+				display: 'inline-block',
+				float: 'right',
+				height: '15px',
+				marginLeft: '15px',
+				marginTop: '2px',
+				transform: 'rotate(' + transformDeg + 'deg)',
+				verticalAlign: 'middle',
+				width: '20px',
+			}
+		}
+
+		return React.createElement('span', props)
+	},
+
+	renderFacetBody: function () {
+		if (!this.state.open)
+			return
+
+		const props = {
+			data: this.props.data,
+			onSelectFacet: this.handleSelectFacet,
+			onRemoveSelectedFacet: this.onRemoveSelectedFacet,
+			selectedFacets: this.props.selectedFacets,
+		}
+
+		return React.createElement(
+			'div',
+			{
+				className: 'facet-panel--body',
+				style: {padding: '5px'}
+			},
+			React.createElement(this.props.bodyComponent, this.props)
+		)
+	},
+
+	render: function () {
+		const defaultPanel = this.props.styles.default.panel
+		const defaultHeader = this.props.styles.default.header
+		const selPanel = this.props.styles.hasSelectedFacets.panel
+		const selHeader = this.props.styles.hasSelectedFacets.panel
+		const hasSel = this.props.selectedFacets.length > 0
+
+		const panelStyles = assign({}, defaultPanel, (hasSel ? selPanel : null))
+		const headerStyles = assign({}, defaultHeader, (hasSel ? selHeader : null))
+
+		const headerLabel = {
+			margin: '0',
+			padding: '0',
+			verticalAlign: 'middle',
+		}
+
+		return (
+			<div className="facet-panel" style={panelStyles}>
+				<header onClick={ev => this.setState({open: !this.state.open})} style={headerStyles}>
+					<h3 className="panel-title" style={headerLabel}>
+						{this.props.data.label}
+						{this.maybeRenderHeaderArrow()}
+					</h3>
+				</header>
+
+				{this.renderFacetBody()}
+			</div>
+		)
+	}
+})
+
+export default Facet
