@@ -23,13 +23,8 @@ const wrap = (xtend, renderer) => {
 const shallowEl = xtend => wrap(xtend, shallow)
 
 describe('<Facet />', function () {
-	it('renders a `FacetList` element by default', function () {
-		const $el = shallowEl()
-		expect($el.find('FacetList')).to.have.length(1)
-	})
-
 	it('uses the `bodyComponent` prop to render the body', function () {
-		const SomeFacetBody = (props) => (<h1>hiii</h1>)
+		const SomeFacetBody = () => (<h1>hiii</h1>)
 
 		const $el = shallowEl({bodyComponent: SomeFacetBody})
 		expect($el.find('SomeFacetBody')).to.have.length(1)
@@ -41,7 +36,8 @@ describe('<Facet />', function () {
 	})
 
 	it('toggles `.facet-panel--body` when the header is clicked', function () {
-		const $el = shallowEl({open: false})
+		const SomeFacetBody = () => (<h1>hey</h1>)
+		const $el = shallowEl({bodyComponent: SomeFacetBody, open: false})
 		expect($el.state('open')).to.be.false
 		expect($el.find('.facet-panel--body')).to.have.length(0)
 

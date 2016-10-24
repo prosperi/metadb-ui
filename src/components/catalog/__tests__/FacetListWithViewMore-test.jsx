@@ -13,7 +13,7 @@ import data from './data/facet.json'
 const noop = () => {}
 
 const defaultProps = {
-	data,
+	...data,
 	onRemoveSelectedFacet: noop,
 	onSelectFacet: noop,
 	selectedFacets: [],
@@ -32,20 +32,20 @@ const shallow = xtend => wrap(xtend, _shallow)
 
 describe('<FacetListWithMoreView />', function () {
 	it('renders the number of items established with `limit`', function () {
-		const limit = Math.floor(Math.random() * 10)
+		const limit = Math.floor(Math.random() * defaultProps.items.length)
 		const $el = mount({limit})
 		expect($el.find('FacetListItem')).to.have.length(limit)
 	})
 
 	describe('the `View More` span', function () {
 		const SEL = 'span.view-more'
-		it('renders if # data.items exceeds limit', function () {
+		it('renders if # items exceeds limit', function () {
 			const $el = shallow()
 			expect($el.find(SEL)).to.have.length(1)
 		})
 
-		it('does not render if # data.items is below or equal to limit', function () {
-			const $first = shallow({limit: defaultProps.data.items.length})
+		it('does not render if # items is below or equal to limit', function () {
+			const $first = shallow({limit: defaultProps.items.length})
 			expect($first.find(SEL)).to.have.length(0)
 
 			const $second = shallow({limit: Infinity})

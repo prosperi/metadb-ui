@@ -1,5 +1,5 @@
 import React from 'react'
-import FacetPanel from './FacetPanel.jsx'
+import assign from 'object-assign'
 
 const T = React.PropTypes
 
@@ -20,7 +20,7 @@ const FacetGroup = React.createClass({
 		//			]
 		//		}
 		//	]
-		facets: T.arrayOf(T.shape({
+		data: T.arrayOf(T.shape({
 			name: T.string,
 			label: T.string,
 			items: T.arrayOf(T.shape({
@@ -33,27 +33,7 @@ const FacetGroup = React.createClass({
 		onRemoveSelectedFacet: T.func.isRequired,
 		onSelectFacet: T.func.isRequired,
 
-		// if we don't have a schema passed, or, when iterating through, the
-		// facet doesn't appear in the schema, which facet-type should we
-		// default to?
-		// (default: 'list')
-		defaultFacetType: T.string,
-
-		// TODO:
-		// `facetSchemas` is a map of facet schema info
-		// --------
-		// {
-		// 	"example_facet": {
-		// 		type: "list",
-		// 		sort: "desc",
-		// 		sortField: "hits",
-		//		options: {
-		//			/* facet-specific opts like limit/step/etc. */
-		//		},
-		//		hide: false,
-		// 	}
-		// }
-		facetSchema: T.object,
+		defaultBodyComponent: T.func,
 
 		// `selectedFacets` is a map of facet objects
 		// -----------
@@ -67,64 +47,53 @@ const FacetGroup = React.createClass({
 
 	getDefaultProps: function () {
 		return {
-			defaultFacetType: 'list',
 			selectedFacets: {},
 		}
 	},
 
-	getInitialState: function () {
-		return {
-			openFacetGroups: [],
-		}
-	},
+	buildFacetDictionary: function () {
+		var dict = {}
 
-	determineFacetType: function (name) {
-		if (!this.props.facetSchema)
-			return this.props.defaultFacetType
+		this.props.data.forEach((facet, index) => {
+			dict[facet.name] = index
+		})
 
-		const schema = this.props.facetSchema[name]
-
-		if (!schema || !schema.type)
-			return this.props.defaultFacetType
-
-		return schema.type
+		return dict
 	},
 
 	getSelectedFacets: function (name) {
 		return this.props.selectedFacets[name] || []
 	},
 
-	handleToggle: function (name, open) {
-		if (open) {
-			this.setState({
-				openFacetGroups: this.state.openFacetGroups.concat(name)
-			})
-		} else {
-			this.setState({
-				openFacetGroups: this.state.openFacetGroups.filter(f => f !== name)
-			})
-		}
-	},
+	renderChildren: function () {
+		var dict = this.buildFacetDictionary()
 
-	renderFacetPanel: function (facet, index) {
-		// exclude facet groups w/ no items
-		if (!facet.items || !facet.items.length)
-			return
+		return React.Children.map(this.props.children, (child, index) => {
+			const name = child.props.name
+			const idx = dict[name]
 
-		const isOpen = this.state.openFacetGroups.indexOf(facet.name) > -1
-		const name = facet.name
+			// skip facets w/o a name property
+			if (typeof idx === 'undefined')
+				return
 
-		return (
-			<FacetPanel
-				data={facet}
-				key={name + index}
-				type={this.determineFacetType(name)}
-				onRemoveSelectedFacet={this.props.onRemoveSelectedFacet.bind(null, name)}
-				onSelectFacet={this.props.onSelectFacet.bind(null, name)}
-				open={isOpen}
-				selectedFacets={this.getSelectedFacets(name)}
-			/>
-		)
+			const data = this.props.data[idx]
+
+			const bodyComponent = child.props.bodyComponent
+			? child.props.bodyComponent
+			: this.props.defaultBodyComponent
+
+			const props = {
+				bodyComponent,
+				items: child.props.data || data.items,
+				key: name + index,
+				label: child.props.label || data.label,
+				onRemoveSelectedFacet: this.props.onRemoveSelectedFacet.bind(null, name),
+				onSelectFacet: this.props.onSelectFacet.bind(null, name),
+				selectedFacets: this.getSelectedFacets(name)
+			}
+
+			return React.cloneElement(child, props)
+		})
 	},
 
 	render: function () {
@@ -135,7 +104,7 @@ const FacetGroup = React.createClass({
 
 		return (
 			<div style={wrapperStyles}>
-				{this.props.facets.map(this.renderFacetPanel)}
+				{this.renderChildren()}
 			</div>
 		)
 	}

@@ -1,4 +1,5 @@
 import React from 'react'
+import assign from 'object-assign'
 import Modal from 'react-modal'
 import FacetList from './FacetList.jsx'
 
@@ -6,11 +7,9 @@ const T = React.PropTypes
 
 const FacetListWithViewMore = React.createClass({
 	propTypes: {
-		data: T.shape({
-			label: T.string.isRequired,
-			name: T.string.isRequired,
-			items: T.array.isRequired,
-		}).isRequired,
+		label: T.string.isRequired,
+		name: T.string.isRequired,
+		items: T.array.isRequired,
 
 		onRemoveSelectedFacet: T.func.isRequired,
 		onSelectFacet: T.func.isRequired,
@@ -42,6 +41,17 @@ const FacetListWithViewMore = React.createClass({
 		return {
 			modalOpen: this.props.modalOpen,
 		}
+	},
+
+	getFacetListProps: function (xtend) {
+		return assign({}, {
+			items: this.props.items,
+			label: this.props.label,
+			name: this.props.name,
+			onRemoveSelectedFacet: this.handleRemoveSelectedFacet,
+			onSelectFacet: this.handleSelectFacet,
+			selectedFacets: this.props.selectedFacets,
+		}, xtend)
 	},
 
 	handleRemoveSelectedFacet: function () {
@@ -96,41 +106,28 @@ const FacetListWithViewMore = React.createClass({
 				style={styles.modal}
 			>
 				<header key="dss-flmvw-modal-header" style={styles.header}>
-					Viewing all for <strong>{this.props.data.label}</strong>
+					Viewing all for <strong>{this.props.label}</strong>
 				</header>
-				<FacetList
-					data={this.props.data}
-					key="dss-flmvw-modal-list"
-					onSelectFacet={this.handleSelectFacet}
-					onRemoveSelectedFacet={this.handleRemoveSelectedFacet}
-					selectedFacets={this.props.selectedFacets}
-				/>
+				<FacetList {...this.getFacetListProps()} />
 			</Modal>
 		)
 	},
 
 	renderLimitedFacetList: function () {
-		const { data, limit, onSelectFacet } = this.props
-		const { items, name } = data
-
 		const els = []
 
-		const abbreviatedItems = items.slice(0, limit)
-		const limitedList = (
-			<FacetList
-				data={{...data, items: abbreviatedItems}}
-				key="dss-flwvm-list"
-				onSelectFacet={this.handleSelectFacet}
-				onRemoveSelectedFacet={this.handleRemoveSelectedFacet}
-				selectedFacets={this.props.selectedFacets}
-			/>
-		)
+		const limit = this.props.limit
+		const flProps = this.getFacetListProps({
+			items: this.props.items.slice(0, limit)
+		})
+		
+		const LimitedList = React.createElement(FacetList, flProps)
 
 		// no need to add a `view more` link if there aren't more to view
-		if (items.length <= limit)
-			return limitedList
+		if (this.props.items.length <= limit)
+			return LimitedList
 
-		const seeMoreLink = React.createElement('span', {
+		const ViewMoreLink = React.createElement('span', {
 			className: 'view-more',
 			key: 'dss-fpwvm-view-more',
 			onClick: this.toggleModal,
@@ -143,7 +140,7 @@ const FacetListWithViewMore = React.createClass({
 			}
 		}, this.props.viewMoreText)
 
-		return [limitedList, seeMoreLink]
+		return [LimitedList, ViewMoreLink]
 	},
 
 	toggleModal: function () {

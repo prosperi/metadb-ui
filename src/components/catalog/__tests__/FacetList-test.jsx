@@ -8,7 +8,7 @@ import FacetList from '../FacetList.jsx'
 import data from './data/facet.json'
 
 const defaultProps = {
-	data,
+	...data,
 	onRemoveSelectedFacet: () => {},
 	onSelectFacet: () => {},
 	selectedFacets: [],
@@ -25,7 +25,7 @@ const shallowEl = xtend => renderEl(xtend, shallow)
 describe('<FacetList />', function () {
 	it('renders `FacetListItem`s for each item passed', function () {
 		const $el = shallowEl()
-		expect($el.find('FacetListItem')).to.have.length(defaultProps.data.items.length)
+		expect($el.find('FacetListItem')).to.have.length(defaultProps.items.length)
 	})
 
 	it('retains the order of items passed', function () {
@@ -33,14 +33,14 @@ describe('<FacetList />', function () {
 		const $listItems = $el.find('FacetListItem')
 
 		$listItems.forEach(($li, index) => {
-			const item = defaultProps.data.items[index]
+			const item = defaultProps.items[index]
 			expect($li.prop('data').hits).to.equal(item.hits)
 		})
 	})
 
 	it('calls `onSelectFacet` when an Item is clicked, passing the facet object', function (done) {
-		const idx = randomIndex(defaultProps.data.items)
-		const item = defaultProps.data.items[idx]
+		const idx = randomIndex(defaultProps.items)
+		const item = defaultProps.items[idx]
 
 		const onSelectFacet = facet => {
 			expect(facet).to.deep.equal(item)
@@ -53,7 +53,7 @@ describe('<FacetList />', function () {
 	})
 
 	// describe('when provided `selectedFacets`', function () {
-	// 	const items = [].concat(defaultProps.data.items)
+	// 	const items = [].concat(defaultProps.items)
 	// 	const idx = randomIndex(items)
 	// 	const selectedFacets = [items[idx]]
 
@@ -64,7 +64,7 @@ describe('<FacetList />', function () {
 
 	// skipping for now because of using FacetListSelectedItem instead
 	xdescribe('when provided `selectedFacets`', function () {
-		const items = [].concat(defaultProps.data.items)
+		const items = [].concat(defaultProps.items)
 		const idx = randomIndex(items)
 		const selectedFacets = items.splice(idx, 1)
 

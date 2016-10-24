@@ -6,9 +6,9 @@ const T = React.PropTypes
 
 const SearchFacetSidebar = React.createClass({
 	propTypes: {
-		facets: T.array.isRequired,
+		data: T.array.isRequired,
 
-		clearSelectedFacets: T.func.isRequired,
+		onClearSelectedFacets: T.func.isRequired,
 
 		onRemoveSelectedFacet: T.func.isRequired,
 		onSelectFacet: T.func.isRequired,
@@ -16,35 +16,30 @@ const SearchFacetSidebar = React.createClass({
 
 		selectedFacets: T.object.isRequired,
 
-		defaultFacetType: T.string,
-		facetSchema: T.object,
 		query: T.string,
+	},
+
+	componentWillReceiveProps: function (nextProps) {
+		this.setState({query: nextProps.query})
+	},
+
+	getInitialState: function () {
+		return {
+			query: this.props.query,
+		}
 	},
 
 	handleClearFacets: function (ev) {
 		ev.preventDefault && ev.preventDefault()
 
-		this.props.clearSelectedFacets()
+		this.props.onClearSelectedFacets()
 	},
 
 	handleSearchSubmit: function (ev) {
 		ev.preventDefault && ev.preventDefault()
 
-		const query = ev.target.elements.query.value
+		const query = this.state.query
 		this.props.onSubmitSearchQuery(query)
-	},
-
-	renderFacetGroup: function () {
-		return (
-			<FacetGroup
-				defaultFacetType={this.props.defaultFacetType}
-				facets={this.props.facets}
-				facetSchema={this.props.facetSchema}
-				onRemoveSelectedFacet={this.props.onRemoveSelectedFacet}
-				onSelectFacet={this.props.onSelectFacet}
-				selectedFacets={this.props.selectedFacets}
-			/>
-		)
 	},
 
 	renderSearchHeader: function () {
@@ -62,7 +57,6 @@ const SearchFacetSidebar = React.createClass({
 			<Button
 				onClick={this.handleClearFacets}
 				size="small"
-				style={{margin: '5px 0', width: '100%'}}
 			>
 				Clear facets
 			</Button>
@@ -72,7 +66,8 @@ const SearchFacetSidebar = React.createClass({
 			<div style={styles.container}>
 				<form onSubmit={this.handleSearchSubmit}>
 					<input
-						defaultValue={this.props.query}
+						value={this.state.query}
+						onChange={e => this.setState({query: e.target.value})}
 						name="query"
 						style={styles.input}
 						type="search"
@@ -84,16 +79,21 @@ const SearchFacetSidebar = React.createClass({
 	},
 
 	render: function () {
-		const sidebarStyles = {
-			// TODO: maybe get rid of this border
-			borderRight: '1px solid #ccc',
-			paddingRight: '10px',
+		const containerProps = {
+			style: {
+				// TODO: maybe get rid of this border
+				borderRight: '1px solid #ccc',
+				paddingRight: '10px',
+			}
 		}
 
 		return (
-			<div style={sidebarStyles}>
+			<div {...containerProps}>
 				{this.renderSearchHeader()}
-				{this.renderFacetGroup()}
+
+				<FacetGroup {...this.props}>
+					{this.props.children}
+				</FacetGroup>
 			</div>
 		)
 	}

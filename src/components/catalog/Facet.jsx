@@ -1,13 +1,11 @@
 /**
- *  This is intended to be the shell of a pluggable facet system.
- *	The `bodyComponent` property is used to determine which facet-display
- *  component to use This also uses a crude toggle-able system which
- *  allows facet-bodies to be hidden/visible by clicking the `facet-panel-header`
+ *  <Facet /> is used within a <FacetGroup /> component to organize groups of
+ *  facet options. Each of these components maps to a key within the `facets`
+ *  object returned via the Blacklight JSON api. 
  */
 
 import React from 'react'
 import assign from 'object-assign'
-import FacetList from './FacetList.jsx'
 
 const T = React.PropTypes
 
@@ -18,41 +16,43 @@ const Facet = React.createClass({
 			name: T.string,
 			hits: T.number,
 			value: T.string,
-		})).isRequired,
-
-		// The display label to use on the facet header
-		// (defaults to the `name` property which is required)
-		label: T.string,
+		})), //.isRequired,
 
 		// the name of the facet that relates to the key within the `facets` object
 		// provided by Blacklight. 
-		name: T.string.isRequired,
+		name: T.string, //.isRequired,
 
 		// triggered when a `selectedFacet`s `X` button is clicked.
 		// (passed to panel-body `SelectedFacetsList` component)
 		// @param object  the facet being removed
-		onRemoveSelectedFacet: T.func.isRequired,
+		onRemoveSelectedFacet: T.func, //.isRequired,
 
 		// triggered when a facet is selected (passed to panel-body)
 		// @param object  the facet being selected
-		onSelectFacet: T.func.isRequired,
+		onSelectFacet: T.func, //.isRequired,
+
+		// React Component used to render the facet body when opened. Not _technically_
+		// required, but <Facet/> will bail early if no component is provided.
+		// Props passed to <Facet/> are passed downstream to `bodyComponent`.
+		bodyComponent: T.func,
+
+		// The display label to use on the facet header
+		// (defaults to the `name` property which is required)
+		label: T.string,
 
 		// whether or not the panel-body is visible. this is handled in state
 		// but this allows us to have a panel open initially
 		// (default: `false`)
 		open: T.bool,
 
-		// array passed to panel-body to populate `SelectedFacetsList` component
+		// array of facet options selected for the group
+		// (default: `[]`)
 		selectedFacets: T.array,
 
 		// whether or not to display an angled line ('arrow' w/o a stem) as visual
 		// feedback on the facet-header
 		// (default: `true`)
 		showHeaderArrow: T.bool,
-
-		// component used to render the facet body when opened.
-		// (default: `FacetList`)
-		bodyComponent: T.element,
 
 		// styles used for the facet wrapper
 		styles: T.shape({
@@ -65,15 +65,6 @@ const Facet = React.createClass({
 				header: T.object,
 			}),
 		}),
-
-		// color of Facet border + header background
-		// (default: '#ddd')
-		backgroundColor: T.string,
-
-		// color of Facet border + header background
-		// when that Panel contains selectedFacets
-		// (default: '#d8ecd8', a subtle/light green)
-		hasSelectedFacetsColor: T.string,
 	},
 
 	getDefaultProps: function () {
@@ -82,7 +73,7 @@ const Facet = React.createClass({
 		const textColor = '#1e1e1e'
 
 		return {
-			bodyComponent: FacetList,
+			bodyComponent: null,
 			open: false,
 			selectedFacets: [],
 			showHeaderArrow: true,
@@ -167,15 +158,8 @@ const Facet = React.createClass({
 	},
 
 	renderFacetBody: function () {
-		if (!this.state.open)
+		if (!this.state.open || !this.props.bodyComponent)
 			return
-
-		const props = {
-			data: this.props.data,
-			onSelectFacet: this.handleSelectFacet,
-			onRemoveSelectedFacet: this.onRemoveSelectedFacet,
-			selectedFacets: this.props.selectedFacets,
-		}
 
 		return React.createElement(
 			'div',
@@ -207,7 +191,7 @@ const Facet = React.createClass({
 			<div className="facet-panel" style={panelStyles}>
 				<header onClick={ev => this.setState({open: !this.state.open})} style={headerStyles}>
 					<h3 className="panel-title" style={headerLabel}>
-						{this.props.data.label}
+						{this.props.label}
 						{this.maybeRenderHeaderArrow()}
 					</h3>
 				</header>

@@ -3,6 +3,10 @@ import Modal from 'react-modal'
 import assign from 'object-assign'
 import Button from '../components/Button.jsx'
 import SearchFacetSidebar from '../components/catalog/SearchFacetSidebar.jsx'
+import Facet from '../components/catalog/Facet.jsx'
+import FacetList from '../components/catalog/FacetList.jsx'
+import FacetListWithViewMore from '../components/catalog/FacetListWithViewMore.jsx'
+
 import SearchBreadcrumb from '../components/catalog/SearchBreadcrumb.jsx'
 import SearchBreadcrumbTrail from '../components/catalog/SearchBreadcrumbTrail.jsx'
 import SearchResultsHeader from '../components/catalog/SearchResultsHeader.jsx'
@@ -29,20 +33,6 @@ const SearchWrapper = React.createClass({
 		const options = this.props.search.options
 
 		this.props.searchCatalog(query, {}, this.props.search.options).then(this.handleSearchResponse)
-	},
-
-	getFacetSchema: function () {
-		return {
-			format_main_ssim: {
-				type: 'list',
-			},
-			pub_year_tisim: {
-				type: 'list-view-more',
-			},
-			language: {
-				type: 'list-view-more',
-			},
-		}
 	},
 
 	getFacetGroupInfo: function (pool, name) {
@@ -184,17 +174,35 @@ const SearchWrapper = React.createClass({
 		if (!this.props.search.facets)
 			return
 
+		const sidebarProps = {
+			data: this.state.facets,
+
+			// play it safe and default to <FacetListWithViewMore/>...
+			defaultBodyComponent: FacetListWithViewMore,
+
+			// ... + since we're just passing props down from <FacetGroup/>
+			// we can pass a `limit` that will be used via the default components
+			limit: 6,
+
+			query: this.props.search.query,
+			selectedFacets: this.props.search.facets,
+
+			// event handlers
+			onClearSelectedFacets:this.clearSelectedFacets,
+			onRemoveSelectedFacet: this.onRemoveFacet,
+			onSelectFacet: this.onSelectFacet,
+			onSubmitSearchQuery: this.handleSubmitSearchQuery,
+		}
+
 		return (
-			<SearchFacetSidebar
-				defaultFacetType="list-view-more"
-				facets={this.state.facets}
-				clearSelectedFacets={this.clearSelectedFacets}
-				onRemoveSelectedFacet={this.onRemoveFacet}
-				onSelectFacet={this.onSelectFacet}
-				onSubmitSearchQuery={this.handleSubmitSearchQuery}
-				query={this.props.search.query}
-				selectedFacets={this.props.search.facets}
-			/>
+			<SearchFacetSidebar {...sidebarProps}>
+				<Facet name="human_readable_type_sim" />
+				<Facet name="creator_sim" />
+				<Facet name="keyword_sim" />
+				<Facet name="subject_sim" />
+				<Facet name="language_sim" />
+				<Facet name="creator_photographer_sim" label="Photographer" bodyComponent={FacetList} />
+			</SearchFacetSidebar>
 		)
 	},
 
