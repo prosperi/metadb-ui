@@ -1,5 +1,5 @@
 import React from 'react'
-import Modal from 'react-modal'
+import ModalWithHeader from '../ModalWithHeader.jsx'
 import VocabularyMetadataForm from './VocabularyMetadataForm.jsx'
 
 const T = React.PropTypes
@@ -29,43 +29,27 @@ const CreateVocabularyModal = React.createClass({
 	},
 
 	render: function () {
-		const style = {
-			modal: {
+		const modalProps = {
+			isOpen: this.state.open,
+			label: 'Create a new vocabulary',
+			onRequestClose: this.closeModal,
+			style: {
 				content: {
-					borderColor: '#1d5f83',
 					boxShadow: '0 1px 2px 1px #aaa',
-					bottom: '40%',
-					left: '10%',
-					right: '10%',
-					top: '10%',
-				},
-			},
-
-			header: {
-				backgroundColor: '#1d5f83',
-				color: '#fff',
-				fontSize: '1.125em',
-				margin: '-20px',
-				marginBottom: '20px',
-				padding: '.75em',
+					bottom: '33%',
+				}
 			}
 		}
 
-		return (
-			<Modal
-				isOpen={this.state.open}
-				onRequestClose={this.closeModal}
-				style={style.modal}
-			>
-				<header style={style.header}>
-					Create a new vocabulary
-				</header>
+		const formProps = {
+			buttonLabel: 'Create new vocabulary',
+			onSubmit: this.handleSubmit,
+		}
 
-				<VocabularyMetadataForm
-					buttonLabel="Create new vocabulary"
-					onSubmit={this.handleSubmit} 
-				/>
-			</Modal>
+		return (
+			<ModalWithHeader {...modalProps}>
+				<VocabularyMetadataForm {...formProps} />
+			</ModalWithHeader>
 		)
 	}
 })

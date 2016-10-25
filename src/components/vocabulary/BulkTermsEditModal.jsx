@@ -1,5 +1,5 @@
 import React from 'react'
-import Modal from 'react-modal'
+import ModalWithHeader from '../ModalWithHeader.jsx'
 import BulkTermsEditor from './BulkTermsEditor.jsx'
 
 const T = React.PropTypes
@@ -34,57 +34,32 @@ const BulkTermsEditModal = React.createClass({
 		this.closeModal()
 	},
 
-	renderHeader: function (styles) {
-		if (!this.props.label)
-			return
-
-		if (!styles)
-			styles = {}
-
-		return (
-			<header style={styles}>
-				Bulk-editing terms for {this.props.label}
-			</header>
-		)
-	},
-
 	render: function () {
-		const styles = {
-			modal: {
+		const modalProps = {
+			header: `Bulk-editing terms for ${this.props.label}`,
+			isOpen: this.state.modalOpen,
+			onRequestClose: this.handleClose,
+			style: {
 				content: {
-					borderColor: '#1d5f83',
 					bottom: '12.5%',
 					boxShadow: '0 1px 2px 1px #aaa',
 					left: '12.5%',
 					right: '12.5%',
 					top: '12.5%',
 				}
-			},
-
-			header: {
-				backgroundColor: '#1d5f83',
-				color: '#fff',
-				fontSize: '1.125em',
-				margin: '-20px',
-				marginBottom: '20px',
-				padding: '.75em',
 			}
 		}
 
-		return (
-			<Modal
-				isOpen={this.state.modalOpen}
-				onRequestClose={this.handleClose}
-				style={styles.modal}
-			>
-				{this.renderHeader(styles.header)}
+		const editorProps = {
+			onSubmit: this.handleSubmit,
+			resizable: false,
+			terms: this.props.terms,
+		}
 
-				<BulkTermsEditor
-					onSubmit={this.handleSubmit}
-					resizable={false}
-					terms={this.props.terms}
-				/>
-			</Modal>
+		return (
+			<ModalWithHeader {...modalProps}>
+				<BulkTermsEditor {...editorProps} />
+			</ModalWithHeader>
 		)
 	}
 })

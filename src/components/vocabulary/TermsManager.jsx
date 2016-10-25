@@ -1,5 +1,4 @@
 import React from 'react'
-import Modal from 'react-modal'
 import TagList from '../tags/TagList.jsx'
 import BulkTermsEditModal from './BulkTermsEditModal.jsx'
 import TermEditModal from './TermEditModal.jsx'
