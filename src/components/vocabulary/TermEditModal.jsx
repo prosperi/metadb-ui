@@ -1,5 +1,5 @@
 import React from 'react'
-import Modal from 'react-modal'
+import ModalWithHeader from '../ModalWithHeader.jsx'
 import assign from 'object-assign'
 
 import VocabularyMetadataFormFields from './VocabularyMetadataFormFields.jsx'
@@ -60,47 +60,32 @@ const TermEditModal = React.createClass({
 	},
 
 	render: function () {
-		const modalStyles = {
-			content: {
-				borderColor: '#1d5f83',
+		const label = this.state.data.pref_label[0]
+		const modalProps = {
+			allowHTML: true,
+			header: `Editing term: <em>${label}</em>`,
+			isOpen: this.state.open,
+			onRequestClose: this.handleClose,
+			style: {
 				boxShadow: '0 1px 2px 1px #aaa',
 				bottom: '25%',
-				left: '10%',
-				right: '10%',
-				top: '10%',
 			}
 		}
 
-		const headerStyles = {
-			backgroundColor: '#1d5f83',
-			color: '#fff',
-			fontSize: '1.125em',
-			margin: '-20px',
-			marginBottom: '20px',
-			padding: '.75em',
+		const vocabProps = {
+			data: this.state.data,
+			onAddValueField: this.handleOnAddValueField,
+			onChange: this.handleOnChange,
+			onRemoveValueField: this.handleOnRemoveValueField,
 		}
 
 		return (
-			<Modal
-				isOpen={this.state.open}
-				onRequestClose={this.handleClose}
-				style={modalStyles}
-			>
-				<header style={headerStyles}>
-					Editing term: <strong>{this.state.data.pref_label[0]}</strong>
-				</header>
-
-				<VocabularyMetadataFormFields
-					data={this.state.data}
-					onAddValueField={this.handleOnAddValueField}
-					onChange={this.handleOnChange}
-					onRemoveValueField={this.handleOnRemoveValueField}
-				/>
-
+			<ModalWithHeader {...modalProps}>
+				<VocabularyMetadataFormFields {...vocabProps} />
 				<footer>
 					<button onClick={this.handleSaveTerm}>Save term</button>
 				</footer>
-			</Modal>
+			</ModalWithHeader>
 		)
 	}
 })

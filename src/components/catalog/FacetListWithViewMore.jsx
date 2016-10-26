@@ -1,6 +1,6 @@
 import React from 'react'
 import assign from 'object-assign'
-import Modal from 'react-modal'
+import ModalWithHeader from '../ModalWithHeader.jsx'
 import FacetList from './FacetList.jsx'
 
 const T = React.PropTypes
@@ -16,7 +16,6 @@ const FacetListWithViewMore = React.createClass({
 		selectedFacets: T.array.isRequired,
 
 		limit: T.number,
-		modalColor: T.string,
 
 		// determines whether or not the View More modal is open on mount.
 		// this is mostly as a means to test the modal w/o having to trigger
@@ -31,7 +30,6 @@ const FacetListWithViewMore = React.createClass({
 	getDefaultProps: function () {
 		return {
 			limit: 5,
-			modalColor: '#1d5f83',
 			modalOpen: false,
 			viewMoreText: 'View more...',
 		}
@@ -72,44 +70,32 @@ const FacetListWithViewMore = React.createClass({
 		if (!this.state.modalOpen)
 			return
 
-		const modalPaddingVal = 20
-		const modalPadding = modalPaddingVal + 'px'
-
-		const styles = {
-			header: {
-				backgroundColor: this.props.modalColor,
-				color: '#fff',
-				marginBottom: modalPadding,
-				marginLeft: '-' + modalPadding,
-				marginRight: '-' + modalPadding,
-				marginTop: '-' + modalPadding,
-				padding: (modalPaddingVal / 2) + 'px',
-				textAlign: 'center',
+		const label = this.props.label
+		const props = {
+			isOpen: this.state.modalOpen,
+			header: function (modal) {
+				return (
+					<header {...modal.getHeaderProps()}>
+						Viewing all for <strong>{label}</strong>
+					</header>
+				)
 			},
-			modal: {
+			key: 'dss-flwvm-modal',
+			onRequestClose: this.toggleModal,
+			style: {
 				content: {
-					borderColor: this.props.modalColor,
 					bottom: '33%',
 					left: '33%',
-					padding: modalPadding,
 					right: '33%',
 					top: '10%',
-				},
-			},
+				}
+			}
 		}
 
 		return (
-			<Modal
-				isOpen={this.state.modalOpen}
-				key="dss-flwvm-modal"
-				onRequestClose={this.toggleModal}
-				style={styles.modal}
-			>
-				<header key="dss-flmvw-modal-header" style={styles.header}>
-					Viewing all for <strong>{this.props.label}</strong>
-				</header>
+			<ModalWithHeader {...props}>
 				<FacetList {...this.getFacetListProps()} />
-			</Modal>
+			</ModalWithHeader>
 		)
 	},
 
@@ -118,7 +104,8 @@ const FacetListWithViewMore = React.createClass({
 
 		const limit = this.props.limit
 		const flProps = this.getFacetListProps({
-			items: this.props.items.slice(0, limit)
+			items: this.props.items.slice(0, limit),
+			key: 'dss-fpwvm-limited-list',
 		})
 		
 		const LimitedList = React.createElement(FacetList, flProps)

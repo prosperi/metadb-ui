@@ -58,16 +58,16 @@ describe('<FacetListWithMoreView />', function () {
 			expect($el.find(SEL).text()).to.equal(viewMoreText)
 		})
 
-		it('opens the View More modal when clicked', function () {
+		it('opens the View More modal (w/ header) when clicked', function () {
 			const $el = shallow()
 			
 			expect($el.state('modalOpen')).to.be.false
-			expect($el.find('Modal')).to.have.length(0)
+			expect($el.find('ModalWithHeader')).to.have.length(0)
 
 			$el.find(SEL).simulate('click')
 
 			expect($el.state('modalOpen')).to.be.true
-			expect($el.find('Modal')).to.have.length(1)
+			expect($el.find('ModalWithHeader')).to.have.length(1)
 		})
 	})
 

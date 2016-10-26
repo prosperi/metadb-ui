@@ -1,5 +1,5 @@
 import React from 'react'
-import Modal from 'react-modal'
+import ModalWithHeader from '../ModalWithHeader.jsx'
 import VocabularyMetadataForm from './VocabularyMetadataForm.jsx'
 
 const T = React.PropTypes
@@ -29,28 +29,29 @@ const EditVocabularyModal = React.createClass({
 	},
 
 	render: function () {
-		const style = {
-			modal: {
+		const modalProps = {
+			header: `Edit metadata for ${this.props.name}`,
+			isOpen: this.state.open,
+			onRequestClose: this.closeModal,
+			style: {
 				content: {
-					borderColor: '#1d5f83',
 					boxShadow: '0 1px 2px 1px #aaa',
-					bottom: '10%',
-					left: '10%',
-					right: '10%',
-					top: '10%',
-				},
-			},
+					bottom: '33%',
+				}
+			}
+		}
 
-			header: {
-				backgroundColor: '#1d5f83',
-				color: '#fff',
-				fontSize: '1.125em',
-				margin: '-20px',
-				marginBottom: '20px',
-				padding: '.75em',
-			},
+		const vocabProps = {
+			buttonLabel: 'Submit changes',
+			description: this.props.description,
+			name: this.props.name,
+			onSubmit: this.handleSubmit,
+		}
 
-			deleteButton: {
+		const deleteButtonProps = {
+			children: `Delete ${this.props.name}`,
+			onClick: this.props.onDelete,
+			style: {
 				backgroundColor: '#cc092f',
 				border: '2px solid #aa070d',
 				borderRadius: '2px',
@@ -61,28 +62,10 @@ const EditVocabularyModal = React.createClass({
 		}
 
 		return (
-			<Modal
-				isOpen={this.state.open}
-				onRequestClose={this.closeModal}
-				style={style.modal}
-			>
-				<header style={style.header}>
-					Edit metadata for {this.props.name}
-				</header>
-
-				<VocabularyMetadataForm
-					buttonLabel="Submit changes"
-					description={this.props.description}
-					name={this.props.name}
-					onSubmit={this.handleSubmit} 
-				/>
-
-				<button
-					children={'Delete ' + this.props.name}
-					onClick={this.props.onDelete}
-					style={style.deleteButton}
-				/>
-			</Modal>
+			<ModalWithHeader {...modalProps}>
+				<VocabularyMetadataForm {...vocabProps} />
+				<button {...deleteButtonProps} />
+			</ModalWithHeader>
 		)
 	}
 })

@@ -27,6 +27,7 @@
     "color-shade": "^1.0.0",
     "css-loader": "^0.23.1",
     "debounce": "^1.0.0",
+    "deep-assign": "^2.0.0",
     "es6-promise": "^3.2.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "is-absolute-url": "^2.0.0",
