@@ -130,11 +130,13 @@ const Facet = React.createClass({
 		if (!stroke)
 			stroke = '#1e1e1e'
 
+		// remember to convert the hash for hex colors! (%23)
+		stroke = stroke.replace(/^#/, '%23')
+
 		const transformDeg = this.state.open ? 90 : 0
 		const arrowSvg = [
 		'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">',
-			// remember to urlencode the hash for hex colors! (%23)
-			'<path d="M2,1L8,5L2,9" stroke="%23" stroke-width="2" fill="transparent" />',
+			'<path d="M2,1L8,5L2,9" stroke="'+stroke+'" stroke-width="2" fill="transparent" />',
 		'</svg>'].join('')
 
 		const props = {
