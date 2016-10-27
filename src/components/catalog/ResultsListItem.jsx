@@ -5,7 +5,8 @@ const T = React.PropTypes
 
 const ResultsListItem = React.createClass({
 	propTypes: {
-
+		item: T.object,
+		position: T.number,
 	},
 
 	clearfix: function () {
@@ -91,11 +92,11 @@ const ResultsListItem = React.createClass({
 	},
 
 	isCollection: function () {
-		return this.props.type === 'Collection'
+		return this.props.item.type === 'Collection'
 	},
 
 	isWork: function () {
-		return this.props.type === 'Work'
+		return this.props.item.type === 'Work'
 	},
 
 	maybeRenderType: function () {
@@ -104,30 +105,31 @@ const ResultsListItem = React.createClass({
 
 		const style = this.getStyles().type
 
-		return <span style={style} children={this.props.type}/>
+		return <span style={style} children={this.props.item.type}/>
 	},
 
 	renderItemPosition: function () {
 		const style = this.getStyles().number
 
-		return <span style={style} children={this.props.itemNumber} />
+		return <span style={style} children={this.props.position} />
 	},
 
 	renderThumbnail: function () {
-		if (!this.props.thumbnail_path)
+		if (!this.props.item.thumbnail_path)
 			return
 
 		const style = this.getStyles().thumbnail
-		const srcUrl = process.env.API_BASE_URL + this.props.thumbnail_path
+		const srcUrl = process.env.API_BASE_URL + this.props.item.thumbnail_path
 
 		return <img style={style} src={srcUrl} />
 	},
 
 	render: function () {
 		const styles = this.getStyles()
+		const title = [].concat(this.props.item.title)
 
-		const mainTitle = this.props.title.shift()
-		const subtitles = this.props.title
+		const mainTitle = title.shift()
+		const subtitles = title
 
 		const urlBase = this.isCollection() ? '/collections' : '/works'
 
@@ -150,8 +152,8 @@ const ResultsListItem = React.createClass({
 
 				{this.renderThumbnail()}
 
-				<p style={styles.author}>{this.props.creator.join(', ')}</p>
-				<p style={styles.format}>{this.props.format_medium}</p>
+				<p style={styles.author}>{this.props.item.creator.join(', ')}</p>
+				<p style={styles.format}>{this.props.item.format_medium}</p>
 
 				{this.clearfix()}
 			</div>
