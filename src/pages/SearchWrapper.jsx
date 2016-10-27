@@ -10,9 +10,14 @@ import FacetListWithViewMore from '../components/catalog/FacetListWithViewMore.j
 import SearchBreadcrumb from '../components/catalog/SearchBreadcrumb.jsx'
 import SearchBreadcrumbTrail from '../components/catalog/SearchBreadcrumbTrail.jsx'
 import SearchResultsHeader from '../components/catalog/SearchResultsHeader.jsx'
+
+import ResultsContainer from '../components/catalog/ResultsContainer.jsx'
 import ResultsListItem from '../components/catalog/ResultsListItem.jsx'
+import ResultsGalleryItem from '../components/catalog/ResultsGalleryItem.jsx'
 
 import { getBreadcrumbList } from '../../lib/facet-helpers'
+
+const slice = Array.prototype.slice
 
 const SearchWrapper = React.createClass({
 	componentWillMount: function () {
@@ -32,7 +37,34 @@ const SearchWrapper = React.createClass({
 		const query = this.props.search.query
 		const options = this.props.search.options
 
-		this.props.searchCatalog(query, {}, this.props.search.options).then(this.handleSearchResponse)
+		this.props.searchCatalog(query, {}, this.props.search.options)
+		.then(this.handleSearchResponse)
+	},
+
+	determineResultsComponent: function (which) {
+		switch (which) {
+			case 'gallery':
+				return ResultsGalleryItem
+
+			case 'list':
+			default:
+				return ResultsListItem
+		}
+	},
+
+	getResultsComponentStyle: function (which) {
+		switch (which) {
+			case 'gallery':
+				return {
+					alignItems: 'center',
+					display: 'flex',
+					flexWrap: 'wrap',
+				}
+
+			case 'list':
+			default:
+				return {}
+		}
 	},
 
 	getFacetGroupInfo: function (pool, name) {
@@ -95,8 +127,11 @@ const SearchWrapper = React.createClass({
 	},
 
 	handleSubmitSearchQuery: function (query) {
-		this.props.searchCatalog(query, this.props.search.facets, this.props.search.options)
-		.then(this.handleSearchResponse)
+		this.props.searchCatalog(
+			query,
+			this.props.search.facets,
+			this.props.search.options
+		).then(this.handleSearchResponse)
 	},
 
 	maybeRenderLoadingModal: function () {
@@ -125,11 +160,20 @@ const SearchWrapper = React.createClass({
 	},
 
 	onRemoveFacet: function (key, facet) {
-		this.props.toggleSearchFacet(key, facet, false).then(this.handleSearchResponse)
+		return this._onToggleFacet.apply(null, 
+			[].concat(false, slice.call(arguments))
+		)
 	},
 
 	onSelectFacet: function (key, facet) {
-		this.props.toggleSearchFacet(key, facet, true).then(this.handleSearchResponse)
+		return this._onToggleFacet.apply(null,
+			[].concat(false, slice.call(arguments))
+		)
+	},
+
+	_onToggleFacet: function (which, key, facet) {
+		return this.props.toggleSearchFacet(key, facet, which)
+		.then(this.handleSearchResponse)
 	},
 
 	renderBreadcrumbs: function () {
@@ -229,26 +273,18 @@ const SearchWrapper = React.createClass({
 		if (!this.state.results)
 			return 
 
-		const styles = {
-			container: {
-				marginTop: '10px',
+		const which = this.state.resultsView
+		
+		const props = {
+			data: this.state.results,
+			displayComponent: this.determineResultsComponent(which),
+			offset: this.state.pages.offset_value,
+			containerProps: {
+				style: this.getResultsComponentStyle(which),
 			}
 		}
 
-		return (
-			<div style={styles.container}>
-				{this.state.results.map(this.renderResultsItem)}
-			</div>
-		)
-	},
-
-	renderResultsItem: function (data, index) {
-		const props = assign({}, data, {
-			itemNumber: this.state.pages.offset_value + 1 + index,
-			key: 'result-' + index + '-' + data.id,
-		})
-
-		return React.createElement(ResultsListItem, props)
+		return <ResultsContainer {...props} />
 	},
 
 	toggleResultsView: function (val) {
