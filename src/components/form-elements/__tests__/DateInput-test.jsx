@@ -15,9 +15,9 @@ describe('<DateInput />', function () {
 		const d = new Date()
 		const value = d.toISOString()
 
-		const year = d.getFullYear()
-		let month = (d.getMonth() + 1) + ''
-		let day = d.getDate() + ''
+		const year = d.getUTCFullYear()
+		let month = (d.getUTCMonth() + 1) + ''
+		let day = d.getUTCDate() + ''
 
 		if (month.length === 1)
 			month = '0' + month
@@ -37,9 +37,9 @@ describe('<DateInput />', function () {
 
 		const onChange = (val) => {
 			expect(val).to.be.an.instanceOf(Date)
-			expect(val.getFullYear()).to.equal(split[0])
-			expect(val.getMonth()).to.equal(split[1] - 1)
-			expect(val.getDate()).to.equal(split[2])
+			expect(val.getUTCFullYear()).to.equal(split[0])
+			expect(val.getUTCMonth()).to.equal(split[1] - 1)
+			expect(val.getUTCDate()).to.equal(split[2])
 			done()
 		}
 
@@ -53,9 +53,9 @@ describe('<DateInput />', function () {
 		const split = update.split('-').map(Number)
 
 		const onChange = (val) => {
-			expect(val.getFullYear()).to.equal(split[0])
-			expect(val.getMonth()).to.equal(split[1] - 1)
-			expect(val.getDate()).to.equal(split[2])
+			expect(val.getUTCFullYear()).to.equal(split[0])
+			expect(val.getUTCMonth()).to.equal(split[1] - 1)
+			expect(val.getUTCDate()).to.equal(split[2])
 			done()
 		}
 

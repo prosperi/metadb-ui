@@ -36,7 +36,7 @@ const DateInput = React.createClass({
 		if (values[1] > 0)
 			values[1] = values[1] - 1
 
-		return new (Function.prototype.bind.apply(Date, [null].concat(values)))
+		return new Date(Date.UTC.apply(Date, values))
 	},
 
 	handleBlur: function () {
