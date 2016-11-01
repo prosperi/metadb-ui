@@ -133,7 +133,7 @@ const ResultsListItem = React.createClass({
 
 		const urlBase = this.isCollection() ? '/collections' : '/works'
 
-		const url = `${urlBase}/${this.props.id}`
+		const url = `${urlBase}/${this.props.item.id}`
 
 		return (
 			<div style={styles.container}>
