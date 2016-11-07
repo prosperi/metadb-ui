@@ -4,6 +4,9 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var Bourbon = require('node-bourbon')
 var Neat = require('node-neat')
 
+var config = require('./config')
+
+
 module.exports = {
 	entry: [
 		'./src/index.js',
@@ -45,11 +48,9 @@ module.exports = {
 		new ExtractTextPlugin('style.css', {
 			allChunks: true,
 		}),
-		new webpack.EnvironmentPlugin([
-			'API_BASE_URL',
-			'AUTH_BASE_URL',
-			'SEARCH_BASE_URL',
-		]),
+		new webpack.DefinePlugin({
+			'process.env': config
+		})
 	],
 	sassLoader: {
 		includePaths: Bourbon.with(Neat.includePaths)
