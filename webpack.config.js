@@ -4,7 +4,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var Bourbon = require('node-bourbon')
 var Neat = require('node-neat')
 
-var config = require('./config')
+var config = require('./env.config')
 
 
 module.exports = {
