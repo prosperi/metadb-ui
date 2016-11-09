@@ -87,5 +87,8 @@
     "raw-loader": "^0.5.1",
     "react-addons-test-utils": "^15.3.1",
     "redux-mock-store": "^1.2.0"
-  }
+  },
+	"plugins": [
+		"karma-mocha"
+	]
 }

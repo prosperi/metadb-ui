@@ -26,11 +26,16 @@ const ThumbnailPreview = React.createClass({
 
 	render: function () {
 		return(
-			<figure className="thumbnail-preview" onClick={this.handleOnClick}>
-				<img src={this.props.src} />
+			<div className="thumbnail-preview-panel">
+				<figure className="thumbnail-preview" >
+					<img src={this.props.src} />
 
-				{this.maybeRenderCaption()}
-			</figure>
+					{this.maybeRenderCaption()}
+					<button onClick={this.handleOnClick}>Open Viewer</button>
+				</figure>
+				<a href="#">View/Create Derivatives</a>
+				<h6>Last updated: YYYY - MM - DD</h6>
+			</div>
 		)
 	}
 })
