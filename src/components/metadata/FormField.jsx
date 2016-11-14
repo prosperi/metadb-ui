@@ -52,15 +52,6 @@ const FormField = React.createClass({
 		renderer: T.func,
 	},
 
-	getDefaultProps: function () {
-		return {
-			onChange: noop,
-			onAddValueField: noop,
-			onRemoveValueField: noop,
-			value: [],
-		}
-	},
-
 	allowsMultipleValues: function () {
 		return !!this.props.multiple
 	},
@@ -138,18 +129,21 @@ const FormField = React.createClass({
 		// we'll only worry about the first item in the array (of which there
 		// should _probably_ only be one)
 		if (!this.allowsMultipleValues())
-			values = this.props.value.slice(0, 1)
+			values = values.slice(0, 1)
 
 		const componentProps = assign({}, this.props)
-		delete componentProps.value
 		delete componentProps.multiple
+		delete componentProps.onAddValueField
+		delete componentProps.onRemoveValueField
+		delete componentProps.renderer
+		delete componentProps.value
 
 		const keyBase = 'ff-' + this.props.name
 
 		return values.map((value, index) => {
 			const props = assign({
-				key: keyBase + '-value-' + index,
-				onChange: this.handleChange,
+				key: keyBase + '-value-' + value + '-' + index,
+				onChange: this.handleChange.bind(null, index),
 				value,
 			}, componentProps)
 
