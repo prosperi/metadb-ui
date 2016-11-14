@@ -99,6 +99,9 @@ function removeValueFromWork (state, action) {
 		)
 	}
 
+	if (!updates[key].length)
+		updates[key][0] = ''
+
 	return assign({}, state, {
 		isChanged: changed,
 		updates,
