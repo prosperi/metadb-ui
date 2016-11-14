@@ -3,7 +3,8 @@ import withRouter from 'react-router/lib/withRouter'
 import assign from 'object-assign'
 import scrollToTop from '../../lib/scroll-to-top'
 
-import WorkMetadataForm from '../components/WorkMetadataForm.jsx'
+// import WorkMetadataForm from '../components/WorkMetadataForm.jsx'
+import GenericWork from '../components/schema/GenericWork.jsx'
 import ThumbnailPreview from '../components/media/ThumbnailPreview.jsx'
 import OpenSeadragonViewer from '../components/media/OpenSeadragonViewer.jsx'
 
@@ -59,7 +60,7 @@ const Work = React.createClass({
 
 		if (!work.data.thumbnail_path)
 			return
-	  console.log(work.data.thumbnail_path);
+
 		return (
 			<ThumbnailPreview
 				onClick={this.adjustSections}
@@ -102,7 +103,7 @@ const Work = React.createClass({
 		const schema = workData.form
 
 		return (
-			<WorkMetadataForm
+			<GenericWork
 				{...this.props}
 
 				data={assign({}, workData, updates)}
