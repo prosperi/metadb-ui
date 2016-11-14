@@ -11,6 +11,7 @@ module.exports = {
 	entry: [
 		'./src/index.js',
 		'./src/scss/main.scss',
+		//'./node-modules/pdfjs-dist/web/pdf_viewer.css'
 	],
 
 	output: {

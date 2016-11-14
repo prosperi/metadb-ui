@@ -6,6 +6,7 @@ import scrollToTop from '../../lib/scroll-to-top'
 import WorkMetadataForm from '../components/WorkMetadataForm.jsx'
 import ThumbnailPreview from '../components/media/ThumbnailPreview.jsx'
 import OpenSeadragonViewer from '../components/media/OpenSeadragonViewer.jsx'
+import PDFViewer from '../components/media/PDFViewer.jsx'
 
 
 const Work = React.createClass({
@@ -73,7 +74,7 @@ const Work = React.createClass({
 			<div>
 				{
 					this.state.mediaOpen
-					? this.openSeadragonViewer()
+					? this.pdfjsViewer()
 					: this.mediaPreview()
 				}
 			</div>
@@ -85,6 +86,15 @@ const Work = React.createClass({
 		return (
 			<div>
 				<OpenSeadragonViewer tileSources={work.data.thumbnail_path} onClose={this.adjustSections}/>
+			</div>
+		)
+	},
+
+	pdfjsViewer: function(){
+		const work = this.props.work
+		return(
+			<div>
+				<PDFViewer tileSources={work.data.thumbnail_path} onClose={this.adjustSections}/>
 			</div>
 		)
 	},
