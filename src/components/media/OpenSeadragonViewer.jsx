@@ -17,11 +17,11 @@ const OpenSeadragonViewer = React.createClass({
 		return false
 	},
 
-	initOpenSeadragon: function (id) {
+	initOpenSeadragon: function () {
 		this.viewer = OpenSeadragon({
 			id: 'react-osd--viewer',
 			prefixUrl: 'http://openseadragon.github.io/openseadragon/images/',
-			tileSources: 'http://openseadragon.github.io/example-images/duomo/duomo.dzi',
+			tileSources: this.props.tileSources,
 		})
 	},
 

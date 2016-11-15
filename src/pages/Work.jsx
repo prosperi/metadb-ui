@@ -81,6 +81,15 @@ const Work = React.createClass({
 	},
 
 	openSeadragonViewer: function () {
+		const work = this.props.work
+		if (!work || !work.data)
+			return
+
+		if (work.isFetching || !Object.keys(work.data).length)
+			return
+
+		const workData = work.data
+
 		return (
 			<div>
 				<button
@@ -90,7 +99,7 @@ const Work = React.createClass({
 						float: 'right',
 					}}
 				/>
-				<OpenSeadragonViewer />
+			<OpenSeadragonViewer tileSources={[workData.iiif_image]}/>
 			</div>
 		)
 	},
@@ -141,8 +150,8 @@ const Work = React.createClass({
 		return (
 			<header>
 				<h1 style={{display: 'inline-block'}}>{title}</h1>
-				
-				<a 
+
+				<a
 					href={debugUrl}
 					style={{
 						fontFamily: 'monospace',
