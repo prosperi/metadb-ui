@@ -33,6 +33,10 @@ const TextInput = React.createClass({
 				defaultValue: this.props.value || '',
 				onBlur: this.handleBlur,
 				onFocus: this.handleFocus,
+
+				// we're overriding `onChange` to only trigger on blur,
+				// so we need to noop the original function
+				onChange: () => {},
 			}
 		)
 

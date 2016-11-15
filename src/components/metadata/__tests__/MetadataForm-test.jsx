@@ -2,7 +2,7 @@ import React from 'react'
 import assign from 'object-assign'
 import { expect } from 'chai'
 import { shallow, mount } from 'enzyme'
-import WorkMetadataForm from '../WorkMetadataForm.jsx'
+import MetadataForm from '../MetadataForm.jsx'
 import FormField from '../FormField.jsx'
 
 const defaultData = {
@@ -26,13 +26,13 @@ const wrapEl = (xtend, renderer) => {
 		onSubmit: noop,
 	}, xtend)
 
-	return renderer(React.createElement(WorkMetadataForm, props))
+	return renderer(React.createElement(MetadataForm, props))
 }
 
 const shallowEl = xtend => wrapEl(xtend, shallow)
 const mountEl = xtend => wrapEl(xtend, mount)
 
-describe('<WorkMetadataForm />', function () {
+describe('<MetadataForm />', function () {
 	describe('the `onSubmit` handler', function () {
 		it('is called when the form is submitted', function (done) {
 			const onSubmit = () => { done() }

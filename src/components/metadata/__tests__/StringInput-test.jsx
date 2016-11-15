@@ -71,5 +71,14 @@ describe('<StringInput />', function () {
 			$el.simulate('focus', {target: {value}})
 			$el.simulate('blur', {target: {value}})
 		})
+
+		it('is not called when input `change` is called', function () {
+			const onChange = () => {
+				throw Error('`onChange` handler should not be called')
+			}
+
+			const $el = shallowEl({onChange})
+			$el.simulate('change', {target: {value: 'hi'}})
+		})
 	})
 })

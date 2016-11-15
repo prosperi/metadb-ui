@@ -6,40 +6,41 @@ const T = React.PropTypes
 
 const DEFAULT_FIELD_NAME = 'undefined-field'
 
-const WorkMetadataForm = React.createClass({
+const MetadataForm = React.createClass({
 	propTypes: {
-		data: T.object.isRequired,
+		data: T.object,
 
-		onAddValueField: T.func.isRequired,
-		onChange: T.func.isRequired,
-		onRemoveValueField: T.func.isRequired,
-		onSubmit: T.func.isRequired,
+		onAddValueField: T.func,
+		onChange: T.func,
+		onRemoveValueField: T.func,
+		onSubmit: T.func,
 
 		defaultProps: T.object,
 	},
 
 	handleOnAddValueField: function (/* name */) {
-		this.props.onAddValueField.apply(null, arguments)
+		this.props.onAddValueField && this.props.onAddValueField.apply(null, arguments)
 	},
 
 	handleOnChange: function (/* name, index, value */) {
-		this.props.onChange.apply(null, arguments)
+		this.props.onChange && this.props.onChange.apply(null, arguments)
 	},
 
 	handleOnRemoveValueField: function (/* name, index */) {
-		this.props.onRemoveValueField.apply(null, arguments)
+		this.props.onRemoveValueField && this.props.onRemoveValueField.apply(null, arguments)
 	},
 
 	handleSubmit: function (ev) {
 		ev.preventDefault && ev.preventDefault()
-		this.props.onSubmit()
+		this.props.onSubmit && this.props.onSubmit()
 	},
 
 	renderFormFields: function () {
+		const data = this.props.data || {}
 		return React.Children.map(this.props.children, (formElement, index) => {
 			// if there's no name, maybe we should set a default one?
 			const name = formElement.props.name || (DEFAULT_FIELD_NAME + '-' + index)
-			const value = this.props.data[name]
+			const value = data[name] || ['']
 
 			const wrapperDefaults = {
 				onChange: this.handleOnChange.bind(null, name),
@@ -69,4 +70,4 @@ const WorkMetadataForm = React.createClass({
 	}
 })
 
-export default WorkMetadataForm
+export default MetadataForm

@@ -38,8 +38,10 @@ describe('Vocabulary actionCreator', function () {
 		afterEach(fetchMock.restore)
 
 		const data = {
-			name: 'Test Vocabulary',
-			description: 'Test Description',
+			label: ['Test Vocabulary'],
+			alt_label: ['Test Description'],
+			pref_label: [],
+			hidden_label: [],
 		}
 
 		const store = mockStore({vocabularies: []})
@@ -128,7 +130,7 @@ describe('Vocabulary actionCreator', function () {
 			return store.dispatch(actions.fetchAllVocabularies())
 				.then(() => {
 					expect(store.getActions()).to.deep.equal(expectActions)
-				})	
+				})
 		})
 	})
 

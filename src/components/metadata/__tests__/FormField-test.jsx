@@ -8,9 +8,9 @@ const RENDERER_DISPLAY_NAME = 'LolComponent'
 
 const wrapper = (xtend, renderer) => {
 	const props = assign({
-		name: 'test-form-field-' + Date.now(),
-		renderer: p => React.createElement('p', p),
-		value: [''],
+		name: 'test-form-field',
+		renderer: p => <input type="text" defaultValue={p.value} />,
+		value: ['value'],
 	}, xtend)
 
 	// give our renderer a hook for us to easily grab onto
@@ -32,6 +32,11 @@ const fillArray = val => {
 }
 
 describe('<FormField />', function () {
+	it('renders a component when value is an empty array', function () {
+		const $el = shallowEl({data: []})
+		expect($el.find(RENDERER_DISPLAY_NAME)).to.have.length(1)
+	})
+
 	describe('the `label` prop', function () {
 		it('renders a <label/> with provided value', function () {
 			const label = 'form field label'
@@ -71,6 +76,24 @@ describe('<FormField />', function () {
 
 			const $el = shallowEl({multiple: false, value})
 			expect($el.find(RENDERER_DISPLAY_NAME)).to.have.length(1)
+		})
+	})
+
+	describe('the rendered value', function () {
+		describe('when `onChange` is triggered', function () {
+			it('sends the signature (index, value)', function (done) {
+				const onChange = function (/* index, value */) {
+					expect(arguments).to.have.length(2)
+					expect(arguments[0]).to.be.a.number
+					done()
+				}
+
+				const value = ['first', 'second']
+				const $el = shallowEl({onChange, value, multiple: true})
+
+				const $target = $el.find(RENDERER_DISPLAY_NAME).last()
+				$target.simulate('change', {target: {value: 'new value'}})
+			})
 		})
 	})
 

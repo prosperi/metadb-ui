@@ -12,7 +12,7 @@ import CreateVocabularyModal from '../components/vocabulary/CreateVocabularyModa
 // active vocabulary / terms side
 import TermsManager from '../components/vocabulary/TermsManager.jsx'
 import BulkTermsEditModal from '../components/vocabulary/BulkTermsEditModal.jsx'
-import VocabularyEditModal from '../components/vocabulary/VocabularyEditModal.jsx'
+import EditVocabularyModal from '../components/vocabulary/EditVocabularyModal.jsx'
 import TermEditModal from '../components/vocabulary/TermEditModal.jsx'
 
 import { DELETE_VOCABULARY_WARNING } from '../messages'
@@ -24,7 +24,7 @@ const MODAL = {
 	ADD_VOCABULARY: 'addVocabulary',
 	BULK_TERMS: 'bulkTerms',
 	TERM_EDIT: 'termEdit',
-	VOCABULARY_EDIT: 'vocabularyEdit',
+	EDIT_VOCABULARY: 'editVocabulary',
 }
 
 const VocabularyManager = React.createClass({
@@ -39,7 +39,7 @@ const VocabularyManager = React.createClass({
 				addVocabulary: false,
 				bulkTerms: false,
 				termEdit: false,
-				vocabularyEdit: false,
+				editVocabulary: false,
 			},
 		}
 	},
@@ -90,7 +90,7 @@ const VocabularyManager = React.createClass({
 			return
 
 		// close edit modal
-		this.closeModal(MODAL.VOCABULARY_EDIT)
+		this.closeModal(MODAL.EDIT_VOCABULARY)
 
 		// call `deleteVocabulary`
 		this.props.deleteVocabulary(vocab).then(() => {
@@ -112,7 +112,7 @@ const VocabularyManager = React.createClass({
 		vocab.label = vocab.pref_label = [name]
 		vocab.alt_label = [description]
 
-		this.closeModal(MODAL.VOCABULARY_EDIT)
+		this.closeModal(MODAL.EDIT_VOCABULARY)
 
 		this.props.updateVocabularyMetadata(vocab)
 		.then(() => {
@@ -168,6 +168,22 @@ const VocabularyManager = React.createClass({
 		return React.createElement(BulkTermsEditModal, props)
 	},
 
+	renderEditVocabularyModal: function () {
+		if (!this.state.modals[MODAL.EDIT_VOCABULARY])
+			return
+
+		const activeVocab = this.state.activeVocabulary
+
+		const props = {
+			data: activeVocab,
+			onDelete: this.handleDeleteVocabulary,
+			onSubmit: this.handleUpdateVocabulary,
+			onClose: this.closeModal.bind(null, MODAL.EDIT_VOCABULARY),
+		}
+
+		return React.createElement(EditVocabularyModal, props)
+	},
+
 	renderTermEditModal: function () {
 		if (!this.state.modals[MODAL.TERM_EDIT])
 			return
@@ -212,7 +228,7 @@ const VocabularyManager = React.createClass({
 				label={vocabName}
 				onAddTerm={this.props.addTermToVocabulary.bind(null, activeVocab)}
 				onBulkTermsOpen={this.openModal.bind(null, MODAL.BULK_TERMS)}
-				onEditVocabulary={this.openModal.bind(null, MODAL.VOCABULARY_EDIT)}
+				onEditVocabulary={this.openModal.bind(null, MODAL.EDIT_VOCABULARY)}
 				onRemoveTerm={this.props.removeTermFromVocabulary.bind(null, activeVocab)}
 				onTermClick={this.setActiveEditingTerm}
 				terms={terms.data}
@@ -220,28 +236,9 @@ const VocabularyManager = React.createClass({
 		)
 	},
 
-	renderVocabularyEditModal: function () {
-		if (!this.state.modals[MODAL.VOCABULARY_EDIT])
-			return
-
-		const activeVocab = this.state.activeVocabulary
-		const name = activeVocab.pref_label[0]
-		const description = activeVocab.alt_label[0] || ''
-
-		const props = {
-			name,
-			description,
-			onDelete: this.handleDeleteVocabulary,
-			onSubmit: this.handleUpdateVocabulary,
-			onClose: this.closeModal.bind(null, MODAL.VOCABULARY_EDIT),
-		}
-
-		return React.createElement(VocabularyEditModal, props)
-	},
-
 	renderVocabularyList: function () {
 		const vocabs = this.props.vocabularies
-		
+
 		if (!vocabs)
 			return
 
@@ -265,7 +262,7 @@ const VocabularyManager = React.createClass({
 			props.activeKey = activeKey
 			props.activeIndex = this.state.activeVocabularyIndex
 			props.vocabularies = vocabs.data
-		} 
+		}
 
 		else props.isLoading = true
 
@@ -316,7 +313,7 @@ const VocabularyManager = React.createClass({
 				{this.renderAddVocabularyModal()}
 				{this.renderBulkTermsModal()}
 				{this.renderTermEditModal()}
-				{this.renderVocabularyEditModal()}
+				{this.renderEditVocabularyModal()}
 			</div>
 		)
 	}

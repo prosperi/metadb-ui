@@ -1,7 +1,7 @@
 // GenericWork schema form
 import React from 'react'
 
-import WorkMetadataForm from '../metadata/WorkMetadataForm.jsx'
+import MetadataForm from '../metadata/MetadataForm.jsx'
 import FormField from '../metadata/FormField.jsx'
 import StringInput from '../metadata/StringInput.jsx'
 
@@ -21,7 +21,7 @@ const GenericWork = React.createClass({
 		}
 
 		return (
-			<WorkMetadataForm {...formProps}>
+			<MetadataForm {...formProps}>
 				<FormField name="title" label="Title" />
 				<FormField name="description_note" label="Description (Note)" />
 				<FormField name="creator" label="Creator" multiple />
@@ -41,7 +41,7 @@ const GenericWork = React.createClass({
 				<FormField name="source" label="Source" />
 				<FormField name="rights" label="Rights (Digital)" />
 				<FormField name="relation_ispartof" label="Relation (IsPartOf)" />
-			</WorkMetadataForm>
+			</MetadataForm>
 		)
 	}
 })

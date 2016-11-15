@@ -45,7 +45,7 @@ describe('<TextInput />', function () {
 	describe('the `onChange` handler`', function () {
 		const initialValue = 'hey i am a value'
 
-		it ('is called when the input is blurred + value has changed', function (done) {
+		it ('is called when the textarea is blurred + value has changed', function (done) {
 			const onChange = val => {
 				expect(val).to.not.equal(initialValue)
 				done()
@@ -56,7 +56,7 @@ describe('<TextInput />', function () {
 			$el.simulate('blur', {target: {value: 'something else!!!'}})
 		})
 
-		it('is not called when input is blurred + value has not changed', function () {
+		it('is not called when textarea is blurred + value has not changed', function () {
 			const onChange = () => {
 				throw Error('`onChange` handler should not be called')
 			}
@@ -64,6 +64,15 @@ describe('<TextInput />', function () {
 			const $el = shallowEl({onChange})
 			$el.simulate('focus', {target: {value: initialValue}})
 			$el.simulate('blur', {target: {value: initialValue}})
+		})
+
+		it('is not called when textarea `change` is called', function () {
+			const onChange = () => {
+				throw Error('`onChange` handler should not be called')
+			}
+
+			const $el = shallowEl({onChange})
+			$el.simulate('change', {target: {value: 'hi'}})
 		})
 	})
 })

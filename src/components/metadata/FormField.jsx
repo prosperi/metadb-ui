@@ -1,28 +1,15 @@
-/**
-	<FormField
-		name="title_en"
-		label="Title (English)"
-		component={TextInput}
-		/>
+// a wrapper for form components that adds a label + multiple value ui
+// and allows for better form composability
 
-		<FormField
-			name="subject_ocm"
-			label="Subject (OCM)"
-			component={ControlledVocabulary}
-			authority="https://example-ocm.org"
-			multiple
-		/>
-*/
+// TODO: add option to display multiple values but not append/remove inputs
+
 import React from 'react'
 import assign from 'object-assign'
-
-const noop = () => {}
 
 const T = React.PropTypes
 
 const FormField = React.createClass({
 	propTypes: {
-		name: T.string.isRequired,
 
 		/**
 		 *  implied-required fields
@@ -35,11 +22,26 @@ const FormField = React.createClass({
 		 */
 
 		onChange: T.func,
-		value: T.array,
+		renderer: T.func,
+		value: T.any,
 
+		/**
+		 *  optional fields
+		 */
+
+		// whether or not a <label> containing the `label` or `name`
+		// field is rendered
 		hideLabel: T.bool,
+
+		// text used for a form label. if empty, the `name` field is used
 		label: T.string,
+
+		// whether or not multiple form elements can be rendered.
+		// if true, button controls are added to allow for adding/removing fields
 		multiple: T.bool,
+
+		// data key for the field
+		name: T.string,
 
 		// these are required to inform the form state handler that
 		//   a) an empty value has been added to the array
@@ -48,8 +50,6 @@ const FormField = React.createClass({
 		// values. in practice, these will be popuated from the form container
 		onAddValueField: T.func,
 		onRemoveValueField: T.func,
-
-		renderer: T.func,
 	},
 
 	allowsMultipleValues: function () {
@@ -69,16 +69,20 @@ const FormField = React.createClass({
 		this.props.onAddValueField && this.props.onAddValueField()
 	},
 
-	handleChange: function (ev) {
-		if (ev.target && ev.target.value)
-			return this.props.onChange(ev.target.value)
-
-		return this.props.onChange(ev)
+	handleOnChange: function (/* index, value */) {
+		this.props.onChange && this.props.onChange.apply(null, arguments)
 	},
 
 	handleRemoveValueRow: function (index, ev) {
 		ev.preventDefault && ev.preventDefault()
 		this.props.onRemoveValueField && this.props.onRemoveValueField(index)
+	},
+
+	hasNoLabelField: function () {
+		return (
+			typeof this.props.label === 'undefined'
+			&& typeof this.props.name === 'undefined'
+		)
 	},
 
 	maybeRenderAddButton: function () {
@@ -89,7 +93,7 @@ const FormField = React.createClass({
 	},
 
 	maybeRenderLabel: function () {
-		if (this.props.hideLabel)
+		if (this.props.hideLabel || this.hasNoLabelField())
 			return false
 
 		return (
@@ -128,22 +132,37 @@ const FormField = React.createClass({
 		// if we're only allowing one value to be passed as a business rule,
 		// we'll only worry about the first item in the array (of which there
 		// should _probably_ only be one)
-		if (!this.allowsMultipleValues())
+		if (!this.allowsMultipleValues() && values.length > 1)
 			values = values.slice(0, 1)
 
+		// I'm having trouble replicating this problem in a test, but in practice
+		// a field without a value (an empty array) will not render a component.
+		// In the future it might be good to have a toggle for this to explictly
+		// hide an element if the value is empty
+		if (!values.length)
+			values[0] = ''
+
+		// there's probably a cleaner way to do this, but what I'm trying to
+		// do here is allow renderer-specific props to be passed through the
+		// FormField component. however, some of the props that we pass to
+		// the renderer (specifically, `value` and `onChange`) are modified
+		// for each value (ie. `onChange` is bound with the index + often
+		// passed from the Form container, meaning `this.props.onChange`
+		// doesn't initially exist + will cause an error to be thrown).
 		const componentProps = assign({}, this.props)
 		delete componentProps.multiple
 		delete componentProps.onAddValueField
+		delete componentProps.onChange
 		delete componentProps.onRemoveValueField
 		delete componentProps.renderer
 		delete componentProps.value
 
-		const keyBase = 'ff-' + this.props.name
+		const keyBase = 'ff-' + (this.props.name || 'unnamed')
 
 		return values.map((value, index) => {
 			const props = assign({
-				key: keyBase + '-value-' + value + '-' + index,
-				onChange: this.handleChange.bind(null, index),
+				key: keyBase + '-v-' + value + '-' + index,
+				onChange: this.handleOnChange.bind(null, index),
 				value,
 			}, componentProps)
 
