@@ -99,7 +99,12 @@ const Work = React.createClass({
 						float: 'right',
 					}}
 				/>
-			<OpenSeadragonViewer tileSources={[workData.iiif_image]}/>
+			<OpenSeadragonViewer
+					tileSources={workData.iiif_images}
+					sequenceMode={workData.iiif_images.length > 1}
+					showReferenceStrip={workData.iiif_images.length > 1}
+					referenceStripScroll='vertical'
+			/>
 			</div>
 		)
 	},
