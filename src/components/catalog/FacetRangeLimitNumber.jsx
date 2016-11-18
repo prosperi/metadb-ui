@@ -1,19 +1,19 @@
-// this acts as a bridge between the FacetPanel interface 
-// and the RangeLimit component by calculating the range data
+// this acts as a bridge between the Facet interface 
+// and the RangeSliderNumber component by calculating
+// the range data
 
 import React from 'react'
-import RangeLimit from './RangeLimit.jsx'
+import RangeSliderNumber from './RangeSliderNumber.jsx'
 import FacetListSelectedItem from './FacetListSelectedItem.jsx'
+import calculateRange from './common/calculate-range'
 
 const T = React.PropTypes
 
-const RangeLimitFacetWrapper = React.createClass({
+const FacetRangeLimitNumber = React.createClass({
 	propTypes: {
-		data: T.shape({
-			name: T.string,
-			label: T.string,
-			items: T.array,
-		}),
+		name: T.string,
+		label: T.string,
+		items: T.array,
 
 		onSelectFacet: T.func.isRequired,
 		onRemoveSelectedFacet: T.func.isRequired,
@@ -23,52 +23,23 @@ const RangeLimitFacetWrapper = React.createClass({
 	getInitialState: function () {
 		return {
 			hits: 0,
-			items: this.props.data.items,
+			items: this.props.items,
 			max: 0,
 			min: 0,
 		}
 	},
 
 	componentWillMount: function () {
-		this.setState(this.calculateRange())
-	},
-
-	calculateRange: function () {
-		const items = this.props.data.items
-		let max = -Infinity
-		let min = Infinity
-		let totalHits = 0
-
-		// double duty:
-		// a) clean up date values by parsing their numeric value
-		// b) determine min/max/total hits
-		const cleaned = items.map(function (item, index) {
-			let value = item.value = +item.value
-
-			if (value < min)
-				min = value
-
-			if (value > max)
-				max = value
-
-			totalHits += item.hits
-
-			return item
-		})
-
-		return {
-			items: cleaned,
-			hits: totalHits,
-			max,
-			min,
-		}
+		this.setState(calculateRange(this.props.items, v => {
+			return Number(v)
+		}))
 	},
 
 	handleApplyRange: function (range) {
 		const [min, max] = range
 
 		const facet = {
-			name: this.props.data.name,
+			name: this.props.name,
 			label: min + ' - ' + max,
 			value: {
 				begin: min,
@@ -106,7 +77,7 @@ const RangeLimitFacetWrapper = React.createClass({
 		return (
 			<div {...containerProps}>
 				{this.maybeRenderSelectedFacets()}
-				<RangeLimit
+				<RangeSliderNumber
 					max={this.state.max}
 					min={this.state.min}
 					onApplyRange={this.handleApplyRange}
@@ -116,4 +87,4 @@ const RangeLimitFacetWrapper = React.createClass({
 	}
 })
 
-export default RangeLimitFacetWrapper
+export default FacetRangeLimitNumber
