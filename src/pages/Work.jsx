@@ -59,7 +59,7 @@ const Work = React.createClass({
 
 		if (!work.data.thumbnail_path)
 			return
-
+	  console.log(work.data.thumbnail_path);
 		return (
 			<ThumbnailPreview
 				onClick={this.adjustSections}
@@ -81,16 +81,10 @@ const Work = React.createClass({
 	},
 
 	openSeadragonViewer: function () {
+		const work = this.props.work
 		return (
 			<div>
-				<button
-					children="X"
-					onClick={this.adjustSections}
-					style={{
-						float: 'right',
-					}}
-				/>
-				<OpenSeadragonViewer />
+				<OpenSeadragonViewer tileSources={work.data.thumbnail_path} onClose={this.adjustSections}/>
 			</div>
 		)
 	},
@@ -141,8 +135,8 @@ const Work = React.createClass({
 		return (
 			<header>
 				<h1 style={{display: 'inline-block'}}>{title}</h1>
-				
-				<a 
+
+				<a
 					href={debugUrl}
 					style={{
 						fontFamily: 'monospace',
