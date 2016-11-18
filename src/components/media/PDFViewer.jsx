@@ -12,9 +12,9 @@ const PDFViewer = React.createClass({
 		pdfjsLib.getDocument(this.pdfPath).then(function(pdf){
 			console.log("Number of pages: " + pdf.numPages)
 
-			var container = document.getElementById("container");
+			const container = document.getElementById("container");
 
-			for(var i = 1; i <= pdf.numPages; i++){
+			for(let i = 1; i <= pdf.numPages; i++){
 				pdf.getPage(i).then(function(page){
 					const viewport = page.getViewport(1.5)
 					const div = document.createElement("div")
@@ -35,12 +35,11 @@ const PDFViewer = React.createClass({
 					page.render(renderContext)
 							.then(function(){ return page.getTextContent() })
 							.then(function(textContent){
-								var textLayerDiv = document.createElement("div")
+								const textLayerDiv = document.createElement("div")
 								textLayerDiv.setAttribute("class", "textLayer")
-								console.log(textLayerDiv);
-								div.appendChild(textLayerDiv);
-								//console.log(viewerSrc);
-								var textLayer = new viewerSrc.PDFJS.TextLayerBuilder({
+								div.appendChild(textLayerDiv)
+
+								const textLayer = new viewerSrc.PDFJS.TextLayerBuilder({
 									textLayerDiv: textLayerDiv,
 									pageIndex: page.pageIndex,
 									viewport: viewport
