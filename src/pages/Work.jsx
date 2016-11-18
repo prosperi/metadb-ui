@@ -90,12 +90,11 @@ const Work = React.createClass({
 	},
 
 	mediaPreviewSide: function () {
+		// open pdf js viewer only one the work is pdf type
 		return (
 			<div>
 				{
-					this.state.mediaOpen
-					? this.pdfjsViewer()
-					: this.mediaPreview()
+					(this.state.mediaOpen) ? (false ? this.openSeadragonViewer() : this.pdfjsViewer()) : this.mediaPreview()
 				}
 			</div>
 		)
