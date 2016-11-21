@@ -2,7 +2,7 @@ import React from 'react'
 import ModalWithHeader from '../ModalWithHeader.jsx'
 import assign from 'object-assign'
 
-import VocabularyMetadataFormFields from './VocabularyMetadataFormFields.jsx'
+import GenericTerm from '../schema/GenericTerm.jsx'
 
 const T = React.PropTypes
 
@@ -14,8 +14,11 @@ const TermEditModal = React.createClass({
 	},
 
 	getInitialState: function () {
+		const data = assign({}, this.props.data)
+		data.uri = [data.uri]
+
 		return {
-			data: this.props.data,
+			data,
 			open: true,
 		}
 	},
@@ -27,17 +30,18 @@ const TermEditModal = React.createClass({
 	},
 
 	handleOnAddValueField: function (key) {
-		const data = this.state.data
+		const data = assign({}, this.state.data)
 		data[key].push('')
 
 		this.setState({data})
 	},
 
 	handleOnChange: function (key, index, value) {
-		const data = this.state.data
+		const data = assign({}, this.state.data)
 
 		if (key === 'uri')
 			data.uri = value
+
 		else
 			data[key][index] = value
 
@@ -45,7 +49,7 @@ const TermEditModal = React.createClass({
 	},
 
 	handleOnRemoveValueField: function (key, index) {
-		const data = this.state.data
+		const data = assign({}, this.state.data)
 		data[key] = [].concat(
 			data[key].slice(0, index),
 			data[key].slice(index + 1)
@@ -72,16 +76,19 @@ const TermEditModal = React.createClass({
 			}
 		}
 
-		const vocabProps = {
+		const termProps = {
 			data: this.state.data,
 			onAddValueField: this.handleOnAddValueField,
 			onChange: this.handleOnChange,
 			onRemoveValueField: this.handleOnRemoveValueField,
+			onSubmit: this.handleSaveTerm,
 		}
+
+		console.log(termProps)
 
 		return (
 			<ModalWithHeader {...modalProps}>
-				<VocabularyMetadataFormFields {...vocabProps} />
+				<GenericTerm {...termProps} />
 				<footer>
 					<button onClick={this.handleSaveTerm}>Save term</button>
 				</footer>

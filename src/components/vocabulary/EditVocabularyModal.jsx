@@ -1,11 +1,12 @@
 import React from 'react'
 import ModalWithHeader from '../ModalWithHeader.jsx'
-import VocabularyMetadataForm from './VocabularyMetadataForm.jsx'
+import GenericVocabulary from '../schema/GenericVocabulary.jsx'
 
 const T = React.PropTypes
 
 const EditVocabularyModal = React.createClass({
 	propTypes: {
+		data: T.object.isRequired,
 		onClose: T.func.isRequired,
 		onSubmit: T.func.isRequired,
 	},
@@ -23,14 +24,26 @@ const EditVocabularyModal = React.createClass({
 		this.props.onClose.call()
 	},
 
+	getVocabularyName: function () {
+		const data = this.props.data
+
+		if (data.pref_label && data.pref_label.length)
+			return data.pref_label[0]
+
+		if (data.label && data.label.length)
+			return data.label[0]
+	},
+
 	handleSubmit: function (data) {
 		this.props.onSubmit.call(null, data)
 		this.closeModal()
 	},
 
 	render: function () {
+		const name = this.getVocabularyName()
+
 		const modalProps = {
-			header: `Edit metadata for ${this.props.name}`,
+			header: `Edit metadata for ${name}`,
 			isOpen: this.state.open,
 			onRequestClose: this.closeModal,
 			style: {
@@ -43,13 +56,12 @@ const EditVocabularyModal = React.createClass({
 
 		const vocabProps = {
 			buttonLabel: 'Submit changes',
-			description: this.props.description,
-			name: this.props.name,
+			data: this.props.data,
 			onSubmit: this.handleSubmit,
 		}
 
 		const deleteButtonProps = {
-			children: `Delete ${this.props.name}`,
+			children: `Delete ${name}`,
 			onClick: this.props.onDelete,
 			style: {
 				backgroundColor: '#cc092f',
@@ -63,7 +75,10 @@ const EditVocabularyModal = React.createClass({
 
 		return (
 			<ModalWithHeader {...modalProps}>
-				<VocabularyMetadataForm {...vocabProps} />
+				<GenericVocabulary {...vocabProps} />
+				<button onClick={this.handleSubmit}>
+					Save changes
+				</button>
 				<button {...deleteButtonProps} />
 			</ModalWithHeader>
 		)

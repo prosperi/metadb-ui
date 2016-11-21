@@ -9,7 +9,8 @@ const OpenSeadragonViewer = React.createClass({
 		tileSources: T.oneOfType([T.array, T.string]),
 		sequenceMode: T.bool,
 		showReferenceStrip: T.bool,
-		referenceStripScroll: T.string
+		referenceStripScroll: T.string,
+		showNavigator: T.bool
 	},
 
 	componentDidMount: function () {
@@ -27,8 +28,25 @@ const OpenSeadragonViewer = React.createClass({
 			tileSources: this.props.tileSources,
 			sequenceMode: this.props.sequenceMode,
     	showReferenceStrip: this.props.showReferenceStrip,
-			referenceStripScroll: this.props.referenceStripScroll
+			referenceStripScroll: this.props.referenceStripScroll,
+			showNavigator:  this.props.showNavigator
 		})
+
+		var additionalControls = [];
+		var closeButton = new OpenSeadragon.Button({
+			tooltip: "Close Viewer",
+			onClick: this.props.onClose,
+			srcRest: "http://icons.iconarchive.com/icons/custom-icon-design/mono-general-1/32/close-icon.png",
+			srcGroup: "http://icons.iconarchive.com/icons/custom-icon-design/mono-general-1/32/close-icon.png",
+			srcHover: "http://icons.iconarchive.com/icons/custom-icon-design/mono-general-1/32/close-icon.png",
+			srcDown: "http://icons.iconarchive.com/icons/custom-icon-design/mono-general-1/32/close-icon.png"
+		});
+		additionalControls.push(closeButton);
+		var URButtonGroup = new OpenSeadragon.ButtonGroup({buttons: additionalControls});
+
+		this.viewer.addControl(URButtonGroup.element, {
+			anchor: OpenSeadragon.ControlAnchor.TOP_RIGHT
+		});
 	},
 
 	render: function () {

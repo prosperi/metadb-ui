@@ -14,8 +14,9 @@ import {
 
 const originalState = {
 	data: {
-		title: ['One Title'],
-		author: ['Author Name'],
+		title: ['One Title', 'Two Titles'],
+		author: ['Author Name', 'Another author'],
+		single_value: ['just one here'],
 	},
 	updates: {},
 	fetchedAt: Date.now(),
@@ -100,7 +101,7 @@ describe('workReducer', function () {
 		it('toggles `isFetching`', function () {
 			const action = {type: FETCHING_WORK}
 			const result = workReducer(originalState, action)
-			
+
 			expect(result).to.deep.equal({
 				isFetching: true,
 			})
@@ -115,7 +116,7 @@ describe('workReducer', function () {
 				author: ['New Author'],
 			}
 		}
-		
+
 		const result = workReducer(originalState, action)
 
 		it('data differs from the originalState', function () {
@@ -184,11 +185,21 @@ describe('workReducer', function () {
 			expect(result.updates[keey]).to.not.be.undefined
 			expect(result.updates[keey]).to.have.length(origLen - 1)
 		})
+
+		it('adds an empty string if the last value was removed', function () {
+			const keey = 'single_value'
+			expect(originalState.updates[keey]).to.be.undefined
+
+			const result = workReducer(originalState, actionCreator(keey, 0))
+			expect(result.updates[keey]).to.not.be.undefined
+			expect(result.updates[keey]).to.have.length(1)
+			expect(result.updates[keey][0]).to.equal('')
+		})
 	})
 
 	describe('@SAVED_WORK', function () {
 		const action = {type: SAVED_WORK}
-		
+
 		let data, updates, state
 
 		beforeEach(function () {
@@ -250,7 +261,7 @@ describe('workReducer', function () {
 
 		it('retains current state (except `isSaving` flag)', function () {
 			for (let key in result) {
-				if (key === 'isSaving') 
+				if (key === 'isSaving')
 					continue
 
 				expect(result[key]).to.deep.equal(state[key])
@@ -262,7 +273,7 @@ describe('workReducer', function () {
 		})
 	})
 
-	describe('@UPDATE_WORK', function () {		
+	describe('@UPDATE_WORK', function () {
 		const action = {
 			type: UPDATE_WORK,
 			key: 'title',
@@ -309,7 +320,7 @@ describe('workReducer', function () {
 
 			expect(result.isChanged).to.be.true
 
-			const newAction = assign({}, action, {index: result.updates.title.length - 1})		
+			const newAction = assign({}, action, {index: result.updates.title.length - 1})
 			const result2 = workReducer(result, newAction)
 
 			expect(result2.isChanged).to.be.true
