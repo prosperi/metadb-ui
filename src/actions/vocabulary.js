@@ -21,7 +21,7 @@ import {
 } from '../constants'
 
 import { get } from '../../lib/api/request'
-import { 
+import {
 	createVocabulary as create,
 	deleteVocabulary as deleteVocab,
 	getVocabularies,
@@ -29,6 +29,7 @@ import {
 } from '../../lib/api'
 import isFresh from '../../lib/is-fresh'
 import camelCase from '../../lib/camel-case'
+import assign from 'object-assign'
 
 const STALE_TIME = 60 * 1000
 
@@ -41,19 +42,15 @@ export const createVocabulary = data => dispatch => {
 		type: CREATE_VOCABULARY_REQUEST,
 	})
 
-	const { name, description } = data
-	
-	const payload = {
-		uri: mockMintAuthUri(name),
-		label: [name],
-		pref_label: [name],
-		alt_label: [description],
-		hidden_label: [],
-	}
+	const payload = assign({}, data)
+	const name = payload.label[0]
+
+	payload.uri = mockMintAuthUri(name)
+	payload.pref_label = payload.label
 
 	return create(payload)
 		.then(() => {
-			
+
 			// append `absolute_path` to the payload
 			payload.absolute_path = (
 				`${process.env.API_BASE_URL}/vocabularies/${camelCase(name)}.json`

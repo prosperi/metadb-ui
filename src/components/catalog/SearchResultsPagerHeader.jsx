@@ -1,6 +1,6 @@
 import React from 'react'
 import ResultsPager from './ResultsPager.jsx'
-import Select from '../form-elements/Select.jsx'
+import Select from '../metadata/Select.jsx'
 import { RESULTS_PAGER as RESULTS_PAGER_MESSAGE} from '../../messages/results'
 
 const T = React.PropTypes
