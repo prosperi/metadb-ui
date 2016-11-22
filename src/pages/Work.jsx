@@ -94,11 +94,13 @@ const Work = React.createClass({
 		return (
 			<div>
 			  <OpenSeadragonViewer
+					prefixUrl='http://openseadragon.github.io/openseadragon/images/'
 					tileSources={workData.iiif_images}
 					sequenceMode={workData.iiif_images.length > 1}
 					showReferenceStrip={workData.iiif_images.length > 1}
 					referenceStripScroll='vertical'
 					showNavigator={true}
+					onClose={this.adjustSections}
 			  />
 			</div>
 		)

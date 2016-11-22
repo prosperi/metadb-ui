@@ -10,7 +10,8 @@ const OpenSeadragonViewer = React.createClass({
 		sequenceMode: T.bool,
 		showReferenceStrip: T.bool,
 		referenceStripScroll: T.string,
-		showNavigator: T.bool
+		showNavigator: T.bool,
+		onClose: T.func
 	},
 
 	componentDidMount: function () {
@@ -24,7 +25,7 @@ const OpenSeadragonViewer = React.createClass({
 	initOpenSeadragon: function () {
 		this.viewer = OpenSeadragon({
 			id: 'react-osd--viewer',
-			prefixUrl: 'http://openseadragon.github.io/openseadragon/images/',
+			prefixUrl: this.props.prefixUrl,
 			tileSources: this.props.tileSources,
 			sequenceMode: this.props.sequenceMode,
     	showReferenceStrip: this.props.showReferenceStrip,
