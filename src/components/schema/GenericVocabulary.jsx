@@ -2,10 +2,12 @@
 // and 'description', which map to 'label' and 'alt_label', respectively.
 
 import React from 'react'
+import assign from 'object-assign'
 import MetadataForm from '../metadata/MetadataForm.jsx'
 import FormField from '../metadata/FormField.jsx'
 import StringInput from '../metadata/StringInput.jsx'
 import TextInput from '../metadata/TextInput.jsx'
+import Button from '../Button.jsx'
 
 const T = React.PropTypes
 
@@ -29,7 +31,12 @@ const GenericVocabulary = React.createClass({
 	},
 
 	handleSubmit: function (ev) {
-		this.props.onSubmit && this.props.onSubmit(this.state.data)
+		ev && ev.preventDefault && ev.preventDefault()
+
+		const data = assign({}, this.state.data)
+		data.pref_label = [data.label[0]]
+
+		this.props.onSubmit && this.props.onSubmit(data)
 	},
 
 	render: function () {
@@ -43,6 +50,7 @@ const GenericVocabulary = React.createClass({
 			<MetadataForm {...formProps}>
 				<FormField name="label" label="Vocabulary name" renderer={StringInput} />
 				<FormField name="alt_label" label="Description" renderer={TextInput} />
+				<Button key="submit-btn" onClick={this.handleSubmit}>Create new vocabulary</Button>
 			</MetadataForm>
 		)
 	}
