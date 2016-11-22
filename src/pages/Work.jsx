@@ -83,9 +83,25 @@ const Work = React.createClass({
 
 	openSeadragonViewer: function () {
 		const work = this.props.work
+		if (!work || !work.data)
+			return
+
+		if (work.isFetching || !Object.keys(work.data).length)
+			return
+
+		const workData = work.data
+
 		return (
 			<div>
-				<OpenSeadragonViewer tileSources={work.data.thumbnail_path} onClose={this.adjustSections}/>
+			  <OpenSeadragonViewer
+					prefixUrl='http://openseadragon.github.io/openseadragon/images/'
+					tileSources={workData.iiif_images}
+					sequenceMode={workData.iiif_images.length > 1}
+					showReferenceStrip={workData.iiif_images.length > 1}
+					referenceStripScroll='vertical'
+					showNavigator={true}
+					onClose={this.adjustSections}
+			  />
 			</div>
 		)
 	},
