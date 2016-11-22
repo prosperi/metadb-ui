@@ -17,8 +17,6 @@ import ResultsGalleryItem from '../components/catalog/ResultsGalleryItem.jsx'
 
 import { getBreadcrumbList } from '../../lib/facet-helpers'
 
-const slice = Array.prototype.slice
-
 const SearchWrapper = React.createClass({
 	componentWillMount: function () {
 		const qs = this.props.location.search
@@ -80,7 +78,7 @@ const SearchWrapper = React.createClass({
 
 	handleNextPage: function () {
 		const pages = this.state.pages
-		
+
 		if (!pages.next_page)
 			return
 
@@ -160,20 +158,17 @@ const SearchWrapper = React.createClass({
 	},
 
 	onRemoveFacet: function (key, facet) {
-		return this._onToggleFacet.apply(null, 
-			[].concat(false, slice.call(arguments))
-		)
+		return this._onToggleFacet(false, key, facet)
 	},
 
 	onSelectFacet: function (key, facet) {
-		return this._onToggleFacet.apply(null,
-			[].concat(false, slice.call(arguments))
-		)
+		return this._onToggleFacet(true, key, facet)
 	},
 
 	_onToggleFacet: function (which, key, facet) {
 		return this.props.toggleSearchFacet(key, facet, which)
 		.then(this.handleSearchResponse)
+		.catch(console.warn)
 	},
 
 	renderBreadcrumbs: function () {
@@ -271,10 +266,10 @@ const SearchWrapper = React.createClass({
 
 	renderResults: function () {
 		if (!this.state.results)
-			return 
+			return
 
 		const which = this.state.resultsView
-		
+
 		const props = {
 			data: this.state.results,
 			displayComponent: this.determineResultsComponent(which),
