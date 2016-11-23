@@ -2,6 +2,8 @@ import React from 'react'
 import withRouter from 'react-router/lib/withRouter'
 import assign from 'object-assign'
 import scrollToTop from '../../lib/scroll-to-top'
+import browserHistory from 'react-router/lib/browserHistory'
+import Button from '../components/Button.jsx'
 
 // import WorkMetadataForm from '../components/WorkMetadataForm.jsx'
 import GenericWork from '../components/schema/GenericWork.jsx'
@@ -47,6 +49,23 @@ const Work = React.createClass({
 		this.props.saveWork(this.props.params.workId)
 
 		scrollToTop()
+	},
+
+	maybeRenderNavToSearchResults: function () {
+		if (!Object.keys(this.props.search).length)
+			return
+
+		return (
+			<nav>
+				<Button
+					onClick={() => browserHistory.goBack()}
+					size="large"
+					type="text"
+					>
+					&lt; Return to results
+				</Button>
+			</nav>
+		)
 	},
 
 	mediaPreview: function () {
@@ -135,6 +154,8 @@ const Work = React.createClass({
 
 		return (
 			<header>
+				{this.maybeRenderNavToSearchResults()}
+
 				<h1 style={{display: 'inline-block'}}>{title}</h1>
 
 				<a
