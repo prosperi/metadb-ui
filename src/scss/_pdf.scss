@@ -1,4 +1,18 @@
-.pdfjs{
+.pdfjs {
 	height: 700px;
 	@import "../../bower_components/pdf.js-viewer/viewer.css";
+
+	/* Fix styles */
+	#thumbnailView {
+		width: 100%;
+	}
+
+	.thumbnailSelectionRing {
+		width: 100% !important;
+    height: 100% !important;
+	}
+
+	.pdfViewer .page {
+		height: 100% !important;
+	}
 }
