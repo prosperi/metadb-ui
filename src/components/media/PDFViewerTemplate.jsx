@@ -167,20 +167,20 @@ const PDFViewerTemplate = (props) => {
 		                   </button>
 		                </div>
 		                <span id="scaleSelectContainer" className="dropdownToolbarButton">
-		                   <select id="scaleSelect" title="Zoom" tabIndex="23" data-l10n-id="zoom">
-		                    <option id="pageAutoOption" title="" defaultValue="auto" defaultValue="selected" data-l10n-id="page_scale_auto">Automatic Zoom</option>
-		                    <option id="pageActualOption" title="" defaultValue="page-actual" data-l10n-id="page_scale_actual">Actual Size</option>
-		                    <option id="pageFitOption" title="" defaultValue="page-fit" data-l10n-id="page_scale_fit">Fit Page</option>
-		                    <option id="pageWidthOption" title="" defaultValue="page-width" data-l10n-id="page_scale_width">Full Width</option>
-		                    <option id="customScaleOption" title="" defaultValue="custom"></option>
-		                    <option title="" defaultValue="0.5" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 50 }'>50%</option>
-		                    <option title="" defaultValue="0.75" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 75 }'>75%</option>
-		                    <option title="" defaultValue="1" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 100 }'>100%</option>
-		                    <option title="" defaultValue="1.25" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 125 }'>125%</option>
-		                    <option title="" defaultValue="1.5" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 150 }'>150%</option>
-		                    <option title="" defaultValue="2" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 200 }'>200%</option>
-		                    <option title="" defaultValue="3" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 300 }'>300%</option>
-		                    <option title="" defaultValue="4" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 400 }'>400%</option>
+		                   <select id="scaleSelect" title="Zoom" tabIndex="23" data-l10n-id="zoom" defaultValue="auto" >
+		                    <option id="pageAutoOption" title="" value="auto"  data-l10n-id="page_scale_auto">Automatic Zoom</option>
+		                    <option id="pageActualOption" title="" value="page-actual" data-l10n-id="page_scale_actual">Actual Size</option>
+		                    <option id="pageFitOption" title="" value="page-fit" data-l10n-id="page_scale_fit">Fit Page</option>
+		                    <option id="pageWidthOption" title="" value="page-width" data-l10n-id="page_scale_width">Full Width</option>
+		                    <option id="customScaleOption" title="" value="custom"></option>
+		                    <option title="" value="0.5" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 50 }'>50%</option>
+		                    <option title="" value="0.75" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 75 }'>75%</option>
+		                    <option title="" value="1" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 100 }'>100%</option>
+		                    <option title="" value="1.25" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 125 }'>125%</option>
+		                    <option title="" value="1.5" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 150 }'>150%</option>
+		                    <option title="" value="2" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 200 }'>200%</option>
+		                    <option title="" value="3" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 300 }'>300%</option>
+		                    <option title="" value="4" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 400 }'>400%</option>
 		                  </select>
 		                </span>
 		              </div>
@@ -303,7 +303,7 @@ const PDFViewerTemplate = (props) => {
 		        <span className="relative-progress">0%</span>
 		      </div>
 		      <div className="progress-actions">
-		        <input type="button" value="Cancel" className="mozPrintCallback-cancel"/>
+		        <input type="button" defaultValue="Cancel" className="mozPrintCallback-cancel"/>
 		      </div>
 		    </div>
 		  </div>

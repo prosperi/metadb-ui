@@ -17485,8 +17485,9 @@ function webViewerInitialized() {
   });
 
   document.getElementById('scaleSelect').addEventListener('change',
-    function() {
+    function(e) {
       PDFViewerApplication.setScale(this.value, false);
+			console.log(this.value, " ", e.target);
     });
 
   document.getElementById('presentationMode').addEventListener('click',
