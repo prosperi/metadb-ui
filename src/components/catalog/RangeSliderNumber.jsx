@@ -6,7 +6,7 @@ import 'rc-slider/assets/index.css'
 
 const T = React.PropTypes
 
-const RangeLimit = React.createClass({
+const RangeSliderNumber = React.createClass({
 	propTypes: {
 		max: T.oneOfType([T.string, T.number]).isRequired,
 		min: T.oneOfType([T.string, T.number]).isRequired,
@@ -111,8 +111,8 @@ const RangeLimit = React.createClass({
 	renderSlider: function () {
 		const props = {
 			allowCross: true,
-			min: this.props.min,
-			max: this.props.max,
+			min: +this.props.min,
+			max: +this.props.max,
 			onChange: this.handleSliderChange,
 			pushable: false,
 			range: true,
@@ -132,4 +132,4 @@ const RangeLimit = React.createClass({
 	}
 })
 
-export default RangeLimit
+export default RangeSliderNumber
