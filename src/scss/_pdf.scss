@@ -1,1 +1,4 @@
-@import url(pdf/viewer.css);
+.pdfjs{
+	height: 700px;
+	@import "../../bower_components/pdf.js-viewer/viewer.css";
+}
