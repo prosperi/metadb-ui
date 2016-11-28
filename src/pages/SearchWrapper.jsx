@@ -21,7 +21,7 @@ const SearchWrapper = React.createClass({
 	componentWillMount: function () {
 		const qs = this.props.location.search
 
-		if (qs && !this.props.search.query)
+		if (qs)
 			this.props.searchCatalogByQueryString(qs).then(this.handleSearchResponse)
 	},
 
