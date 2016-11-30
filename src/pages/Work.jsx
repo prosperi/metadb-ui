@@ -70,12 +70,12 @@ const Work = React.createClass({
 	},
 
 	mediaPreviewSide: function () {
+		// open pdf js viewer only when the work is pdf type
+		const fileIsPDF = true; // Find if file is pdf, ....
 		return (
 			<div>
 				{
-					this.state.mediaOpen
-					? this.pdfjsViewer()
-					: this.mediaPreview()
+					(this.state.mediaOpen) ? (fileIsPDF ? this.pdfjsViewer() : this.openSeadragonViewer()) : this.mediaPreview()
 				}
 			</div>
 		)

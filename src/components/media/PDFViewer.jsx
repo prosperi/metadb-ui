@@ -1,67 +1,33 @@
 import React from 'react'
-import pdfjsLib from 'pdfjs-dist'
-import workerSrc from 'pdfjs-dist/build/pdf.worker'
-import viewerSrc from 'pdfjs-dist/web/pdf_viewer'
+import PDFViewerTemplate from './PDFViewerTemplate.jsx'
 
-pdfjsLib.PDFJS.workerSrc = workerSrc
+// this imports are not used yet, ad PDFWorker provides a document, while
+// we need just url of pdf.worker.js. Same goes for PDFTestFile, we need to know
+// exact location, we do not need document yet(document is loaded in pdf.js)
+import PDFTestFile from 'pdfTestFile'
+import PDFWorker from 'pdfWorker'
 
 const PDFViewer = React.createClass({
-	pdfPath: 'http://localhost:8080/DraftReport.pdf',
+	componentDidMount(){
+		// load pdf.js after the component mounts
+		// could be improved by restructuring pdf.js, but
+		// we should think about that carefully as pdf.js is an important
+		// component of the whole bower component.
+		require('../../../bower_components/pdf.js-viewer/pdf.js')
+		// providing urls for workerSrc and pdf, while we should be able to provide
+		// relative path, not absolute one.
+		PDFJS.workerSrc = 'https://raw.githubusercontent.com/legalthings/pdf.js-viewer/master/pdf.worker.js';
+		PDFJS.webViewerLoad('http://localhost:8080/DraftReport.pdf');
 
-	componentDidMount: function(){
-		pdfjsLib.getDocument(this.pdfPath).then(function(pdf){
-			console.log("Number of pages: " + pdf.numPages)
-
-			const container = document.getElementById("container");
-
-			for(let i = 1; i <= pdf.numPages; i++){
-				pdf.getPage(i).then(function(page){
-					const viewport = page.getViewport(1.5)
-					const div = document.createElement("div")
-
-					div.setAttribute("id", "page-" + (page.pageIndex + 1))
-					div.setAttribute("style", "position: relative")
-					container.appendChild(div)
-
-					const canvas = document.createElement("canvas")
-					div.appendChild(canvas)
-					const ctx = canvas.getContext('2d')
-					canvas.width = viewport.width
-					canvas.height = viewport.height
-					const renderContext = {
-						canvasContext: ctx,
-						viewport: viewport
-					};
-					page.render(renderContext)
-							.then(function(){ return page.getTextContent() })
-							.then(function(textContent){
-								const textLayerDiv = document.createElement("div")
-								textLayerDiv.setAttribute("class", "textLayer")
-								div.appendChild(textLayerDiv)
-
-								const textLayer = new viewerSrc.PDFJS.TextLayerBuilder({
-									textLayerDiv: textLayerDiv,
-									pageIndex: page.pageIndex,
-									viewport: viewport
-								})
-
-								textLayer.setTextContent(textContent)
-								textLayer.render()
-							})
-				})
-			}
-
-		}).catch(function(reason){
-			console.error('We have error' + reason);
-		})
 	},
 
-	render: function(){
-		return(
-			<div id="container"></div>
+	render(){
+		return (
+			<div className="pdfjs">
+				<PDFViewerTemplate/>
+			</div>
 		)
 	}
-
 })
 
 export default PDFViewer
