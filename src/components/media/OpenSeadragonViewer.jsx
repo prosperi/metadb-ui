@@ -19,6 +19,7 @@ const OpenSeadragonViewer = React.createClass({
 
 	initOpenSeadragon: function (id) {
 		console.log(this.props.tileSources);
+		// create OpenSeadragon viewer
 		this.viewer = OpenSeadragon({
 			id: 'react-osd--viewer',
 			prefixUrl: 'http://openseadragon.github.io/openseadragon/images/',
@@ -35,7 +36,7 @@ const OpenSeadragonViewer = React.createClass({
       	}]
 			}]
 		})
-
+		// Add additional Controls(in this case only close button)
 		var additionalControls = [];
 		var closeButton = new OpenSeadragon.Button({
 			tooltip: "Close Viewer",
