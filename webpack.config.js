@@ -43,7 +43,7 @@ module.exports = {
 				loader: ExtractTextPlugin.extract('style-loader', 'css-loader!sass-loader')
 			},
 			{
-			    test: /\.(png|gif|jpg|cur)$/,
+			    test: /\.(png|gif|jpg|cur|pdf)$/,
 			    loader: "url-loader"
 			}
 		]
@@ -58,5 +58,15 @@ module.exports = {
 	],
 	sassLoader: {
 		includePaths: Bourbon.with(Neat.includePaths)
+	},
+
+	resolve: {
+		//root: path.resolve(__dirname),
+		extensions: ['', '.js', '.jsx', '.pdf'],
+		alias: {
+			pdfTestFile: path.resolve(__dirname, 'src', 'components', 'media', 'DraftReport'),
+			pdfWorker: path.resolve(__dirname, 'bower_components', 'pdf.js-viewer', 'pdf.worker')
+		}
+
 	}
 }

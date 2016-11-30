@@ -10973,6 +10973,7 @@ Preferences._readFromStorage = function (prefObj) {
       }
     } else {
       renderProgress();
+			console.log("here");
       print.call(window);
       setTimeout(abort, 20); // Tidy-up
     }
@@ -10987,18 +10988,18 @@ Preferences._readFromStorage = function (prefObj) {
   }
 
   function renderProgress() {
-    var progressContainer = document.getElementById('mozPrintCallback-shim');
-    if (canvases && canvases.length) {
-      var progress = Math.round(100 * index / canvases.length);
-      var progressBar = progressContainer.querySelector('progress');
-      var progressPerc = progressContainer.querySelector('.relative-progress');
-      progressBar.value = progress;
-      progressPerc.textContent = progress + '%';
-      progressContainer.removeAttribute('hidden');
-      progressContainer.onclick = abort;
-    } else {
-      progressContainer.setAttribute('hidden', '');
-    }
+    // var progressContainer = document.getElementById('mozPrintCallback-shim');
+    // if (canvases && canvases.length) {
+    //   var progress = Math.round(100 * index / canvases.length);
+    //   var progressBar = progressContainer.querySelector('progress');
+    //   var progressPerc = progressContainer.querySelector('.relative-progress');
+    //   progressBar.value = progress;
+    //   progressPerc.textContent = progress + '%';
+    //   progressContainer.removeAttribute('hidden');
+    //   progressContainer.onclick = abort;
+    // } else {
+    //   progressContainer.setAttribute('hidden', '');
+    // }
   }
 
   var hasAttachEvent = !!document.attachEvent;
@@ -14294,6 +14295,7 @@ var PDFPageView = (function PDFPageViewClosure() {
       canvasWrapper.style.height = viewport.height + 'pt';
       canvasWrapper.appendChild(canvas);
       printContainer.appendChild(canvasWrapper);
+			printContainer.style.height = viewport.height;
 
       canvas.mozPrintCallback = function(obj) {
         var ctx = obj.context;
@@ -17229,6 +17231,7 @@ var PDFViewerApplication = {
       '#printContainer {height:100%}' +
       '#printContainer > div {width:100% !important;height:100% !important;}' +
       '}';
+		console.log(this.pageStyleSheet.textContent);
     body.appendChild(this.pageStyleSheet);
 
     for (i = 0, ii = this.pagesCount; i < ii; ++i) {
