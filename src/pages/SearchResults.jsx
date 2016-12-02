@@ -248,6 +248,10 @@ const SearchResults = React.createClass({
 					label="Photographer"
 					bodyComponent={FacetList}
 					/>
+				<Facet name="date_original_dtsi"
+					label="Date (Original)"
+					{...rangeLimitProps}
+					/>
 				<Facet name="date_artifact_upper_dtsi"
 					label="Date (Artifact, Upper)"
 					{...rangeLimitProps}
