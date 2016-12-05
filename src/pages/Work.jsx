@@ -75,7 +75,7 @@ const Work = React.createClass({
 		return (
 			<div>
 				{
-					(this.state.mediaOpen) ? (fileIsPDF ? this.pdfjsViewer() : this.openSeadragonViewer()) : this.mediaPreview()
+					(this.state.mediaOpen) ? (!fileIsPDF ? this.pdfjsViewer() : this.openSeadragonViewer()) : this.mediaPreview()
 				}
 			</div>
 		)
