@@ -34,7 +34,12 @@ const OpenSeadragonViewer = React.createClass({
 	        "scaleFactors": [ 1, 2, 4, 8, 16, 32 ],
 	        "width": 1024
       	}]
-			}]
+			}],
+			degrees: 0,
+			showRotationControl: true,
+			gestureSettingsTouch:{
+				pinchRotate: true
+			}
 		})
 		// Add additional Controls(in this case only close button)
 		var additionalControls = [];
