@@ -33,6 +33,14 @@ const ControlledVocabularyInput = React.createClass({
 		}
 	},
 
+	// if we're passing terms through props (+ bypassing `fetchTerms`),
+	// we need to update the state if/when updated terms are passed
+	componentWillReceiveProps: function (nextProps) {
+		if (nextProps.terms && (nextProps.terms.length !== this.state.terms.length)) {
+			this.setState({terms: nextProps.terms})
+		}
+	},
+
 	getInitialState: function () {
 		return {
 			inputValue: this.props.value || '',
@@ -46,6 +54,11 @@ const ControlledVocabularyInput = React.createClass({
 
 	handleChange: function (ev, value) {
 		this.setState({inputValue: value})
+
+		const menu = this._autocomplete.refs.menu
+
+		if (menu)
+			menu.scrollTop = 0
 	},
 
 	handleSelect: function (value, item) {
@@ -143,6 +156,7 @@ const ControlledVocabularyInput = React.createClass({
 				getItemValue={this.getItemValue}
 				onChange={this.handleChange}
 				onSelect={this.handleSelect}
+				ref={el => this._autocomplete = el}
 				renderItem={this.renderItem}
 				renderMenu={this.renderMenu}
 				shouldItemRender={this.shouldItemRender}
