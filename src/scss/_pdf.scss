@@ -18,8 +18,8 @@
 }
 
 .pdfjs {
-	height: 700px;
-	@import "../../bower_components/pdf.js-viewer/viewer.css";
+	height: 922px;
+	@import "../../build/pdf_viewer.css";
 
 	/* Fix styles */
 	#thumbnailView {

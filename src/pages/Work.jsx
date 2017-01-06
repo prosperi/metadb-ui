@@ -128,9 +128,10 @@ const Work = React.createClass({
 
 	pdfjsViewer: function(){
 		const work = this.props.work
+		console.log(work)
 		return(
 			<div>
-				<PDFViewer tileSources={work.data.thumbnail_path} onClose={this.adjustSections}/>
+				<PDFViewer src={work.data.download_path} />
 			</div>
 		)
 	},

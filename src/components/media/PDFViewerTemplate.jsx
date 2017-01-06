@@ -6,10 +6,11 @@
 // downloading, printing and viewing document in full-screen mode, etc.
 import React from 'react'
 
-const PDFViewerTemplate = (props) => {
+const PDFViewerTemplate = React.createClass({
 
-	return(
+	render: function() {
 
+		return(
 		<pdfjs-wrapper>
 		  <div id="outerContainer">
 
@@ -315,8 +316,8 @@ const PDFViewerTemplate = (props) => {
 		  </div>
 		</pdfjs-wrapper>
 
-	)
+	)}
 
-}
+})
 
 export default PDFViewerTemplate
