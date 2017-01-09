@@ -120,11 +120,10 @@ const SearchResults = React.createClass({
 	},
 
 	handleSubmitSearchQuery: function (query) {
-		this.props.searchCatalog(
-			query,
-			this.props.search.facets,
-			this.props.search.options
-		).then(this.handleSearchResponse)
+		const { facets, options } = this.props.search
+
+		this.props.searchCatalog(query, facets, options)
+		.then(this.handleSearchResponse)
 	},
 
 	maybeRenderLoadingModal: function () {
@@ -243,10 +242,15 @@ const SearchResults = React.createClass({
 				<Facet name="creator_sim" />
 				<Facet name="keyword_sim" />
 				<Facet name="subject_sim" />
+				<Facet name="subject_ocm_sim" />
 				<Facet name="language_sim" />
 				<Facet name="creator_photographer_sim"
 					label="Photographer"
 					bodyComponent={FacetList}
+					/>
+				<Facet name="date_original_dtsi"
+					label="Date (Original)"
+					{...rangeLimitProps}
 					/>
 				<Facet name="date_artifact_upper_dtsi"
 					label="Date (Artifact, Upper)"
@@ -308,7 +312,7 @@ const SearchResults = React.createClass({
 
 		const styles = {
 			container: {
-				backgroundColor: '#fafafa',
+				// backgroundColor: '#fafafa',
 			},
 
 			sidebar: {

@@ -10,7 +10,7 @@ import { parse as parseQuerystring } from 'blacklight-querystring'
 import createRangeFacet from '../../lib/create-range-facet'
 
 import {
-	RECEIVE_SEARCH_ERROR,
+	RECEIVE_SEARCH_ERR,
 	RECEIVE_SEARCH_RESULTS,
 	SEARCHING,
 } from '../constants'
@@ -20,7 +20,7 @@ const REQUIRED_OPTS = {
 }
 
 const DEFAULT_OPTS = {
-	per_page: 25,
+	per_page: 10,
 }
 
 const hasOwnProperty = Object.prototype.hasOwnProperty
@@ -47,7 +47,7 @@ function conductSearch (dispatch, query, facets, options, queryString) {
 	})
 	.catch(error => {
 		dispatch({
-			type: RECEIVE_SEARCH_ERROR,
+			type: RECEIVE_SEARCH_ERR,
 			error,
 		})
 
