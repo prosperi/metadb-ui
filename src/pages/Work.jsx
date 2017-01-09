@@ -128,7 +128,6 @@ const Work = React.createClass({
 
 	pdfjsViewer: function(){
 		const work = this.props.work
-		console.log(work)
 		return(
 			<div>
 				<PDFViewer src={work.data.download_path} />

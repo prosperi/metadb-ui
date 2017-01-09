@@ -84,8 +84,6 @@ const TermEditModal = React.createClass({
 			onSubmit: this.handleSaveTerm,
 		}
 
-		console.log(termProps)
-
 		return (
 			<ModalWithHeader {...modalProps}>
 				<GenericTerm {...termProps} />

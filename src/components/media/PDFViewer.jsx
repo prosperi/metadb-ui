@@ -16,10 +16,6 @@ const PDFViewer = React.createClass({
 		return (
 			<div className="pdfjs">
 				<PDFViewerTemplate/>
-				<script src="/bundle.js"></script>
-				<script src="//mozilla.github.io/pdf.js/web/l10n.js"></script>
-				<script src="//mozilla.github.io/pdf.js/build/pdf.js"></script>
-				<script src="/viewer.js"></script>
 			</div>
 		)
 	}
