@@ -9,6 +9,7 @@ import Button from '../components/Button.jsx'
 import GenericWork from '../components/schema/GenericWork.jsx'
 import ThumbnailPreview from '../components/media/ThumbnailPreview.jsx'
 import OpenSeadragonViewer from '../components/media/OpenSeadragonViewer.jsx'
+import PDFViewer from '../components/media/PDFViewer.jsx'
 
 
 const Work = React.createClass({
@@ -89,12 +90,12 @@ const Work = React.createClass({
 	},
 
 	mediaPreviewSide: function () {
+		// open pdf js viewer only when the work is pdf type
+		const fileIsPDF = true; // Find if file is pdf, ....
 		return (
 			<div>
 				{
-					this.state.mediaOpen
-					? this.openSeadragonViewer()
-					: this.mediaPreview()
+					(this.state.mediaOpen) ? (fileIsPDF ? this.pdfjsViewer() : this.openSeadragonViewer()) : this.mediaPreview()
 				}
 			</div>
 		)
@@ -121,6 +122,15 @@ const Work = React.createClass({
 					showNavigator={true}
 					onClose={this.adjustSections}
 			  />
+			</div>
+		)
+	},
+
+	pdfjsViewer: function(){
+		const work = this.props.work
+		return(
+			<div>
+				<PDFViewer src={work.data.download_path} />
 			</div>
 		)
 	},

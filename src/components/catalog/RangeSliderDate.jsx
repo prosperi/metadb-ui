@@ -7,7 +7,6 @@ import {
 	VALUES as INTERVAL_VALUES,
 } from './common/date-intervals'
 
-import roundDate from './common/round-date-to-interval'
 import formatDateValue from './common/format-date-value'
 
 import 'rc-slider/assets/index.css'
@@ -22,12 +21,12 @@ const RangeSliderDate = React.createClass({
 		// (handled at the level of the wrapper)
 		max: T.number.isRequired,
 		min: T.number.isRequired,
-
+		
 		onApplyRange: T.func.isRequired,
 	},
 
 	getDefaultProps: function () {
-		return {
+		return { 
 			interval: INTERVALS.DAY,
 		}
 	},
@@ -62,12 +61,12 @@ const RangeSliderDate = React.createClass({
 		return formatDateValue(this.props.interval, raw)
 	},
 
+	// rc-slider will complain if max-min isn't evenly divisible by
+	// the step value (not something I expected would happen, but 
+	// it _is_). so we'll do this math to get a clean step + do the
+	// rounding when we send the value with `onApplyRange`
 	getStepValue: function () {
 		const { min, max } = this.props
-
-		if (min === max)
-			return null
-
 		let divisor
 
 		switch (this.props.interval) {
@@ -82,18 +81,16 @@ const RangeSliderDate = React.createClass({
 				divisor = 315576e+5 // DAY * 365.25
 		}
 
-		return (max - min) / divisor
+		return Math.round((max - min) / divisor)
 	},
 
+	// round range values to their nearest `interval` 
+	// (months are set to their first day; days are set to midnight)
 	handleApplyRange: function () {
 		if (!this.props.onApplyRange)
 			return
 
-		// TODO: we're rounding the values at the level above (FacetRangeLimitDate)
-		// and _shouldn't_ have to do the work of rounding again (especially if
-		// the interval is cleanly divisible as per rc-slider's requirements)
-		const roundDateValue = roundDate.bind(null, this.props.interval)
-		const cleaned = this.state.value.map(roundDateValue)
+		const cleaned = this.state.value.map(this.roundDateValue)
 
 		this.props.onApplyRange.call(null, cleaned)
 	},
@@ -101,7 +98,7 @@ const RangeSliderDate = React.createClass({
 	handleMaxValueChange: function (ev) {
 		const val = ev.target.value
 		const args = val.split('-').map(Number)
-
+		
 		// months are 0-indexed
 		if (args.length > 1)
 			args[1] = args[1] - 1
@@ -119,11 +116,11 @@ const RangeSliderDate = React.createClass({
 	handleMinValueChange: function (ev) {
 		const val = ev.target.value
 		const args = val.split('-').map(Number)
-
+		
 		// months are 0-indexed
 		if (args.length > 1)
 			args[1] = args[1] - 1
-
+		
 		const min = Date.UTC.apply(Date, args)
 
 		this.setState({
@@ -210,7 +207,24 @@ const RangeSliderDate = React.createClass({
 			value: this.state.value,
 		}
 
-		return <Slider {...props} />
+		return React.createElement(Slider, props)
+	},
+
+	roundDateValue: function (val) {
+		const d = new Date(val)
+		const year = d.getUTCFullYear()
+
+		switch (this.props.interval) {
+			case INTERVALS.DAY:
+				return Date.UTC(year, d.getUTCMonth(), d.getUTCDate())
+				
+			case INTERVALS.MONTH:
+				return Date.UTC(year, d.getUTCMonth(), 1)
+
+			case INTERVALS.YEAR:
+			default:
+				return Date.UTC(year, 0, 1)
+		}
 	},
 
 	render: function () {

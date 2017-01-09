@@ -10,7 +10,7 @@ var config = require('./env.config')
 module.exports = {
 	entry: [
 		'./src/index.js',
-		'./src/scss/main.scss',
+		'./src/scss/main.scss'
 	],
 
 	output: {
@@ -41,6 +41,10 @@ module.exports = {
 			{
 				test: /\.scss$/,
 				loader: ExtractTextPlugin.extract('style-loader', 'css-loader!sass-loader')
+			},
+			{
+			    test: /\.(png|gif|jpg|cur|pdf)$/,
+			    loader: "url-loader"
 			}
 		]
 	},
@@ -54,5 +58,9 @@ module.exports = {
 	],
 	sassLoader: {
 		includePaths: Bourbon.with(Neat.includePaths)
+	},
+
+	resolve: {
+		extensions: ['', '.js', '.jsx', '.pdf']
 	}
 }
