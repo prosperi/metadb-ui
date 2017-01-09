@@ -61,12 +61,6 @@ module.exports = {
 	},
 
 	resolve: {
-		//root: path.resolve(__dirname),
-		extensions: ['', '.js', '.jsx', '.pdf'],
-		alias: {
-			pdfTestFile: path.resolve(__dirname, 'src', 'components', 'media', 'DraftReport'),
-			pdfWorker: path.resolve(__dirname, 'bower_components', 'pdf.js-viewer', 'pdf.worker')
-		}
-
+		extensions: ['', '.js', '.jsx', '.pdf']
 	}
 }
