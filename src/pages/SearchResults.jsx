@@ -8,7 +8,6 @@ import FacetList from '../components/catalog/FacetList.jsx'
 import FacetListWithViewMore from '../components/catalog/FacetListWithViewMore.jsx'
 import FacetRangeLimitDate from '../components/catalog/FacetRangeLimitDate.jsx'
 
-import SearchBreadcrumb from '../components/catalog/SearchBreadcrumb.jsx'
 import SearchBreadcrumbTrail from '../components/catalog/SearchBreadcrumbTrail.jsx'
 import SearchResultsHeader from '../components/catalog/SearchResultsHeader.jsx'
 
@@ -19,11 +18,43 @@ import ResultsGalleryItem from '../components/catalog/ResultsGalleryItem.jsx'
 import { getBreadcrumbList } from '../../lib/facet-helpers'
 
 const SearchResults = React.createClass({
+	// TODO: clean this up a bit? this is a hold-over from when this component
+	// was handling the starting search form as well as the results
 	componentWillMount: function () {
 		const qs = this.props.location.search
 
-		if (qs)
-			this.props.searchCatalogByQueryString(qs).then(this.handleSearchResponse)
+		if (qs) {
+			this.props.searchCatalogByQueryString(qs)
+		}
+	},
+
+	componentWillReceiveProps: function (nextProps) {
+		// compare the queryString in the browser to the previously-searched
+		// one. if it differs, submit the new search. this allows the search
+		// to be updated when the user uses the back/forward buttons in the
+		// browser in addition to selecting facets/options
+		const queryString = window.location.search
+		const previousQueryString = this.props.search.queryString
+
+		// checking that `previousQueryString` is defined prevents this
+		// from being run on mount (when `queryString` will always not
+		// equal `undefined`).
+		if (previousQueryString && queryString !== previousQueryString)
+			return this.props.searchCatalogByQueryString(queryString)
+
+		// we're using `props.search.timestamp` as a unique identifier
+		// to signify that the new search results being passed as props
+		// differ than the ones previous. this could also be done with
+		// a shallow compare of the `search` object but since what would
+		// be changing is at a deeper level (the `search.facets` and
+		// `search.options` objects in particular), this could be costly
+		const timestamp = this.props.search.timestamp
+		const next = nextProps.search.timestamp
+
+		if (!next || timestamp === next)
+			return
+
+		this.handleSearchResponse(nextProps.search)
 	},
 
 	getInitialState: function () {
@@ -37,7 +68,6 @@ const SearchResults = React.createClass({
 		const options = this.props.search.options
 
 		this.props.searchCatalog(query, {}, this.props.search.options)
-		.then(this.handleSearchResponse)
 	},
 
 	determineResultsComponent: function (which) {
@@ -66,28 +96,17 @@ const SearchResults = React.createClass({
 		}
 	},
 
-	getFacetGroupInfo: function (pool, name) {
-		for (let i = 0; i < pool.length; i++)
-			if (pool[i].name === name)
-				return {
-					name: pool[i].name,
-					label: pool[i].label
-				}
-
-		return null
-	},
-
 	handleNextPage: function () {
 		const pages = this.state.pages
 
 		if (!pages.next_page)
 			return
 
-		this.props.setSearchOption('page', pages.next_page).then(this.handleSearchResponse)
+		this.props.setSearchOption('page', pages.next_page)
 	},
 
 	handlePerPageChange: function (val) {
-		this.props.setSearchOption('per_page', val).then(this.handleSearchResponse)
+		this.props.setSearchOption('per_page', val)
 	},
 
 	handlePreviousPage: function () {
@@ -98,24 +117,25 @@ const SearchResults = React.createClass({
 
 		const prev = pages.prev_page === 1 ? null : pages.prev_page
 
-		this.props.setSearchOption('page', prev).then(this.handleSearchResponse)
+		this.props.setSearchOption('page', prev)
 	},
 
 	handleSearchResponse: function (res) {
 		if (!res) {
-			console.log('no res!')
+			console.warn('no data passed to `SearchResults#handleSearchResponse')
 			return
 		}
 
-		const facets = res.response.facets
+		const facets = res.results.facets
 		const breadcrumbs = getBreadcrumbList(facets, this.props.search.facets)
 
 		this.setState({
-			results: res.response.docs,
-			options: this.props.search.options,
-			pages: res.response.pages,
-			facets,
 			breadcrumbs,
+			facets,
+			options: this.props.search.options,
+			pages: res.results.pages,
+			results: res.results.docs,
+			timestamp: res.timestamp,
 		})
 	},
 
@@ -123,7 +143,6 @@ const SearchResults = React.createClass({
 		const { facets, options } = this.props.search
 
 		this.props.searchCatalog(query, facets, options)
-		.then(this.handleSearchResponse)
 	},
 
 	maybeRenderLoadingModal: function () {
@@ -161,50 +180,26 @@ const SearchResults = React.createClass({
 
 	_onToggleFacet: function (which, key, facet) {
 		return this.props.toggleSearchFacet(key, facet, which)
-		.then(this.handleSearchResponse)
-		.catch(console.warn)
 	},
 
 	renderBreadcrumbs: function () {
-		const bc = this.state.breadcrumbs
+		if (!this.state.breadcrumbs)
+			return null
 
-		if (!bc)
-			return
+		const onRemoveBreadcrumb = (key, value) => {
+			if (key === 'q')
+				return this.handleSubmitSearchQuery('')
 
-		const query = this.props.search.query
-
-		const querybc = !query ? null : (
-			<SearchBreadcrumb
-				key="bc-query"
-				onRemove={this.handleSubmitSearchQuery}
-				value={'"' + query + '"'}
-			/>
-		)
-
-		const crumbs = bc.map((crumb, index) => {
-			const {label, name} = crumb.group
-			const facet = crumb.facet
-
-			const props = {
-				key: 'bc' + index + facet.value,
-				group: label,
-				value: facet.label,
-				onRemove: this.onRemoveFacet.bind(null, name, facet)
-			}
-
-			return React.createElement(SearchBreadcrumb, props)
-		})
-
-		const style = {
-			marginBottom: '10px',
-			marginTop: '-5px',
+			return this.onRemoveFacet(key, value)
 		}
 
-		return (
-			<div key="bc-trail" style={style}>
-				{[].concat(querybc, crumbs)}
-			</div>
-		)
+		const props = {
+			breadcrumbs: this.state.breadcrumbs,
+			onRemoveBreadcrumb,
+			query: this.props.search.query,
+		}
+
+		return React.createElement(SearchBreadcrumbTrail, props)
 	},
 
 	renderFacetSidebar: function () {
@@ -284,13 +279,15 @@ const SearchResults = React.createClass({
 	},
 
 	renderResults: function () {
-		if (!this.state.results)
+		const results = this.state.results
+
+		if (typeof results === 'undefined')
 			return
 
 		const which = this.state.resultsView
 
 		const props = {
-			data: this.state.results,
+			data: results,
 			displayComponent: this.determineResultsComponent(which),
 			offset: this.state.pages.offset_value,
 			containerProps: {
@@ -311,10 +308,6 @@ const SearchResults = React.createClass({
 		}
 
 		const styles = {
-			container: {
-				// backgroundColor: '#fafafa',
-			},
-
 			sidebar: {
 				container: {
 					display: 'inline-block',
@@ -333,7 +326,7 @@ const SearchResults = React.createClass({
 		}
 
 		return (
-			<div style={styles.container}>
+			<div>
 				{this.maybeRenderLoadingModal()}
 
 				<section key="sidebar" style={styles.sidebar.container}>
