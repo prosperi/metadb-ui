@@ -11,11 +11,11 @@ import FacetRangeLimitDate from '../components/catalog/FacetRangeLimitDate.jsx'
 import SearchBreadcrumbTrail from '../components/catalog/SearchBreadcrumbTrail.jsx'
 import SearchResultsHeader from '../components/catalog/SearchResultsHeader.jsx'
 
-import ResultsContainer from '../components/catalog/ResultsContainer.jsx'
-import ResultsListItem from '../components/catalog/ResultsListItem.jsx'
-import ResultsGalleryItem from '../components/catalog/ResultsGalleryItem.jsx'
+import ResultsGallery from '../components/catalog/ResultsGallery.jsx'
+import ResultsTable from '../components/catalog/ResultsTable.jsx'
 
 import { getBreadcrumbList } from '../../lib/facet-helpers'
+import { display as searchResultsDisplay } from '../../lib/search-result-settings'
 
 const SearchResults = React.createClass({
 	// TODO: clean this up a bit? this is a hold-over from when this component
@@ -59,7 +59,7 @@ const SearchResults = React.createClass({
 
 	getInitialState: function () {
 		return {
-			resultsView: 'list',
+			resultsView: searchResultsDisplay.get() || 'table',
 		}
 	},
 
@@ -73,26 +73,11 @@ const SearchResults = React.createClass({
 	determineResultsComponent: function (which) {
 		switch (which) {
 			case 'gallery':
-				return ResultsGalleryItem
+				return ResultsGallery
 
-			case 'list':
+			case 'table':
 			default:
-				return ResultsListItem
-		}
-	},
-
-	getResultsComponentStyle: function (which) {
-		switch (which) {
-			case 'gallery':
-				return {
-					alignItems: 'center',
-					display: 'flex',
-					flexWrap: 'wrap',
-				}
-
-			case 'list':
-			default:
-				return {}
+				return ResultsTable
 		}
 	},
 
@@ -121,10 +106,8 @@ const SearchResults = React.createClass({
 	},
 
 	handleSearchResponse: function (res) {
-		if (!res) {
-			console.warn('no data passed to `SearchResults#handleSearchResponse')
-			return
-		}
+		if (!res)
+			throw new Error('SearchResults#handleSearchResponse - no response passed')
 
 		const facets = res.results.facets
 		const breadcrumbs = getBreadcrumbList(facets, this.props.search.facets)
@@ -269,10 +252,10 @@ const SearchResults = React.createClass({
 			onPreviousPage: this.handlePreviousPage,
 			onOpenToolModal: console.log,
 			onPerPageChange: this.handlePerPageChange,
-			onViewChange: this.toggleResultsView,
+			onViewChange: this.toggleView,
 			perPage: this.props.search.options.per_page,
 			view: this.state.resultsView,
-			viewOptions: ['list', 'gallery'],
+			viewOptions: ['table', 'gallery'],
 		}
 
 		return React.createElement(SearchResultsHeader, props)
@@ -285,21 +268,18 @@ const SearchResults = React.createClass({
 			return
 
 		const which = this.state.resultsView
+		const Component = this.determineResultsComponent(which)
 
 		const props = {
 			data: results,
-			displayComponent: this.determineResultsComponent(which),
-			offset: this.state.pages.offset_value,
-			containerProps: {
-				style: this.getResultsComponentStyle(which),
-			}
 		}
 
-		return <ResultsContainer {...props} />
+		return <Component {...props} />
 	},
 
-	toggleResultsView: function (val) {
-		this.setState({resultsView: val})
+	toggleView: function (view) {
+		searchResultsDisplay.set(view)
+		this.setState({resultsView: view})
 	},
 
 	render: function () {
