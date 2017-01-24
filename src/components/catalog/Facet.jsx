@@ -114,7 +114,7 @@ const Facet = React.createClass({
 
 	getInitialState: function () {
 		return {
-			open: this.props.open,
+			open: this.props.open || this.props.selectedFacets.length > 0,
 		}
 	},
 
@@ -182,7 +182,7 @@ const Facet = React.createClass({
 		const defaultPanel = this.props.styles.default.panel
 		const defaultHeader = this.props.styles.default.header
 		const selPanel = this.props.styles.hasSelectedFacets.panel
-		const selHeader = this.props.styles.hasSelectedFacets.panel
+		const selHeader = this.props.styles.hasSelectedFacets.header
 		const hasSel = this.props.selectedFacets.length > 0
 
 		const panelStyles = assign({}, defaultPanel, (hasSel ? selPanel : null))
