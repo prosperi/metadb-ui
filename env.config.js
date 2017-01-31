@@ -1,5 +1,5 @@
 module.exports = {
-	'API_BASE_URL': JSON.stringify('http://localhost:3000'),
+	'API_BASE_URL': JSON.stringify('https://concerns.stage.lafayette.edu'),
 	'AUTH_BASE_URL': JSON.stringify('http://authority.lafayette.edu/ns'),
-	'SEARCH_BASE_URL': JSON.stringify('http://localhost:3000/catalog.json')
+	'SEARCH_BASE_URL': JSON.stringify('https://concerns.stage.lafayette.edu/catalog.json')
 }

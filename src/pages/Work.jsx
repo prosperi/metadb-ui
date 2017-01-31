@@ -2,12 +2,16 @@ import React from 'react'
 import withRouter from 'react-router/lib/withRouter'
 import assign from 'object-assign'
 import scrollToTop from '../../lib/scroll-to-top'
+import browserHistory from 'react-router/lib/browserHistory'
+import Button from '../components/Button.jsx'
 
-import WorkMetadataForm from '../components/WorkMetadataForm.jsx'
+// import WorkMetadataForm from '../components/WorkMetadataForm.jsx'
+import GenericWork from '../components/schema/GenericWork.jsx'
 import ThumbnailPreview from '../components/media/ThumbnailPreview.jsx'
 import OpenSeadragonViewer from '../components/media/OpenSeadragonViewer.jsx'
 import PDFViewer from '../components/media/PDFViewer.jsx'
 
+import WorkNotFound from './WorkNotFound.jsx'
 
 const Work = React.createClass({
 	componentDidMount: function () {
@@ -49,6 +53,23 @@ const Work = React.createClass({
 		scrollToTop()
 	},
 
+	maybeRenderNavToSearchResults: function () {
+		if (!Object.keys(this.props.search).length)
+			return
+
+		return (
+			<nav>
+				<Button
+					onClick={() => browserHistory.goBack()}
+					size="large"
+					type="text"
+					>
+					&lt; Return to results
+				</Button>
+			</nav>
+		)
+	},
+
 	mediaPreview: function () {
 		const work = this.props.work
 
@@ -60,7 +81,7 @@ const Work = React.createClass({
 
 		if (!work.data.thumbnail_path)
 			return
-	  console.log(work.data.thumbnail_path);
+
 		return (
 			<ThumbnailPreview
 				onClick={this.adjustSections}
@@ -75,7 +96,7 @@ const Work = React.createClass({
 		return (
 			<div>
 				{
-					(this.state.mediaOpen) ? (!fileIsPDF ? this.pdfjsViewer() : this.openSeadragonViewer()) : this.mediaPreview()
+					(this.state.mediaOpen) ? (fileIsPDF ? this.pdfjsViewer() : this.openSeadragonViewer()) : this.mediaPreview()
 				}
 			</div>
 		)
@@ -83,9 +104,25 @@ const Work = React.createClass({
 
 	openSeadragonViewer: function () {
 		const work = this.props.work
+		if (!work || !work.data)
+			return
+
+		if (work.isFetching || !Object.keys(work.data).length)
+			return
+
+		const workData = work.data
+
 		return (
 			<div>
-				<OpenSeadragonViewer tileSources={work.data.thumbnail_path} onClose={this.adjustSections}/>
+			  <OpenSeadragonViewer
+					prefixUrl='http://openseadragon.github.io/openseadragon/images/'
+					tileSources={workData.iiif_images}
+					sequenceMode={workData.iiif_images.length > 1}
+					showReferenceStrip={workData.iiif_images.length > 1}
+					referenceStripScroll='vertical'
+					showNavigator={true}
+					onClose={this.adjustSections}
+			  />
 			</div>
 		)
 	},
@@ -94,7 +131,7 @@ const Work = React.createClass({
 		const work = this.props.work
 		return(
 			<div>
-				<PDFViewer tileSources={work.data.thumbnail_path} onClose={this.adjustSections}/>
+				<PDFViewer src={work.data.download_path} />
 			</div>
 		)
 	},
@@ -112,7 +149,7 @@ const Work = React.createClass({
 		const schema = workData.form
 
 		return (
-			<WorkMetadataForm
+			<GenericWork
 				{...this.props}
 
 				data={assign({}, workData, updates)}
@@ -144,6 +181,8 @@ const Work = React.createClass({
 
 		return (
 			<header>
+				{this.maybeRenderNavToSearchResults()}
+
 				<h1 style={{display: 'inline-block'}}>{title}</h1>
 
 				<a
@@ -168,6 +207,10 @@ const Work = React.createClass({
 	},
 
 	render: function () {
+		if (this.props.work.error && this.props.work.error.code === 404) {
+			return <WorkNotFound {...this.props} />
+		}
+
 		const workSpaceStyle = {
 			display: 'table',
 			tableLayout: 'fixed',

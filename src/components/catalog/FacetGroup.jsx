@@ -77,6 +77,11 @@ const FacetGroup = React.createClass({
 				return
 
 			const data = this.props.data[idx]
+			const items = child.props.data || data.items
+
+			// skip empty facets
+			if (!items.length)
+				return
 
 			const bodyComponent = child.props.bodyComponent
 			? child.props.bodyComponent
@@ -84,7 +89,7 @@ const FacetGroup = React.createClass({
 
 			const props = {
 				bodyComponent,
-				items: child.props.data || data.items,
+				items,
 				key: name + index,
 				label: child.props.label || data.label,
 				onRemoveSelectedFacet: this.props.onRemoveSelectedFacet.bind(null, name),

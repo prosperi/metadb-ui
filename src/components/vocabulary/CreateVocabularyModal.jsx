@@ -1,6 +1,6 @@
 import React from 'react'
 import ModalWithHeader from '../ModalWithHeader.jsx'
-import VocabularyMetadataForm from './VocabularyMetadataForm.jsx'
+import GenericVocabulary from '../schema/GenericVocabulary.jsx'
 
 const T = React.PropTypes
 
@@ -29,9 +29,12 @@ const CreateVocabularyModal = React.createClass({
 	},
 
 	render: function () {
+		const label = 'Create a new vocabulary'
+
 		const modalProps = {
+			contentLabel: label,
 			isOpen: this.state.open,
-			label: 'Create a new vocabulary',
+			label: label,
 			onRequestClose: this.closeModal,
 			style: {
 				content: {
@@ -48,7 +51,7 @@ const CreateVocabularyModal = React.createClass({
 
 		return (
 			<ModalWithHeader {...modalProps}>
-				<VocabularyMetadataForm {...formProps} />
+				<GenericVocabulary {...formProps} />
 			</ModalWithHeader>
 		)
 	}

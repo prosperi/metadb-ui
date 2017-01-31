@@ -15,6 +15,10 @@ import {
 
 	FETCHING_ALL_VOCABULARIES,
 	RECEIVE_ALL_VOCABULARIES,
+
+	UPDATING_VOCABULARY,
+	UPDATE_VOCABULARY_OK,
+	UPDATE_VOCABULARY_ERR,
 } from '../../constants'
 
 import { testVocabulary as VOCAB_DATA } from './data/vocabularies-with-terms'
@@ -38,8 +42,10 @@ describe('Vocabulary actionCreator', function () {
 		afterEach(fetchMock.restore)
 
 		const data = {
-			name: 'Test Vocabulary',
-			description: 'Test Description',
+			label: ['Test Vocabulary'],
+			alt_label: ['Test Description'],
+			pref_label: [],
+			hidden_label: [],
 		}
 
 		const store = mockStore({vocabularies: []})
@@ -124,31 +130,56 @@ describe('Vocabulary actionCreator', function () {
 			}
 		]
 
-		it('dispatches {FETCHING,RECEIVE}_ALL_VOCABULARIES', function () {
+		it('dispatches FETCHING_ALL_VOCABULARIES and RECEIVE_ALL_VOCABULARIES', function () {
 			return store.dispatch(actions.fetchAllVocabularies())
 				.then(() => {
 					expect(store.getActions()).to.deep.equal(expectActions)
-				})	
+				})
 		})
 	})
 
-	// at the moment, we're only using this to fetch terms, so it might
-	// need to be revisited
-	xdescribe('#fetchVocabulary', function () {
+	describe('#updateVocabularyMetadata', function () {
+		const DATA = assign({}, VOCAB_DATA)
+		delete DATA.terms
+
+		const url = DATA.absolute_path
+
 		beforeEach(function () {
-			fetchMock.get(VOCAB_DATA.absolute_path, VOCAB_DATA)
+			fetchMock.patch(url, {status: 200, body: {status: 'ok'}})
+			fetchMock.patch('*', 404)
 		})
 
 		afterEach(fetchMock.restore)
 
-		it('dispatches {FETCHING,RECEIVE}_VOCABULARY')
+		it('patches an update the API', function () {
+			const store = mockStore({vocabularies: [DATA]})
+			const data = assign({}, DATA)
+			data.hidden_label = [`A new hidden label - ${Date.now()}`]
 
-		it('does not fetch if `isFetching` flag is true')
+			return store.dispatch(actions.updateVocabularyMetadata(data))
+				.then(() => {
+					const actions = store.getActions()
+					expect(actions).to.have.length(2)
+					expect(actions[0].type).to.equal(UPDATING_VOCABULARY)
+					expect(actions[1].type).to.equal(UPDATE_VOCABULARY_OK)
+				})
+		})
 
-		it('does not fetch if fetched recently')
-	})
+		it('dispatches UPDATE_VOCABULARY_ERR when there is a problem', function () {
+			const store = mockStore({vocabularies: [DATA]})
+			const data = assign({}, DATA)
+			data.absolute_path = 'http://this.isnt.real.biz'
 
-	xdescribe('#updateVocabulary', function () {
-		it('patches an update the API')
+			return store.dispatch(actions.updateVocabularyMetadata(data))
+				.then(() => {
+					throw Error('this should have thrown an error')
+				})
+				.catch(() => {
+					const actions = store.getActions()
+					expect(actions).to.have.length(2)
+					expect(actions[0].type).to.equal(UPDATING_VOCABULARY)
+					expect(actions[1].type).to.equal(UPDATE_VOCABULARY_ERR)
+				})
+		})
 	})
 })

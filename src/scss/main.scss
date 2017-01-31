@@ -9,11 +9,16 @@
 
 // component styling
 @import "badges";
+@import "buttons";
+@import "error-page";
 @import "form-element";
 @import "navbar";
 @import "recent-items";
 @import "thumbnail-preview";
+@import "openseadragon";
 @import "vocabulary-management";
+
+@import "catalog";
 
 // pdf.js styling
 @import "pdf";

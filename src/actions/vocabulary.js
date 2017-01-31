@@ -9,28 +9,27 @@ import {
 
 	FETCHING_ALL_VOCABULARIES,
 	FETCHING_ALL_VOCABULARIES_ERR,
-	FETCHING_VOCABULARY,
 
 	RECEIVE_ALL_VOCABULARIES,
-	RECEIVE_VOCABULARY,
-	RECEIVE_VOCABULARY_ERROR,
+	// RECEIVE_VOCABULARY_ERR,
 
 	UPDATING_VOCABULARY,
 	UPDATE_VOCABULARY_ERR,
 	UPDATE_VOCABULARY_OK,
 } from '../constants'
 
-import { get } from '../../lib/api/request'
-import { 
+// import { get } from '../../lib/api/request'
+import {
 	createVocabulary as create,
 	deleteVocabulary as deleteVocab,
 	getVocabularies,
 	updateVocabulary,
 } from '../../lib/api'
-import isFresh from '../../lib/is-fresh'
+// import isFresh from '../../lib/is-fresh'
 import camelCase from '../../lib/camel-case'
+import assign from 'object-assign'
 
-const STALE_TIME = 60 * 1000
+// const STALE_TIME = 60 * 1000
 
 const mockMintAuthUri = val => (
 	`${process.env.AUTH_BASE_URL}/${camelCase(val)}`
@@ -41,19 +40,15 @@ export const createVocabulary = data => dispatch => {
 		type: CREATE_VOCABULARY_REQUEST,
 	})
 
-	const { name, description } = data
-	
-	const payload = {
-		uri: mockMintAuthUri(name),
-		label: [name],
-		pref_label: [name],
-		alt_label: [description],
-		hidden_label: [],
-	}
+	const payload = assign({}, data)
+	const name = payload.label[0]
+
+	payload.uri = mockMintAuthUri(name)
+	payload.pref_label = payload.label
 
 	return create(payload)
 		.then(() => {
-			
+
 			// append `absolute_path` to the payload
 			payload.absolute_path = (
 				`${process.env.API_BASE_URL}/vocabularies/${camelCase(name)}.json`
@@ -112,40 +107,6 @@ export const fetchAllVocabularies = () => dispatch => {
 		.catch(error => {
 			dispatch({
 				type: FETCHING_ALL_VOCABULARIES_ERR,
-				error,
-			})
-
-			throw error
-		})
-}
-
-export const fetchVocabulary = data => (dispatch, getState) => {
-	const vocabs = getState().vocabulary
-	const uri = data.uri
-	const abs = data.absolute_path
-	const vocab = vocabs[uri]
-
-	if (vocab && vocab.isFetching)
-		return
-
-	if (isFresh(vocab, STALE_TIME))
-		return
-
-	dispatch({
-		type: FETCHING_VOCABULARY,
-		uri,
-	})
-
-	return get(abs)
-		.then(data => {
-			dispatch({
-				type: RECEIVE_VOCABULARY,
-				data,
-			})
-		})
-		.catch(error => {
-			dispatch({
-				type: RECEIVE_VOCABULARY_ERROR,
 				error,
 			})
 

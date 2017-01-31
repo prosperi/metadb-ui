@@ -11,106 +11,43 @@ const Button = React.createClass({
 		type: T.string,
 	},
 
-	componentWillMount: function () {
-		document.addEventListener('mouseup', this.handleMouseUp)
-	},
-
-	componentWillUnmount: function () {
-		document.removeEventListener('mouseup', this.handleMouseUp)
-	},
-
-	getInitialState: function () {
-		return {
-			mousedown: false,
-		}
-	},
-
-	getSizeStyle: function () {
+	getSizeClassName: function () {
 		switch (this.props.size) {
-			case 'large':
-				return {
-					fontSize: '16px',
-					padding: '8px',
-				}
-
 			case 'small':
-				return {
-					fontSize: '12px',
-					padding: '2px',
-				}
-
-			default:
-				return {
-					fontSize: '14px',
-					padding: '4px 6px',
-				}
+				return 'btn-size-small'
+			case 'large':
+				return 'btn-size-large'
 		}
 	},
 
-	getTypeStyle: function () {
+	getTypeClassName: function () {
 		switch (this.props.type) {
-			default:
-				return {
-					normal: {
-						backgroundColor: '#dedede',
-						color: '#222',
-						borderColor: '#999'
-					},
-					mousedown: {
-						backgroundColor: '#cdcdcd',
-						color: '#222',
-					}
-				}
-		}
-	},
-
-	handleMouseDown: function (ev) {
-		this.setState({mousedown: true})
-		this.props.onMouseDown && this.props.onMouseDown(ev)
-	},
-
-	handleMouseUp: function (ev) {
-		if (this.state.mousedown) {
-			this.setState({mousedown: false})
-			this.props.onMouseUp && this.props.onMouseUp(ev)
+			case 'danger':
+				return 'btn-type-danger'
+			case 'info':
+				return 'btn-type-info'
+			case 'success':
+				return 'btn-type-success'
+			case 'text':
+				return 'btn-type-text'
+			case 'warning':
+				return 'btn-type-warning'
 		}
 	},
 
 	render: function () {
-		const thisProps = assign({}, this.props)
-		
-		// we call onMouseDown/Up from within our own mouse handlers
-		// so removing these prevents conflicts
-		if (thisProps.onMouseDown) delete thisProps.onMouseDown
-		if (thisProps.onMouseUp) delete thisProps.onMouseUp
+		const className = [
+			this.getSizeClassName(),
+			this.getTypeClassName(),
+			this.props.className,
+		].join(' ')
 
-		const baseStyle = {
-			appearance: 'none',
-			boxShadow: 'none',
-			borderRadius: '2px',
-			borderStyle: 'solid',
-			borderWidth: '1px',
-			cursor: 'pointer',
-			lineHeight: '1.5em',
-			outline: 'none',
-			WebkitAppearance: 'none',
-			MozAppearance: 'none',
-		}
+		const uProps = assign({}, this.props)
+		delete uProps.size
+		delete uProps.type
+		delete uProps.className
 
-		const typeStyle = this.getTypeStyle()
-
-		const style = assign({}, 
-			baseStyle, 
-			this.getSizeStyle(),
-			(this.state.mousedown ? typeStyle.mousedown : typeStyle.normal),
-			thisProps.style
-		)
-
-		const props = assign({}, {
-			onMouseDown: this.handleMouseDown,
-			onMouseUp: this.handleMouseUp,
-			style,
-		}, thisProps)
+		const props = assign({}, uProps, {className})
 
 		return React.createElement('button', props)
 	}

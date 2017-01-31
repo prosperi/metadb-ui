@@ -6,7 +6,7 @@
 		visibility: visible;
 	}
 
-	#printContainer, #mozPrintCallback-shim, #mozPrintCallback-shim *{
+	#printContainer, #mozPrintCallback-shim, #mozPrintCallback-shim * {
 		visibility: hidden;
 	}
 
@@ -18,8 +18,8 @@
 }
 
 .pdfjs {
-	height: 700px;
-	@import "../../bower_components/pdf.js-viewer/viewer.css";
+	height: 1214px;
+	@import "../../build/pdf_viewer.css";
 
 	/* Fix styles */
 	#thumbnailView {

@@ -7,6 +7,11 @@ const OpenSeadragonViewer = React.createClass({
 	propTypes: {
 		prefixUrl: T.string,
 		tileSources: T.oneOfType([T.array, T.string]),
+		sequenceMode: T.bool,
+		showReferenceStrip: T.bool,
+		referenceStripScroll: T.string,
+		showNavigator: T.bool,
+		onClose: T.func
 	},
 
 	componentDidMount: function () {
@@ -17,31 +22,17 @@ const OpenSeadragonViewer = React.createClass({
 		return false
 	},
 
-	initOpenSeadragon: function (id) {
-		console.log(this.props.tileSources);
-		// create OpenSeadragon viewer
+	initOpenSeadragon: function () {
 		this.viewer = OpenSeadragon({
 			id: 'react-osd--viewer',
-			prefixUrl: 'http://openseadragon.github.io/openseadragon/images/',
-			tileSources:   [{
-	      "@context": "http://iiif.io/api/image/2/context.json",
-	      "@id": "http://libimages.princeton.edu/loris2/pudl0001%2F4609321%2Fs42%2F00000001.jp2",
-	      "height": 7200,
-	      "width": 5233,
-	      "profile": [ "http://iiif.io/api/image/2/level2.json" ],
-	      "protocol": "http://iiif.io/api/image",
-	      "tiles": [{
-	        "scaleFactors": [ 1, 2, 4, 8, 16, 32 ],
-	        "width": 1024
-      	}]
-			}],
-			degrees: 0,
-			showRotationControl: true,
-			gestureSettingsTouch:{
-				pinchRotate: true
-			}
+			prefixUrl: this.props.prefixUrl,
+			tileSources: this.props.tileSources,
+			sequenceMode: this.props.sequenceMode,
+    	showReferenceStrip: this.props.showReferenceStrip,
+			referenceStripScroll: this.props.referenceStripScroll,
+			showNavigator:  this.props.showNavigator
 		})
-		// Add additional Controls(in this case only close button)
+
 		var additionalControls = [];
 		var closeButton = new OpenSeadragon.Button({
 			tooltip: "Close Viewer",

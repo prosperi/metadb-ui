@@ -1,25 +1,21 @@
 import assign from 'object-assign'
 import findIndex from 'array-find-index'
+import isEqual from 'lodash.isequal'
 
 import { search } from '../../lib/api'
 import { addSearch as addSearchToHistory } from '../../lib/search-history'
 import browserHistory from 'react-router/lib/browserHistory'
 import formatSearchQuerystring from '../../lib/format-search-querystring'
 import { parse as parseQuerystring } from 'blacklight-querystring'
+import createRangeFacet from '../../lib/create-range-facet'
 
 import {
-	RECEIVE_SEARCH_ERROR,
+	RECEIVE_SEARCH_ERR,
 	RECEIVE_SEARCH_RESULTS,
 	SEARCHING,
 } from '../constants'
 
-const REQUIRED_OPTS = {
-	search_field: 'search',
-}
-
-const DEFAULT_OPTS = {
-	per_page: 25,
-}
+const hasOwnProperty = Object.prototype.hasOwnProperty
 
 function conductSearch (dispatch, query, facets, options, queryString) {
 	dispatch({
@@ -43,7 +39,7 @@ function conductSearch (dispatch, query, facets, options, queryString) {
 	})
 	.catch(error => {
 		dispatch({
-			type: RECEIVE_SEARCH_ERROR,
+			type: RECEIVE_SEARCH_ERR,
 			error,
 		})
 
@@ -53,7 +49,7 @@ function conductSearch (dispatch, query, facets, options, queryString) {
 
 export const searchCatalog = (query, facets, opts) => dispatch => {
 	// save ourselves the hassle of keeping track of these defaults
-	const options = assign({}, REQUIRED_OPTS, opts)
+	const options = assign({}, opts)
 
 	if (!facets)
 		facets = {}
@@ -66,10 +62,23 @@ export const searchCatalog = (query, facets, opts) => dispatch => {
 
 // this function is used when arriving on a Search page w/ a pre-populated
 // search querystring (ex. arriving from a link, refreshing the results)
-// `parseSearchQuerystring` is used to extract the query, facets, and 
+// `parseSearchQuerystring` is used to extract the query, facets, and
 // options + passed to `conductSearch`
 export const searchCatalogByQueryString = queryString => dispatch => {
 	const {query, facets, options} = parseQuerystring(queryString)
+
+	if (hasOwnProperty.call(options, 'range')) {
+		const range = options.range
+		delete options.range
+
+		for (let r in range) {
+			if (!facets[r])
+				facets[r] = []
+
+			facets[r].push(createRangeFacet(r, range[r].begin, range[r].end))
+		}
+	}
+
 	return conductSearch(dispatch, query, facets, options, queryString)
 }
 
@@ -79,7 +88,7 @@ export const setSearchOption = (field, value) => (dispatch, getState) => {
 
 	const query = search.query || ''
 	const facets = assign({}, search.facets)
-	const options = assign({}, DEFAULT_OPTS, REQUIRED_OPTS, search.options)
+	const options = assign({}, search.options)
 
 	// we'll pass null to remove the option
 	if (value === null) {
@@ -94,20 +103,23 @@ export const setSearchOption = (field, value) => (dispatch, getState) => {
 
 export const toggleSearchFacet = (field, facet, checked) => (dispatch, getState) => {
 	const search = getState().search || {}
-	
+
 	// recycling the previous search info
 	const query = search.query || ''
-	const options = assign({}, DEFAULT_OPTS, REQUIRED_OPTS, search.options)
-	
+	const options = assign({}, search.options)
 	const facets = assign({}, search.facets)
-	let dirty = false
-	let idx
-	
-	if (facets[field])
-		idx = findIndex(facets[field], f => f.value === facet.value)
-	else
-		idx = -1
 
+	let dirty = false
+	let idx = -1
+
+	if (facets[field]) {
+		idx = findIndex(facets[field], f => {
+			if (hasOwnProperty.call(f, 'value') && hasOwnProperty.call(facet, 'value'))
+				return isEqual(f.value, facet.value)
+			else
+				return isEqual(f, facet)
+		})
+	}
 
 	// add to selected-facets
 	if (checked) {
@@ -124,8 +136,8 @@ export const toggleSearchFacet = (field, facet, checked) => (dispatch, getState)
 				facets[field].slice(0, idx),
 				facets[field].slice(idx + 1)
 			)
-			
-			if (!facets[field].length) 
+
+			if (!facets[field].length)
 				delete facets[field]
 
 			dirty = true
