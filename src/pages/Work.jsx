@@ -6,10 +6,11 @@ import browserHistory from 'react-router/lib/browserHistory'
 import Button from '../components/Button.jsx'
 
 // import WorkMetadataForm from '../components/WorkMetadataForm.jsx'
-import GenericWork from '../components/schema/GenericWork.jsx'
-import ThumbnailPreview from '../components/media/ThumbnailPreview.jsx'
-import OpenSeadragonViewer from '../components/media/OpenSeadragonViewer.jsx'
-import PDFViewer from '../components/media/PDFViewer.jsx'
+import GenericWork from '../components/schema/GenericWork'
+import ThumbnailPreview from '../components/media/ThumbnailPreview'
+import OpenSeadragonViewer from '../components/media/OpenSeadragonViewer'
+import PDFViewer from '../components/media/PDFViewer'
+import MediaPlayer from '../components/media/MediaPlayer'
 
 import WorkNotFound from './WorkNotFound.jsx'
 
@@ -235,7 +236,7 @@ const Work = React.createClass({
 		return (
 			<div>
 				{this.renderHeader()}
-
+				<MediaPlayer />
 				<div style={workSpaceStyle} className="work-space">
 
 					<div style={workEditStyle} ref={e => this._workEditEl = e}>

@@ -43,7 +43,7 @@ module.exports = {
 				loader: ExtractTextPlugin.extract('style-loader', 'css-loader!sass-loader')
 			},
 			{
-			    test: /\.(png|gif|jpg|cur|pdf)$/,
+			    test: /\.(png|gif|jpg|cur|pdf|svg)$/,
 			    loader: "url-loader"
 			}
 		]
@@ -65,6 +65,7 @@ module.exports = {
 		extensions: ['', '.js', '.jsx', '.pdf'],
 		alias: {
 			pdfTestFile: path.resolve(__dirname, 'src', 'components', 'media', 'DraftReport'),
+			videoTestFile: path.resolve(__dirname, 'src', 'components', 'media', 'video'),
 			pdfWorker: path.resolve(__dirname, 'bower_components', 'pdf.js-viewer', 'pdf.worker')
 		}
 
