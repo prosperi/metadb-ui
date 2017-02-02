@@ -236,7 +236,17 @@ const Work = React.createClass({
 		return (
 			<div>
 				{this.renderHeader()}
-				<MediaPlayer />
+				<MediaPlayer video={true}
+										poster="https://cdn.selz.com/plyr/1.5/View_From_A_Blue_Moon_Trailer-HD.jpg"
+										config={{controls: true, crossOrigin: true}}
+										mediaSrc="https://cdn.selz.com/plyr/1.5/View_From_A_Blue_Moon_Trailer-HD.mp4"
+										trackSrc="https://cdn.selz.com/plyr/1.5/View_From_A_Blue_Moon_Trailer-HD.en.vtt"
+										trackConfig={{ kind: "captions", label: "English", srcLang: "en", default: true}}
+										/>
+				<MediaPlayer audio={true}
+										config={{controls: true, crossOrigin: true}}
+										mediaSrc="https://cdn.selz.com/plyr/1.5/Kishi_Bashi_-_It_All_Began_With_a_Burst.mp3"
+										/>
 				<div style={workSpaceStyle} className="work-space">
 
 					<div style={workEditStyle} ref={e => this._workEditEl = e}>
