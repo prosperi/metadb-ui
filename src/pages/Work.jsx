@@ -10,7 +10,6 @@ import NavToSearchResults from '../components/NavToSearchResults.jsx'
 import WorkHeader from '../components/work/Header.jsx'
 import WorkEdit from '../components/work/Edit.jsx'
 
-
 import getWorkTitle from '../../lib/get-work-title'
 
 const Work = React.createClass({
@@ -23,7 +22,6 @@ const Work = React.createClass({
 
 		this.props.fetchWork(id)
 		this.props.router.setRouteLeaveHook(this.props.route, this.onExit)
-		plyr.setup()
 	},
 
 	onExit: function (/* nextLocation */) {
@@ -197,31 +195,27 @@ const Work = React.createClass({
 		}
 
 		return (
-<<<<<<< HEAD
-			<div>
-				{this.renderHeader()}
-				<div style={workSpaceStyle} className="work-space">
-			<StickyContainer className="Work-container">
-				{this.maybeRenderNavToSearchResults()}
+				 <StickyContainer className="Work-container">
+					{this.maybeRenderNavToSearchResults()}
 
-				<Sticky stickyStyle={{width: '100%'}} className="Work-sticky-header">
-					{this.renderHeader()}
-				</Sticky>
-
-				{/* .Work-content */}
-				<StickyContainer {...workContentProps}>
-
-					{/* .Work-view-container */}
-					<Sticky {...workViewContainerProps}>
-						{this.renderMediaPreview()}
+					<Sticky stickyStyle={{width: '100%'}} className="Work-sticky-header">
+						{this.renderHeader()}
 					</Sticky>
 
-					{/* .Work-edit-container */}
-					<div {...workEditContainerProps}>
-						<WorkEdit {...workEditProps} />
-					</div>
+					{/* .Work-content */}
+					 <StickyContainer {...workContentProps}>
+
+						{/* .Work-view-container */}
+						<Sticky {...workViewContainerProps}>
+							{this.renderMediaPreview()}
+						</Sticky>
+
+						{/* .Work-edit-container */}
+					  <div {...workEditContainerProps}>
+							<WorkEdit {...workEditProps} />
+						</div>
+					</StickyContainer>
 				</StickyContainer>
-			</StickyContainer>
 		)
 	}
 })
