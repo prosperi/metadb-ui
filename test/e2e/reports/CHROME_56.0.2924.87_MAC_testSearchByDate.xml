@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="0"
+            tests="1">
+
+  <testsuite name="testSearchByDate"
+    errors="0" failures="0" hostname="" id="" package="testSearchByDate" skipped="0"
+    tests="1" time="9.272" timestamp="Thu, 23 Feb 2017 15:02:57 GMT">
+  
+    <testcase name="User Searches by Date" time="9.272" assertions="7">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    </testcase>
+  
+  
+  </testsuite>
+</testsuites>

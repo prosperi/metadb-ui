@@ -1,0 +1,187 @@
+10:02:56.264 INFO - Selenium build info: version: '3.0.1', revision: '1969d75'
+10:02:56.268 INFO - Launching a standalone Selenium Server
+2017-02-23 10:02:56.415:INFO::main: Logging initialized @1556ms
+10:02:56.780 INFO - Driver provider org.openqa.selenium.ie.InternetExplorerDriver registration is skipped:
+ registration capabilities Capabilities [{ensureCleanSession=true, browserName=internet explorer, version=, platform=WINDOWS}] does not match the current platform MAC
+10:02:56.781 INFO - Driver provider org.openqa.selenium.edge.EdgeDriver registration is skipped:
+ registration capabilities Capabilities [{browserName=MicrosoftEdge, version=, platform=WINDOWS}] does not match the current platform MAC
+10:02:56.781 INFO - Driver class not found: com.opera.core.systems.OperaDriver
+10:02:56.781 INFO - Driver provider com.opera.core.systems.OperaDriver registration is skipped:
+Unable to create new instances on this machine.
+10:02:56.781 INFO - Driver class not found: com.opera.core.systems.OperaDriver
+10:02:56.782 INFO - Driver provider com.opera.core.systems.OperaDriver is not registered
+2017-02-23 10:02:57.062:INFO:osjs.Server:main: jetty-9.2.15.v20160210
+2017-02-23 10:02:57.151:INFO:osjsh.ContextHandler:main: Started o.s.j.s.ServletContextHandler@5d5eef3d{/,null,AVAILABLE}
+2017-02-23 10:02:57.295:INFO:osjs.ServerConnector:main: Started ServerConnector@1593948d{HTTP/1.1}{0.0.0.0:4444}
+2017-02-23 10:02:57.296:INFO:osjs.Server:main: Started @2438ms
+10:02:57.296 INFO - Selenium Server is up and running
+10:02:58.751 INFO - SessionCleaner initialized with insideBrowserTimeout 0 and clientGoneTimeout 1800000 polling every 180000
+10:02:58.895 INFO - Executing: [new session: Capabilities [{acceptSslCerts=true, name=Test Search By Date, browserName=chrome, javascriptEnabled=true, platform=ANY}]])
+10:02:58.993 INFO - Creating a new session for Capabilities [{acceptSslCerts=true, name=Test Search By Date, browserName=chrome, javascriptEnabled=true, platform=ANY}]
+Starting ChromeDriver 2.27.440174 (e97a722caafc2d3a8b807ee115bfb307f7d2cfd9) on port 32163
+Only local connections are allowed.
+10:03:00.612 INFO - Attempting bi-dialect session, assuming Postel's Law holds true on the remote end
+10:03:02.309 INFO - Detected dialect: OSS
+10:03:02.401 INFO - Done: [new session: Capabilities [{acceptSslCerts=true, name=Test Search By Date, browserName=chrome, javascriptEnabled=true, platform=ANY}]]
+10:03:02.462 INFO - Executing: [get: http://localhost:8080/search])
+10:03:04.245 INFO - Done: [get: http://localhost:8080/search]
+10:03:04.304 INFO - Executing: [find elements: By.cssSelector: input[type=text][name=query]])
+10:03:04.416 INFO - Done: [find elements: By.cssSelector: input[type=text][name=query]]
+10:03:04.425 INFO - Executing: [is displayed: 0 [[ChromeDriver: chrome on MAC (62c09dfa39e4cfc63e8d36cca6b11ee4)] -> css selector: input[type=text][name=query]]])
+10:03:04.473 INFO - Done: [is displayed: 0 [[ChromeDriver: chrome on MAC (62c09dfa39e4cfc63e8d36cca6b11ee4)] -> css selector: input[type=text][name=query]]]
+10:03:04.486 INFO - Executing: [find element: By.cssSelector: input[type=text][name=query]])
+10:03:04.530 INFO - Done: [find element: By.cssSelector: input[type=text][name=query]]
+10:03:04.545 INFO - Executing: [send keys: 0 [[ChromeDriver: chrome on MAC (62c09dfa39e4cfc63e8d36cca6b11ee4)] -> css selector: input[type=text][name=query]], []])
+10:03:04.617 INFO - Done: [send keys: 0 [[ChromeDriver: chrome on MAC (62c09dfa39e4cfc63e8d36cca6b11ee4)] -> css selector: input[type=text][name=query]], []]
+10:03:04.647 INFO - Executing: [find elements: By.cssSelector: button])
+10:03:04.687 INFO - Done: [find elements: By.cssSelector: button]
+10:03:04.692 INFO - Executing: [is displayed: 1 [[ChromeDriver: chrome on MAC (62c09dfa39e4cfc63e8d36cca6b11ee4)] -> css selector: button]])
+10:03:04.720 INFO - Done: [is displayed: 1 [[ChromeDriver: chrome on MAC (62c09dfa39e4cfc63e8d36cca6b11ee4)] -> css selector: button]]
+10:03:04.730 INFO - Executing: [find element: By.cssSelector: button])
+10:03:04.758 INFO - Done: [find element: By.cssSelector: button]
+10:03:04.770 INFO - Executing: [click: 1 [[ChromeDriver: chrome on MAC (62c09dfa39e4cfc63e8d36cca6b11ee4)] -> css selector: button]])
+10:03:04.876 INFO - Done: [click: 1 [[ChromeDriver: chrome on MAC (62c09dfa39e4cfc63e8d36cca6b11ee4)] -> css selector: button]]
+10:03:04.888 INFO - Executing: [find elements: By.cssSelector: .facet-panel:nth-of-type(6) header])
+10:03:04.927 INFO - Done: [find elements: By.cssSelector: .facet-panel:nth-of-type(6) header]
+10:03:05.656 INFO - Executing: [find elements: By.cssSelector: .facet-panel:nth-of-type(6) header])
+10:03:05.716 INFO - Done: [find elements: By.cssSelector: .facet-panel:nth-of-type(6) header]
+10:03:05.779 INFO - Executing: [find element: By.cssSelector: .facet-panel:nth-of-type(6) header])
+10:03:05.840 INFO - Done: [find element: By.cssSelector: .facet-panel:nth-of-type(6) header]
+10:03:05.854 INFO - Executing: [click: 2 [[ChromeDriver: chrome on MAC (62c09dfa39e4cfc63e8d36cca6b11ee4)] -> css selector: .facet-panel:nth-of-type(6) header]])
+10:03:06.043 INFO - Done: [click: 2 [[ChromeDriver: chrome on MAC (62c09dfa39e4cfc63e8d36cca6b11ee4)] -> css selector: .facet-panel:nth-of-type(6) header]]
+10:03:06.059 INFO - Executing: [find elements: By.cssSelector: input[type="date"]])
+10:03:06.112 INFO - Done: [find elements: By.cssSelector: input[type="date"]]
+10:03:06.130 INFO - Executing: [execute script: var passedArgs = Array.prototype.slice.call(arguments,0); return function () {
+      document.getElementsByTagName('input')[2].setAttribute('max', '1785-08-26');
+      document.getElementsByTagName('input')[1].setAttribute('max', '1785-08-26');
+
+      document.getElementsByTagName('input')[2].setAttribute('min', '1785-08-26');
+      document.getElementsByTagName('input')[1].setAttribute('min', '1785-08-26');
+    }.apply(window, passedArgs);, []])
+10:03:06.164 INFO - Done: [execute script: var passedArgs = Array.prototype.slice.call(arguments,0); return function () {
+      document.getElementsByTagName('input')[2].setAttribute('max', '1785-08-26');
+      document.getElementsByTagName('input')[1].setAttribute('max', '1785-08-26');
+
+      document.getElementsByTagName('input')[2].setAttribute('min', '1785-08-26');
+      document.getElementsByTagName('input')[1].setAttribute('min', '1785-08-26');
+    }.apply(window, passedArgs);, []]
+10:03:06.177 INFO - Executing: [find elements: By.cssSelector: input[type="date"]])
+10:03:06.200 INFO - Done: [find elements: By.cssSelector: input[type="date"]]
+10:03:06.223 INFO - Executing: [get element attribute: 3 [[ChromeDriver: chrome on MAC (62c09dfa39e4cfc63e8d36cca6b11ee4)] -> css selector: input[type="date"]], min])
+10:03:06.248 INFO - Done: [get element attribute: 3 [[ChromeDriver: chrome on MAC (62c09dfa39e4cfc63e8d36cca6b11ee4)] -> css selector: input[type="date"]], min]
+10:03:06.272 INFO - Executing: [find elements: By.cssSelector: input[type="date"]])
+10:03:06.293 INFO - Done: [find elements: By.cssSelector: input[type="date"]]
+10:03:06.304 INFO - Executing: [get element attribute: 3 [[ChromeDriver: chrome on MAC (62c09dfa39e4cfc63e8d36cca6b11ee4)] -> css selector: input[type="date"]], max])
+10:03:06.317 INFO - Done: [get element attribute: 3 [[ChromeDriver: chrome on MAC (62c09dfa39e4cfc63e8d36cca6b11ee4)] -> css selector: input[type="date"]], max]
+10:03:06.364 INFO - Executing: [find element: By.cssSelector: .facet-panel:nth-of-type(6) button])
+10:03:06.400 INFO - Done: [find element: By.cssSelector: .facet-panel:nth-of-type(6) button]
+10:03:06.408 INFO - Executing: [click: 5 [[ChromeDriver: chrome on MAC (62c09dfa39e4cfc63e8d36cca6b11ee4)] -> css selector: .facet-panel:nth-of-type(6) button]])
+10:03:06.557 INFO - Done: [click: 5 [[ChromeDriver: chrome on MAC (62c09dfa39e4cfc63e8d36cca6b11ee4)] -> css selector: .facet-panel:nth-of-type(6) button]]
+10:03:06.564 INFO - Executing: [find elements: By.cssSelector: .thumbnail-preview])
+10:03:06.591 INFO - Done: [find elements: By.cssSelector: .thumbnail-preview]
+10:03:07.102 INFO - Executing: [find elements: By.cssSelector: .thumbnail-preview])
+10:03:07.117 INFO - Done: [find elements: By.cssSelector: .thumbnail-preview]
+10:03:07.136 INFO - Executing: [delete session: 9dab6897-1586-4bf8-820f-3448a59f4390])
+10:03:07.284 INFO - Done: [delete session: 9dab6897-1586-4bf8-820f-3448a59f4390]
+10:03:07.520 INFO - Executing: [new session: Capabilities [{acceptSslCerts=true, name=Test Search By Date Range, browserName=chrome, javascriptEnabled=true, platform=ANY}]])
+10:03:07.522 INFO - Creating a new session for Capabilities [{acceptSslCerts=true, name=Test Search By Date Range, browserName=chrome, javascriptEnabled=true, platform=ANY}]
+Starting ChromeDriver 2.27.440174 (e97a722caafc2d3a8b807ee115bfb307f7d2cfd9) on port 6529
+Only local connections are allowed.
+10:03:07.609 INFO - Attempting bi-dialect session, assuming Postel's Law holds true on the remote end
+10:03:09.068 INFO - Detected dialect: OSS
+10:03:09.086 INFO - Done: [new session: Capabilities [{acceptSslCerts=true, name=Test Search By Date Range, browserName=chrome, javascriptEnabled=true, platform=ANY}]]
+10:03:09.114 INFO - Executing: [get: http://localhost:8080/search])
+10:03:10.397 INFO - Done: [get: http://localhost:8080/search]
+10:03:10.430 INFO - Executing: [find elements: By.cssSelector: input[type=text][name=query]])
+10:03:10.477 INFO - Done: [find elements: By.cssSelector: input[type=text][name=query]]
+10:03:10.486 INFO - Executing: [is displayed: 0 [[ChromeDriver: chrome on MAC (d48229f28ceecb3ec37517432b60bbc9)] -> css selector: input[type=text][name=query]]])
+10:03:10.517 INFO - Done: [is displayed: 0 [[ChromeDriver: chrome on MAC (d48229f28ceecb3ec37517432b60bbc9)] -> css selector: input[type=text][name=query]]]
+10:03:10.527 INFO - Executing: [find element: By.cssSelector: input[type=text][name=query]])
+10:03:10.568 INFO - Done: [find element: By.cssSelector: input[type=text][name=query]]
+10:03:10.575 INFO - Executing: [send keys: 0 [[ChromeDriver: chrome on MAC (d48229f28ceecb3ec37517432b60bbc9)] -> css selector: input[type=text][name=query]], []])
+10:03:10.652 INFO - Done: [send keys: 0 [[ChromeDriver: chrome on MAC (d48229f28ceecb3ec37517432b60bbc9)] -> css selector: input[type=text][name=query]], []]
+10:03:10.669 INFO - Executing: [find elements: By.cssSelector: button])
+10:03:10.717 INFO - Done: [find elements: By.cssSelector: button]
+10:03:10.723 INFO - Executing: [is displayed: 1 [[ChromeDriver: chrome on MAC (d48229f28ceecb3ec37517432b60bbc9)] -> css selector: button]])
+10:03:10.765 INFO - Done: [is displayed: 1 [[ChromeDriver: chrome on MAC (d48229f28ceecb3ec37517432b60bbc9)] -> css selector: button]]
+10:03:10.781 INFO - Executing: [find element: By.cssSelector: button])
+10:03:10.841 INFO - Done: [find element: By.cssSelector: button]
+10:03:10.854 INFO - Executing: [click: 1 [[ChromeDriver: chrome on MAC (d48229f28ceecb3ec37517432b60bbc9)] -> css selector: button]])
+10:03:11.181 INFO - Done: [click: 1 [[ChromeDriver: chrome on MAC (d48229f28ceecb3ec37517432b60bbc9)] -> css selector: button]]
+10:03:11.192 INFO - Executing: [find elements: By.cssSelector: .facet-panel:nth-of-type(6) header])
+10:03:11.232 INFO - Done: [find elements: By.cssSelector: .facet-panel:nth-of-type(6) header]
+10:03:11.745 INFO - Executing: [find elements: By.cssSelector: .facet-panel:nth-of-type(6) header])
+10:03:11.761 INFO - Done: [find elements: By.cssSelector: .facet-panel:nth-of-type(6) header]
+10:03:11.768 INFO - Executing: [find element: By.cssSelector: .facet-panel:nth-of-type(6) header])
+10:03:11.796 INFO - Done: [find element: By.cssSelector: .facet-panel:nth-of-type(6) header]
+10:03:11.804 INFO - Executing: [click: 2 [[ChromeDriver: chrome on MAC (d48229f28ceecb3ec37517432b60bbc9)] -> css selector: .facet-panel:nth-of-type(6) header]])
+10:03:11.928 INFO - Done: [click: 2 [[ChromeDriver: chrome on MAC (d48229f28ceecb3ec37517432b60bbc9)] -> css selector: .facet-panel:nth-of-type(6) header]]
+10:03:11.954 INFO - Executing: [find elements: By.cssSelector: input[type="date"]])
+10:03:11.999 INFO - Done: [find elements: By.cssSelector: input[type="date"]]
+10:03:12.007 INFO - Executing: [execute script: var passedArgs = Array.prototype.slice.call(arguments,0); return function () {
+      document.getElementsByTagName('input')[2].setAttribute('max', '1945-08-15');
+      document.getElementsByTagName('input')[1].setAttribute('max', '1945-08-15');
+
+      document.getElementsByTagName('input')[2].setAttribute('min', '1785-08-26');
+      document.getElementsByTagName('input')[1].setAttribute('min', '1785-08-26');
+    }.apply(window, passedArgs);, []])
+10:03:12.017 INFO - Done: [execute script: var passedArgs = Array.prototype.slice.call(arguments,0); return function () {
+      document.getElementsByTagName('input')[2].setAttribute('max', '1945-08-15');
+      document.getElementsByTagName('input')[1].setAttribute('max', '1945-08-15');
+
+      document.getElementsByTagName('input')[2].setAttribute('min', '1785-08-26');
+      document.getElementsByTagName('input')[1].setAttribute('min', '1785-08-26');
+    }.apply(window, passedArgs);, []]
+10:03:12.026 INFO - Executing: [find elements: By.cssSelector: input[type="date"]])
+10:03:12.049 INFO - Done: [find elements: By.cssSelector: input[type="date"]]
+10:03:12.056 INFO - Executing: [get element attribute: 3 [[ChromeDriver: chrome on MAC (d48229f28ceecb3ec37517432b60bbc9)] -> css selector: input[type="date"]], min])
+10:03:12.081 INFO - Done: [get element attribute: 3 [[ChromeDriver: chrome on MAC (d48229f28ceecb3ec37517432b60bbc9)] -> css selector: input[type="date"]], min]
+10:03:12.092 INFO - Executing: [find elements: By.cssSelector: input[type="date"]])
+10:03:12.108 INFO - Done: [find elements: By.cssSelector: input[type="date"]]
+10:03:12.115 INFO - Executing: [get element attribute: 3 [[ChromeDriver: chrome on MAC (d48229f28ceecb3ec37517432b60bbc9)] -> css selector: input[type="date"]], max])
+10:03:12.127 INFO - Done: [get element attribute: 3 [[ChromeDriver: chrome on MAC (d48229f28ceecb3ec37517432b60bbc9)] -> css selector: input[type="date"]], max]
+10:03:12.133 INFO - Executing: [find element: By.cssSelector: .facet-panel:nth-of-type(6) button])
+10:03:12.169 INFO - Done: [find element: By.cssSelector: .facet-panel:nth-of-type(6) button]
+10:03:12.176 INFO - Executing: [click: 5 [[ChromeDriver: chrome on MAC (d48229f28ceecb3ec37517432b60bbc9)] -> css selector: .facet-panel:nth-of-type(6) button]])
+10:03:12.328 INFO - Done: [click: 5 [[ChromeDriver: chrome on MAC (d48229f28ceecb3ec37517432b60bbc9)] -> css selector: .facet-panel:nth-of-type(6) button]]
+10:03:12.335 INFO - Executing: [find elements: By.cssSelector: .thumbnail-preview])
+10:03:12.377 INFO - Done: [find elements: By.cssSelector: .thumbnail-preview]
+10:03:12.988 INFO - Executing: [find elements: By.cssSelector: .thumbnail-preview])
+10:03:13.056 INFO - Done: [find elements: By.cssSelector: .thumbnail-preview]
+10:03:13.074 INFO - Executing: [delete session: a794738f-b312-4e07-bb1a-8c544276fd1d])
+10:03:13.220 INFO - Done: [delete session: a794738f-b312-4e07-bb1a-8c544276fd1d]
+10:03:13.338 INFO - Executing: [new session: Capabilities [{acceptSslCerts=true, name=Test Search By Title, browserName=chrome, javascriptEnabled=true, platform=ANY}]])
+10:03:13.341 INFO - Creating a new session for Capabilities [{acceptSslCerts=true, name=Test Search By Title, browserName=chrome, javascriptEnabled=true, platform=ANY}]
+Starting ChromeDriver 2.27.440174 (e97a722caafc2d3a8b807ee115bfb307f7d2cfd9) on port 19344
+Only local connections are allowed.
+10:03:13.426 INFO - Attempting bi-dialect session, assuming Postel's Law holds true on the remote end
+10:03:14.629 INFO - Detected dialect: OSS
+10:03:14.636 INFO - Done: [new session: Capabilities [{acceptSslCerts=true, name=Test Search By Title, browserName=chrome, javascriptEnabled=true, platform=ANY}]]
+10:03:14.661 INFO - Executing: [get: http://localhost:8080/search])
+10:03:15.740 INFO - Done: [get: http://localhost:8080/search]
+10:03:15.755 INFO - Executing: [find elements: By.cssSelector: input[type=text][name=query]])
+10:03:15.814 INFO - Done: [find elements: By.cssSelector: input[type=text][name=query]]
+10:03:15.832 INFO - Executing: [is displayed: 0 [[ChromeDriver: chrome on MAC (b26c7b3d549ebe76865e54ef5a027d2c)] -> css selector: input[type=text][name=query]]])
+10:03:15.862 INFO - Done: [is displayed: 0 [[ChromeDriver: chrome on MAC (b26c7b3d549ebe76865e54ef5a027d2c)] -> css selector: input[type=text][name=query]]]
+10:03:15.868 INFO - Executing: [find element: By.cssSelector: input[type=text][name=query]])
+10:03:15.902 INFO - Done: [find element: By.cssSelector: input[type=text][name=query]]
+10:03:15.924 INFO - Executing: [send keys: 0 [[ChromeDriver: chrome on MAC (b26c7b3d549ebe76865e54ef5a027d2c)] -> css selector: input[type=text][name=query]], [D, E,  , M, A, R, Q, U, I, S,  , D, E,  , L, A,  , F, A, Y, E, T, T, E]])
+10:03:16.237 INFO - Done: [send keys: 0 [[ChromeDriver: chrome on MAC (b26c7b3d549ebe76865e54ef5a027d2c)] -> css selector: input[type=text][name=query]], [D, E,  , M, A, R, Q, U, I, S,  , D, E,  , L, A,  , F, A, Y, E, T, T, E]]
+10:03:16.243 INFO - Executing: [find elements: By.cssSelector: button])
+10:03:16.281 INFO - Done: [find elements: By.cssSelector: button]
+10:03:16.285 INFO - Executing: [is displayed: 1 [[ChromeDriver: chrome on MAC (b26c7b3d549ebe76865e54ef5a027d2c)] -> css selector: button]])
+10:03:16.422 INFO - Done: [is displayed: 1 [[ChromeDriver: chrome on MAC (b26c7b3d549ebe76865e54ef5a027d2c)] -> css selector: button]]
+10:03:16.517 INFO - Executing: [find element: By.cssSelector: button])
+10:03:16.590 INFO - Done: [find element: By.cssSelector: button]
+10:03:16.601 INFO - Executing: [click: 1 [[ChromeDriver: chrome on MAC (b26c7b3d549ebe76865e54ef5a027d2c)] -> css selector: button]])
+10:03:16.751 INFO - Done: [click: 1 [[ChromeDriver: chrome on MAC (b26c7b3d549ebe76865e54ef5a027d2c)] -> css selector: button]]
+10:03:16.761 INFO - Executing: [find elements: By.cssSelector: .results-table tbody tr:first-child])
+10:03:16.794 INFO - Done: [find elements: By.cssSelector: .results-table tbody tr:first-child]
+10:03:17.309 INFO - Executing: [find elements: By.cssSelector: .results-table tbody tr:first-child])
+10:03:17.321 INFO - Done: [find elements: By.cssSelector: .results-table tbody tr:first-child]
+10:03:17.831 INFO - Executing: [find elements: By.cssSelector: .results-table tbody tr:first-child])
+10:03:17.849 INFO - Done: [find elements: By.cssSelector: .results-table tbody tr:first-child]
+10:03:17.856 INFO - Executing: [get text: 2 [[ChromeDriver: chrome on MAC (b26c7b3d549ebe76865e54ef5a027d2c)] -> css selector: .results-table tbody tr:first-child]])
+10:03:17.915 INFO - Done: [get text: 2 [[ChromeDriver: chrome on MAC (b26c7b3d549ebe76865e54ef5a027d2c)] -> css selector: .results-table tbody tr:first-child]]
+10:03:17.932 INFO - Executing: [delete session: feb2fc1c-359c-4d43-9f5f-2a45a515c54a])
+10:03:18.062 INFO - Done: [delete session: feb2fc1c-359c-4d43-9f5f-2a45a515c54a]
