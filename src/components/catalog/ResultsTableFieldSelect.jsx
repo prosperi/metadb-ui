@@ -62,7 +62,7 @@ const ResultsTableFieldSelect = React.createClass({
 		const selected = this.props.selected.indexOf(key) > -1
 		const props = {
 			children: this.props.fields[key],
-			className: cn('field', {selected}),
+			className: cn('field ResultsTableFieldSelect-field', {selected}),
 			onClick: this.handleFieldClick.bind(null, key),
 			key: key + index,
 		}
@@ -75,10 +75,20 @@ const ResultsTableFieldSelect = React.createClass({
 		const header = [
 			(
 			<div
-				className="field field-header {fieldClassName}"
+				className={`field field-header ${fieldClassName}`}
+				key="all"
+				onClick={this.handleSelectAll}
+			>
+				Select all fields
+			</div>
+			),
+			(
+			<div
+				className={`field field-header ${fieldClassName}`}
 				key="header"
 				onClick={this.handleReset}
 			>
+				Restore defaults
 			</div>
 			),
 			(
