@@ -17,36 +17,36 @@ const defaultProps = {
 	selected: [],
 }
 
-class ResultsTableFieldSelect extends React.Component {
-	constructor (props) {
-		super(props)
+const ResultsTableFieldSelect = React.createClass({
+	propTypes: propTypes,
 
-		this.handleFieldClick = this.handleFieldClick.bind(this)
-		this.handleReset = this.handleReset.bind(this)
-		this.maybeCloseSelect = this.maybeCloseSelect.bind(this)
-		this.renderWorkField = this.renderWorkField.bind(this)
-		this.renderWorkFields = this.renderWorkFields.bind(this)
-	}
+	getDefaultProps: function () {
+		return defaultProps
+	},
 
-	componentWillMount () {
+	componentWillMount: function () {
 		document.addEventListener('click', this.maybeCloseSelect)
-	}
+	},
 
-	componentWillUnmount () {
+	componentWillUnmount: function () {
 		document.removeEventListener('click', this.maybeCloseSelect)
-	}
+	},
 
-	handleFieldClick (key) {
+	handleFieldClick: function (key) {
 		const idx = this.props.selected.indexOf(key)
 		const isSelected = idx > -1
 		this.props.onSelectField.call(null, key, !isSelected, idx)
-	}
+	},
 
-	handleReset () {
+	handleReset: function () {
 		this.props.onReset && this.props.onReset()
-	}
+	},
 
-	maybeCloseSelect (event) {
+	handleSelectAll: function () {
+		this.props.onSelectAll && this.props.onSelectAll()
+	},
+
+	maybeCloseSelect: function (event) {
 		let target = event.target
 
 		do {
@@ -56,9 +56,9 @@ class ResultsTableFieldSelect extends React.Component {
 		} while (target = target.parentElement)
 
 		this.props.onClose()
-	}
+	},
 
-	renderWorkField (key, index) {
+	renderWorkField: function (key, index) {
 		const selected = this.props.selected.indexOf(key) > -1
 		const props = {
 			children: this.props.fields[key],
@@ -68,7 +68,7 @@ class ResultsTableFieldSelect extends React.Component {
 		}
 
 		return <div {...props} />
-	}
+	},
 
 	renderWorkFields () {
 		const fieldClassName = 'ResultsTableFieldSelect-field'
@@ -79,7 +79,6 @@ class ResultsTableFieldSelect extends React.Component {
 				key="header"
 				onClick={this.handleReset}
 			>
-				Restore defaults
 			</div>
 			),
 			(
@@ -92,9 +91,9 @@ class ResultsTableFieldSelect extends React.Component {
 
 		const keys = Object.keys(this.props.fields)
 		return header.concat(keys.map(this.renderWorkField))
-	}
+	},
 
-	render () {
+	render: function () {
 		const props = {
 			className: SELECT_CLASSNAME,
 			ref: el => { this._containerEl = el },
@@ -106,9 +105,6 @@ class ResultsTableFieldSelect extends React.Component {
 			</div>
 		)
 	}
-}
-
-ResultsTableFieldSelect.propTypes = propTypes
-ResultsTableFieldSelect.defaultProps = defaultProps
+})
 
 export default ResultsTableFieldSelect
