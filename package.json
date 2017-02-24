@@ -12,7 +12,12 @@
     "dev": "webpack-dev-server --content-base build/ --hot --inline --progress --colors --history-api-fallback",
     "lint": "eslint .",
     "e2e-setup": "node_modules/selenium-standalone/bin/selenium-standalone install",
-    "test-nw": "nightwatch"
+    "test-nw": "nightwatch",
+    "clean": "rimraf build/{bundle.js,style.css}",
+    "test-server": "node test/server",
+    "mock": "lafayette-preserve-mock",
+    "test-e2e-loop": "npm run build && npm run test-nw && npm run clean",
+    "test-e2e": "npm run mock & npm run test-server & npm run test-e2e-loop"
   },
   "keywords": [],
   "author": "",
@@ -59,7 +64,7 @@
     "webpack-dev-server": "^1.14.1"
   },
   "devDependencies": {
-		"babel-cli": "^6.23.0",
+    "babel-cli": "^6.23.0",
     "babel-core": "^6.21.0",
     "babel-loader": "^6.2.10",
     "babel-plugin-add-module-exports": "^0.2.1",
@@ -85,8 +90,9 @@
     "karma-safari-launcher": "^1.0.0",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.8.0",
+    "mime": "^1.3.4",
     "mocha": "^3.0.2",
-		"nightwatch": "^0.9.12",
+    "nightwatch": "^0.9.12",
     "node-bourbon": "^4.2.8",
     "node-neat": "^1.7.2",
     "node-sass": "^3.13.1",
@@ -97,8 +103,9 @@
     "react-addons-test-utils": "^15.4.2",
     "react-dom": "^15.4.2",
     "redux-mock-store": "^1.2.0",
+    "rimraf": "^2.6.1",
     "sass-loader": "^4.1.1",
-		"selenium-standalone": "^6.0.1",
+    "selenium-standalone": "^6.0.1",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7"
   },
