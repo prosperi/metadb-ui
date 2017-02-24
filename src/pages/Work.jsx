@@ -9,6 +9,7 @@ import OpenSeadragonViewer from '../components/media/OpenSeadragonViewer.jsx'
 import NavToSearchResults from '../components/NavToSearchResults.jsx'
 import WorkHeader from '../components/work/Header.jsx'
 import WorkEdit from '../components/work/Edit.jsx'
+import WorkNotFound from './WorkNotFound.jsx'
 
 import getWorkTitle from '../../lib/get-work-title'
 
