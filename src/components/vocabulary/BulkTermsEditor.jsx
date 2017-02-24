@@ -1,5 +1,6 @@
 import React from 'react'
 import Dropzone from 'react-dropzone'
+import Button from '../Button.jsx'
 
 const T = React.PropTypes
 
@@ -49,7 +50,7 @@ const BulkTermsEditor = React.createClass({
 		if (!files.length) return
 
 		const reader = new FileReader()
-		
+
 		reader.onloadstart = () => {
 			this.setState({
 				loadingFile: true,
@@ -160,7 +161,10 @@ const BulkTermsEditor = React.createClass({
 		}
 
 		return (
-			<div style={styles.container}>
+			<div
+				className="BulkTermsEditor"
+				style={styles.container}
+				>
 				<header
 					style={styles.header}
 				>
@@ -170,14 +174,18 @@ const BulkTermsEditor = React.createClass({
 					</p>
 
 					<div
-						className="bulk-terms-options"
+						className="bulk-terms-options BulkTermsEditor-options"
 						style={styles.opts}
 						>
 
-						<label style={styles.label}>
+						<label
+							className="BulkTermsEditor-file"
+							style={styles.label}
+							>
 							Add terms from file (one term per line, <code>.txt</code> only)
 							<input
 								accept="text/plain"
+								className="BulkTermsEditor-file--input"
 								onChange={this.handleFileInputSelection}
 								style={styles.fileInput}
 								type="file"
@@ -185,7 +193,10 @@ const BulkTermsEditor = React.createClass({
 
 						</label>
 
-						<label style={styles.label}>
+						<label
+							className="BulkTermsEditor-overwrite"
+							style={styles.label}
+							>
 							<input
 								name="bulk-terms-overwrite-terms"
 								onChange={this.toggleOverwriteTermsFlag}
@@ -203,6 +214,7 @@ const BulkTermsEditor = React.createClass({
 					style={styles.dropzone.default}
 				>
 					<textarea
+						className="BulkTermsEditor-text"
 						onChange={this.handleChange}
 						onDragEnter={this.toggleDragEnter}
 						onDragLeave={this.toggleDragLeave}
@@ -213,9 +225,9 @@ const BulkTermsEditor = React.createClass({
 					/>
 				</Dropzone>
 
-				<button onClick={this.handleSubmit} style={styles.button}>
-					Add Terms 
-				</button>
+				<Button onClick={this.handleSubmit} style={styles.button}>
+					Add Terms
+				</Button>
 			</div>
 		)
 	}

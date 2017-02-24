@@ -60,7 +60,7 @@ describe('<BulkTermsEditor />', function () {
 
 		const $el = shallowWrap({onSubmit, terms})
 
-		$el.find('button').last().simulate('click', evClick)
+		$el.find('Button').last().simulate('click', evClick)
 	})
 
 	it('also removes empty terms from textarea on submit', function (done) {
@@ -78,7 +78,7 @@ describe('<BulkTermsEditor />', function () {
 
 	it('sets `overwrite` when the checkbox is checked', function () {
 		const $el = deepWrap()
-		
+
 		expect($el.state('overwrite')).to.be.false
 
 		const $toggle = $el.find('input[name="bulk-terms-overwrite-terms"]')
@@ -100,7 +100,7 @@ describe('<BulkTermsEditor />', function () {
 		const $button = $el.find('button').last()
 
 		$drop.simulate('drop', {dataTransfer: {files}})
-		
+
 		// need to wait for next-tick, otherwise we beat the file from being loaded
 		window.setTimeout(() => $button.simulate('click', evClick), 1)
 	})

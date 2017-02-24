@@ -15,7 +15,7 @@ const RecentItemsList = React.createClass({
 
 	render: function () {
 		return (
-			<ul className="recent-items">
+			<ul className="recent-items RecentItemsList">
 				{this.props.title ? <lh>{this.props.title}</lh> : ''}
 				{this.props.items.map((item, index) => {
 					if (!this.props.buildUrl)
