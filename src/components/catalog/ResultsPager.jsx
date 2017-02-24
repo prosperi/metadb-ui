@@ -46,7 +46,7 @@ const ResultsPager = React.createClass({
 		// (default: '%s &ndash; %s of <strong>%s</strong>')
 		message: T.oneOfType([T.string, T.func]),
 
-		// text used for next/prev buttons 
+		// text used for next/prev buttons
 
 		// (default: 'Next »')
 		nextText: T.string,
@@ -106,10 +106,13 @@ const ResultsPager = React.createClass({
 
 		// the template currently uses HTML (for a <strong> tag), so we'll need
 		// to `dangerouslySetInnerHTML`
-		return React.createElement('span', {
-			key: 'pager-message',
-			dangerouslySetInnerHTML: {__html: msg}
-		})
+		return (
+			<span
+				className="ResultsPager-message"
+				dangerouslySetInnerHTML={{__html: msg}}
+				key="pager-message"
+			/>
+		)
 	},
 
 	positionButtonProps: function (which, positionCheck, onClick, style) {
@@ -118,6 +121,7 @@ const ResultsPager = React.createClass({
 
 		const props = {
 			children: text,
+			className: `ResultsPager-direction ResultsPager-${which}`,
 			key: 'dir-' + which,
 			ref: e => this[which + 'Button'] = e,
 			style: assign({}, {
@@ -172,7 +176,7 @@ const ResultsPager = React.createClass({
 		)
 
 		return (
-			<div style={style}>
+			<div className="ResultsPager" style={style}>
 				<button {...prevProps} />
 				{this.pagerText()}
 				<button {...nextProps} />

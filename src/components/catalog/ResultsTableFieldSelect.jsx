@@ -1,7 +1,7 @@
 import React from 'react'
 import cn from 'classnames'
 
-const SELECT_CLASSNAME = 'results-table--field-select'
+const SELECT_CLASSNAME = 'results-table--field-select ResultsTableFieldSelect'
 
 const propTypes = {
 	fields: React.PropTypes.object,
@@ -71,11 +71,23 @@ class ResultsTableFieldSelect extends React.Component {
 	}
 
 	renderWorkFields () {
+		const fieldClassName = 'ResultsTableFieldSelect-field'
 		const header = [
-			(<div className="field field-header" key="header" onClick={this.handleReset}>
+			(
+			<div
+				className="field field-header {fieldClassName}"
+				key="header"
+				onClick={this.handleReset}
+			>
 				Restore defaults
-			</div>),
-			(<div className="field-divider" key="divider"/>),
+			</div>
+			),
+			(
+			<div
+				className="field-divider {fieldClassName} ResultsTableFieldSelect-divider"
+				key="divider"
+			/>
+			),
 		]
 
 		const keys = Object.keys(this.props.fields)

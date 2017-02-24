@@ -37,6 +37,7 @@ const SearchResultsPagerHeader = React.createClass({
 
 	renderPerPage: function () {
 		const containerProps = {
+			className: 'SearchResultsPagerHeader-page-select',
 			style: {
 				float: 'right',
 				textAlign: 'right',
@@ -72,7 +73,7 @@ const SearchResultsPagerHeader = React.createClass({
 		}
 
 		return (
-			<div>
+			<div className="SearchResultsPagerHeader">
 				<ResultsPager {...pagerProps}/>
 
 				{this.renderPerPage()}

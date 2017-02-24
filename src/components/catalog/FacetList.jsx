@@ -36,10 +36,13 @@ const FacetList = React.createClass({
 				onClick: this.props.onSelectFacet,
 			}
 
-			return React.createElement(
-				'li',
-				{ key: 'unsel' + name + index },
-				React.createElement(FacetListItem, props)
+			return (
+				<li
+					className="FacetList-item--unselected"
+					key={`unsel-${name}-${index}`}
+				>
+					<FacetListItem {...props}/>
+				</li>
 			)
 		})
 	},
@@ -61,10 +64,13 @@ const FacetList = React.createClass({
 			else
 				this._selectedFacetValues = [item.value]
 
-			return React.createElement(
-				'li',
-				{ key: 'sel-' + index + '-' + item.value },
-				React.createElement(FacetListSelectedItem, props)
+			return (
+				<li
+					className="FacetList-item--unselected"
+					key={`sel-${index}-${item.value}`}
+				>
+					<FacetListSelectedItem {...props} />
+				</li>
 			)
 		})
 	},
@@ -79,7 +85,7 @@ const FacetList = React.createClass({
 		}
 
 		return (
-			<ul style={styles.list}>
+			<ul className="FacetList" style={styles.list}>
 				{this.renderSelectedFacetList()}
 				{this.renderFacetList()}
 			</ul>

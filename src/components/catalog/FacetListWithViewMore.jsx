@@ -109,15 +109,15 @@ const FacetListWithViewMore = React.createClass({
 			items: this.props.items.slice(0, limit),
 			key: 'dss-fpwvm-limited-list',
 		})
-
-		const LimitedList = React.createElement(FacetList, flProps)
+		const LimitedList = <FacetList {...flProps} />
 
 		// no need to add a `view more` link if there aren't more to view
 		if (this.props.items.length <= limit)
 			return LimitedList
 
-		const ViewMoreLink = React.createElement('span', {
-			className: 'view-more',
+		const vmProps = {
+			children: this.props.viewMoreText,
+			className: 'view-more FacetListWithViewMore-toggle',
 			key: 'dss-fpwvm-view-more',
 			onClick: this.toggleModal,
 			style: {
@@ -126,8 +126,10 @@ const FacetListWithViewMore = React.createClass({
 				display: 'inline-block',
 				fontWeight: 'bold',
 				marginTop: '10px',
-			}
-		}, this.props.viewMoreText)
+			},
+		}
+
+		const ViewMoreLink = <span {...vmProps} />
 
 		return [LimitedList, ViewMoreLink]
 	},
@@ -137,16 +139,8 @@ const FacetListWithViewMore = React.createClass({
 	},
 
 	render: function () {
-		const styles = {
-			list: {
-				listStyleType: 'none',
-				margin: '0',
-				padding: '0',
-			}
-		}
-
 		return (
-			<div>
+			<div className="FacetListWithViewMore">
 				{this.renderLimitedFacetList()}
 				{this.maybeRenderModal()}
 			</div>

@@ -195,9 +195,17 @@ const Facet = React.createClass({
 		}
 
 		return (
-			<div className="facet-panel" style={panelStyles}>
-				<header onClick={ev => this.setState({open: !this.state.open})} style={headerStyles}>
-					<h3 className="panel-title" style={headerLabel}>
+			<div
+				className="facet-panel Facet"
+				data-facet={this.props.name}
+				style={panelStyles}
+				>
+				<header
+					className="Facet-header"
+					onClick={ev => this.setState({open: !this.state.open})}
+					style={headerStyles}
+					>
+					<h3 className="panel-title Facet-title" style={headerLabel}>
 						{this.props.label}
 						{this.maybeRenderHeaderArrow()}
 					</h3>
