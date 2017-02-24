@@ -14,7 +14,7 @@ const PDFViewer = React.createClass({
 
 	render: function() {
 		return (
-			<div className="pdfjs">
+			<div className="pdfjs PDFViewer">
 				<PDFViewerTemplate/>
 			</div>
 		)

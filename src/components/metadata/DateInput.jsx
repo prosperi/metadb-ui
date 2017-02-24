@@ -63,6 +63,7 @@ const DateInput = React.createClass({
 
 	render: function () {
 		const props = {
+			className: 'DateInput',
 			onBlur: this.handleBlur,
 			onChange: (ev) => this.setState({date: ev.target.value}),
 
@@ -74,7 +75,7 @@ const DateInput = React.createClass({
 			value: this.state.date,
 		}
 
-		return React.createElement('input', props)
+		return <input {...props} />
 	}
 })
 

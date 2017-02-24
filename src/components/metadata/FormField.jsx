@@ -173,7 +173,10 @@ const FormField = React.createClass({
 			}, componentProps)
 
 			return (
-				<div className="form-element" key={keyBase + '-c-' + index}>
+				<div
+					className="form-element FormField-element"
+					key={keyBase + '-c-' + index}
+					>
 					{React.createElement(Component, props)}
 					{this.allowsMultipleValues() ? this.renderRemoveButton(index) : null}
 				</div>
@@ -186,7 +189,7 @@ const FormField = React.createClass({
 			return
 
 		return (
-			<div className="form-element-wrapper">
+			<div className="form-element-wrapper FormField">
 				{this.maybeRenderLabel()}
 				{this.renderFieldComponents()}
 				{this.maybeRenderAddButton()}

@@ -67,7 +67,11 @@ const Select = React.createClass({
 
 	render: function () {
 		const style = assign(this.defaultStyle(), this.props.style)
-		const selProps = assign({}, this.props, {style, onChange: this.handleChange})
+		const selProps = assign(
+			{},
+			this.props,
+			{className: 'Select', style, onChange: this.handleChange}
+		)
 
 		if (selProps.options)
 			delete selProps.options
