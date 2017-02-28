@@ -1,5 +1,5 @@
 export default {
-  'User Searches by Date': (client) => {
+  'User Searches by Date Range': (client) => {
     const searchPage = client.page.searchPage()
     const resultsPage = client.page.resultsPage()
 
@@ -8,7 +8,7 @@ export default {
       .search('')
 
     resultsPage.expect.element('@facetPanel').to.be.present
-    client.click('.facet-panel:nth-of-type(6) header')
+    client.click('.facet-panel[data-facet^="date"] header')
     resultsPage.expect.element('@dateOriginal').to.be.present
 
 		client.execute(() => {
@@ -23,9 +23,27 @@ export default {
 
 
     resultsPage.expect.element('@dateOriginal').to.have.attribute('max').which.equals('1945-08-15')
-    client.click('.facet-panel:nth-of-type(6) button')
+    client.click('.facet-panel[data-facet^="date"] button')
 
     resultsPage.expect.element('@thumbnail').to.be.present
+		client.execute(() => {
+			let link = document.getElementsByTagName('a')
+			Array.prototype.forEach.call(link, (val, index) => {
+				if(val.href.match(/.*\/works\//g))
+				val.click()
+			})
+		})
+
+		resultsPage.expect.element('@dateOriginal').to.be.present
+
+		// client.execute(() => {
+		// 	var date = document.getElementsByClassName('MetadataForm')[0].childNodes[6].getElementsByTagName("input")[0]
+		// 	date = date.split('-')
+		// 	date = date.join(',')
+		// 	date = new Date(date).getTime()
+		// })
+		// client.expect.that(false)
+
 		// test
     client.end()
   }

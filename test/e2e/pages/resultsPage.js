@@ -7,7 +7,7 @@ export default {
       selector: 'input[type="date"]'
     },
     facetPanel: {
-      selector: '.facet-panel:nth-of-type(6) header'
+      selector: '.facet-panel[data-facet^="date"] header'
     },
     thumbnail: {
       selector: '.thumbnail-preview'

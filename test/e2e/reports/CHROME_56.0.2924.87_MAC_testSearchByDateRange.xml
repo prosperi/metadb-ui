@@ -5,9 +5,11 @@
 
   <testsuite name="testSearchByDateRange"
     errors="0" failures="0" hostname="" id="" package="testSearchByDateRange" skipped="0"
-    tests="1" time="5.945" timestamp="Tue, 28 Feb 2017 14:17:31 GMT">
+    tests="1" time="17.03" timestamp="Tue, 28 Feb 2017 15:47:39 GMT">
   
-    <testcase name="User Searches by Date" time="5.945" assertions="7">
+    <testcase name="User Searches by Date Range" time="17.03" assertions="8">
+
+    
 
     
 
