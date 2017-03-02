@@ -1,44 +1,36 @@
+require('babel-core/register')
 const seleniumServer = require('selenium-server')
 const chromedriver = require('chromedriver')
 
 require('nightwatch-cucumber')({
-	cucumberArgs: ['--require', 'timeout.js', '--require', 'features/step_definitions', '--format', 'pretty', '--format', 'json:/reports/cucumber.json', 'features']
+	cucumberArgs: ['--require', './test/timeout.js', '--require', './test/e2e/features/step_definitions', '--format', 'pretty', '--format', 'json:./test/e2e/reports/cucumber.json', './test/e2e/features']
 })
 
 module.exports = {
-	output_folder: 'reports',
+	output_folder: './test/e2e/reports',
 	custom_assertions_path: '',
 	live_output: false,
 	disable_colors: false,
 	selenium: {
 		start_process: true,
 		server_path: seleniumServer.path,
-		log_path: '',
+		log_path: './test/e2e/reports',
 		host: '127.0.0.1',
-		port: 4444
+		port: 4444,
+		cli_args: {
+      'webdriver.chrome.driver': './node_modules/selenium-standalone/.selenium/chromedriver/2.27-x64-chromedriver'
+    }
 	},
 	test_settings: {
 		default: {
-			launch_url: 'http://localhost:8087',
+			launch_url: 'http://localhost:8080',
 			selenium_port: 4444,
-			selenium_host: '127.0.0.1',
-			desiredCapabilities: {
-				browserName: 'phantomjs',
-				javascriptEnabled: true,
-				acceptSslCerts: true,
-				'phantomjs.binary.path': phantomjs.path
-			}
-		},
-		chrome: {
+			selenium_host: 'localhost',
+			silent: true,
 			desiredCapabilities: {
 				browserName: 'chrome',
 				javascriptEnabled: true,
 				acceptSslCerts: true
-			},
-			selenium: {
-				cli_args: {
-					'webdriver.chrome.driver': chromedriver.path
-				}
 			}
 		}
 	}

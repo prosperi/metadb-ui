@@ -1,20 +1,20 @@
-var seleniumWebdriver = require('selenium-webdriver');
-var {defineSupportCode} = require('cucumber');
+const {client} = require('nightwatch-cucumber')
+const {defineSupportCode} = require('cucumber')
 
-defineSupportCode(function({Given, When, Then}) {
-  Given('I am on the Cucumber.js GitHub repository', function() {
-    return this.driver.get('https://github.com/cucumber/cucumber-js/tree/master');
-  });
+defineSupportCode(({Given, Then, When}) => {
+  Given(/^I open Google`s search page$/, () => {
+    return client
+      .url('http://google.com')
+      .waitForElementVisible('body', 1000)
+  })
 
-  When('I click on {stringInDoubleQuotes}', function (text) {
-    return this.driver.findElement({linkText: text}).then(function(element) {
-      return element.click();
-    });
-  });
+  When(/^I search for "(.*?)"$/, (text) => {
+    return client
+      .setValue('input[name=q]', text)
+      .submitForm('input[name=q]')
+  })
 
-  Then('I should see {stringInDoubleQuotes}', function (text) {
-    var xpath = "//*[contains(text(),'" + text + "')]";
-    var condition = seleniumWebdriver.until.elementLocated({xpath: xpath});
-    return this.driver.wait(condition, 5000);
-  });
-});
+  Then(/^the search result should contain "(.*?)"$/, (text) => {
+    return client.assert.containsText('body', text)
+  })
+})
