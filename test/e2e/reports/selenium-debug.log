@@ -1,62 +1,62 @@
-12:42:41.828 INFO - Selenium build info: version: '3.1.0', revision: '86a5d70'
-12:42:41.831 INFO - Launching a standalone Selenium Server
-2017-03-02 12:42:41.957:INFO::main: Logging initialized @1177ms
-12:42:42.241 INFO - Driver provider org.openqa.selenium.ie.InternetExplorerDriver registration is skipped:
+13:04:50.071 INFO - Selenium build info: version: '3.1.0', revision: '86a5d70'
+13:04:50.075 INFO - Launching a standalone Selenium Server
+2017-03-09 13:04:50.299:INFO::main: Logging initialized @2670ms
+13:04:50.969 INFO - Driver provider org.openqa.selenium.ie.InternetExplorerDriver registration is skipped:
  registration capabilities Capabilities [{ensureCleanSession=true, browserName=internet explorer, version=, platform=WINDOWS}] does not match the current platform MAC
-12:42:42.241 INFO - Driver provider org.openqa.selenium.edge.EdgeDriver registration is skipped:
+13:04:50.970 INFO - Driver provider org.openqa.selenium.edge.EdgeDriver registration is skipped:
  registration capabilities Capabilities [{browserName=MicrosoftEdge, version=, platform=WINDOWS}] does not match the current platform MAC
-12:42:42.242 INFO - Driver class not found: com.opera.core.systems.OperaDriver
-12:42:42.242 INFO - Driver provider com.opera.core.systems.OperaDriver registration is skipped:
+13:04:50.971 INFO - Driver class not found: com.opera.core.systems.OperaDriver
+13:04:50.972 INFO - Driver provider com.opera.core.systems.OperaDriver registration is skipped:
 Unable to create new instances on this machine.
-12:42:42.242 INFO - Driver class not found: com.opera.core.systems.OperaDriver
-12:42:42.242 INFO - Driver provider com.opera.core.systems.OperaDriver is not registered
-2017-03-02 12:42:42.435:INFO:osjs.Server:main: jetty-9.2.15.v20160210
-2017-03-02 12:42:42.537:INFO:osjsh.ContextHandler:main: Started o.s.j.s.ServletContextHandler@51081592{/,null,AVAILABLE}
-2017-03-02 12:42:42.697:INFO:osjs.ServerConnector:main: Started ServerConnector@cc285f4{HTTP/1.1}{0.0.0.0:4444}
-2017-03-02 12:42:42.697:INFO:osjs.Server:main: Started @1917ms
-12:42:42.697 INFO - Selenium Server is up and running
-12:42:53.999 INFO - SessionCleaner initialized with insideBrowserTimeout 0 and clientGoneTimeout 1800000 polling every 180000
-12:42:54.112 INFO - Executing: [new session: Capabilities [{acceptSslCerts=true, browserName=chrome, javascriptEnabled=true, platform=ANY}]])
-12:42:54.186 INFO - Creating a new session for Capabilities [{acceptSslCerts=true, browserName=chrome, javascriptEnabled=true, platform=ANY}]
-Starting ChromeDriver 2.27.440174 (e97a722caafc2d3a8b807ee115bfb307f7d2cfd9) on port 48819
+13:04:50.972 INFO - Driver class not found: com.opera.core.systems.OperaDriver
+13:04:50.973 INFO - Driver provider com.opera.core.systems.OperaDriver is not registered
+2017-03-09 13:04:51.374:INFO:osjs.Server:main: jetty-9.2.15.v20160210
+2017-03-09 13:04:51.505:INFO:osjsh.ContextHandler:main: Started o.s.j.s.ServletContextHandler@51081592{/,null,AVAILABLE}
+2017-03-09 13:04:51.722:INFO:osjs.ServerConnector:main: Started ServerConnector@63e16358{HTTP/1.1}{0.0.0.0:4444}
+2017-03-09 13:04:51.723:INFO:osjs.Server:main: Started @4094ms
+13:04:51.723 INFO - Selenium Server is up and running
+13:05:11.233 INFO - SessionCleaner initialized with insideBrowserTimeout 0 and clientGoneTimeout 1800000 polling every 180000
+13:05:11.393 INFO - Executing: [new session: Capabilities [{acceptSslCerts=true, browserName=chrome, javascriptEnabled=true, platform=ANY}]])
+13:05:11.524 INFO - Creating a new session for Capabilities [{acceptSslCerts=true, browserName=chrome, javascriptEnabled=true, platform=ANY}]
+Starting ChromeDriver 2.27.440174 (e97a722caafc2d3a8b807ee115bfb307f7d2cfd9) on port 9807
 Only local connections are allowed.
-12:42:58.099 INFO - Detected dialect: OSS
-12:42:58.157 INFO - Done: [new session: Capabilities [{acceptSslCerts=true, browserName=chrome, javascriptEnabled=true, platform=ANY}]]
-12:42:58.218 INFO - Executing: [get: http://google.com])
-12:43:00.723 INFO - Done: [get: http://google.com]
-12:43:00.746 INFO - Executing: [find elements: By.cssSelector: body])
-12:43:00.854 INFO - Done: [find elements: By.cssSelector: body]
-12:43:00.867 INFO - Executing: [is displayed: 0 [[ChromeDriver: chrome on MAC (789cde9eb3c774f95a3ae3cc13e1f1be)] -> css selector: body]])
-12:43:00.920 INFO - Done: [is displayed: 0 [[ChromeDriver: chrome on MAC (789cde9eb3c774f95a3ae3cc13e1f1be)] -> css selector: body]]
-12:43:00.970 INFO - Executing: [find element: By.cssSelector: input[name=q]])
-12:43:01.011 INFO - Done: [find element: By.cssSelector: input[name=q]]
-12:43:01.022 INFO - Executing: [send keys: 1 [[ChromeDriver: chrome on MAC (789cde9eb3c774f95a3ae3cc13e1f1be)] -> css selector: input[name=q]], [5, 0, 0, +, 1, 2, 0]])
-12:43:01.154 INFO - Done: [send keys: 1 [[ChromeDriver: chrome on MAC (789cde9eb3c774f95a3ae3cc13e1f1be)] -> css selector: input[name=q]], [5, 0, 0, +, 1, 2, 0]]
-12:43:01.182 INFO - Executing: [find element: By.cssSelector: input[name=q]])
-12:43:01.200 INFO - Done: [find element: By.cssSelector: input[name=q]]
-12:43:01.206 INFO - Executing: [submit: 1 [[ChromeDriver: chrome on MAC (789cde9eb3c774f95a3ae3cc13e1f1be)] -> css selector: input[name=q]]])
-12:43:01.256 INFO - Done: [submit: 1 [[ChromeDriver: chrome on MAC (789cde9eb3c774f95a3ae3cc13e1f1be)] -> css selector: input[name=q]]]
-12:43:01.287 INFO - Executing: [find element: By.cssSelector: body])
-12:43:01.320 INFO - Done: [find element: By.cssSelector: body]
-12:43:01.328 INFO - Executing: [get text: 0 [[ChromeDriver: chrome on MAC (789cde9eb3c774f95a3ae3cc13e1f1be)] -> css selector: body]])
-12:43:01.427 INFO - Done: [get text: 0 [[ChromeDriver: chrome on MAC (789cde9eb3c774f95a3ae3cc13e1f1be)] -> css selector: body]]
-12:43:01.484 INFO - Executing: [get: http://google.com])
-12:43:01.801 INFO - Done: [get: http://google.com]
-12:43:01.815 INFO - Executing: [find elements: By.cssSelector: body])
-12:43:01.832 INFO - Done: [find elements: By.cssSelector: body]
-12:43:01.845 INFO - Executing: [is displayed: 2 [[ChromeDriver: chrome on MAC (789cde9eb3c774f95a3ae3cc13e1f1be)] -> css selector: body]])
-12:43:02.013 INFO - Done: [is displayed: 2 [[ChromeDriver: chrome on MAC (789cde9eb3c774f95a3ae3cc13e1f1be)] -> css selector: body]]
-12:43:02.036 INFO - Executing: [find element: By.cssSelector: input[name=q]])
-12:43:02.129 INFO - Done: [find element: By.cssSelector: input[name=q]]
-12:43:02.137 INFO - Executing: [send keys: 3 [[ChromeDriver: chrome on MAC (789cde9eb3c774f95a3ae3cc13e1f1be)] -> css selector: input[name=q]], [3, 6, /, 6]])
-12:43:02.267 INFO - Done: [send keys: 3 [[ChromeDriver: chrome on MAC (789cde9eb3c774f95a3ae3cc13e1f1be)] -> css selector: input[name=q]], [3, 6, /, 6]]
-12:43:02.273 INFO - Executing: [find element: By.cssSelector: input[name=q]])
-12:43:02.288 INFO - Done: [find element: By.cssSelector: input[name=q]]
-12:43:02.294 INFO - Executing: [submit: 3 [[ChromeDriver: chrome on MAC (789cde9eb3c774f95a3ae3cc13e1f1be)] -> css selector: input[name=q]]])
-12:43:02.338 INFO - Done: [submit: 3 [[ChromeDriver: chrome on MAC (789cde9eb3c774f95a3ae3cc13e1f1be)] -> css selector: input[name=q]]]
-12:43:02.362 INFO - Executing: [find element: By.cssSelector: body])
-12:43:02.376 INFO - Done: [find element: By.cssSelector: body]
-12:43:02.382 INFO - Executing: [get text: 2 [[ChromeDriver: chrome on MAC (789cde9eb3c774f95a3ae3cc13e1f1be)] -> css selector: body]])
-12:43:02.511 INFO - Done: [get text: 2 [[ChromeDriver: chrome on MAC (789cde9eb3c774f95a3ae3cc13e1f1be)] -> css selector: body]]
-12:43:02.587 INFO - Executing: [delete session: 9eac319a-c235-40fa-825f-dd443b7c1692])
-12:43:02.783 INFO - Done: [delete session: 9eac319a-c235-40fa-825f-dd443b7c1692]
+13:05:15.063 INFO - Detected dialect: OSS
+13:05:15.130 INFO - Done: [new session: Capabilities [{acceptSslCerts=true, browserName=chrome, javascriptEnabled=true, platform=ANY}]]
+13:05:15.182 INFO - Executing: [get: http://google.com])
+13:05:16.515 INFO - Done: [get: http://google.com]
+13:05:16.541 INFO - Executing: [find elements: By.cssSelector: body])
+13:05:16.658 INFO - Done: [find elements: By.cssSelector: body]
+13:05:16.669 INFO - Executing: [is displayed: 0 [[ChromeDriver: chrome on MAC (1715eb7d0ac104c2a1a80e10daa0725c)] -> css selector: body]])
+13:05:16.725 INFO - Done: [is displayed: 0 [[ChromeDriver: chrome on MAC (1715eb7d0ac104c2a1a80e10daa0725c)] -> css selector: body]]
+13:05:16.770 INFO - Executing: [find element: By.cssSelector: input[name=q]])
+13:05:16.818 INFO - Done: [find element: By.cssSelector: input[name=q]]
+13:05:16.827 INFO - Executing: [send keys: 1 [[ChromeDriver: chrome on MAC (1715eb7d0ac104c2a1a80e10daa0725c)] -> css selector: input[name=q]], [5, 0, 0, +, 1, 2, 0]])
+13:05:17.028 INFO - Done: [send keys: 1 [[ChromeDriver: chrome on MAC (1715eb7d0ac104c2a1a80e10daa0725c)] -> css selector: input[name=q]], [5, 0, 0, +, 1, 2, 0]]
+13:05:17.043 INFO - Executing: [find element: By.cssSelector: input[name=q]])
+13:05:17.063 INFO - Done: [find element: By.cssSelector: input[name=q]]
+13:05:17.070 INFO - Executing: [submit: 1 [[ChromeDriver: chrome on MAC (1715eb7d0ac104c2a1a80e10daa0725c)] -> css selector: input[name=q]]])
+13:05:18.926 INFO - Done: [submit: 1 [[ChromeDriver: chrome on MAC (1715eb7d0ac104c2a1a80e10daa0725c)] -> css selector: input[name=q]]]
+13:05:18.965 INFO - Executing: [find element: By.cssSelector: body])
+13:05:19.002 INFO - Done: [find element: By.cssSelector: body]
+13:05:19.010 INFO - Executing: [get text: 2 [[ChromeDriver: chrome on MAC (1715eb7d0ac104c2a1a80e10daa0725c)] -> css selector: body]])
+13:05:19.557 INFO - Done: [get text: 2 [[ChromeDriver: chrome on MAC (1715eb7d0ac104c2a1a80e10daa0725c)] -> css selector: body]]
+13:05:19.610 INFO - Executing: [get: http://google.com])
+13:05:19.896 INFO - Done: [get: http://google.com]
+13:05:19.909 INFO - Executing: [find elements: By.cssSelector: body])
+13:05:19.924 INFO - Done: [find elements: By.cssSelector: body]
+13:05:19.931 INFO - Executing: [is displayed: 3 [[ChromeDriver: chrome on MAC (1715eb7d0ac104c2a1a80e10daa0725c)] -> css selector: body]])
+13:05:19.965 INFO - Done: [is displayed: 3 [[ChromeDriver: chrome on MAC (1715eb7d0ac104c2a1a80e10daa0725c)] -> css selector: body]]
+13:05:19.983 INFO - Executing: [find element: By.cssSelector: input[name=q]])
+13:05:19.997 INFO - Done: [find element: By.cssSelector: input[name=q]]
+13:05:20.004 INFO - Executing: [send keys: 4 [[ChromeDriver: chrome on MAC (1715eb7d0ac104c2a1a80e10daa0725c)] -> css selector: input[name=q]], [3, 6, /, 6]])
+13:05:20.088 INFO - Done: [send keys: 4 [[ChromeDriver: chrome on MAC (1715eb7d0ac104c2a1a80e10daa0725c)] -> css selector: input[name=q]], [3, 6, /, 6]]
+13:05:20.094 INFO - Executing: [find element: By.cssSelector: input[name=q]])
+13:05:20.108 INFO - Done: [find element: By.cssSelector: input[name=q]]
+13:05:20.115 INFO - Executing: [submit: 4 [[ChromeDriver: chrome on MAC (1715eb7d0ac104c2a1a80e10daa0725c)] -> css selector: input[name=q]]])
+13:05:22.150 INFO - Done: [submit: 4 [[ChromeDriver: chrome on MAC (1715eb7d0ac104c2a1a80e10daa0725c)] -> css selector: input[name=q]]]
+13:05:22.227 INFO - Executing: [find element: By.cssSelector: body])
+13:05:22.242 INFO - Done: [find element: By.cssSelector: body]
+13:05:22.248 INFO - Executing: [get text: 5 [[ChromeDriver: chrome on MAC (1715eb7d0ac104c2a1a80e10daa0725c)] -> css selector: body]])
+13:05:22.937 INFO - Done: [get text: 5 [[ChromeDriver: chrome on MAC (1715eb7d0ac104c2a1a80e10daa0725c)] -> css selector: body]]
+13:05:23.002 INFO - Executing: [delete session: 5de0bdfb-f6eb-4fba-a875-6f2d0fdd5a6e])
+13:05:23.182 INFO - Done: [delete session: 5de0bdfb-f6eb-4fba-a875-6f2d0fdd5a6e]

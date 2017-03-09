@@ -1,6 +1,7 @@
 Feature: Background support
 
 Background:
+
     Given I open Google`s search page
 
 Scenario: Addition
