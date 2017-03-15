@@ -17,6 +17,8 @@ import ResultsTable from '../components/catalog/ResultsTable.jsx'
 import { getBreadcrumbList } from '../../lib/facet-helpers'
 import { display as searchResultsDisplay } from '../../lib/search-result-settings'
 
+import AddMetadataModal from '../components/batch-tools/AddMetadataModal.jsx'
+
 const SearchResults = React.createClass({
 	// TODO: clean this up a bit? this is a hold-over from when this component
 	// was handling the starting search form as well as the results
@@ -25,6 +27,18 @@ const SearchResults = React.createClass({
 
 		if (qs) {
 			this.props.searchCatalogByQueryString(qs)
+		}
+
+		window.addEventListener('popstate', this.maybeCloseModalOnPopState)
+	},
+
+	componentWillUnmount: function () {
+		window.removeEventListener('popstate', this.maybeCloseModalOnPopState)
+	},
+
+	maybeCloseModalOnPopState: function () {
+		if (this.state.batchTool !== null) {
+			this.setState({batchTool: null})
 		}
 	},
 
@@ -59,6 +73,7 @@ const SearchResults = React.createClass({
 
 	getInitialState: function () {
 		return {
+			batchTool: null,
 			resultsView: searchResultsDisplay.get() || 'table',
 		}
 	},
@@ -81,6 +96,13 @@ const SearchResults = React.createClass({
 		}
 	},
 
+	handleCloseBatchTool: function (changes) {
+		if (changes)
+			this.props.batchUpdateWorks(changes)
+
+		this.setState({batchTool: null})
+	},
+
 	handleNextPage: function () {
 		const pages = this.state.pages
 
@@ -88,6 +110,10 @@ const SearchResults = React.createClass({
 			return
 
 		this.props.setSearchOption('page', pages.next_page)
+	},
+
+	handleOpenBatchTool: function (batchTool) {
+		this.setState({batchTool})
 	},
 
 	handlePerPageChange: function (val) {
@@ -128,11 +154,27 @@ const SearchResults = React.createClass({
 		this.props.searchCatalog(query, facets, options)
 	},
 
+	maybeRenderBatchTool: function () {
+		if (!this.state.batchTool)
+			return null
+
+		const Component = this.state.batchTool.component
+		const data = this.props.search.results || {}
+
+		return (
+			<Component
+				data={data}
+				onClose={this.handleCloseBatchTool}
+			/>
+		)
+	},
+
 	maybeRenderLoadingModal: function () {
-		const isOpen = this.props.search.isSearching ? true : false
+		if (!this.props.search.isSearching)
+			return null
 
 		const props = {
-			isOpen,
+			isOpen: true,
 			contentLabel: 'Loading',
 			style: {
 				overlay: {
@@ -257,10 +299,17 @@ const SearchResults = React.createClass({
 			return
 
 		const props = {
+			batchTools: [
+				{
+					name: 'Batch apply metadata',
+					description: 'Apply metadata to all items in current search',
+					component: AddMetadataModal,
+				}
+			],
 			pageData: this.state.pages,
 			onNextPage: this.handleNextPage,
+			onOpenBatchTool: this.handleOpenBatchTool,
 			onPreviousPage: this.handlePreviousPage,
-			onOpenToolModal: console.log,
 			onPerPageChange: this.handlePerPageChange,
 			onViewChange: this.toggleView,
 			perPage: this.props.search.options.per_page,
@@ -318,6 +367,7 @@ const SearchResults = React.createClass({
 		return (
 			<div>
 				{this.maybeRenderLoadingModal()}
+				{this.maybeRenderBatchTool()}
 
 				<section key="sidebar" style={styles.sidebar.container}>
 					{this.renderFacetSidebar()}
