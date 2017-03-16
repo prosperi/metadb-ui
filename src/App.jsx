@@ -3,8 +3,20 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import assign from 'object-assign'
 
-import * as actionCreators from './actions/'
+import * as allActions from './actions/'
+import * as autocompleteActions from './store/autocomplete/actions'
+import * as searchActions from './store/search/actions'
+import * as workActions from './store/work/actions'
+
+
 import Main from './pages/Main.jsx'
+
+const actionCreators = {
+	...allActions,
+	...autocompleteActions,
+	...searchActions,
+	...workActions,
+}
 
 function mapStateToProps (state) {
 	return {
@@ -18,7 +30,7 @@ function mapStateToProps (state) {
 		// activeVocabulary,
 		activeVocabularyTerms: state.activeVocabularyTerms,
 		autocompleteTerms: state.autocompleteTerms,
-		
+
 		notifications: state.notifications,
 
 		search: state.search,

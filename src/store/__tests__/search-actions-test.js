@@ -3,16 +3,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import fetchMock from 'fetch-mock'
 
-import {
-	searchCatalog,
-	setSearchOption,
-	toggleSearchFacet,
-} from '../search'
-
-import {
-	RECEIVE_SEARCH_RESULTS,
-	SEARCHING,
-} from '../../constants'
+import * as S from '../search/actions'
 
 const mockStore = configureMockStore([thunk])
 const SEARCH_BASE = process.env.SEARCH_BASE_URL
@@ -51,29 +42,45 @@ describe('Search actionCreator', function () {
 	})
 
 	describe('#searchCatalog', function () {
-		it('dispatches `SEARCHING` and `RECEIVE_SEARCH_RESULTS`', function () {
-			return store.dispatch(searchCatalog('some query'))
+		it('dispatches `fetchingSearch` and `receivedSearchResults`', function () {
+			const QUERY = 'some query'
+
+			const expected = [
+				S.fetchingSearch({
+					query: QUERY,
+					facets: {},
+					options: {},
+					queryString: `q=${QUERY.replace(/ /g, '+')}`,
+				}),
+
+				S.receivedSearchResults({results: {}})
+			]
+
+			return store.dispatch(S.searchCatalog('some query'))
 			.then(() => {
 				const actions = store.getActions()
 				expect(actions).to.have.length(2)
-				expect(actions[0].type).to.equal(SEARCHING)
-				expect(actions[1].type).to.equal(RECEIVE_SEARCH_RESULTS)
+				expect(actions).to.deep.equal(expected)
 			})
 		})
 
-		it('dispatches `SEARCHING` w/ query details', function () {
+		it('dispatches `fetchingSearch` w/ query details', function () {
 			const query = 'cats AND dogs'
-			const facets = { one: ['a', 'b']}
+			const facets = { one: [{ value: 'a'}, {value: 'b'}]}
 			const options = { per_page: 5 }
 
-			return store.dispatch(searchCatalog(query, facets, options))
+			const expected = S.fetchingSearch({
+				query,
+				facets,
+				options,
+				queryString: 'q=cats+AND+dogs&f%5Bone%5D%5B%5D=a&f%5Bone%5D%5B%5D=b&per_page=5',
+			})
+
+			return store.dispatch(S.searchCatalog(query, facets, options))
 			.then(() => {
 				const actions = store.getActions()
 				expect(actions).to.have.length(2)
-				expect(actions[0].type).to.equal(SEARCHING)
-				expect(actions[0].query).to.equal(query)
-				expect(actions[0].facets).to.deep.equal(facets)
-				expect(actions[0].options.per_page).to.equal(options.per_page)
+				expect(actions[0]).to.deep.equal(expected)
 			})
 		})
 	})
@@ -83,11 +90,11 @@ describe('Search actionCreator', function () {
 			const key = 'key'
 			const val = 'val'
 
-			return store.dispatch(setSearchOption(key, val)).then(() => {
+			return store.dispatch(S.setSearchOption(key, val)).then(() => {
 				const actions = store.getActions()
-				expect(actions[0].type).to.equal(SEARCHING)
-				expect(actions[0].options).to.have.property(key)
-				expect(actions[0].options[key]).to.equal(val)
+				expect(actions[0].type).to.equal(S.fetchingSearch.toString())
+				expect(actions[0].payload.options).to.have.property(key)
+				expect(actions[0].payload.options[key]).to.equal(val)
 			})
 		})
 
@@ -101,7 +108,7 @@ describe('Search actionCreator', function () {
 
 			const store = mockStore({search: {options}})
 
-			return store.dispatch(setSearchOption(key, val))
+			return store.dispatch(S.setSearchOption(key, val))
 			.then(() => {
 				const actions = store.getActions()
 				expect(actions).to.not.be.empty
@@ -114,20 +121,20 @@ describe('Search actionCreator', function () {
 			const field = 'facet_field'
 			const value = 'value'
 
-			return store.dispatch(toggleSearchFacet(field, value, true))
+			return store.dispatch(S.toggleSearchFacet(field, value, true))
 			.then(() => {
 				const actions = store.getActions()
 
-				// it calls 2 actions (SEARCHING + RECEIVE_SEARCH_{RESULTS,ERROR})
+				// it calls 2 actions (`fetchingSearch` + `receiveSearchResults`)
 				expect(actions).to.have.length(2)
 
 				// it sends the updated props w/ SEARCHING
-				const action = actions[0]
+				const { payload } = actions[0]
 
 				// the facet prop now has the new property
-				expect(action.facets).to.have.property(field)
-				expect(action.facets[field]).to.have.length(1)
-				expect(action.facets[field].indexOf(value)).to.be.greaterThan(-1)
+				expect(payload.facets).to.have.property(field)
+				expect(payload.facets[field]).to.have.length(1)
+				expect(payload.facets[field].indexOf(value)).to.be.greaterThan(-1)
 
 				// finally, make sure the API was actually called
 				const calls = fetchMock.calls()
@@ -144,7 +151,7 @@ describe('Search actionCreator', function () {
 
 			const store = mockStore({search: {facets}})
 
-			return store.dispatch(toggleSearchFacet(field, value, true))
+			return store.dispatch(S.toggleSearchFacet(field, value, true))
 			.then(() => {
 				expect(fetchMock.calls().matched).to.have.length(0)
 			})
@@ -158,17 +165,18 @@ describe('Search actionCreator', function () {
 
 			const store = mockStore({search: {facets}})
 
-			return store.dispatch(toggleSearchFacet(field, value, true))
+			return store.dispatch(S.toggleSearchFacet(field, value, true))
 			.then(() => {
 				expect(fetchMock.calls().matched).to.have.length(0)
 			})
 		})
 
 		it('removes a facet + makes an API call', function () {
+			const FIELD = 'field'
 			const search = {
 				query: 'search query',
 				facets: {
-					'facet_field': [
+					[FIELD]: [
 						{value: 'one', name: 'one', hits: 12},
 						{value: 'two', name: 'two', hits: 123},
 						{value: 'three', name: 'three', hits: 1234},
@@ -177,17 +185,17 @@ describe('Search actionCreator', function () {
 			}
 
 			const store = mockStore({search})
-			const field = 'facet_field'
-			const value = search.facets[field][1]
+			const value = search.facets[FIELD][1]
 
-			return store.dispatch(toggleSearchFacet(field, value, false))
+			return store.dispatch(S.toggleSearchFacet(FIELD, value, false))
 			.then(() => {
 				const actions = store.getActions()
 
 				expect(actions).to.have.length(2)
 
-				const action = actions[0]
-				expect(action.facets[field]).to.have.length(search.facets[field].length - 1)
+				const first = actions[0]
+				expect(first.payload.facets[FIELD])
+					.to.have.length(search.facets[FIELD].length - 1)
 
 				const calls = fetchMock.calls()
 				expect(calls.matched).to.not.be.empty

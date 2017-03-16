@@ -1,12 +1,7 @@
 import { expect } from 'chai'
-import assign from 'object-assign'
-import {
-	RECEIVE_SEARCH_ERR,
-	RECEIVE_SEARCH_RESULTS,
-	SEARCHING,
-} from '../../constants'
 
-import searchReducer from '../search'
+import * as actions from '../search/actions'
+import searchReducer from '../search/reducer'
 
 const defaultState = {
 	query: '',
@@ -16,7 +11,7 @@ const defaultState = {
 	queryString: '',
 }
 
-const defaultStatePure = assign({}, defaultState)
+const defaultStatePure = { ...defaultState }
 
 describe('Search reducer', function () {
 	afterEach(function () {
@@ -24,21 +19,20 @@ describe('Search reducer', function () {
 	})
 
 	it('returns an empty object when state is undefined', function () {
-		const res = searchReducer()
+		const res = searchReducer(undefined, {type: 'nothing'})
 
 		expect(res).to.be.an('object')
 		expect(res).to.be.empty
 	})
 
-	describe('@SEARCHING', function () {
+	describe('`fetchingSearch`', function () {
 		it('sets `isSearching` to true', function () {
-			const action = {
-				type: SEARCHING,
+			const action = actions.fetchingSearch({
 				query: 'some query',
 				facets: {},
 				options: {},
-				queryString: 'q=some%20query'
-			}
+				queryString: 'q=some+query'
+			})
 
 			const res = searchReducer(defaultState, action)
 
@@ -51,13 +45,12 @@ describe('Search reducer', function () {
 			const options = { 'per_page': 25 }
 			const queryString = '?q=a%20whole%20new%20query&f[one][]=a&f[one][]=b&per_page=25'
 
-			const action = {
-				type: SEARCHING,
+			const action = actions.fetchingSearch({
 				query,
 				facets,
 				options,
 				queryString,
-			}
+			})
 
 			const res = searchReducer(defaultState, action)
 
@@ -75,23 +68,23 @@ describe('Search reducer', function () {
 		})
 	})
 
-	describe('@RECEIVE_SEARCH_ERR', function () {
+	describe('`fetchingSearchErr`', function () {
 		it('sets `isSearching` to false', function () {
-			const action = { type: RECEIVE_SEARCH_ERR }
+			const action = actions.fetchingSearchErr()
 			const res = searchReducer({isSearching: true}, action)
 
 			expect(res.isSearching).to.be.false
 		})
 	})
 
-	describe('@RECEIVE_SEARCH_RESULTS', function () {
+	describe('`receivedSearchResults`', function () {
 		it('sets `isSearching` to false', function () {
-			const action = {
-				type: RECEIVE_SEARCH_RESULTS,
+			const action = actions.receivedSearchResults({
 				results: {
 					response: {},
 				}
-			}
+			})
+
 			const res = searchReducer({isSearching: true}, action)
 
 			expect(res.isSearching).to.be.false

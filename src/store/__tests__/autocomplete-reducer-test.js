@@ -1,6 +1,6 @@
 import { expect } from 'chai'
-import autocompleteReducer from '../autocomplete-terms'
-import { RECEIVE_AUTOCOMPLETE_TERMS } from '../../constants'
+import autocompleteReducer from '../autocomplete/reducer'
+import { receiveVocabularyTerms } from '../autocomplete/actions'
 
 const originalState = {}
 
@@ -10,8 +10,8 @@ describe('autocomplete-terms reducer', function () {
 	})
 
 	it('returns an empty object w/o previous state', function () {
-		const result = autocompleteReducer()
-		
+		const result = autocompleteReducer(undefined, {type: 'nothing'})
+
 		expect(result).to.be.an('object')
 		expect(result).to.be.empty
 	})
@@ -19,8 +19,7 @@ describe('autocomplete-terms reducer', function () {
 	describe('term storage', function () {
 		it('uses vocab uri to determine terms key', function () {
 			const uri = 'http://example.org'
-			const action = {
-				type: RECEIVE_AUTOCOMPLETE_TERMS,
+			const action = receiveVocabularyTerms({
 				terms: [
 					'aye', 'bee', 'cee', 'dee'
 				],
@@ -29,7 +28,7 @@ describe('autocomplete-terms reducer', function () {
 					label: ['Test Vocab'],
 					pref_label: ['Test Vocab'],
 				}
-			}
+			})
 
 			const result = autocompleteReducer(originalState, action)
 

@@ -1,12 +1,12 @@
 import { expect } from 'chai'
-import * as actions from '../autocomplete'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import fetchMock from 'fetch-mock'
 
 import {
-	RECEIVE_AUTOCOMPLETE_TERMS,
-} from '../../constants'
+	fetchAutocompleteTerms,
+	receiveVocabularyTerms,
+} from '../autocomplete/actions'
 
 import {
 	testVocabulary as VOCAB_ONE,
@@ -37,30 +37,32 @@ describe('Autocomplete actionCreators', function () {
 			const store = mockStore({autocompleteTerms: {}})
 			const expectAction = [
 				{
-					type: RECEIVE_AUTOCOMPLETE_TERMS,
-					terms: VOCAB_ONE.terms.map(t => t.pref_label[0]),
-					vocabulary: VOCAB_ONE,
+					type: receiveVocabularyTerms.toString(),
+					payload: {
+						terms: VOCAB_ONE.terms.map(t => t.pref_label[0]),
+						vocabulary: VOCAB_ONE,
+					}
 				}
 			]
 
-			return store.dispatch(actions.fetchAutocompleteTerms(VOCAB_ONE))
+			return store.dispatch(fetchAutocompleteTerms(VOCAB_ONE))
 				.then(() => {
 					const actions = store.getActions()
 					expect(actions).to.deep.equal(expectAction)
 				})
 		})
 
-		it('dispatches RECEIVE_AUTOCOMPLETE_TERMS for each vocabulary', function () {
+		it('dispatches receiveVocabularyTerms for each vocabulary', function () {
 			const store = mockStore({autocompleteTerms: {}})
 
-			return store.dispatch(actions.fetchAutocompleteTerms(VOCAB_ONE))
-				.then(store.dispatch(actions.fetchAutocompleteTerms(VOCAB_TWO)))
+			return store.dispatch(fetchAutocompleteTerms(VOCAB_ONE))
+				.then(store.dispatch(fetchAutocompleteTerms(VOCAB_TWO)))
 					.then(() => {
 						const actions = store.getActions()
 						expect(actions).to.have.length(2)
 
 						actions.forEach(act => {
-							expect(act.type).to.equal(RECEIVE_AUTOCOMPLETE_TERMS)
+							expect(act.type).to.equal(receiveVocabularyTerms.toString())
 						})
 					})
 		})
@@ -68,10 +70,10 @@ describe('Autocomplete actionCreators', function () {
 		it('ignores duplicate vocab requests', function () {
 			const store = mockStore({autocompleteTerms: {}})
 
-			return store.dispatch(actions.fetchAutocompleteTerms(VOCAB_ONE))
-				.then(store.dispatch(actions.fetchAutocompleteTerms(VOCAB_ONE)))
-				.then(store.dispatch(actions.fetchAutocompleteTerms(VOCAB_TWO)))
-				.then(store.dispatch(actions.fetchAutocompleteTerms(VOCAB_ONE)))
+			return store.dispatch(fetchAutocompleteTerms(VOCAB_ONE))
+				.then(store.dispatch(fetchAutocompleteTerms(VOCAB_ONE)))
+				.then(store.dispatch(fetchAutocompleteTerms(VOCAB_TWO)))
+				.then(store.dispatch(fetchAutocompleteTerms(VOCAB_ONE)))
 				.then(() => {
 					expect(store.getActions()).to.have.length(2)
 					expect(fetchMock.calls().matched).to.have.length(2)
@@ -83,7 +85,7 @@ describe('Autocomplete actionCreators', function () {
 				[VOCAB_ONE.uri]: VOCAB_ONE.terms.map(t => t.pref_label[0])
 			}})
 
-			return store.dispatch(actions.fetchAutocompleteTerms(VOCAB_ONE))
+			return store.dispatch(fetchAutocompleteTerms(VOCAB_ONE))
 			.then(() => {
 				expect(fetchMock.calls().matched).to.have.length(0)
 			})

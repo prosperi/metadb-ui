@@ -1,13 +1,6 @@
 import { expect } from 'chai'
-import workReducer from '../work'
-import assign from 'object-assign'
-
-import {
-	FETCHING_WORK,
-	RECEIVE_WORK,
-	SAVED_WORK,
-	SAVING_WORK,
-} from '../../constants'
+import * as actions from '../work/actions'
+import workReducer from '../work/reducer'
 
 const originalState = {
 	data: {
@@ -22,7 +15,7 @@ const originalState = {
 	isSaving: false,
 }
 
-const originalStatePure = assign({}, originalState)
+const originalStatePure = {...originalState}
 
 describe('workReducer', function () {
 	afterEach(function () {
@@ -30,13 +23,13 @@ describe('workReducer', function () {
 	})
 
 	it('returns an empty object when state is undefined', function () {
-		const result = workReducer()
+		const result = workReducer(undefined, {type: 'nothing'})
 		expect(result).to.deep.equal({})
 	})
 
-	describe('@FETCHING_WORK', function () {
+	describe('`fetchingWork`', function () {
 		it('toggles `isFetching`', function () {
-			const action = {type: FETCHING_WORK}
+			const action = actions.fetchingWork()
 			const result = workReducer(originalState, action)
 
 			expect(result).to.deep.equal({
@@ -45,14 +38,13 @@ describe('workReducer', function () {
 		})
 	})
 
-	describe('@RECEIVE_WORK', function () {
-		const action = {
-			type: RECEIVE_WORK,
+	describe('`receiveWork`', function () {
+		const action = actions.receiveWork({
 			data: {
 				title: ['New Work'],
 				author: ['New Author'],
 			}
-		}
+		})
 
 		const result = workReducer(originalState, action)
 
@@ -61,14 +53,13 @@ describe('workReducer', function () {
 		})
 	})
 
-	describe('@SAVED_WORK', function () {
-		const action = {
-			type: SAVED_WORK,
+	describe('`savedWork`', function () {
+		const action = actions.savedWork({
 			updates: {
 				title: ['First Title', 'Another Author'],
 				author: ['The Author']
 			}
-		}
+		})
 
 		let data, state
 
@@ -87,10 +78,10 @@ describe('workReducer', function () {
 			const result = workReducer(state, action)
 
 			expect(result.data.title)
-				.to.deep.equal(action.updates.title)
+				.to.deep.equal(action.payload.updates.title)
 
 			expect(result.data.author)
-				.to.deep.equal(action.updates.author)
+				.to.deep.equal(action.payload.updates.author)
 		})
 
 		it('toggles `isSaving` to false', function () {
@@ -99,18 +90,19 @@ describe('workReducer', function () {
 		})
 	})
 
-	describe('@SAVE_WORK', function () {
-		const action = {type: SAVING_WORK}
+	describe('`saveWork`', function () {
+		const action = actions.savingWork()
 
 		let state, result
 
 		beforeEach(function () {
-			state = assign({}, originalState, {
+			state = {
+				...originalState,
 				updates: {
 					title: [].concat(originalState.data.title, 'New Title')
 				},
 				isChanged: true,
-			})
+			}
 
 			result = workReducer(state, action)
 		})

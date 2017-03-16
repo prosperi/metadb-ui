@@ -1,18 +1,9 @@
 import { expect } from 'chai'
-import * as actions from '../work'
-
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-
 import fetchMock from 'fetch-mock'
-import {
-	FETCHING_WORK,
-	FETCHING_WORK_ERR,
-	RECEIVE_WORK,
-	SAVING_WORK,
-	SAVED_WORK,
-	WORK_NOT_FOUND_ERR,
-} from '../../constants'
+
+import * as actions from '../work/actions'
 
 const mockStore = configureMockStore([thunk])
 
@@ -20,7 +11,9 @@ const apiWorkUrl = id => (
 	`${process.env.API_BASE_URL}/concern/generic_works/${id}.json`
 )
 
-describe('Work actionCreator', function () {
+const NOT_FOUND_ID = 'fake-id'
+
+describe('Work actions', function () {
 	describe('#fetchWork', function () {
 		const id = 'example-id'
 
@@ -32,17 +25,16 @@ describe('Work actionCreator', function () {
 
 			fetchMock
 				.get(apiWorkUrl(id), { title: ['HULLO!'] })
-				.get(apiWorkUrl('fake-id'), 404)
+				.get(apiWorkUrl(NOT_FOUND_ID), 404)
 				.get('*', 500)
 		})
 
 		after(fetchMock.restore)
 
-
-		it('sends FETCHING_WORK and RECEIVE_WORK actions', function () {
+		it('sends `fetchingWork` and `receiveWork` actions', function () {
 			const expectedActions = [
-				{type: FETCHING_WORK, id},
-				{type: RECEIVE_WORK, data: {title: ['HULLO!']}}
+				actions.fetchingWork({id}),
+				actions.receiveWork({data: {title: ['HULLO!']}}),
 			]
 
 			const store = mockStore({work: {}})
@@ -53,30 +45,30 @@ describe('Work actionCreator', function () {
 				})
 		})
 
-		it('sends FETCHING_WORK and WORK_NOT_FOUND if not found', function () {
-			const id = 'fake-id'
+		it('sends `fetchingWork` and `workNotFoundErr` if not found', function () {
+			const id = NOT_FOUND_ID
 			const store = mockStore({work: {}})
 
 			return store.dispatch(actions.fetchWork(id))
 				.then(() => {
-					const actions = store.getActions()
-					expect(actions[0].type).to.equal(FETCHING_WORK)
-					expect(actions[0].id).to.equal(id)
-					expect(actions[1].type).to.equal(WORK_NOT_FOUND_ERR)
-					expect(actions[1].error.status).to.equal(404)
+					const axns = store.getActions()
+					expect(axns[0].type).to.equal(actions.fetchingWork.toString())
+					expect(axns[0].payload.id).to.equal(id)
+					expect(axns[1].type).to.equal(actions.workNotFoundErr.toString())
+					expect(axns[1].payload.status).to.equal(404)
 				})
 		})
 
-		it('sends FETCHING_WORK and FETCHING_WORK_ERR if encountering an error', function () {
+		it('sends `fetchingWork` and `fetchingWorkErr` if encountering an error', function () {
 			const id = 'whatever'
 			const store = mockStore({work: {}})
 
 			return store.dispatch(actions.fetchWork(id))
 				.then(() => {
-					const actions = store.getActions()
-					expect(actions[0].type).to.equal(FETCHING_WORK)
-					expect(actions[1].id).to.equal(id)
-					expect(actions[1].type).to.equal(FETCHING_WORK_ERR)
+					const axns = store.getActions()
+					expect(axns[0].type).to.equal(actions.fetchingWork.toString())
+					expect(axns[1].payload.id).to.equal(id)
+					expect(axns[1].type).to.equal(actions.fetchingWorkErr.toString())
 				})
 		})
 	})
@@ -104,17 +96,7 @@ describe('Work actionCreator', function () {
 
 		after(fetchMock.restore)
 
-		it('dispatches SAVING_WORK and SAVED_WORK when successful', function () {
-			const expectedActions = [
-				{
-					type: SAVING_WORK,
-					id,
-				},
-				{
-					type: SAVED_WORK,
-				}
-			]
-
+		it('dispatches `savingWork` and `savedWork` when successful', function () {
 			const state = {
 				work: {
 					data: {
@@ -127,18 +109,22 @@ describe('Work actionCreator', function () {
 				title: ['New Title']
 			}
 
+			const expectedActions = [
+				actions.savingWork({id, updates}),
+				actions.savedWork({id, updates}),
+			]
+
 			const store = mockStore(state)
 
 			return store.dispatch(actions.saveWork(id, updates))
 				.then(() => {
-					const actions = store.getActions()
+					const axns = store.getActions()
+					expect(axns).to.have.length(expectedActions.length)
 
-					expect(actions).to.have.length(expectedActions.length)
-					expectedActions.forEach((action, idx) => {
-						expect(action.type).to.equal(actions[idx].type)
+					expectedActions.forEach((exAction, idx) => {
+						expect(exAction.type).to.equal(axns[idx].type)
+						expect(exAction.payload).to.deep.equal(axns[idx].payload)
 					})
-
-					expect(actions[0].id).to.equal(expectedActions[0].id)
 				})
 		})
 	})
