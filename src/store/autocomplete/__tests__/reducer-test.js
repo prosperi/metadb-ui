@@ -1,6 +1,6 @@
 import { expect } from 'chai'
-import autocompleteReducer from '../autocomplete/reducer'
-import { receiveVocabularyTerms } from '../autocomplete/actions'
+import autocompleteReducer from '../reducer'
+import { receiveVocabularyTerms } from '../actions'
 
 const originalState = {}
 

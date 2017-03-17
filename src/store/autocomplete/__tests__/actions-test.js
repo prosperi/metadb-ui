@@ -6,12 +6,12 @@ import fetchMock from 'fetch-mock'
 import {
 	fetchAutocompleteTerms,
 	receiveVocabularyTerms,
-} from '../autocomplete/actions'
+} from '../actions'
 
 import {
 	testVocabulary as VOCAB_ONE,
 	anotherTestVocabulary as VOCAB_TWO,
-} from './data/vocabularies-with-terms'
+} from '../../vocabulary/__tests__/data/vocabularies-with-terms'
 
 const API_BASE = process.env.API_BASE_URL
 const mockStore = configureMockStore([thunk])
