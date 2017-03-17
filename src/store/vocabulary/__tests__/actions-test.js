@@ -1,40 +1,31 @@
 import { expect } from 'chai'
-import * as actions from '../vocabulary'
-import assign from 'object-assign'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-
 import fetchMock from 'fetch-mock'
-
 import {
-	CREATE_VOCABULARY_REQUEST,
-	CREATE_VOCABULARY_RESPONSE_OK,
+	JSON_EXTENSION,
+	VOCABULARY_PATH,
+} from '../../api'
 
-	DELETE_VOCABULARY_REQUEST,
-	DELETE_VOCABULARY_RESPONSE_OK,
-
-	FETCHING_ALL_VOCABULARIES,
-	RECEIVE_ALL_VOCABULARIES,
-
-	UPDATING_VOCABULARY,
-	UPDATE_VOCABULARY_OK,
-	UPDATE_VOCABULARY_ERR,
-} from '../../constants'
+import * as actions from '../actions'
 
 import { testVocabulary as VOCAB_DATA } from './data/vocabularies-with-terms'
 
 const mockStore = configureMockStore([thunk])
 const API_BASE = process.env.API_BASE_URL
 
+const BASE_VOCABULARY_URL = `${API_BASE}${VOCABULARY_PATH}${JSON_EXTENSION}`
+
 describe('Vocabulary actionCreator', function () {
 	beforeEach(function () {
 		if (!API_BASE)
 			this.skip()
 	})
+
 	describe('#createVocabulary', function () {
 		beforeEach(function () {
 			fetchMock.post(
-				`${API_BASE}/vocabularies.json`,
+				BASE_VOCABULARY_URL,
 				{ status: 200, body: {status: 'ok'} }
 			)
 		})
@@ -52,23 +43,20 @@ describe('Vocabulary actionCreator', function () {
 
 		// the data we get back is the same as the full Vocab output
 		// (minus the `terms` array)
-		const expectData = assign({}, VOCAB_DATA)
+		const expectData = {...VOCAB_DATA}
 		delete expectData.terms
 
 		const expectActions = [
-			{
-				type: CREATE_VOCABULARY_REQUEST
-			},
-			{
-				type: CREATE_VOCABULARY_RESPONSE_OK,
-				data: expectData,
-			}
+			actions.creatingVocabulary(expectData),
+			actions.createdVocabulary(expectData),
 		]
 
-		it('dispatches CREATE_VOCABULARY_REQUEST{,_OK}', function () {
+		it('dispatches `creatingVocabulary` and `createdVocabulary`', function () {
 			return store.dispatch(actions.createVocabulary(data))
 				.then(() => {
-					expect(store.getActions()).to.deep.equal(expectActions)
+					store.getActions().forEach((a, i) => {
+						expect(a.type).to.equal(expectActions[i].type)
+					})
 				})
 		})
 	})
@@ -85,16 +73,11 @@ describe('Vocabulary actionCreator', function () {
 
 		const store = mockStore({vocabularies: [VOCAB_DATA]})
 		const expectActions = [
-			{
-				type: DELETE_VOCABULARY_REQUEST,
-			},
-			{
-				type: DELETE_VOCABULARY_RESPONSE_OK,
-				data: VOCAB_DATA,
-			}
+			actions.deletingVocabulary(VOCAB_DATA),
+			actions.deletedVocabulary(VOCAB_DATA),
 		]
 
-		it('dispatches DELETE_VOCABULARY_{REQUEST,RESPONSE_OK}', function () {
+		it('dispatches `deletingVocabulary` and `deletedVocabulary`', function () {
 			return store.dispatch(actions.deleteVocabulary(VOCAB_DATA))
 				.then(() => {
 					expect(store.getActions()).to.deep.equal(expectActions)
@@ -112,7 +95,7 @@ describe('Vocabulary actionCreator', function () {
 			fetchMock.get(
 				`${API_BASE}/vocabularies.json`,
 				{
-					vocabularies: [assign({}, VOCAB_DATA)]
+					vocabularies: [{...VOCAB_DATA}],
 				}
 			)
 		})
@@ -121,16 +104,11 @@ describe('Vocabulary actionCreator', function () {
 
 		const store = mockStore({vocabularies: []})
 		const expectActions = [
-			{
-				type: FETCHING_ALL_VOCABULARIES
-			},
-			{
-				type: RECEIVE_ALL_VOCABULARIES,
-				data: [assign({}, VOCAB_DATA)]
-			}
+			actions.fetchingVocabularies(),
+			actions.fetchedVocabularies([VOCAB_DATA]),
 		]
 
-		it('dispatches FETCHING_ALL_VOCABULARIES and RECEIVE_ALL_VOCABULARIES', function () {
+		it('dispatches `fetchingVocabularies` and `fetchedVocabularies`', function () {
 			return store.dispatch(actions.fetchAllVocabularies())
 				.then(() => {
 					expect(store.getActions()).to.deep.equal(expectActions)
@@ -139,7 +117,7 @@ describe('Vocabulary actionCreator', function () {
 	})
 
 	describe('#updateVocabularyMetadata', function () {
-		const DATA = assign({}, VOCAB_DATA)
+		const DATA = {...VOCAB_DATA}
 		delete DATA.terms
 
 		const url = DATA.absolute_path
@@ -153,21 +131,23 @@ describe('Vocabulary actionCreator', function () {
 
 		it('patches an update the API', function () {
 			const store = mockStore({vocabularies: [DATA]})
-			const data = assign({}, DATA)
+			const data = {...DATA}
 			data.hidden_label = [`A new hidden label - ${Date.now()}`]
+
+			const expectActions = [
+				actions.updatingVocabulary(data),
+				actions.updatedVocabulary(data),
+			]
 
 			return store.dispatch(actions.updateVocabularyMetadata(data))
 				.then(() => {
-					const actions = store.getActions()
-					expect(actions).to.have.length(2)
-					expect(actions[0].type).to.equal(UPDATING_VOCABULARY)
-					expect(actions[1].type).to.equal(UPDATE_VOCABULARY_OK)
+					expect(store.getActions()).to.deep.equal(expectActions)
 				})
 		})
 
 		it('dispatches UPDATE_VOCABULARY_ERR when there is a problem', function () {
 			const store = mockStore({vocabularies: [DATA]})
-			const data = assign({}, DATA)
+			const data = {...DATA}
 			data.absolute_path = 'http://this.isnt.real.biz'
 
 			return store.dispatch(actions.updateVocabularyMetadata(data))
@@ -175,10 +155,11 @@ describe('Vocabulary actionCreator', function () {
 					throw Error('this should have thrown an error')
 				})
 				.catch(() => {
-					const actions = store.getActions()
-					expect(actions).to.have.length(2)
-					expect(actions[0].type).to.equal(UPDATING_VOCABULARY)
-					expect(actions[1].type).to.equal(UPDATE_VOCABULARY_ERR)
+					const axns = store.getActions()
+					expect(axns).to.have.length(2)
+					expect(axns[0].type).to.equal(actions.updatingVocabulary.toString())
+					expect(axns[1].type).to.equal(actions.updatingVocabularyErr.toString())
+					expect(axns[1].error).to.be.true
 				})
 		})
 	})

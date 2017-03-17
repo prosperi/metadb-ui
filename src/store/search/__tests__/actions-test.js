@@ -3,7 +3,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import fetchMock from 'fetch-mock'
 
-import * as S from '../search/actions'
+import * as S from '../actions'
 
 const mockStore = configureMockStore([thunk])
 const SEARCH_BASE = process.env.SEARCH_BASE_URL

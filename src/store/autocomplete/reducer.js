@@ -1,8 +1,8 @@
 import { handleActions } from 'redux-actions'
-import { receiveVocabularyTerms } from './actions'
+import { receiveAutocompleteTerms } from './actions'
 
 export default handleActions({
-	[receiveVocabularyTerms]: (state, action) => {
+	[receiveAutocompleteTerms]: (state, action) => {
 		const terms = action.payload.terms
 		const uri = action.payload.vocabulary.uri
 

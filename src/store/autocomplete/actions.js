@@ -7,7 +7,8 @@ const queue = new Queue()
 
 let fetchedVocabularies = []
 
-export const receiveVocabularyTerms = createAction('receive autocomplete terms')
+export const fetchingAutocompleteTerms = createAction('fetching autocomplete terms')
+export const receiveAutocompleteTerms = createAction('receive autocomplete terms')
 
 export const fetchAutocompleteTerms = vocabulary => {
 	return (dispatch, getState) => {
@@ -19,6 +20,8 @@ export const fetchAutocompleteTerms = vocabulary => {
 				return
 
 			fetchedVocabularies.push(vocab.uri)
+
+			dispatch(fetchingAutocompleteTerms(vocab))
 			return getVocabulary(vocab)
 		}
 
@@ -28,12 +31,11 @@ export const fetchAutocompleteTerms = vocabulary => {
 
 			const terms = data.terms.map(t => t.pref_label[0])
 
-			dispatch(receiveVocabularyTerms({terms, vocabulary}))
+			dispatch(receiveAutocompleteTerms({terms, vocabulary}))
 
-			if (queue.getPendingLength() === 0)
+			if (queue.getPendingLength() === 0) {
 				fetchedVocabularies = []
-
-			return
+			}
 		})
 	}
 }

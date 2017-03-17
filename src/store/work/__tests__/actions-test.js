@@ -3,7 +3,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import fetchMock from 'fetch-mock'
 
-import * as actions from '../work/actions'
+import * as actions from '../actions'
 
 const mockStore = configureMockStore([thunk])
 

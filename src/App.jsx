@@ -4,18 +4,13 @@ import { connect } from 'react-redux'
 import assign from 'object-assign'
 
 import * as allActions from './actions/'
-import * as autocompleteActions from './store/autocomplete/actions'
-import * as searchActions from './store/search/actions'
-import * as workActions from './store/work/actions'
-
+import * as actionCreators from './store/actions'
 
 import Main from './pages/Main.jsx'
 
-const actionCreators = {
+const mergedActionCreators = {
 	...allActions,
-	...autocompleteActions,
-	...searchActions,
-	...workActions,
+	...actionCreators,
 }
 
 function mapStateToProps (state) {
@@ -42,7 +37,7 @@ function mapStateToProps (state) {
 }
 
 function mapDispatchToProps (dispatch) {
-	return bindActionCreators(actionCreators, dispatch)
+	return bindActionCreators(mergedActionCreators, dispatch)
 }
 
 const App = connect(mapStateToProps, mapDispatchToProps)(Main)

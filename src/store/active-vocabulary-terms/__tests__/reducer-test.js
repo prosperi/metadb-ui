@@ -1,21 +1,12 @@
 import { expect } from 'chai'
-import termsReducer from '../active-vocabulary-terms'
-import assign from 'object-assign'
 import randomIndex from 'random-array-index'
 
-import {
-	ADD_TERM_TO_VOCABULARY,
-	BULK_EDIT_TERMS,
-	FETCHING_VOCABULARY_TERMS,
-	RECEIVE_VOCABULARY_TERMS,
-	REMOVE_TERM_FROM_VOCABULARY,
-	UPDATE_TERM_RESPONSE_OK,
-} from '../../constants'
+import termsReducer from '../reducer'
+import * as actions from '../actions'
+import { createNewTerm } from '../utils'
+import originalState from './data/active-terms.json'
 
-import createNewTerm from '../../../lib/create-new-term'
-import * as originalState from './data/active-terms.json'
-
-const originalStatePure = assign({}, originalState)
+const originalStatePure = { ...originalState }
 
 describe('activeVocabularyTermsReducer', function () {
 	afterEach(function () {
@@ -23,35 +14,35 @@ describe('activeVocabularyTermsReducer', function () {
 	})
 
 	it('returns an empty object when state is undefined', function () {
-		const result = termsReducer()
-		const toString = Object.prototype.toString
+		const result = termsReducer(undefined, { type: 'nothing' })
 
 		expect(result).to.be.empty
-		expect(toString.call(result)).to.equal('[object Object]')
+		expect(result).to.deep.equal({})
 	})
 
-	describe('@ADD_TERM_TO_VOCABULARY', function () {
+	describe('`addedTermToVocabulary`', function () {
 		it('appends newly-created term to the `data` object', function () {
 			const term = 'whaaaa?'
-			const created = createNewTerm(term, originalState.vocabularyUri)
-			const action = {
-				type: ADD_TERM_TO_VOCABULARY,
-				data: created,
-				vocabulary: {
-					uri: originalState.vocabularyUri,
-				}
+			const vocabulary = {
+				uri: originalState.vocabularyUri
 			}
+
+			const data = createNewTerm(term, vocabulary)
+			const action = actions.addedTermToVocabulary({
+				term: data,
+				vocabulary,
+			})
 
 			const result = termsReducer(originalState, action)
 
 			expect(result.data.length).to.be.greaterThan(originalState.data.length)
 			expect(result.data.length - originalState.data.length).to.equal(1)
 
-			expect(result.data[result.data.length - 1]).to.deep.equal(created)
+			expect(result.data[result.data.length - 1]).to.deep.equal(data)
 		})
 	})
 
-	describe('@BULK_EDIT_TERMS', function () {
+	describe('`bulkEditedTerms`', function () {
 		const prev = [
 			{uri: 'https://example.com/vocab/test1', pref_label: ['test1']},
 			{uri: 'https://example.com/vocab/test2', pref_label: ['test2']},
@@ -63,19 +54,18 @@ describe('activeVocabularyTermsReducer', function () {
 			{uri: 'https://example.com/vocab/test3', pref_label: ['test3']},
 		]
 
-		const action = {
-			type: BULK_EDIT_TERMS,
+		const action = actions.bulkEditedTerms({
 			terms: update,
 			vocabulary: {
 				uri: 'https://example.com/vocab',
 				label: ['Test Vocab'],
 				pref_label: ['Test Vocab'],
 			},
-		}
+		})
 
-		const state = assign({}, originalState)
+		const state = { ...originalState }
 		state.data = prev
-		state.vocabularyUri = action.vocabulary.uri
+		state.vocabularyUri = action.payload.vocabulary.uri
 
 		const result = termsReducer(state, action)
 
@@ -87,24 +77,8 @@ describe('activeVocabularyTermsReducer', function () {
 
 	})
 
-	describe('@FETCHING_VOCABULARY_TERMS', function () {
-		const action = {type: FETCHING_VOCABULARY_TERMS}
-		const result = termsReducer(originalState, action)
-		
-		it('toggles `isFetching` flag to true', function () {
-			expect(originalState.isFetching).to.not.be.true
-			expect(result.isFetching).to.be.true
-		})
-
-		it('sets `data` to an empty array', function () {
-			expect(originalState.data).to.not.be.empty
-			expect(result.data).to.be.empty
-		})
-	})
-
-	describe('@RECEIVE_VOCABULARY_TERMS', function () {
-		const action = {
-			type: RECEIVE_VOCABULARY_TERMS,
+	describe('`fetchedVocabularyTerms`', function () {
+		const action = actions.fetchedVocabularyTerms({
 			terms: [
 				{uri: 'http://whatever.org'},
 				{uri: 'http://whatever.org'},
@@ -112,7 +86,7 @@ describe('activeVocabularyTermsReducer', function () {
 			vocabulary: {
 				uri: originalState.vocabularyUri,
 			},
-		}
+		})
 
 		const result = termsReducer(originalState, action)
 
@@ -129,15 +103,34 @@ describe('activeVocabularyTermsReducer', function () {
 		})
 	})
 
-	describe('@REMOVE_TERM_FROM_VOCABULARY', function () {
+	describe('`fetchingVocabularyTerms`', function () {
+		const action = actions.fetchingVocabularyTerms({
+			vocabulary: {
+				uri:'http://example.org',
+			}
+		})
+
+		const result = termsReducer(originalState, action)
+
+		it('toggles `isFetching` flag to true', function () {
+			expect(originalState.isFetching).to.not.be.true
+			expect(result.isFetching).to.be.true
+		})
+
+		it('sets `data` to an empty array', function () {
+			expect(originalState.data).to.not.be.empty
+			expect(result.data).to.be.empty
+		})
+	})
+
+	describe('`removedTermFromVocabulary`', function () {
 		const index = randomIndex(originalState.data)
-		const action = {
-			type: REMOVE_TERM_FROM_VOCABULARY,
+		const action = actions.removedTermFromVocabulary({
 			index,
 			vocabulary: {
 				uri: originalState.vocabularyUri,
 			},
-		}
+		})
 
 		const result = termsReducer(originalState, action)
 
@@ -147,11 +140,11 @@ describe('activeVocabularyTermsReducer', function () {
 		})
 	})
 
-	describe('@UPDATE_TERM_RESPONSE_OK', function () {
+	describe('`updatedTermInVocabulary`', function () {
 		it('changes a term to the update passed', function () {
 			const index = randomIndex(originalState.data)
 			const original = originalState.data[index]
-			const copy = assign({}, original)
+			const copy = { ...original }
 
 			copy.alt_label = [].concat(
 				copy.alt_label,
@@ -161,14 +154,13 @@ describe('activeVocabularyTermsReducer', function () {
 
 			const prefLabel = original.pref_label[0]
 
-			const action = {
-				type: UPDATE_TERM_RESPONSE_OK,
+			const action = actions.updatedTermInVocabulary({
 				previousPrefLabel: prefLabel,
 				data: copy,
 				vocabulary: {
 					uri: originalState.vocabularyUri,
 				},
-			}
+			})
 
 			const result = termsReducer(originalState, action)
 
@@ -179,7 +171,7 @@ describe('activeVocabularyTermsReducer', function () {
 		it('updates the correct term when pref_label is changed', function () {
 			const index = randomIndex(originalState.data)
 			const original = originalState.data[index]
-			const copy = assign({}, original)
+			const copy = { ...original }
 			const newLabel = 'Hey I am a new label!'
 
 			copy.label = [].concat(
@@ -191,14 +183,13 @@ describe('activeVocabularyTermsReducer', function () {
 
 			const prefLabel = original.pref_label[0]
 
-			const action = {
-				type: UPDATE_TERM_RESPONSE_OK,
+			const action = actions.updatedTermInVocabulary({
 				previousPrefLabel: prefLabel,
 				data: copy,
 				vocabulary: {
 					uri: originalState.vocabularyUri,
 				},
-			}
+			})
 
 			const result = termsReducer(originalState, action)
 

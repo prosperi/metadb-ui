@@ -1,6 +1,6 @@
 import { expect } from 'chai'
-import * as actions from '../work/actions'
-import workReducer from '../work/reducer'
+import * as actions from '../actions'
+import workReducer from '../reducer'
 
 const originalState = {
 	data: {

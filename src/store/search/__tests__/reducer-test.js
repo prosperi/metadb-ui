@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 
-import * as actions from '../search/actions'
-import searchReducer from '../search/reducer'
+import * as actions from '../actions'
+import searchReducer from '../reducer'
 
 const defaultState = {
 	query: '',

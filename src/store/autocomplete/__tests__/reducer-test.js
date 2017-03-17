@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import autocompleteReducer from '../reducer'
-import { receiveVocabularyTerms } from '../actions'
+import { receiveAutocompleteTerms } from '../actions'
 
 const originalState = {}
 
@@ -19,7 +19,7 @@ describe('autocomplete-terms reducer', function () {
 	describe('term storage', function () {
 		it('uses vocab uri to determine terms key', function () {
 			const uri = 'http://example.org'
-			const action = receiveVocabularyTerms({
+			const action = receiveAutocompleteTerms({
 				terms: [
 					'aye', 'bee', 'cee', 'dee'
 				],
@@ -31,7 +31,6 @@ describe('autocomplete-terms reducer', function () {
 			})
 
 			const result = autocompleteReducer(originalState, action)
-
 			expect(uri in result).to.be.true
 		})
 	})

@@ -8,7 +8,7 @@ import {
 } from '../api'
 
 export function createVocabulary (data) {
-	const url = `/${VOCABULARY_PATH}.json`
+	const url = `${VOCABULARY_PATH}.json`
 
 	return post(url, data)
 }
@@ -27,7 +27,7 @@ export function getVocabulary (path) {
 }
 
 export function getVocabularies () {
-	return get(`/${VOCABULARY_PATH}.json`)
+	return get(`${VOCABULARY_PATH}.json`)
 }
 
 export function updateVocabulary (vocab) {
