@@ -2,7 +2,6 @@ import { expect } from 'chai'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import fetchMock from 'fetch-mock'
-import assign from 'object-assign'
 import randomIndex from 'random-array-index'
 
 import * as actions from '../actions'
@@ -202,166 +201,172 @@ describe('Terms actionCreators', function () {
 			})
 		})
 	})
+
+	describe('#removeTermFromVocabulary', function () {
+		const vocab = VOCAB_ONE
+		const terms = [].concat(vocab.terms)
+
+		const removeRandomTerm = () => {
+			const index = randomIndex(terms)
+			const term = terms[index].pref_label[0]
+
+			return actions.removeTermFromVocabulary(vocab, term, index)
+		}
+
+		const state = {
+			activeVocabularyTerms: {
+				data: terms,
+			}
+		}
+
+		const store = mockStore(state)
+
+		beforeEach(function () {
+			fetchMock.put(vocab.absolute_path, {status: 200, body: {status: 'ok'}})
+		})
+
+		afterEach(function () {
+			fetchMock.restore()
+			store.clearActions()
+		})
+
+		it('dispatches `removingTermFromVocabulary` + `removedTermFromVocabulary`', function () {
+			return store.dispatch(removeRandomTerm())
+			.then(() => {
+				const axns = store.getActions()
+				expect(axns).to.have.length(2)
+				expect(axns[0].type).to.equal(actions.removingTermFromVocabulary.toString())
+				expect(axns[1].type).to.equal(actions.removedTermFromVocabulary.toString())
+			})
+		})
+
+		it('sends index, term, and vocabulary data with each action', function () {
+			return store.dispatch(removeRandomTerm())
+			.then(() => {
+				const axns = store.getActions()
+				expect(axns).to.have.length(2)
+
+				axns.forEach(a => {
+					const { payload } = a
+					expect(payload).to.have.property('index')
+					expect(payload).to.have.property('term')
+					expect(payload.term).to.not.be.empty
+					expect(payload).to.have.property('vocabulary')
+					expect(payload.vocabulary).to.not.be.empty
+				})
+			})
+		})
+
+		it('slices the term out of the array', function () {
+			return store.dispatch(removeRandomTerm())
+			.then(() => {
+				let body = fetchMock.lastOptions().body
+
+				if (typeof body === 'string') {
+					body = JSON.parse(body)
+				}
+
+				const stateTerms = store.getState().activeVocabularyTerms.data
+				const sentTerms = body.vocabulary.terms
+
+				expect(stateTerms.length).to.be.greaterThan(sentTerms.length)
+				expect(stateTerms.length - sentTerms.length).to.equal(1)
+
+				const term = store.getActions()[0].term
+
+				expect(sentTerms.some(t => t.pref_label.indexOf(term) > -1)).to.be.false
+			})
+		})
+	})
+
+	describe('#updateTermInVocabulary', function () {
+		const vocab = VOCAB_ONE
+		const terms = [].concat(vocab.terms)
+		const store = mockStore({})
+
+		const getRandomTerm = () => {
+			const index = randomIndex(terms)
+			return { ...terms[index] }
+		}
+
+		const updateRandomTerm = () => {
+			const term = getRandomTerm()
+
+			// see https://github.com/dariusk/corpora/blob/master/data/games/wrestling_moves.json
+			const pool = [
+				'Double inverted DDT', 'Elevated jawbreaker', 'Elevated splash',
+				'Enzuigiri', 'European uppercut', 'Eye poke', 'Go 2 Sleep',
+			]
+
+			const update = pool[randomIndex(pool)]
+			term.alt_label.push(update)
+
+			return term
+		}
+
+		beforeEach(function () {
+			fetchMock.mock(
+				vocab.absolute_path,
+				{status: 200, body: {status: 'ok'}},
+				{method: 'PATCH'}
+			)
+			fetchMock.mock('*', 404, {method: 'PATCH'})
+		})
+
+		afterEach(function () {
+			fetchMock.restore()
+			store.clearActions()
+		})
+
+		it('dispatches `updatingTermInVocabulary` + `updatedTermInVocabulary`', function () {
+			const term = updateRandomTerm()
+			const termStr = term.pref_label[0]
+			return store.dispatch(actions.updateTermInVocabulary(vocab, termStr, term))
+			.then(() => {
+				const axns = store.getActions()
+				expect(axns).to.have.length(2)
+				expect(axns[0].type).to.equal(actions.updatingTermInVocabulary.toString())
+				expect(axns[1].type).to.equal(actions.updatedTermInVocabulary.toString())
+			})
+		})
+
+		it('dispatches `updatingTermInVocabularyErr` when 404\'d', function () {
+			const nope = {
+				absolute_path: 'http://nope.org'
+			}
+
+			const term = updateRandomTerm()
+			const termStr = term.pref_label[0]
+
+			return store.dispatch(actions.updateTermInVocabulary(nope, termStr, term))
+			.then(() => {
+				const axns = store.getActions()
+				expect(axns).to.have.length(2)
+				expect(axns[0].type).to.equal(actions.updatingTermInVocabulary.toString())
+				expect(axns[1].type).to.equal(actions.updatingTermInVocabularyErr.toString())
+				expect(axns[1].error).to.be.true
+			})
+		})
+
+		it('sends the previous pref_label with action', function () {
+			const term = getRandomTerm()
+			const termStr = term.pref_label[0]
+
+			term.pref_label = ['=^_^= ~~~ new Pref Label']
+
+			return store.dispatch(actions.updateTermInVocabulary(vocab, termStr, term))
+			.then(() => {
+				const axns = store.getActions()
+				expect(axns).to.have.length(2)
+
+				const update = axns[1].payload
+				expect(update.previousPrefLabel).to.not.equal(update.data.pref_label[0])
+				expect(update.previousPrefLabel).to.equal(termStr)
+			})
+		})
+	})
 })
 
 
 
 
-
-
-
-
-	// describe('#removeTermFromVocabulary', function () {
-	// 	const vocab = VOCAB_ONE
-	// 	const terms = [].concat(vocab.terms)
-
-	// 	const removeRandomTerm = () => {
-	// 		const index = randomIndex(terms)
-	// 		const term = terms[index].pref_label[0]
-
-	// 		return removeTermFromVocabulary(vocab, term, index)
-	// 	}
-
-	// 	const state = {
-	// 		activeVocabularyTerms: {
-	// 			data: terms,
-	// 		}
-	// 	}
-
-	// 	const store = mockStore(state)
-
-	// 	beforeEach(function () {
-	// 		fetchMock.put(vocab.absolute_path, {status: 200, body: {status: 'ok'}})
-	// 	})
-
-	// 	afterEach(function () {
-	// 		fetchMock.restore()
-	// 		store.clearActions()
-	// 	})
-
-	// 	it('dispatches REMOVE_TERM_FROM_VOCABULARY type', function () {
-	// 		return store.dispatch(removeRandomTerm())
-	// 		.then(() => {
-	// 			const actions = store.getActions()
-	// 			expect(actions).to.have.length(1)
-	// 			expect(actions[0].type).to.equal(REMOVE_TERM_FROM_VOCABULARY)
-	// 		})
-	// 	})
-
-	// 	it('sends index, term, and vocabulary data with action', function () {
-	// 		return store.dispatch(removeRandomTerm())
-	// 		.then(() => {
-	// 			const action = store.getActions()[0]
-	// 			expect(action).to.have.property('index')
-	// 			expect(action).to.have.property('term')
-	// 			expect(action).to.have.property('vocabulary')
-	// 		})
-	// 	})
-
-	// 	it('slices the term out of the array', function () {
-	// 		return store.dispatch(removeRandomTerm())
-	// 		.then(() => {
-	// 			let body = fetchMock.lastOptions().body
-	// 			if (typeof body === 'string')
-	// 				body = JSON.parse(body)
-
-	// 			const stateTerms = store.getState().activeVocabularyTerms.data
-	// 			const sentTerms = body.vocabulary.terms
-
-	// 			expect(stateTerms.length).to.be.greaterThan(sentTerms.length)
-	// 			expect(stateTerms.length - sentTerms.length).to.equal(1)
-
-	// 			const term = store.getActions()[0].term
-
-	// 			expect(sentTerms.some(t => t.pref_label.indexOf(term) > -1)).to.be.false
-	// 		})
-	// 	})
-	// })
-
-	// describe('#updateTermInVocabulary', function () {
-	// 	const vocab = VOCAB_ONE
-	// 	const terms = [].concat(vocab.terms)
-	// 	const store = mockStore({})
-
-	// 	const getRandomTerm = () => {
-	// 		const index = randomIndex(terms)
-	// 		return assign({}, terms[index])
-	// 	}
-
-	// 	const updateRandomTerm = () => {
-	// 		const term = getRandomTerm()
-
-	// 		// see https://github.com/dariusk/corpora/blob/master/data/games/wrestling_moves.json
-	// 		const pool = [
-	// 			'Double inverted DDT', 'Elevated jawbreaker', 'Elevated splash',
-	// 			'Enzuigiri', 'European uppercut', 'Eye poke', 'Go 2 Sleep',
-	// 		]
-
-	// 		const update = pool[randomIndex(pool)]
-	// 		term.alt_label.push(update)
-
-	// 		return term
-	// 	}
-
-	// 	beforeEach(function () {
-	// 		fetchMock.mock(
-	// 			vocab.absolute_path,
-	// 			{status: 200, body: {status: 'ok'}},
-	// 			{method: 'PATCH'}
-	// 		)
-	// 		fetchMock.mock('*', 404, {method: 'PATCH'})
-	// 	})
-
-	// 	afterEach(function () {
-	// 		fetchMock.restore()
-	// 		store.clearActions()
-	// 	})
-
-	// 	it('dispatches UPDATE_TERM_{REQUEST,RESPONSE_OK} types', function () {
-	// 		const term = updateRandomTerm()
-	// 		const termStr = term.pref_label[0]
-	// 		return store.dispatch(updateTermInVocabulary(vocab, termStr, term))
-	// 		.then(() => {
-	// 			const actions = store.getActions()
-	// 			expect(actions).to.have.length(2)
-	// 			expect(actions[0].type).to.equal(UPDATE_TERM_REQUEST)
-	// 			expect(actions[1].type).to.equal(UPDATE_TERM_RESPONSE_OK)
-	// 		})
-	// 	})
-
-	// 	it('dispatches UPDATE_TERM_{REQUEST,RESPONSE_ERR} when 404\'d', function () {
-	// 		const nope = {
-	// 			absolute_path: 'http://nope.org'
-	// 		}
-
-	// 		const term = updateRandomTerm()
-	// 		const termStr = term.pref_label[0]
-
-	// 		return store.dispatch(updateTermInVocabulary(nope, termStr, term))
-	// 		.then(() => {
-	// 			const actions = store.getActions()
-	// 			expect(actions).to.have.length(2)
-	// 			expect(actions[0].type).to.equal(UPDATE_TERM_REQUEST)
-	// 			expect(actions[1].type).to.equal(UPDATE_TERM_RESPONSE_ERR)
-	// 		})
-	// 	})
-
-	// 	it('sends the previous pref_label with action', function () {
-	// 		const term = getRandomTerm()
-	// 		const termStr = term.pref_label[0]
-
-	// 		term.pref_label = ['=^_^= ~~~ new Pref Label']
-
-	// 		return store.dispatch(updateTermInVocabulary(vocab, termStr, term))
-	// 		.then(() => {
-	// 			const actions = store.getActions()
-
-	// 			expect(actions).to.have.length(2)
-
-	// 			const update = actions[1]
-	// 			expect(update.previousPrefLabel).to.not.equal(update.data.pref_label[0])
-	// 			expect(update.previousPrefLabel).to.equal(termStr)
-	// 		})
-	// 	})
-	// })
-// })

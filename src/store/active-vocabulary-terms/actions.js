@@ -93,7 +93,7 @@ export const removeTermFromVocabulary = (vocabulary, termData, index) => {
 			termsList.slice(index + 1)
 		)
 
-		dispatch(removingTermFromVocabulary({term: termData, vocabulary}))
+		dispatch(removingTermFromVocabulary({term: termData, vocabulary, index}))
 
 		return api.putTerms(vocabulary, terms)
 			.then(() => {
@@ -109,7 +109,7 @@ export const updateTermInVocabulary = (vocabulary, label, data) => {
 	return dispatch => {
 		dispatch(updatingTermInVocabulary({vocabulary, data}))
 
-		return patchTerm(vocabulary, data)
+		return api.patchTerm(vocabulary, data)
 			.then(() => {
 				dispatch(updatedTermInVocabulary({
 					previousPrefLabel: label,
