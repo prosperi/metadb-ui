@@ -32,7 +32,6 @@ export const createVocabulary = data => {
 				dispatch(createdVocabulary(vocabPayload))
 			})
 			.catch(error => {
-				console.log(error)
 				dispatch(creatingVocabularyErr(error))
 			})
 	}

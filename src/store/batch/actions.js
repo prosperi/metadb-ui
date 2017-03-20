@@ -3,7 +3,7 @@ import { batchUpdates } from './endpoints'
 
 export const batchUpdatingWorks = createAction('batch updating works')
 export const batchUpdatingWorksErr = createAction('error batch updating works')
-export const setBatchWorksUpdated = createAction('batch works updated')
+export const batchUpdatedWorks = createAction('batch works updated')
 
 export const batchUpdateWorks = updates => {
 	return (dispatch, getState) => {
@@ -33,7 +33,7 @@ export const batchUpdateWorks = updates => {
 		dispatch(batchUpdatingWorks({updates, count}))
 
 		return batchUpdates({search, updates})
-			.then(() => dispatch(setBatchWorksUpdated({count})))
+			.then(() => dispatch(batchUpdatedWorks({count})))
 			.catch(error => dispatch(batchUpdatingWorksErr(error)))
 	}
 }

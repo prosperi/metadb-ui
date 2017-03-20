@@ -1,7 +1,6 @@
 import { expect } from 'chai'
-import notificationsReducer from '../notifications'
-
-import { CLEAR_NOTIFICATION } from '../../constants'
+import notificationsReducer from '../reducer'
+import * as actions from '../actions'
 
 const originalState = [
 	{ type: 'SUCCESS', message: 'Hey that one worked!' },
@@ -16,14 +15,14 @@ describe('Notifications reducer', function () {
 	})
 
 	it('returns an empty array when state is undefined', function () {
-		const result = notificationsReducer()
+		const result = notificationsReducer(undefined, {type: 'nothing'})
 		expect(result).to.be.an('array')
 		expect(result).to.be.empty
 	})
 
-	describe('@CLEAR_NOTIFICATION', function () {
+	describe('`clearNotification`', function () {
 		it('removes a notification by its index', function () {
-			const action = {type: CLEAR_NOTIFICATION, index: 0}
+			const action = actions.clearNotification(0)
 			const result = notificationsReducer(originalState, action)
 
 			expect(result.length).to.be.lessThan(originalState.length)

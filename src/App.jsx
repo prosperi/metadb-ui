@@ -2,16 +2,9 @@
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import assign from 'object-assign'
-
-import * as allActions from './actions/'
 import * as actionCreators from './store/actions'
 
 import Main from './pages/Main.jsx'
-
-const mergedActionCreators = {
-	...allActions,
-	...actionCreators,
-}
 
 function mapStateToProps (state) {
 	return {
@@ -37,7 +30,7 @@ function mapStateToProps (state) {
 }
 
 function mapDispatchToProps (dispatch) {
-	return bindActionCreators(mergedActionCreators, dispatch)
+	return bindActionCreators(actionCreators, dispatch)
 }
 
 const App = connect(mapStateToProps, mapDispatchToProps)(Main)

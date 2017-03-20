@@ -32,6 +32,7 @@ export const addTermToVocabulary = (vocabulary, term) => {
 				dispatch(addedTermToVocabulary({vocabulary, term: newTerm}))
 			})
 			.catch(error => {
+				error.term = term
 				dispatch(addingTermToVocabularyErr(error))
 			})
 	}
@@ -118,6 +119,8 @@ export const updateTermInVocabulary = (vocabulary, label, data) => {
 				}))
 			})
 			.catch(error => {
+				error.termLabel = label
+				error.vocabulary = vocabulary
 				dispatch(updatingTermInVocabularyErr(error))
 			})
 	}

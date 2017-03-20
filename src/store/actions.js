@@ -27,3 +27,8 @@ export {
 	fetchAllVocabularies,
 	updateVocabularyMetadata,
 } from './vocabulary/actions'
+
+export {
+	fetchWork,
+	saveWork,
+} from './work/actions'

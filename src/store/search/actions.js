@@ -24,12 +24,9 @@ const conductSearch = (dispatch, query, facets, options, queryString) => {
 		.then(results => results.response)
 		.then(results => {
 			dispatch(receivedSearchResults({results}))
-			return results
 		})
 		.catch(error => {
 			dispatch(fetchingSearchErr(error))
-
-			throw error
 		})
 }
 

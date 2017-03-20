@@ -1,15 +1,9 @@
 import { expect } from 'chai'
-import { batchUpdateWorks } from '../batch'
-
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import fetchMock from 'fetch-mock'
 
-import {
-	BATCH_UPDATE_WORKS,
-	BATCH_UPDATE_WORKS_OK,
-	BATCH_UPDATE_WORKS_ERR,
-} from '../../constants'
+import * as actions from '../actions'
 
 const mockStore = configureMockStore([thunk])
 const apiUrl = `${process.env.API_BASE_URL}/batch_edits.json`
@@ -77,34 +71,37 @@ describe('Batch actionCreator', function () {
 
 		afterEach(fetchMock.restore)
 
-		it('sends BATCH_UPDATE_WORKS and BATCH_UPDATE_WORKS_OK actions', function () {
+		it('sends `batchUpdatingWorks` + `batchUpdatedWorks`', function () {
 			const store = mockStore(storeWithoutRange)
-			return store.dispatch(batchUpdateWorks(updates)).then(() => {
-				const actions = store.getActions()
-				expect(actions[0].type).to.equal(BATCH_UPDATE_WORKS)
-				expect(actions[1].type).to.equal(BATCH_UPDATE_WORKS_OK)
+			return store.dispatch(actions.batchUpdateWorks(updates)).then(() => {
+				const axns = store.getActions()
+				expect(axns[0].type).to.equal(actions.batchUpdatingWorks.toString())
+				expect(axns[1].type).to.equal(actions.batchUpdatedWorks.toString())
 			})
 		})
 
 		it('passes the `count` value to pending + successful actions', function () {
 			const store = mockStore(storeWithoutRange)
-			return store.dispatch(batchUpdateWorks(updates)).then(() => {
-				const actions = store.getActions()
-				actions.forEach(action => {
-					expect(action).to.have.property('count')
-					expect(action.count).to.equal(storeWithoutRange.search.results.pages.total_count)
+			return store.dispatch(actions.batchUpdateWorks(updates)).then(() => {
+				const axns = store.getActions()
+				axns.forEach(action => {
+					const { payload } = action
+					const total = storeWithoutRange.search.results.pages.total_count
+					expect(payload).to.have.property('count')
+					expect(payload.count).to.equal(total)
 				})
 			})
 		})
 
 		it('parses out range facets when included', function () {
 			const store = mockStore(storeWithRanges)
-			return store.dispatch(batchUpdateWorks(updates)).then(() => {
+			return store.dispatch(actions.batchUpdateWorks(updates)).then(() => {
 				const lastArgs = fetchMock.lastCall()
 				let [ , { body } ] = lastArgs
 
-				if (typeof body === 'string')
+				if (typeof body === 'string') {
 					body = JSON.parse(body)
+				}
 
 				expect(body).to.have.property('search')
 				expect(body.search).to.have.property('range')
@@ -127,12 +124,12 @@ describe('Batch actionCreator', function () {
 
 		afterEach(fetchMock.restore)
 
-		it('sends BATCH_UPDATE_WORKS and BATCH_UPDATE_WORKS_ERR actions', function () {
+		it('dispatches `batchUpdatingWorks` + `batchUpdatingWorksErr`', function () {
 			const store = mockStore(storeWithoutRange)
-			return store.dispatch(batchUpdateWorks(updates)).then(() => {
-				const actions = store.getActions()
-				expect(actions[0].type).to.equal(BATCH_UPDATE_WORKS)
-				expect(actions[1].type).to.equal(BATCH_UPDATE_WORKS_ERR)
+			return store.dispatch(actions.batchUpdateWorks(updates)).then(() => {
+				const axns = store.getActions()
+				expect(axns[0].type).to.equal(actions.batchUpdatingWorks.toString())
+				expect(axns[1].type).to.equal(actions.batchUpdatingWorksErr.toString())
 			})
 		})
 	})
