@@ -1,4 +1,4 @@
-import sprintf from 'sprintf-js'
+import { sprintf } from 'sprintf-js'
 
 export const OK = 'ok'
 export const ERROR = 'error'

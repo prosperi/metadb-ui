@@ -1,2 +1,2 @@
 // (start-index, end-index, total-count)
-export const RESULTS_PAGER = '%(start) &ndash; %(end) of <strong>%(total)</strong>'
+export const RESULTS_PAGER = '%(start)s &ndash; %(end)s of <strong>%(total)s</strong>'
