@@ -37,16 +37,6 @@ import * as actions from './actions'
  *  }
  */
 
-const initialState = {
-	facets: {},
-	isSearching: false,
-	options: {},
-	query: '',
-	queryString: '',
-	results: {},
-	timestamp: null,
-}
-
 export default handleActions({
 	[actions.fetchingSearch]: (state, action) => {
 		return {
@@ -110,4 +100,4 @@ export default handleActions({
 			timestamp: Date.now(),
 		}
 	},
-}, initialState)
+}, {})
