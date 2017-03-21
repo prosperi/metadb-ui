@@ -14,7 +14,7 @@ defineSupportCode(({Given, Then, When}) => {
       .submitForm('input[name=q]')
   })
 
-  Then(/^the search result should contain "(.*?)"$/, (text) => {
-    return client.assert.containsText('body', text)
-  })
+  // Then(/^the search result should contain "(.*?)"$/, (text) => {
+  //   return client.assert.containsText('body', text)
+  // })
 })

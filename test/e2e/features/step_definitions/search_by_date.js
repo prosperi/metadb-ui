@@ -6,29 +6,25 @@ defineSupportCode(({Given, Then, When}) => {
 
 	})
 
-	Given('the Work has a submission date {arg1:stringInDoubleQuotes}', (arg1, callback) => {
-		// Write code here that turns the phrase above into concrete actions
-		callback(null, 'pending')
+	Given('the Work has a submission date {arg1:int}{arg2:int}{arg3:int}', (arg1, arg2, arg3) => {
+
 	})
 
-	When('the user browses to the search Page',  (callback) => {
+	When('the user browses to the search Page',  () => {
 		return client
       .url('http://localhost:8080/search?q=')
       .waitForElementVisible('body', 1000)
 	})
 
-	When('the user searches using the submission year {arg1:stringInDoubleQuotes}',  (arg1, callback) => {
-	  // Write code here that turns the phrase above into concrete actions
-	  callback(null, 'pending')
+	When('the user searches using the submission year {arg1:int}', (arg1) => {
+
 	})
 
-	Then('the user should find at least {arg1:stringInDoubleQuotes} result',  (arg1, callback) => {
-	  // Write code here that turns the phrase above into concrete actions
-	  callback(null, 'pending')
+	Then('the user should find at least {arg1:int} result', (arg1) => {
+
 	})
 
-	Then('the Work with a submission date {arg1:stringInDoubleQuotes} should be a result',  (arg1, callback) => {
-	  // Write code here that turns the phrase above into concrete actions
-	  callback(null, 'pending')
+	Then('the Work with a submission date {arg1:int}{arg2:int}{arg3:int} should be a result', (arg1, arg2, arg3) => {
+
 	})
 })
