@@ -37,6 +37,16 @@ import * as actions from './actions'
  *  }
  */
 
+const initialState = {
+	facets: {},
+	isSearching: false,
+	options: {},
+	query: '',
+	queryString: '',
+	results: {},
+	timestamp: null,
+}
+
 export default handleActions({
 	[actions.fetchingSearch]: (state, action) => {
 		return {
@@ -46,8 +56,9 @@ export default handleActions({
 	},
 
 	// any errors are handled within notifications
-	[actions.fetchingSearchErr]: () => {
+	[actions.fetchingSearchErr]: state => {
 		return {
+			...state,
 			isSearching: false,
 		}
 	},
@@ -99,4 +110,4 @@ export default handleActions({
 			timestamp: Date.now(),
 		}
 	},
-}, {})
+}, initialState)
