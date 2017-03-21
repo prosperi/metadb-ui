@@ -4,6 +4,7 @@ import assign from 'object-assign'
 import randomIndex from 'random-array-index'
 
 import * as vocab from '../actions'
+import * as terms from '../../active-vocabulary-terms/actions'
 import vocabReducer from '../reducer'
 
 const originalStatePure = { ...originalState }
@@ -19,19 +20,20 @@ describe('vocabularyReducer', function () {
 		expect(result.data).to.be.empty
 	})
 
-	xdescribe('@ADD_TERM_TO_VOCABULARY', function () {
+	describe('`addTermToVocabulary`', function () {
 		it('increments the `term_count` property', function () {
 			const originalData = originalState.data
 			const idx = randomIndex(originalData)
 
 			const originalVocab = originalData[idx]
-			const uri = originalVocab.uri
 
-			const action = {
-				type: ADD_TERM_TO_VOCABULARY,
+			const action = terms.addedTermToVocabulary({
 				term: 'whatever',
-				uri,
-			}
+				vocabulary: originalVocab,
+
+				// backwards compat
+				uri: originalVocab.uri,
+			})
 
 			const result = vocabReducer(originalState, action)
 			const updatedVocab = result.data[idx]
@@ -41,16 +43,15 @@ describe('vocabularyReducer', function () {
 		})
 	})
 
-	xdescribe('@BULK_EDIT_TERMS', function () {
+	describe('`bulkEditedTerms', function () {
 		it('updates the `term_count` property to new count', function () {
 			const originalData = originalState.data
 			const idx = randomIndex(originalData)
 			const vocab = originalData[idx]
 			const originalCount = vocab.term_count
 
-			const rando = () => Math.floor(Math.random() * 10)
+			let newCount = Math.floor(Math.random() * 10)
 
-			let newCount = rando()
 			if (newCount === originalCount)
 				newCount++
 
@@ -63,17 +64,16 @@ describe('vocabularyReducer', function () {
 				})
 			}
 
-			const action = {
-				type: BULK_EDIT_TERMS,
+			const action = terms.bulkEditedTerms({
 				terms: updates,
 				vocabulary: vocab,
-			}
+			})
 
 			const result = vocabReducer(originalState, action)
 			const newData = result.data[idx]
 
 			expect(newData.term_count).to.not.equal(originalData.term_count)
-			expect(newData.term_count).to.equal(action.terms.length)
+			expect(newData.term_count).to.equal(action.payload.terms.length)
 		})
 	})
 
@@ -130,18 +130,17 @@ describe('vocabularyReducer', function () {
 		})
 	})
 
-	xdescribe('@REMOVE_TERM_FROM_VOCABULARY', function () {
+	describe('`removedTermFromVocabulary`', function () {
 		it('decrements the `term_count` property', function () {
 			const originalData = originalState.data
-			const idx = randomIndex(originalData)
+			const idx = 1
 
 			const originalVocab = originalData[idx]
 
-			const action = {
-				type: REMOVE_TERM_FROM_VOCABULARY,
+			const action = terms.removedTermFromVocabulary({
 				term: 'whatever',
 				vocabulary: originalVocab,
-			}
+			})
 
 			const result = vocabReducer(originalState, action)
 			const updatedVocab = result.data[idx]

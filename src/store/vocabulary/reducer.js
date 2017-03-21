@@ -2,6 +2,7 @@ import { handleActions } from 'redux-actions'
 import findIndex from 'array-find-index'
 
 import * as vocab from './actions'
+import * as terms from '../active-vocabulary-terms/actions'
 
 const initialState = {
 	isFetching: false,
@@ -9,8 +10,59 @@ const initialState = {
 }
 
 export default handleActions({
-	// [terms.addTermToVocabulary]: (state, action) => {},
-	// [terms.bulkEditTerms]: (state, action) => {},
+	[terms.addedTermToVocabulary]: (state, action) => {
+		const { data } = state
+		const { vocabulary } = action.payload
+		const idx = findIndex(data, v => v.uri === vocabulary.uri)
+
+		if (idx === -1) {
+			return state
+		}
+
+		const update = {
+			...data[idx],
+			term_count: data[idx].term_count + 1,
+		}
+
+		const updatedData = [].concat(
+			data.slice(0, idx),
+			update,
+			data.slice(idx + 1)
+		)
+
+		return {
+			...state,
+			data: updatedData,
+		}
+	},
+
+	[terms.bulkEditedTerms]: (state, action) => {
+		const { data } = state
+		const { terms, vocabulary } = action.payload
+		const idx = findIndex(data, v => v.uri === vocabulary.uri)
+
+		if (idx === -1) {
+			return state
+		}
+
+		if (data[idx].term_count === terms.length) {
+			return state
+		}
+
+		const vocab = {
+			...data[idx],
+			term_count: terms.length,
+		}
+
+		return {
+			...state,
+			data: [].concat(
+				data.slice(0, idx),
+				vocab,
+				data.slice(idx + 1)
+			)
+		}
+	},
 
 	[vocab.createdVocabulary]: (state, action) => {
 		const vocabulary = { ...action.payload }
@@ -57,7 +109,32 @@ export default handleActions({
 		}
 	},
 
-	// [terms.removeTermFromVocabulary]: (state, action) => {},
+	[terms.removedTermFromVocabulary]: (state, action) => {
+		const { data } = state
+		const { vocabulary } = action.payload
+		const idx = findIndex(data, v => v.uri === vocabulary.uri)
+
+		if (idx === -1) {
+			return state
+		}
+
+		const update = {
+			...data[idx],
+			term_count: data[idx].term_count - 1,
+		}
+
+
+		const updatedData = [].concat(
+			data.slice(0, idx),
+			update,
+			data.slice(idx + 1)
+		)
+
+		return {
+			...state,
+			data: updatedData,
+		}
+	},
 
 	[vocab.updatedVocabulary]: (state, action) => {
 		const { data } = state
