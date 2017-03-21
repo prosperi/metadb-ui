@@ -50,17 +50,27 @@ const TechnicalMetadata = props => {
 
 const GenericWork = React.createClass({
 	_fetchingQueue: {},
+	_tmpOpts: [],
 
 	getInitialState: function () {
 		return {
-			terms: {},
+			terms: {}
 		}
 	},
 
-	controlledVocabularyField: function (opts) {
-		const { name, label, id } = opts
-		const terms = this.state.terms[id] || []
+	componentDidMount: function () {
+		this._isMounted = true
 
+		this._tmpOpts.forEach(value => {
+			this.updateTerms(value.id)
+		})
+	},
+
+	componentWillUnmount: function () {
+		this._isMounted = false
+	},
+
+	updateTerms: function(id) {
 		if (!this.state.terms.hasOwnProperty(id) && !this._fetchingQueue[id]) {
 			this._fetchingQueue[id] = true
 
@@ -69,10 +79,19 @@ const GenericWork = React.createClass({
 			.then(res => res.terms)
 			.then(terms => {
 				delete this._fetchingQueue[id]
-
 				const update = assign({}, this.state.terms, {[id]: terms})
+
 				this.setState({terms: update})
 			})
+		}
+	},
+
+	controlledVocabularyField: function (opts) {
+		const { name, label, id } = opts
+		const terms = this.state.terms[id] || []
+
+		if (typeof this.state.terms[id] === 'undefined') {
+			this._tmpOpts.push(opts)
 		}
 
 		return (

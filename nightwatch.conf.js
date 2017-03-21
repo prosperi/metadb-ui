@@ -1,4 +1,5 @@
 require('babel-core/register')
+<<<<<<< HEAD
 const seleniumServer = require('selenium-server')
 const chromedriver = require('chromedriver')
 
@@ -35,3 +36,7 @@ module.exports = {
 		}
 	}
 }
+=======
+
+module.exports = require('./nightwatch.json')
+>>>>>>> 2276be4ebc94af78ae36c9bef3855d35dfe2ec8f

@@ -6,6 +6,11 @@ defineSupportCode(({Given, Then, When}) => {
 
 	})
 
+	Given('the Work has a submission date {arg1:stringInDoubleQuotes}', (arg1, callback) => {
+		// Write code here that turns the phrase above into concrete actions
+		callback(null, 'pending')
+	})
+
 	When('the user browses to the search Page',  (callback) => {
 		return client
       .url('http://localhost:8080/search?q=')

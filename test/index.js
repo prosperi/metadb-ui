@@ -10,10 +10,13 @@ const mockServer = spawn('npm', ['run', 'mock-server'], {stdio: 'inherit'})
 // in the `build` directory
 const testApp = spawn('npm', ['run', 'test-app'], {stdio: 'inherit'})
 
+
 // a) bundles the app to `build/bundle.js` and `build/style.css`
 // b) runs the nightwatch tests
 // c) removes the aforementioned build files
-const e2e = spawn('npm', ['run', 'test-e2e-loop'], {stdio: 'inherit'})
+
+const e2e = spawn('npm', ['run', 'e2e-loop'], {stdio: 'inherit'})
+
 
 // shut down the mock server + test app server after the e2e loop runs
 e2e.on('close', () => {
