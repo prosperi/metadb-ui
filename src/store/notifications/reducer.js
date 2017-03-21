@@ -72,7 +72,7 @@ export default handleActions({
 		}
 
 		return [].concat(state,
-			util.errorMessage(msg.RECEIVE_VOCABULARY_TERMS_ERR)
+			util.errorMessage(msg.RECEIVE_VOCABULARY_TERMS_ERR, data)
 		)
 	},
 

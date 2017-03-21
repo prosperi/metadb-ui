@@ -1,6 +1,5 @@
 import { expect } from 'chai'
 import * as originalState from './data/vocabularies.json'
-import assign from 'object-assign'
 import randomIndex from 'random-array-index'
 
 import * as vocab from '../actions'

@@ -11,7 +11,7 @@ const addErrorToState = (state, action) => {
 }
 
 export default handleActions({
-	[actions.fetchingWork]: (state, action) => {
+	[actions.fetchingWork]: () => {
 		return {
 			isFetching: true,
 		}

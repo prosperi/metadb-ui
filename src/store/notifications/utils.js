@@ -1,5 +1,9 @@
 import { sprintf } from 'sprintf-js'
 
+const hasProperty = (obj, prop) => (
+	Object.prototype.hasOwnProperty.call(obj, prop)
+)
+
 export const OK = 'ok'
 export const ERROR = 'error'
 
