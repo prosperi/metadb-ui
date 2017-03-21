@@ -123,7 +123,7 @@ class RangeSliderDate extends React.Component {
 		const type = getInputType(this.props.interval)
 
 		const props = {
-			className: 'range-slider-date--input',
+			className: 'range-slider-date--input RangeSliderDate-input',
 			key: `input-${which}`,
 			min: this._formatted.min,
 			max: this._formatted.max,
@@ -133,7 +133,7 @@ class RangeSliderDate extends React.Component {
 		}
 
 		return (
-			<label className="range-slider-date--label">
+			<label className="range-slider-date--label RangeSliderDate-label">
 				{which}
 				<input {...props} />
 			</label>
@@ -186,8 +186,8 @@ class RangeSliderDate extends React.Component {
 		}
 
 		return (
-			<div className="range-slider-date">
-				<div className="range-slider-date--inputs-container">
+			<div className="range-slider-date RangeSliderDate">
+				<div className="range-slider-date--inputs-container RangeSliderDate-input-container">
 					{this.renderInput('min')}
 					{this.renderInput('max')}
 					<Button {...applyRangeProps}>

@@ -58,7 +58,7 @@ const TagList = React.createClass({
 
 	render: function () {
 		return (
-			<ul className={[].concat('tag-list', this.props.className).join(' ')}>
+			<ul className={[].concat('tag-list', 'TagList', this.props.className).join(' ')}>
 				{this.mapTags()}
 			</ul>
 		)

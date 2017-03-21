@@ -36,7 +36,15 @@ const ResultsContainer = React.createClass({
 			}
 		}, this.props.containerProps)
 
-		return React.createElement('div', containerProps, this.renderResults())
+		return (
+			<div
+				className="ResultsContainer"
+				style={{marginTop: '10px'}}
+				{...this.props.containerProps}
+
+				children={this.renderResults()}
+			/>
+		)
 	}
 })
 

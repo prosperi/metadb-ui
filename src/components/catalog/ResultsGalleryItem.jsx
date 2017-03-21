@@ -27,7 +27,7 @@ class ResultsGalleryItem extends React.PureComponent {
 
 		const src = `${process.env.API_BASE_URL}${thumbnail_path}`
 		const props = {
-			className: 'search-results-gallery--thumbnail',
+			className: 'search-results-gallery--thumbnail ResultsGallery-thumbnail',
 			src,
 		}
 		return <img {...props} />
@@ -36,10 +36,10 @@ class ResultsGalleryItem extends React.PureComponent {
 	render () {
 		const src = process.env.API_BASE_URL + this.props.data.thumbnail_path
 		return (
-			<figure className="search-results-gallery--item">
+			<figure className="search-results-gallery--item ResultsGalleryItem">
 				<Link to={`/works/${this.props.data.id}`}>
 					{this.renderThumbnail()}
-					<figcaption className="search-results-gallery--caption">
+					<figcaption className="search-results-gallery--caption ResultsGalleryItem-caption">
 						{this.getTitle()}
 					</figcaption>
 				</Link>

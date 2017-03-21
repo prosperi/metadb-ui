@@ -98,13 +98,13 @@ const VocabularyList = React.createClass({
 
 	handleKeyDown: function (ev) {
 		switch (ev.keyCode) {
-			
+
 			// escape
 			case 27:
 				return
 
 			// up
-			case 38: 
+			case 38:
 				return this.moveHoverIndex(-1)
 
 			// down
@@ -130,7 +130,7 @@ const VocabularyList = React.createClass({
 		const len = data[this.props.keys.count]
 
 		return (
-			<span className="term-count">
+			<span className="term-count VocabularyList-term-count">
 				Contains {len} term{len === 1 ? '' : 's'}
 			</span>
 		)
@@ -139,7 +139,7 @@ const VocabularyList = React.createClass({
 	moveHoverIndex: function (dir) {
 		const vocabs = this.state.vocabularies
 		const idx = this.state.hoverIndex
-		
+
 		let next = idx + dir
 
 		// wrap to the end of the list
@@ -160,7 +160,7 @@ const VocabularyList = React.createClass({
 	vocabularyList: function () {
 		if (this.props.isLoading) {
 			return (
-				<div className="vocab-list--empty">
+				<div className="vocab-list--empty VocabularyList is-empty">
 					Loading ...
 				</div>
 			)
@@ -170,7 +170,7 @@ const VocabularyList = React.createClass({
 
 		if (!this.state.vocabularies || !this.state.vocabularies.length) {
 			return (
-				<div className="vocab-list--empty">
+				<div className="vocab-list--empty VocabularyList is-empty">
 					No vocabularies
 					{query ? ` found with "${query}"` : ''}
 				</div>
@@ -178,7 +178,7 @@ const VocabularyList = React.createClass({
 		}
 
 		return (
-			<ul className="vocab-list" onMouseOut={this.clearHoverIndex}>
+			<ul className="vocab-list" className="VocabularyList" onMouseOut={this.clearHoverIndex}>
 				{this.state.vocabularies.map(this.vocabularyListItem)}
 			</ul>
 		)
@@ -219,10 +219,10 @@ const VocabularyList = React.createClass({
 
 	render: function () {
 		return (
-			<div className="vocabulary-list">
-				<header key="filter">
+			<div className="vocabulary-list VocabularyList">
+				<header className="VocabularyList-header" key="filter">
 					<input
-						className="filter"
+						className="filter VocabularyList-filter"
 						disabled={this.props.isLoading}
 						onFocus={this.handleInputFocus}
 						onChange={this.handleInputChange}

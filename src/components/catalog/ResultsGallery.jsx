@@ -20,7 +20,7 @@ class ResultsGallery extends React.Component {
 
 	render () {
 		return (
-			<div className="search-results-gallery">
+			<div className="search-results-gallery ResultsGallery">
 				{this.props.data.map(this.renderGalleryItem)}
 			</div>
 		)

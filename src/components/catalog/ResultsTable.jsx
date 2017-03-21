@@ -64,7 +64,7 @@ const ResultsTable = React.createClass({
 		// set default column first (thumbnail)
 		const columns = [
 			{
-				className: 'thumbnail-preview',
+				className: 'thumbnail-preview ResultsTable-thumbnail',
 				header: this.getFieldToggleHeader(),
 				id: 'thumbnail_path',
 
@@ -220,9 +220,9 @@ const ResultsTable = React.createClass({
 
 	render: function () {
 		return (
-			<div className="results-table-container">
+			<div className="results-table-container ResultsTable">
 				<TacoTable
-					className="results-table"
+					className="results-table ResultsTable-table"
 					columns={this.getColumns()}
 					data={this.props.data}
 					sortable={false}
