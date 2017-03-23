@@ -19,22 +19,19 @@ const shallowEl = xtend => wrapper(xtend, shallow)
 
 describe('<RangeSliderDate />', function () {
 	describe('when interval="month"', function () {
-		const sel = 'input[type="month"]'
-		let $el
+		let $els
 
 		beforeEach(function () {
-			$el = shallowEl({interval: INTERVALS.MONTH })
+			const $el = shallowEl({interval: INTERVALS.MONTH })
+			$els = $el.find('DelayedInput')
 		})
 
 		it('renders inputs with `type="month"', function () {
-			const $els = $el.find(sel)
-
+			const $filtered = $els.findWhere($e => $e.prop('type') === 'month')
 			expect($els).to.have.length(2)
 		})
 
 		it('parses value to YYYY-MM', function () {
-			const $els = $el.find(sel)
-
 			$els.forEach($$el => {
 				expect($$el.prop('value')).to.match(/^\d{4}-\d{2}$/)
 			})
@@ -42,20 +39,19 @@ describe('<RangeSliderDate />', function () {
 	})
 
 	describe('when interval="day"', function () {
-		const sel = 'input[type="date"]'
-		let $el
+		let $els
 
 		beforeEach(function () {
-			$el = shallowEl({interval: INTERVALS.DAY})
+			const $el = shallowEl({interval: INTERVALS.DAY})
+			$els = $el.find('DelayedInput')
 		})
 
 		it('renders inputs with `type="date"`', function () {
-			const $els = $el.find(sel)
+			const $filtered = $els.findWhere($e => $e.prop('type') === 'date')
 			expect($els).to.have.length(2)
 		})
 
 		it('parses value to YYYY-MM-DD', function () {
-			const $els = $el.find(sel)
 			$els.forEach($$el => {
 				expect($$el.prop('value')).to.match(/^\d{4}-\d{2}-\d{2}$/)
 			})
@@ -63,20 +59,19 @@ describe('<RangeSliderDate />', function () {
 	})
 
 	describe('when interval="year"', function () {
-		const sel = 'input[type="number"]'
-		let $el
+		let $els
 
 		beforeEach(function () {
-			$el = shallowEl({interval: INTERVALS.YEAR})
+			const $el = shallowEl({interval: INTERVALS.YEAR})
+			$els = $el.find('DelayedInput')
 		})
 
 		it('renders inputs with `type="number"`', function () {
-			const $els = $el.find(sel)
+			const $filtered = $els.findWhere($e => $e.prop('type') === 'number')
 			expect($els).to.have.length(2)
 		})
 
 		it('parses value to YYYY', function () {
-			const $els = $el.find(sel)
 			$els.forEach($$el => {
 				expect($$el.prop('value')).to.match(/^\d{4}$/)
 			})
@@ -149,13 +144,13 @@ describe('<RangeSliderDate />', function () {
 			const minTs = Date.UTC.apply(Date, split)
 			const $el = shallowEl({interval: INTERVALS.DAY})
 
-			const $min = $el.find('input[type="date"]').filterWhere(el => (
+			const $min = $el.find('DelayedInput').filterWhere(el => (
 				el.key() === 'input-min'
 			))
 
 			expect($min).to.have.length(1)
 
-			$min.simulate('change', {target: {value: minValue}})
+			$min.simulate('change', minValue)
 
 			const minState = $el.state('min')
 			expect(minState).to.equal(minTs)
@@ -171,13 +166,13 @@ describe('<RangeSliderDate />', function () {
 			const maxTs = Date.UTC.apply(Date, split)
 			const $el = shallowEl({interval: INTERVALS.DAY})
 
-			const $max = $el.find('input[type="date"]').filterWhere(el => (
+			const $max = $el.find('DelayedInput').filterWhere(el => (
 				el.key() === 'input-max'
 			))
 
 			expect($max).to.have.length(1)
 
-			$max.simulate('change', {target: {value: maxValue}})
+			$max.simulate('change', maxValue)
 
 			const maxState = $el.state('max')
 			expect(maxState).to.equal(maxTs)
