@@ -3,14 +3,16 @@ export default {
 		firstResultRow: {
 			selector: '.results-table tbody tr:first-child'
 		},
-		dateOriginal: {
-			selector: 'input[type="date"]'
-		},
-		facetPanel: {
-			selector: '.facet-panel[data-facet^="date"] header'
-		},
+
 		thumbnail: {
 			selector: '.thumbnail-preview'
-		}
+		},
+
+		dateOriginal: {
+			selector: '.facet-panel[data-facet="date_original_dtsi"]'
+		},
+		dateOriginalHeader: {
+			selector: '.facet-panel[data-facet="date_original_dtsi"] header'
+		},
 	}
 }

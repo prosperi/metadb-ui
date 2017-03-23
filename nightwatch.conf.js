@@ -8,6 +8,7 @@ require('nightwatch-cucumber')({
 
 module.exports = {
 	output_folder: './test/e2e/reports',
+	page_objects_path: './test/e2e/pages',
 	custom_assertions_path: '',
 	live_output: false,
 	disable_colors: false,

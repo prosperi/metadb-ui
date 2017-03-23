@@ -17,7 +17,10 @@ defineSupportCode(({Given, Then, When}) => {
 	})
 
 	When('the user searches using the submission year {arg1:int}', (arg1) => {
+	  const results = client.page.resultsPage()
 
+		results.assert.visible('@dateOriginal')
+		results.click('@dateOriginalHeader')
 	})
 
 	Then('the user should find at least {arg1:int} result', (arg1) => {
