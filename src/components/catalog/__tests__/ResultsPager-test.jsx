@@ -84,12 +84,12 @@ describe('<ResultsPager />', function () {
 	describe('props.message', function () {
 		it('allows a string template to be passed', function () {
 			const { limit_value, offset_value, total_count } = defaultProps
-			const first = commafy(offset_value + 1)
-			const last = commafy(offset_value + limit_value)
+			const start = commafy(offset_value + 1)
+			const end = commafy(offset_value + limit_value)
 			const total = commafy(total_count)
 
-			const message = 'first: %s, last: %s, total: %s'
-			const res = `first: ${first}, last: ${last}, total: ${total}`
+			const message = 'start: %(start)s, end: %(end)s, total: %(total)s'
+			const res = `start: ${start}, end: ${end}, total: ${total}`
 
 			const $el = shallowEl({message})
 
@@ -98,13 +98,17 @@ describe('<ResultsPager />', function () {
 
 		it('allows a function to generate a message', function () {
 			const { limit_value, offset_value, total_count } = defaultProps
-			const message = function (first, last, total) {
-				expect(arguments).to.have.length(3)
-				return `start: ${first}, end: ${last}, total: ${total}`
+			const messageGenerator = ({start, end, total}) => {
+				return `start: ${start}, end: ${end}, total: ${total}`
 			}
 
-			const res = message(offset_value + 1, offset_value + limit_value, total_count)
-			const $el = shallowEl({message})
+			const res = messageGenerator({
+				start: offset_value + 1,
+				end: offset_value + limit_value,
+				total: total_count
+			})
+
+			const $el = shallowEl({message: messageGenerator})
 
 			expect($el.find('span').html()).to.contain(res)
 		})
