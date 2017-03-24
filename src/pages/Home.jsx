@@ -1,23 +1,40 @@
 import React from 'react'
-
 import RecentItemsList from '../components/recent-items/RecentItemsList.jsx'
+import { search } from '../store/search/endpoints'
 
 const Home = React.createClass({
+	getInitialState: function () {
+		return {
+			items: [],
+			loadingNewItems: false,
+		}
+	},
+
+	componentWillMount: function () {
+		this.setState({loadingNewItems: true})
+
+		search('per_page=5')
+			.then(res => res.response.docs)
+			.then(items => {
+				this.setState({
+					loadingNewItems: false,
+					items,
+				})
+			})
+	},
 
 	recentItems: function () {
-		const props = {
-			items: [
-				{id: '2227mp65f', title: ['title4', 'another title']},
-				{id: 'n009w228g', title: ['[ip0001] Chosen Customs, Set 3']},
-				{id: 'b2773v68h', title: ['test silk road']},
-				{id: '3f462540k', title: ['[Alpha Chi Rho Fraternity House]']},
-				{id: '7d278t00k', title: ['MR. LE MIS. DE LA LAFAYETTE']},
-			],
-			buildUrl: (item) => `/works/${item.id}`,
-			title: 'Recent items'
+		if (this.state.loadingNewItems) {
+			return <div><h1>loading new items...</h1></div>
 		}
-		
-		return <RecentItemsList {...props}/>
+
+		return (
+			<RecentItemsList
+				buildUrl={item => `/works/${item.id}`}
+				items={this.state.items}
+				title="Recently added items"
+			/>
+		)
 	},
 
 	render: function () {
