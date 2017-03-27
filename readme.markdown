@@ -2,8 +2,8 @@
 
 [![Build Status](https://travis-ci.com/LafayetteCollegeLibraries/metadb-ui.svg?token=RMxCrEacXTux6rxyXvxo&branch=master)](https://travis-ci.com/LafayetteCollegeLibraries/metadb-ui)
 
-metadb-ui is a [React][1]/[Redux][2] front-end to LafayettePreserve, a
-[Sufia][3] implementation for Lafayette College Libraries. It is currently
+metadb-ui is a [React][1]/[Redux][2] front-end to [LafayettePreserve][3], a
+[Sufia][4] implementation for Lafayette College Libraries. It is currently
 in active development and **very much a work in progress**. 
 
 
@@ -17,7 +17,7 @@ npm install
 ```
 
 metadb-ui currently requires a Sufia instance that returns JSON instead of
-rendering views. We've written a [mock-server][4] for testing that can be
+rendering views. We've written a [mock-server][5] for testing that can be
 used as a back-end in a pinch. It's included in the devDependencies but
 can be installed with:
 
@@ -74,5 +74,6 @@ GPL-3.0
 
 [1]: https://facebook.github.io/react
 [2]: http://redux.js.org
-[3]: http://sufia.io
-[4]: https://github.com/LafayetteCollegeLibraries/lafayette-preserve-mock
+[3]: https://github.com/LafayetteCollegeLibraries/lafayette-preserve
+[4]: http://sufia.io
+[5]: https://github.com/LafayetteCollegeLibraries/lafayette-preserve-mock
