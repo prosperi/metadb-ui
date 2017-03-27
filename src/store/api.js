@@ -1,6 +1,3 @@
-require('es6-promise').polyfill()
-
-import 'isomorphic-fetch'
 import assign from 'object-assign'
 import isAbsoluteUrl from 'is-absolute-url'
 
