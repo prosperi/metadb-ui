@@ -21,6 +21,19 @@ defineSupportCode(({Given, Then, When}) => {
 
 		results.assert.visible('@dateOriginal')
 		results.click('@dateOriginalHeader')
+		results.assert.visible('@dateOriginalInput')
+
+		results.setValue('@dateOriginalInput', '01/01/' + arg1)
+		// client.execute(() => {
+		// 	document.querySelectorAll(results.dateOriginalInput.Element.selector)[0].value = arg1 + '-01-01'
+		// 	document.querySelectorAll(results.dateOriginalInput.Element.selector)[1].value = arg1 + '-12-31'
+		// })
+
+		client.saveScreenshot('./test/e2e/reports/search_by_date_01.png')
+
+		// results.expect.element('@dateOriginalInput').to.have.attribute('value').which.equals(arg1 + '-01-01')
+		return results.click('@dateOriginalButton')
+
 	})
 
 	Then('the user should find at least {arg1:int} result', (arg1) => {
