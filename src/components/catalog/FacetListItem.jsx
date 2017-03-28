@@ -13,7 +13,7 @@ const FacetListItem = React.createClass({
     }).isRequired,
 
     onClick: T.func.isRequired,
-    
+
     hideCount: T.bool,
   },
 
@@ -30,7 +30,14 @@ const FacetListItem = React.createClass({
     if (this.props.hideCount || (typeof hits !== 'number'))
       return
 
-    return <span className="facet-count" style={style}>{hits}</span>
+    return (
+    	<span
+    		className="facet-count FacetListItem-count"
+    		style={style}
+    		>
+    		{hits}
+    	</span>
+  	)
   },
 
   render: function () {
@@ -47,9 +54,9 @@ const FacetListItem = React.createClass({
     }
 
     return (
-      <div style={styles.item}>
+      <div className="FacetListItem" style={styles.item}>
         <span
-          className="facet-label"
+          className="facet-label FacetListItem-label"
           onClick={this.props.onClick.bind(null, this.props.data)}
           style={styles.label}
         >

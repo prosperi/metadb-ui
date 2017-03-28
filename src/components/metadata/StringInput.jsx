@@ -46,6 +46,12 @@ const StringInput = React.createClass({
 			}
 		)
 
+		if (props.className) {
+			props.className = `StringInput ${props.className}`
+		} else {
+			props.className = 'StringInput'
+		}
+
 		// stick w/ defaultValue (which uses this.props.value)
 		delete props.value
 

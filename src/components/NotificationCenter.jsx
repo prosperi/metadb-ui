@@ -3,9 +3,9 @@ import { NotificationStack } from 'react-notification'
 import assign from 'object-assign'
 
 import {
-	NOTIFICATION_ERR as ERROR,
-	NOTIFICAITON_SUCCESS as SUCCESS,
-} from '../constants'
+	ERROR,
+	OK as SUCCESS,
+} from '../store/notifications/utils'
 
 const T = React.PropTypes
 

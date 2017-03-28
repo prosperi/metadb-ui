@@ -1,9 +1,0 @@
-export const FETCHING_WORK = 'FETCHING_WORK'
-export const FETCHING_WORK_ERR = 'FETCHING_WORK_ERR'
-
-export const RECEIVE_WORK = 'RECEIVE_WORK'
-
-export const SAVED_WORK = 'SAVED_WORK'
-export const SAVING_WORK = 'SAVING_WORK'
-
-export const WORK_NOT_FOUND_ERR = 'WORK_NOT_FOUND_ERR'

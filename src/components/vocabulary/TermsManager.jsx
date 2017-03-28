@@ -57,7 +57,7 @@ const TermsManager = React.createClass({
 	renderTermTagList: function () {
 		if (!this.props.terms.length) {
 			// render a 'No terms!' div instead
-			return 
+			return
 		}
 
 		return (
@@ -108,11 +108,11 @@ const TermsManager = React.createClass({
 		}
 
 		return (
-			<div className="term-editor">
-				<header>
+			<div className="term-editor TermsManager">
+				<header className="TermsManager-header">
 					Viewing terms for <strong>{this.props.label}</strong>
 
-					<button 
+					<button
 						style={styles.editVocabButton}
 						onClick={this.props.onEditVocabulary}
 						>
@@ -120,13 +120,14 @@ const TermsManager = React.createClass({
 					</button>
 				</header>
 
-				<section className="term-tag-list" style={styles.termsList}>
+				<section className="term-tag-list TermsManager-tag-list" style={styles.termsList}>
 					{this.renderTermTagList()}
 				</section>
 
-				<footer>
+				<footer className="TermsManager-footer">
 					<span>
 						<input
+							className="TermsManager-add-term"
 							onKeyDown={this.handleInputKeyDown}
 							placeholder="Add new term"
 							style={styles.textInput}
@@ -135,7 +136,8 @@ const TermsManager = React.createClass({
 					</span>
 
 					<span style={styles.bulkTermsContainer}>
-						<button
+						<Button
+							className="TermsManager-add-submit"
 							children="Bulk add/edit terms"
 							onClick={this.props.onBulkTermsOpen}
 							style={styles.bulkTermsButton}

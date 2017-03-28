@@ -62,9 +62,16 @@ const SearchFacetSidebar = React.createClass({
 		)
 
 		return (
-			<div style={styles.container}>
-				<form onSubmit={this.handleSearchSubmit}>
+			<div
+				className="SearchFacetSidebar-header"
+				style={styles.container}
+				>
+				<form
+					className="SearchFacetSidebar-search"
+					onSubmit={this.handleSearchSubmit}
+					>
 					<input
+						className="SearchFacetSidebar-search-query"
 						value={this.state.query}
 						onChange={e => this.setState({query: e.target.value})}
 						name="query"
@@ -79,6 +86,7 @@ const SearchFacetSidebar = React.createClass({
 
 	render: function () {
 		const containerProps = {
+			className: 'SearchFacetSidebar',
 			style: {
 				// TODO: maybe get rid of this border
 				borderRight: '1px solid #ccc',

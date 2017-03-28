@@ -1,4 +1,6 @@
 /* eslint-disable no-unused-vars */
+require('es6-promise').polyfill()
+import 'isomorphic-fetch'
 
 // yr main app
 import React from 'react'

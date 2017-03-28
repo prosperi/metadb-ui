@@ -1,6 +1,5 @@
 import React from 'react'
 import Link from 'react-router/lib/Link'
-import NOT_FOUND_MSG from '../messages'
 
 class WorkNotFound extends React.Component {
 	render () {

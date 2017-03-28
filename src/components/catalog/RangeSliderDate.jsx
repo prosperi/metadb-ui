@@ -1,6 +1,8 @@
 import React from 'react'
-import Button from '../Button.jsx'
 import Slider from 'rc-slider'
+
+import DelayedInput from '../metadata/DelayedInput.jsx'
+import Button from '../Button.jsx'
 
 import formatDateValue from './common/format-date-value'
 import roundDateValue from './common/round-date-to-interval'
@@ -105,9 +107,7 @@ class RangeSliderDate extends React.Component {
 		this.props.onApplyRange(value)
 	}
 
-	handleInputChange (which, event) {
-		const target = (event || {}).target || {}
-		const value = target.value
+	handleInputChange (which, value) {
 		const parsed = parseInputValue(value)
 
 		const update = {}
@@ -120,22 +120,21 @@ class RangeSliderDate extends React.Component {
 	renderInput (which) {
 		const tsValue = this.state[which]
 		const value = tsValue ? formatDateValue(this.props.interval, tsValue) : ''
-		const type = getInputType(this.props.interval)
 
 		const props = {
-			className: 'range-slider-date--input',
+			className: 'range-slider-date--input RangeSliderDate-input',
 			key: `input-${which}`,
 			min: this._formatted.min,
 			max: this._formatted.max,
-			onChange: this.handleInputChange.bind(this, which),
-			type,
+			onChange: ev => this.handleInputChange(which, ev),
+			type: getInputType(this.props.interval),
 			value,
 		}
 
 		return (
-			<label className="range-slider-date--label">
+			<label className="range-slider-date--label RangeSliderDate-label">
 				{which}
-				<input {...props} />
+				<DelayedInput {...props} />
 			</label>
 		)
 	}
@@ -186,8 +185,8 @@ class RangeSliderDate extends React.Component {
 		}
 
 		return (
-			<div className="range-slider-date">
-				<div className="range-slider-date--inputs-container">
+			<div className="range-slider-date RangeSliderDate">
+				<div className="range-slider-date--inputs-container RangeSliderDate-input-container">
 					{this.renderInput('min')}
 					{this.renderInput('max')}
 					<Button {...applyRangeProps}>

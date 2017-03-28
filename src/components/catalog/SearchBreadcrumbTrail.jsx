@@ -42,7 +42,7 @@ const SearchBreadcrumbTrail = React.createClass({
 		const bc = this.props.breadcrumbs
 
 		return (
-			<div>
+			<div className="SearchBreadcrumbTail">
 				{this.renderQuery()}
 
 				{!!bc.length && bc.map(this.renderGroupBreadcrumbs)}

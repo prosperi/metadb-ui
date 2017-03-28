@@ -86,6 +86,7 @@ const FacetRangeLimitDate = React.createClass({
 
 	render: function () {
 		const containerProps = {
+			className: 'FacetRangeLimitDate',
 			style: {
 				padding: '10px',
 			}

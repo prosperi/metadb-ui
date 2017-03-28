@@ -22,7 +22,7 @@ const SearchBreadcrumb = React.createClass({
 	maybeRenderGroup: function (style) {
 		if (this.props.group)
 			return (
-				<span style={style}>
+				<span className="SearchBreadcrumb-group" style={style}>
 					{this.props.group + ' > '}
 				</span>
 			)
@@ -80,15 +80,19 @@ const SearchBreadcrumb = React.createClass({
 		}
 
 		return (
-			<div style={styles.container}>
+			<div
+				className="SearchBreadcrumb"
+				style={styles.container}
+				>
 				{this.maybeRenderGroup(styles.group)}
 
-				<span style={styles.value}>
+				<span className="SearchBreadcrumb-value" style={styles.value}>
 					{this.props.value}
 				</span>
 
 				<button
 					children="X"
+					className="SearchBreadcrumb-remove"
 					onClick={this.handleButtonClick}
 					onMouseOut={() => this.setState({buttonHover: false})}
 					onMouseOver={() => this.setState({buttonHover: true})}

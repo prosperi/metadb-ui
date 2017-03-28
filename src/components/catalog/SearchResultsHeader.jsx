@@ -89,22 +89,33 @@ const SearchResultsHeader = React.createClass({
 		}
 
 		return (
-			<div>
-				<div key="search-results-header-top">
-					<div style={styles.buttonContainer}>
-						<Button onClick={this.toggleToolDropdown}>
+			<div className="SearchResultsHeader">
+				<div
+					className="SearchResultsHeader-top"
+					key="search-results-header-top"
+					>
+					<div
+						className="SearchResultsHeader-button-container"
+						style={styles.buttonContainer}
+						>
+						<Button
+							className="SearchResultsHeader-tool-toggle"
+							onClick={this.props.onOpenToolModal}
+							>
 							Choose metadata tool
 						</Button>
 
 						{this.maybeRenderToolDropdown()}
 					</div>
 
-					<div style={styles.toggleContainer}>
+					<div
+						className="SearchResultsHeader-view-toggle"
+						style={styles.toggleContainer}>
 						{this.viewToggle()}
 					</div>
 				</div>
 
-				<hr style={styles.divider} />
+				<hr className="SearchResultsHeader-divider" style={styles.divider} />
 
 				<SearchResultsPagerHeader
 					data={this.props.pageData}

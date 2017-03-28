@@ -108,7 +108,7 @@ const FacetGroup = React.createClass({
 		}
 
 		return (
-			<div style={wrapperStyles}>
+			<div className="FacetGroup" style={wrapperStyles}>
 				{this.renderChildren()}
 			</div>
 		)

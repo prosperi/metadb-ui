@@ -46,6 +46,12 @@ const TextInput = React.createClass({
 		// are being handled via blur/focus
 		delete props.value
 
+		if (props.className) {
+			props.className = `TextInput ${props.className}`
+		} else {
+			props.className = 'TextInput'
+		}
+
 		return React.createElement('textarea', props)
 	}
 })

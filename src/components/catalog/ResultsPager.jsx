@@ -46,7 +46,7 @@ const ResultsPager = React.createClass({
 		// (default: '%s &ndash; %s of <strong>%s</strong>')
 		message: T.oneOfType([T.string, T.func]),
 
-		// text used for next/prev buttons 
+		// text used for next/prev buttons
 
 		// (default: 'Next »')
 		nextText: T.string,
@@ -61,7 +61,7 @@ const ResultsPager = React.createClass({
 		return {
 			next_page: null,
 			prev_page: null,
-			message: '%s &ndash; %s of <strong>%s</strong>',
+			message: '%(start)s &ndash; %(end)s of <strong>%(total)s</strong>',
 			nextText: 'Next »',
 			previousText: '« Previous',
 		}
@@ -88,28 +88,37 @@ const ResultsPager = React.createClass({
 	pagerText: function () {
 		const total = this.props.total_count
 		const offset = this.props.offset_value
-		const lower = offset + 1
+		const start = offset + 1
 
 		// prevent the upper-bounds from exceeding the total value
-		const upper = Math.min(offset + this.props.limit_value, total)
+		const end = Math.min(offset + this.props.limit_value, total)
+		const data = {
+			start,
+			end,
+			total,
+		}
+
 		let msg
 
 		if (typeof this.props.message === 'function') {
-			msg = this.props.message.call(null, lower, upper, total)
+			msg = this.props.message.call(null, data)
 		} else {
-			msg = sprintf(this.props.message,
-				commafy(lower),
-				commafy(upper),
-				commafy(total)
-			)
+			msg = sprintf(this.props.message, {
+				start: commafy(start),
+				end: commafy(end),
+				total: commafy(total),
+			})
 		}
 
 		// the template currently uses HTML (for a <strong> tag), so we'll need
 		// to `dangerouslySetInnerHTML`
-		return React.createElement('span', {
-			key: 'pager-message',
-			dangerouslySetInnerHTML: {__html: msg}
-		})
+		return (
+			<span
+				className="ResultsPager-message"
+				dangerouslySetInnerHTML={{__html: msg}}
+				key="pager-message"
+			/>
+		)
 	},
 
 	positionButtonProps: function (which, positionCheck, onClick, style) {
@@ -118,6 +127,7 @@ const ResultsPager = React.createClass({
 
 		const props = {
 			children: text,
+			className: `ResultsPager-direction ResultsPager-${which}`,
 			key: 'dir-' + which,
 			ref: e => this[which + 'Button'] = e,
 			style: assign({}, {
@@ -172,7 +182,7 @@ const ResultsPager = React.createClass({
 		)
 
 		return (
-			<div style={style}>
+			<div className="ResultsPager" style={style}>
 				<button {...prevProps} />
 				{this.pagerText()}
 				<button {...nextProps} />

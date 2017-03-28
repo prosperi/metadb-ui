@@ -55,7 +55,7 @@ const Tag = React.createClass({
 	},
 
 	render: function () {
-		const classname = [].concat('tag-container', this.props.className).join(' ')
+		const classname = [].concat('tag-container', 'Tag', this.props.className).join(' ')
 		return (
 			<div className={classname}>
 				{this.renderTag()}

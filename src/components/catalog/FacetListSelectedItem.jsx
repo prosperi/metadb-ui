@@ -23,6 +23,15 @@ const FacetListSelectedItem = React.createClass({
 		if (this.props.hideCount || (typeof hits !== 'number'))
 			return
 
+		return (
+			<span
+				className="FacetListSelectedItem-hits"
+				{...props}
+			>
+				{hits}
+			</span>
+		)
+
 		return React.createElement('span', props, hits)
 	},
 
@@ -41,10 +50,14 @@ const FacetListSelectedItem = React.createClass({
 		}
 
 		return (
-			<div style={styles.item}>
+			<div
+				className="FacetListSelectedItem"
+				style={styles.item}
+				>
 				{this.props.data.label}
 				<Button
 					children="x"
+					className="FacetListSelectedItem-remove"
 					onClick={this.props.onRemove.bind(null, this.props.data)}
 					type="text"
 					/>

@@ -57,6 +57,7 @@
     "react-sticky": "^5.0.5",
     "react-taco-table": "^0.1.6",
     "redux": "^3.5.2",
+    "redux-actions": "^2.0.1",
     "redux-thunk": "^2.1.0",
     "sprintf-js": "^1.0.3",
     "webpack": "^1.13.1",
