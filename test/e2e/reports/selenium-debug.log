@@ -1,54 +1,72 @@
-11:29:49.438 INFO - Selenium build info: version: '3.1.0', revision: '86a5d70'
-11:29:49.443 INFO - Launching a standalone Selenium Server
-2017-03-28 11:29:49.590:INFO::main: Logging initialized @1855ms
-11:29:49.958 INFO - Driver provider org.openqa.selenium.ie.InternetExplorerDriver registration is skipped:
+13:31:08.689 INFO - Selenium build info: version: '3.1.0', revision: '86a5d70'
+13:31:08.693 INFO - Launching a standalone Selenium Server
+2017-03-28 13:31:08.841:INFO::main: Logging initialized @1288ms
+13:31:09.204 INFO - Driver provider org.openqa.selenium.ie.InternetExplorerDriver registration is skipped:
  registration capabilities Capabilities [{ensureCleanSession=true, browserName=internet explorer, version=, platform=WINDOWS}] does not match the current platform MAC
-11:29:49.959 INFO - Driver provider org.openqa.selenium.edge.EdgeDriver registration is skipped:
+13:31:09.205 INFO - Driver provider org.openqa.selenium.edge.EdgeDriver registration is skipped:
  registration capabilities Capabilities [{browserName=MicrosoftEdge, version=, platform=WINDOWS}] does not match the current platform MAC
-11:29:49.959 INFO - Driver class not found: com.opera.core.systems.OperaDriver
-11:29:49.960 INFO - Driver provider com.opera.core.systems.OperaDriver registration is skipped:
+13:31:09.205 INFO - Driver class not found: com.opera.core.systems.OperaDriver
+13:31:09.206 INFO - Driver provider com.opera.core.systems.OperaDriver registration is skipped:
 Unable to create new instances on this machine.
-11:29:49.960 INFO - Driver class not found: com.opera.core.systems.OperaDriver
-11:29:49.960 INFO - Driver provider com.opera.core.systems.OperaDriver is not registered
-2017-03-28 11:29:50.195:INFO:osjs.Server:main: jetty-9.2.15.v20160210
-2017-03-28 11:29:50.302:INFO:osjsh.ContextHandler:main: Started o.s.j.s.ServletContextHandler@51081592{/,null,AVAILABLE}
-2017-03-28 11:29:50.431:INFO:osjs.ServerConnector:main: Started ServerConnector@cc285f4{HTTP/1.1}{0.0.0.0:4444}
-2017-03-28 11:29:50.432:INFO:osjs.Server:main: Started @2698ms
-11:29:50.432 INFO - Selenium Server is up and running
-11:30:10.168 INFO - SessionCleaner initialized with insideBrowserTimeout 0 and clientGoneTimeout 1800000 polling every 180000
-11:30:10.325 INFO - Executing: [new session: Capabilities [{acceptSslCerts=true, browserName=chrome, javascriptEnabled=true, platform=ANY}]])
-11:30:10.432 INFO - Creating a new session for Capabilities [{acceptSslCerts=true, browserName=chrome, javascriptEnabled=true, platform=ANY}]
-Starting ChromeDriver 2.27.440174 (e97a722caafc2d3a8b807ee115bfb307f7d2cfd9) on port 19253
+13:31:09.206 INFO - Driver class not found: com.opera.core.systems.OperaDriver
+13:31:09.206 INFO - Driver provider com.opera.core.systems.OperaDriver is not registered
+2017-03-28 13:31:09.493:INFO:osjs.Server:main: jetty-9.2.15.v20160210
+2017-03-28 13:31:09.587:INFO:osjsh.ContextHandler:main: Started o.s.j.s.ServletContextHandler@51081592{/,null,AVAILABLE}
+2017-03-28 13:31:09.723:INFO:osjs.ServerConnector:main: Started ServerConnector@cc285f4{HTTP/1.1}{0.0.0.0:4444}
+2017-03-28 13:31:09.724:INFO:osjs.Server:main: Started @2171ms
+13:31:09.724 INFO - Selenium Server is up and running
+13:31:30.514 INFO - SessionCleaner initialized with insideBrowserTimeout 0 and clientGoneTimeout 1800000 polling every 180000
+13:31:30.667 INFO - Executing: [new session: Capabilities [{acceptSslCerts=true, browserName=chrome, javascriptEnabled=true, platform=ANY}]])
+13:31:30.789 INFO - Creating a new session for Capabilities [{acceptSslCerts=true, browserName=chrome, javascriptEnabled=true, platform=ANY}]
+Starting ChromeDriver 2.27.440174 (e97a722caafc2d3a8b807ee115bfb307f7d2cfd9) on port 13561
 Only local connections are allowed.
-11:30:13.965 INFO - Detected dialect: OSS
-11:30:14.009 INFO - Done: [new session: Capabilities [{acceptSslCerts=true, browserName=chrome, javascriptEnabled=true, platform=ANY}]]
-11:30:14.071 INFO - Executing: [get: http://localhost:8080/search?q=])
-11:30:15.460 INFO - Done: [get: http://localhost:8080/search?q=]
-11:30:15.630 INFO - Executing: [find elements: By.cssSelector: body])
-11:30:15.871 INFO - Done: [find elements: By.cssSelector: body]
-11:30:15.881 INFO - Executing: [is displayed: 0 [[ChromeDriver: chrome on MAC (5311f1e859f539fab26a92875e0243a2)] -> css selector: body]])
-11:30:15.916 INFO - Done: [is displayed: 0 [[ChromeDriver: chrome on MAC (5311f1e859f539fab26a92875e0243a2)] -> css selector: body]]
-11:30:16.035 INFO - Executing: [find element: By.cssSelector: .facet-panel[data-facet="date_original_dtsi"]])
-11:30:16.081 INFO - Done: [find element: By.cssSelector: .facet-panel[data-facet="date_original_dtsi"]]
-11:30:16.088 INFO - Executing: [is displayed: 1 [[ChromeDriver: chrome on MAC (5311f1e859f539fab26a92875e0243a2)] -> css selector: .facet-panel[data-facet="date_original_dtsi"]]])
-11:30:16.135 INFO - Done: [is displayed: 1 [[ChromeDriver: chrome on MAC (5311f1e859f539fab26a92875e0243a2)] -> css selector: .facet-panel[data-facet="date_original_dtsi"]]]
-11:30:16.144 INFO - Executing: [find element: By.cssSelector: .facet-panel[data-facet="date_original_dtsi"] header])
-11:30:16.169 INFO - Done: [find element: By.cssSelector: .facet-panel[data-facet="date_original_dtsi"] header]
-11:30:16.174 INFO - Executing: [click: 2 [[ChromeDriver: chrome on MAC (5311f1e859f539fab26a92875e0243a2)] -> css selector: .facet-panel[data-facet="date_original_dtsi"] header]])
-11:30:16.319 INFO - Done: [click: 2 [[ChromeDriver: chrome on MAC (5311f1e859f539fab26a92875e0243a2)] -> css selector: .facet-panel[data-facet="date_original_dtsi"] header]]
-11:30:16.339 INFO - Executing: [find element: By.cssSelector: .facet-panel[data-facet="date_original_dtsi"] input])
-11:30:16.388 INFO - Done: [find element: By.cssSelector: .facet-panel[data-facet="date_original_dtsi"] input]
-11:30:16.402 INFO - Executing: [is displayed: 3 [[ChromeDriver: chrome on MAC (5311f1e859f539fab26a92875e0243a2)] -> css selector: .facet-panel[data-facet="date_original_dtsi"] input]])
-11:30:16.429 INFO - Done: [is displayed: 3 [[ChromeDriver: chrome on MAC (5311f1e859f539fab26a92875e0243a2)] -> css selector: .facet-panel[data-facet="date_original_dtsi"] input]]
-11:30:16.435 INFO - Executing: [find element: By.cssSelector: .facet-panel[data-facet="date_original_dtsi"] input])
-11:30:16.449 INFO - Done: [find element: By.cssSelector: .facet-panel[data-facet="date_original_dtsi"] input]
-11:30:16.462 INFO - Executing: [send keys: 3 [[ChromeDriver: chrome on MAC (5311f1e859f539fab26a92875e0243a2)] -> css selector: .facet-panel[data-facet="date_original_dtsi"] input], [0, 1, /, 0, 1, /, 2, 0, 1, 6]])
-11:30:16.639 INFO - Done: [send keys: 3 [[ChromeDriver: chrome on MAC (5311f1e859f539fab26a92875e0243a2)] -> css selector: .facet-panel[data-facet="date_original_dtsi"] input], [0, 1, /, 0, 1, /, 2, 0, 1, 6]]
-11:30:16.652 INFO - Executing: [take screenshot])
-11:30:17.433 INFO - Done: [take screenshot]
-11:30:17.635 INFO - Executing: [find element: By.cssSelector: .facet-panel[data-facet="date_original_dtsi"] button])
-11:30:17.660 INFO - Done: [find element: By.cssSelector: .facet-panel[data-facet="date_original_dtsi"] button]
-11:30:17.664 INFO - Executing: [click: 4 [[ChromeDriver: chrome on MAC (5311f1e859f539fab26a92875e0243a2)] -> css selector: .facet-panel[data-facet="date_original_dtsi"] button]])
-11:30:17.777 INFO - Done: [click: 4 [[ChromeDriver: chrome on MAC (5311f1e859f539fab26a92875e0243a2)] -> css selector: .facet-panel[data-facet="date_original_dtsi"] button]]
-11:30:17.834 INFO - Executing: [delete session: 2baec462-6dca-4874-874a-1e049a87efa9])
-11:30:17.988 INFO - Done: [delete session: 2baec462-6dca-4874-874a-1e049a87efa9]
+13:31:33.989 INFO - Detected dialect: OSS
+13:31:34.025 INFO - Done: [new session: Capabilities [{acceptSslCerts=true, browserName=chrome, javascriptEnabled=true, platform=ANY}]]
+13:31:34.051 INFO - Executing: [get: http://localhost:8080/search?q=])
+13:31:35.179 INFO - Done: [get: http://localhost:8080/search?q=]
+13:31:35.288 INFO - Executing: [find elements: By.cssSelector: body])
+13:31:35.673 INFO - Done: [find elements: By.cssSelector: body]
+13:31:35.680 INFO - Executing: [is displayed: 0 [[ChromeDriver: chrome on MAC (f045054d1ad83db35964950d6eca0d6b)] -> css selector: body]])
+13:31:35.736 INFO - Done: [is displayed: 0 [[ChromeDriver: chrome on MAC (f045054d1ad83db35964950d6eca0d6b)] -> css selector: body]]
+13:31:35.800 INFO - Executing: [find element: By.cssSelector: .facet-panel[data-facet="date_original_dtsi"]])
+13:31:35.872 INFO - Done: [find element: By.cssSelector: .facet-panel[data-facet="date_original_dtsi"]]
+13:31:35.878 INFO - Executing: [is displayed: 1 [[ChromeDriver: chrome on MAC (f045054d1ad83db35964950d6eca0d6b)] -> css selector: .facet-panel[data-facet="date_original_dtsi"]]])
+13:31:35.907 INFO - Done: [is displayed: 1 [[ChromeDriver: chrome on MAC (f045054d1ad83db35964950d6eca0d6b)] -> css selector: .facet-panel[data-facet="date_original_dtsi"]]]
+13:31:35.921 INFO - Executing: [find element: By.cssSelector: .facet-panel[data-facet="date_original_dtsi"] header])
+13:31:35.949 INFO - Done: [find element: By.cssSelector: .facet-panel[data-facet="date_original_dtsi"] header]
+13:31:35.955 INFO - Executing: [click: 2 [[ChromeDriver: chrome on MAC (f045054d1ad83db35964950d6eca0d6b)] -> css selector: .facet-panel[data-facet="date_original_dtsi"] header]])
+13:31:36.062 INFO - Done: [click: 2 [[ChromeDriver: chrome on MAC (f045054d1ad83db35964950d6eca0d6b)] -> css selector: .facet-panel[data-facet="date_original_dtsi"] header]]
+13:31:36.072 INFO - Executing: [find element: By.cssSelector: .facet-panel[data-facet="date_original_dtsi"] input])
+13:31:36.101 INFO - Done: [find element: By.cssSelector: .facet-panel[data-facet="date_original_dtsi"] input]
+13:31:36.109 INFO - Executing: [is displayed: 3 [[ChromeDriver: chrome on MAC (f045054d1ad83db35964950d6eca0d6b)] -> css selector: .facet-panel[data-facet="date_original_dtsi"] input]])
+13:31:36.154 INFO - Done: [is displayed: 3 [[ChromeDriver: chrome on MAC (f045054d1ad83db35964950d6eca0d6b)] -> css selector: .facet-panel[data-facet="date_original_dtsi"] input]]
+13:31:36.161 INFO - Executing: [find element: By.cssSelector: .facet-panel[data-facet="date_original_dtsi"] input])
+13:31:36.183 INFO - Done: [find element: By.cssSelector: .facet-panel[data-facet="date_original_dtsi"] input]
+13:31:36.193 INFO - Executing: [send keys: 3 [[ChromeDriver: chrome on MAC (f045054d1ad83db35964950d6eca0d6b)] -> css selector: .facet-panel[data-facet="date_original_dtsi"] input], [0, 1, /, 0, 1, /, 2, 0, 1, 6]])
+13:31:36.400 INFO - Done: [send keys: 3 [[ChromeDriver: chrome on MAC (f045054d1ad83db35964950d6eca0d6b)] -> css selector: .facet-panel[data-facet="date_original_dtsi"] input], [0, 1, /, 0, 1, /, 2, 0, 1, 6]]
+13:31:36.410 INFO - Executing: [take screenshot])
+13:31:36.790 INFO - Done: [take screenshot]
+13:31:36.813 INFO - Executing: [find element: By.cssSelector: .facet-panel[data-facet="date_original_dtsi"] button])
+13:31:36.849 INFO - Done: [find element: By.cssSelector: .facet-panel[data-facet="date_original_dtsi"] button]
+13:31:36.853 INFO - Executing: [click: 4 [[ChromeDriver: chrome on MAC (f045054d1ad83db35964950d6eca0d6b)] -> css selector: .facet-panel[data-facet="date_original_dtsi"] button]])
+13:31:36.973 INFO - Done: [click: 4 [[ChromeDriver: chrome on MAC (f045054d1ad83db35964950d6eca0d6b)] -> css selector: .facet-panel[data-facet="date_original_dtsi"] button]]
+13:31:37.056 INFO - Executing: [get: http://localhost:8080/search?q=])
+13:31:37.626 INFO - Done: [get: http://localhost:8080/search?q=]
+13:31:37.646 INFO - Executing: [find elements: By.cssSelector: body])
+13:31:37.768 INFO - Done: [find elements: By.cssSelector: body]
+13:31:37.774 INFO - Executing: [is displayed: 5 [[ChromeDriver: chrome on MAC (f045054d1ad83db35964950d6eca0d6b)] -> css selector: body]])
+13:31:37.815 INFO - Done: [is displayed: 5 [[ChromeDriver: chrome on MAC (f045054d1ad83db35964950d6eca0d6b)] -> css selector: body]]
+13:31:37.841 INFO - Executing: [find element: By.cssSelector: input[name="query"]])
+13:31:37.872 INFO - Done: [find element: By.cssSelector: input[name="query"]]
+13:31:37.878 INFO - Executing: [is displayed: 6 [[ChromeDriver: chrome on MAC (f045054d1ad83db35964950d6eca0d6b)] -> css selector: input[name="query"]]])
+13:31:37.905 INFO - Done: [is displayed: 6 [[ChromeDriver: chrome on MAC (f045054d1ad83db35964950d6eca0d6b)] -> css selector: input[name="query"]]]
+13:31:37.910 INFO - Executing: [find element: By.cssSelector: input[name="query"]])
+13:31:37.925 INFO - Done: [find element: By.cssSelector: input[name="query"]]
+13:31:37.935 INFO - Executing: [send keys: 6 [[ChromeDriver: chrome on MAC (f045054d1ad83db35964950d6eca0d6b)] -> css selector: input[name="query"]], [D, E,  , M, A, R, Q, U, I, S,  , D, E,  , L, A,  , F, A, Y, E, T, T, E]])
+13:31:38.201 INFO - Done: [send keys: 6 [[ChromeDriver: chrome on MAC (f045054d1ad83db35964950d6eca0d6b)] -> css selector: input[name="query"]], [D, E,  , M, A, R, Q, U, I, S,  , D, E,  , L, A,  , F, A, Y, E, T, T, E]]
+13:31:38.207 INFO - Executing: [take screenshot])
+13:31:38.375 INFO - Done: [take screenshot]
+13:31:38.437 INFO - Executing: [send keys to active: []])
+13:31:38.472 INFO - Done: [send keys to active: []]
+13:31:38.685 INFO - Executing: [delete session: b866bb1f-572d-425a-ae8f-668351371ff1])
+13:31:38.897 INFO - Done: [delete session: b866bb1f-572d-425a-ae8f-668351371ff1]

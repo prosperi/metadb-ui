@@ -13,7 +13,7 @@ defineSupportCode(({Given, Then, When}) => {
 	When('the user browses to the search Page',  () => {
 		return client
       .url('http://localhost:8080/search?q=')
-      .waitForElementVisible('body', 1000)
+      .waitForElementVisible('body', 5000)
 	})
 
 	When('the user searches using the submission year {arg1:int}', (arg1) => {

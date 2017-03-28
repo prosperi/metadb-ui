@@ -20,6 +20,14 @@ export default {
 		},
 		dateOriginalButton: {
 			selector: '.facet-panel[data-facet="date_original_dtsi"] button'
+		},
+
+
+		searchInput: {
+			selector: 'input[name="query"]'
+		},
+		resultsRow: {
+			selector: '.results-table-container tbody tr'
 		}
 	}
 }
