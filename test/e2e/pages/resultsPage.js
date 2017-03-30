@@ -29,6 +29,9 @@ export default {
 		resultsRow: {
 			selector: '.results-table-container tbody tr'
 		},
+		resultsFirstChild: {
+			selector: '.results-table-container tbody tr td a'
+		},
 
 
 		titleInput: {

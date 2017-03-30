@@ -20,20 +20,19 @@ defineSupportCode(({Given, Then, When}) => {
 		  .click('@dateOriginalHeader')
 			.waitForElementVisible('@dateOriginalInput', 3000)
 			.setValue('@dateOriginalInput', '01/01/' + arg1)
-		// client.execute(() => {
-		// 	document.querySelectorAll(results.dateOriginalInput.Element.selector)[0].value = arg1 + '-01-01'
-		// 	document.querySelectorAll(results.dateOriginalInput.Element.selector)[1].value = arg1 + '-12-31'
-		// })
 
 		client.saveScreenshot('./test/e2e/reports/search_by_date_01.png')
 
-		// results.expect.element('@dateOriginalInput').to.have.attribute('value').which.equals(arg1 + '-01-01')
 		return results.click('@dateOriginalButton')
 
 	})
 
 	Then('the user should find at least {arg1:int} result', (arg1) => {
-
+		const results = client.page.resultsPage()
+		return results
+			.waitForElementVisible('@resultsRow', 3000)
+			.click('@resultsFirstChild')
+			.waitForElementVisible('body', 5000)
 	})
 
 	Then('the Work with a submission date {arg1:int}{arg2:int}{arg3:int} should be a result', (arg1, arg2, arg3) => {

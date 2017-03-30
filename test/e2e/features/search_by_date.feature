@@ -11,4 +11,4 @@ Scenario Outline: Work has a submission date
 
 	Examples:
     | date       | year  | num |
-    | 2016-12-07 | 2016  | 1   |
+    | 2016-12-07 | 2016  | 1 |

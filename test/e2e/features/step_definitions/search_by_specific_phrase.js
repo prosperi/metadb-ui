@@ -3,6 +3,7 @@ const {defineSupportCode} = require('cucumber')
 
 defineSupportCode(({Given, Then, When}) => {
 
+
 	Then('the user searches using the keyword {arg1:stringInDoubleQuotes}', (arg1) => {
 		const results = client.page.resultsPage()
 
@@ -17,7 +18,8 @@ defineSupportCode(({Given, Then, When}) => {
 
 	Then('the user should find at least {arg1:stringInDoubleQuotes} result', (arg1) => {
 		const results = client.page.resultsPage()
-		results.assert.visible('@resultsRow')
+		results
+			.waitForElementVisible('@resultsRow', 3000)
 	})
 
 	Then('the Work titled {arg1:stringInDoubleQuotes} should be a result', (arg1) => {
