@@ -28,6 +28,14 @@ export default {
 		},
 		resultsRow: {
 			selector: '.results-table-container tbody tr'
+		},
+
+
+		titleInput: {
+			selector: 'input[label="Title"]'
+		},
+		dateInput: {
+			selector: 'input[type="date"]'
 		}
 	}
 }

@@ -2,17 +2,14 @@ const {client} = require('nightwatch-cucumber')
 const {defineSupportCode} = require('cucumber')
 
 defineSupportCode(({Given, Then, When}) => {
-	Given('the Work has a title {arg1:stringInDoubleQuotes}', (arg1) => {
-
-	})
-
 
 	Then('the user searches using the keyword {arg1:stringInDoubleQuotes}', (arg1) => {
 		const results = client.page.resultsPage()
 
-		results.assert.visible('@searchInput')
+		results
+			.waitForElementVisible('@searchInput', 3000)
+			.setValue('@searchInput', arg1)
 
-		results.setValue('@searchInput', arg1)
 		client.saveScreenshot('./test/e2e/reports/search_by_specific_phrase_01.png')
 		return client
 			.keys(client.Keys.ENTER)
