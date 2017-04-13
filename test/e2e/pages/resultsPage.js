@@ -22,6 +22,33 @@ export default {
 			selector: '.facet-panel[data-facet="date_original_dtsi"] button'
 		},
 
+		dateLower: {
+			selector: '.facet-panel[data-facet="date_artifact_lower_dtsi"]'
+		},
+		dateLowerHeader: {
+			selector: '.facet-panel[data-facet="date_artifact_lower_dtsi"] header'
+		},
+		dateLowerInput: {
+			selector: '.facet-panel[data-facet="date_artifact_lower_dtsi"] input'
+		},
+		dateLowerButton: {
+			selector: '.facet-panel[data-facet="date_artifact_lower_dtsi"] button'
+		},
+
+		dateUpper: {
+			selector: '.facet-panel[data-facet="date_artifact_upper_dtsi"]'
+		},
+		dateUpperHeader: {
+			selector: '.facet-panel[data-facet="date_artifact_upper_dtsi"] header'
+		},
+		dateUpperInput: {
+			selector: '.facet-panel[data-facet="date_artifact_upper_dtsi"] input'
+		},
+		dateUpperButton: {
+			selector: '.facet-panel[data-facet="date_artifact_upper_dtsi"] button'
+		},
+
+
 
 		searchInput: {
 			selector: 'input[name="query"]'
